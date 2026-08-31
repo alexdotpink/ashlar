@@ -97,6 +97,7 @@ internal class MenuShowcaseCommands(
     ) {
         is MenuChoice.Selected -> "Selected '${result.value}'."
         is MenuChoice.Closed -> "Choice closed: ${result.reason.label()}."
+        MenuChoice.NotOpened -> "Choice was not opened because another menu is active."
     }
 
     /** Demonstrates conflict rejection without disturbing the player's current session. */
