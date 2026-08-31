@@ -1,0 +1,3 @@
+# Separate live server event handlers from coroutine observers
+
+Synchronous server event handlers may inspect, cancel, and mutate a live Bukkit/Paper event at its declared priority, inheriting only the ownership valid for that native callback. Suspending observers use a different annotation and start undispatched at `MONITOR`: their prefix may copy values while the callback is live, then their continuation becomes plug-in-owned coroutine work with no raw event ownership. Both forms return `Unit`. The runtime preserves native concurrent and reentrant Folia dispatch, adds no second ordering system, and reports synchronous failures without attempting mutation rollback or stopping later server listeners.

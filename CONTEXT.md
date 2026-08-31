@@ -64,6 +64,60 @@ _Avoid_: Thread, scheduler, dispatcher
 The expected case where an entity becomes unavailable before scheduled entity work can run. Retirement is distinct from task failure and coroutine cancellation.
 _Avoid_: Failure, exception
 
+## Events
+
+**Event module**:
+The framework module that supports server, lifecycle, and application events while preserving each family's native dispatch contract.
+_Avoid_: Universal event bus, event system
+
+**Event set**:
+A final class marked `@Events`, or a concrete descendant of an abstract marked event-set base, whose DI-constructed instance groups static handlers and lifecycle configuration.
+_Avoid_: Listener class, event container
+
+**Server event**:
+A Bukkit or Paper `Event` instance dispatched through a `HandlerList`. It is live server state for the duration of its synchronous callback.
+_Avoid_: Bukkit event, platform event
+
+**Server event handler**:
+A synchronous annotated function that may inspect or mutate a live server event at a declared Bukkit priority.
+_Avoid_: Listener method, synchronous observer
+
+**Server event observer**:
+A suspending annotated function whose prefix runs inside a `MONITOR` server event callback and whose continuation becomes plug-in-owned coroutine work. The raw event is valid only before the first suspension and grants no ownership afterward.
+_Avoid_: Async handler, suspend listener
+
+**Event registration**:
+The lifecycle-owned binding between one server event type and a synchronous handler. Closing it prevents future callbacks.
+_Avoid_: Listener, subscription
+
+**Event failure**:
+An exception thrown by a synchronous server event handler and reported with its event-set, handler, and event-type identity. It does not roll back prior mutation or stop later server listeners.
+_Avoid_: Task failure, event rejection
+
+**Lifecycle event**:
+A notification from Paper's Lifecycle API, registered through its owner-specific manager and governed by that API's priority or monitor rules.
+_Avoid_: Server event, plugin lifecycle hook
+
+**Application event**:
+A plug-in-local immutable value published by framework plug-in code rather than Paper or Bukkit. It implements `ApplicationEvent` and carries notification data, not a request for a return value.
+_Avoid_: Custom Bukkit event, domain message
+
+**Application event publication**:
+One structured, suspending delivery of an application event to every matching handler. Handlers are unordered and may run concurrently.
+_Avoid_: Event emission, broadcast
+
+**Event query**:
+A suspending wait that synchronously selects a framework-owned value from matching event callbacks and completes when the query accepts one value.
+_Avoid_: One-off listener, event awaiter
+
+**Event capture**:
+An event query for cancellable server events that synchronously cancels each selected event while accepting or retrying.
+_Avoid_: Chat capture, consuming listener
+
+**Event stream**:
+A Flow of framework-owned values selected synchronously from event callbacks, with an explicit bounded capacity and overflow policy.
+_Avoid_: Raw event Flow, event queue
+
 ## Commands
 
 **Command set**:

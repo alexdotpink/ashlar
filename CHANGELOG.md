@@ -9,3 +9,4 @@
 - Added a playable command showcase covering the complete module on a real Paper/Folia server.
 - Fixed implicit-public handler discovery, repeated and generic typed-route generation, repeated positional execution, merged-fragment help, and command-contribution exclusion.
 - Added task-oriented, reference, explanation, tutorial, and coding-agent documentation for every shipped module and command feature.
+- Accepted the events-module design covering server handlers, coroutine observers, temporal queries, application events, and Paper lifecycle events.

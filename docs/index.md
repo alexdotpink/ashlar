@@ -42,3 +42,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Verification matrix](agents/verification.md)
 
 Architecture decisions live under [docs/adr](adr/). They record why the current API has its shape. They are not usage instructions.
+
+## Accepted module designs
+
+- [Events module](design/events-module.md)

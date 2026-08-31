@@ -1,0 +1,3 @@
+# Publish application events with structured concurrency
+
+Application events will be immutable values implementing the `ApplicationEvent` marker interface. They publish through a context-aware extension backed by the explicit `ApplicationEvents` capability. Publication starts every assignable ordinary or suspending handler independently, waits for all of them, and aggregates failures; it has no priority or replay because ordered and durable work belongs in services and repositories. Zero matching handlers is successful, and bounded application streams choose their backpressure policy explicitly.
