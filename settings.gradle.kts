@@ -41,6 +41,7 @@ include(
     "framework-items",
     "framework-menus",
     "framework-menus-test",
+    "framework-benchmarks",
     "framework-gradle-plugin",
     "framework-bom",
     "framework-testkit",

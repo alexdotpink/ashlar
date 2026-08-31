@@ -25,6 +25,7 @@ dependencies {
         api(project(":framework-items"))
         api(project(":framework-menus"))
         api(project(":framework-menus-test"))
+        api(project(":framework-benchmarks"))
         api(project(":framework-testkit"))
         api(project(":framework-incubator"))
         api("dev.placeholder.framework:framework-gradle-plugin:${project.version}")
