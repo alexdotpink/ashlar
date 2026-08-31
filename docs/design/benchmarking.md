@@ -199,6 +199,23 @@ The sample plug-in must exercise cross-feature scenarios with the same public AP
 
 The first slice proves the complete workflow with command dispatch. It includes the first-class test-only artifact, benchmark source-set wiring, standard Gradle tasks, the scenario DSL, result JSON, a readable comparison, one paired JVM command-dispatch measurement, one Paper/Folia command workload, and one sample plug-in scenario. Later slices copy a working contract pattern instead of inventing all runners before any feature has evidence.
 
+## Implementation order
+
+Contracts land in dependency order:
+
+1. command dispatch proves the complete local workflow;
+2. kernel, dependency injection, and build contracts establish the base costs;
+3. events and input cover callback, coroutine, stream, and prompt behavior;
+4. items cover authored, captured, encoded, migrated, and authenticated values;
+5. menus and storage cover declarative runtime, transactions, durability, and recovery;
+6. native hosts, connected clients, load, churn, saturation, and soak complete the catalogue;
+7. the project provisions and fingerprints the dedicated benchmark worker;
+8. authoritative paired runs set noise floors and budgets, then promote every required contract to `CONTRACTUAL`.
+
+The delayed worker is deliberate. All contracts remain `EXPLORATORY` during local implementation. This postpones credible gates and creates one final calibration phase, but avoids provisioning benchmark infrastructure before the complete local catalogue exists.
+
+Benchmarking is complete only when every required catalogue entry is `CONTRACTUAL`, all pull-request, nightly, weekly, release, Paper, Folia, client, load, and soak lanes pass on the canonical environment, and the sample, tutorial, reference, how-to, and agent workflow are complete.
+
 ## Related decisions
 
 - [ADR 0086](../adr/0086-gate-feature-performance-contracts-with-layered-evidence.md)
