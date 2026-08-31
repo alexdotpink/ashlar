@@ -304,6 +304,14 @@ _Avoid_: Performance test, benchmark score
 A named framework or plug-in operation with fixed setup, a measured interaction, and correctness checks.
 _Avoid_: Benchmark method, timing test
 
+**Benchmark profile**:
+A named, versioned workload scale that gives one benchmark scenario explicit input size, concurrency, and duration.
+_Avoid_: Real-world workload, scale factor
+
+**Matched control**:
+The direct Kotlin, Paper, Folia, or toolchain path used to isolate framework overhead from the complete scenario cost.
+_Avoid_: Baseline implementation, raw benchmark
+
 **Framework overhead**:
 The measured cost added by a framework path relative to its matched native or direct control under the same workload.
 _Avoid_: Zero overhead, framework speed
