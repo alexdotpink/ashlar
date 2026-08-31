@@ -312,6 +312,14 @@ _Avoid_: Real-world workload, scale factor
 The direct Kotlin, Paper, Folia, or toolchain path used to isolate framework overhead from the complete scenario cost.
 _Avoid_: Baseline implementation, raw benchmark
 
+**Performance budget**:
+A source-controlled relative regression allowance or absolute release ceiling for one metric in one benchmark profile.
+_Avoid_: Performance goal, acceptable speed
+
+**Performance regression**:
+A statistically confirmed budget violation against a compatible same-worker `main` run.
+_Avoid_: Slowdown, noisy result
+
 **Framework overhead**:
 The measured cost added by a framework path relative to its matched native or direct control under the same workload.
 _Avoid_: Zero overhead, framework speed

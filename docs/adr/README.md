@@ -10,6 +10,7 @@ ADRs record accepted design constraints and their rationale. Read the tutorial, 
 - [0004: Release aligned latest-platform artifacts](0004-release-aligned-latest-platform-artifacts.md)
 - [0086: Gate feature performance contracts with layered evidence](0086-gate-feature-performance-contracts-with-layered-evidence.md)
 - [0087: Author benchmarks as framework scenarios](0087-author-benchmarks-as-framework-scenarios.md)
+- [0088: Enforce relative and absolute performance budgets](0088-enforce-relative-and-absolute-performance-budgets.md)
 
 ## Commands and dependency injection
 
