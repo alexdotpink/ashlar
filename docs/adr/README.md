@@ -12,6 +12,7 @@ ADRs record accepted design constraints and their rationale. Read the tutorial, 
 - [0087: Author benchmarks as framework scenarios](0087-author-benchmarks-as-framework-scenarios.md)
 - [0088: Enforce relative and absolute performance budgets](0088-enforce-relative-and-absolute-performance-budgets.md)
 - [0089: Own performance contracts beside framework modules](0089-own-performance-contracts-beside-framework-modules.md)
+- [0090: Optimize server safety before peak throughput](0090-optimize-server-safety-before-peak-throughput.md)
 
 ## Commands and dependency injection
 
