@@ -1,5 +1,6 @@
 plugins {
     id("framework.published-library")
+    id("framework.benchmark-contracts")
     alias(libs.plugins.ksp)
 }
 

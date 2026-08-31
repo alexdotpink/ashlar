@@ -1,5 +1,6 @@
 plugins {
     id("framework.published-library")
+    id("framework.benchmark-contracts")
     alias(libs.plugins.ksp)
 }
 
@@ -15,4 +16,6 @@ dependencies {
 
     testImplementation(libs.paper.api)
     testImplementation(libs.coroutines.test)
+    add("benchmarkImplementation", project(":framework-menus-test"))
+    add("benchmarkImplementation", project(":framework-input"))
 }
