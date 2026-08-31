@@ -35,12 +35,14 @@ Send two chat messages. The command replies with both projected strings. Disconn
 
 Test typed acceptance, retry, and user cancellation:
 
+Replace `YourName` below with the connected player's Minecraft name. A literal player name works without selector permission on both Paper and Folia.
+
 ```text
-/input choose @s
+/input choose YourName
 maybe
 yes
 
-/input choose @s
+/input choose YourName
 cancel
 ```
 
@@ -49,7 +51,7 @@ cancel
 Test passed chat:
 
 ```text
-/input prefixed @s
+/input prefixed YourName
 this remains public
 answer:private-value
 ```
@@ -59,10 +61,10 @@ The first message appears in ordinary chat. The prefixed answer is consumed and 
 Test prompt conflicts and command bypass:
 
 ```text
-/input wait @s
+/input wait YourName
 /input ping
-/input choose @s
-/input replace @s
+/input choose YourName
+/input replace YourName
 replacement
 ```
 
@@ -71,12 +73,12 @@ replacement
 Test timeout, external cancellation, and ordinary Kotlin composition:
 
 ```text
-/input timeout @s
+/input timeout YourName
 
-/input wait @s
-/input cancel-active @s
+/input wait YourName
+/input cancel-active YourName
 
-/input multi-step @s
+/input multi-step YourName
 market
 yes
 ```
