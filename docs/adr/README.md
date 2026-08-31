@@ -8,6 +8,7 @@ ADRs record accepted design constraints and their rationale. Read the tutorial, 
 - [0002: Separate modules from plug-in components](0002-separate-modules-from-plugin-components.md)
 - [0003: Embed and own one kernel per plug-in](0003-embed-and-own-one-kernel-per-plugin.md)
 - [0004: Release aligned latest-platform artifacts](0004-release-aligned-latest-platform-artifacts.md)
+- [0086: Gate feature performance contracts with layered evidence](0086-gate-feature-performance-contracts-with-layered-evidence.md)
 
 ## Commands and dependency injection
 
