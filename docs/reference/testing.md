@@ -19,6 +19,14 @@
 
 This focused harness does not run the production policy, observer, help, Paper registration, response-delivery, or executor-retirement pipeline. Test those runtime units directly where possible and use a real server for their integrated behavior. Paper-native argument types are not available server-free.
 
+## Event test harness
+
+`EventTestHarness(dependencyGraph)` discovers generated event-set contributions from the graph and exposes the same `serverEvents` and `applicationEvents` capabilities used by plug-in code. `dispatch(event)` executes matching generated and dynamic server handlers in `EventPriority` order, applies `ignoreCancelled`, and waits for coroutine observers.
+
+`EventTestResult` contains synchronous `serverFailures` and suspending `observerFailures`. `checkSuccessful()` throws the first failure. Close the harness to unregister dynamic listeners and close application streams.
+
+Use the harness for generated bindings, cancellation filtering, temporal `await`, `capture`, and `stream` behavior, structured application publication, and cleanup. It intentionally does not emulate Bukkit `HandlerList`, Paper's lifecycle manager, scheduler ownership, or Folia callback concurrency.
+
 ## Repository fixtures
 
 ```bash
@@ -31,4 +39,4 @@ This focused harness does not run the production policy, observer, help, Paper r
 
 The integration fixture is automated and asserts server startup and plug-in behavior. The sample is interactive and has a client checklist in its [README](../../samples/sample-plugin/README.md).
 
-Use a real Paper and Folia server for command registration, native Minecraft inputs, server ownership, scheduling, lifecycle disable, and command-tree refresh. Use a connected player for response delivery, suggestions, click events, and executor retirement.
+Use a real Paper and Folia server for command and event registration, native Minecraft inputs, custom events, server ownership, scheduling, lifecycle keys, lifecycle disable, and command-tree refresh. Use a connected player for response delivery, suggestions, click events, executor retirement, and interactive event capture.

@@ -39,16 +39,28 @@ This index routes public declarations to their authoritative reference. Generate
 - References: `PlayerRef`, `PlayerSelection`, `EntityRef`, `EntitySelection`, `WorldRef`, `BlockRef`, `LocationSnapshot`, `snapshot` — [native arguments](native-arguments.md)
 - Minecraft values and operations: `AxisSelection`, `BlockColumnRef`, `FinePositionSnapshot`, `FineColumnSnapshot`, `MinecraftRotation`, `MinecraftAngle`, `MinecraftTime`, `MinecraftIntegerRange`, `MinecraftDoubleRange`, `PlayerProfileSelection`, `PlayerProfileSnapshot`, `ProfilePropertySnapshot`, `RegistryValueRef`, `RegistryValueKey`, `ScoreboardCriterion`, `BlockPredicate`, `BlockPredicateResult`, `BlockStateInput`, `ItemPredicate`, `ItemStackSnapshot`, `SignedMessageInput`, and native qualifiers — [native arguments](native-arguments.md)
 
+## Events
+
+- Declaration: `Events`, `On`, `Observe`, `OnApplication`, `ConfigureLifecycleEvents`, `DisableEventHandler`, `DisableEvents`, `ExcludeEventContributions` — [events](events.md)
+- Server operations: `ServerEvents`, `EventRegistration`, `listen`, `await`, `capture`, `stream`, `skip`, `retry` — [events](events.md)
+- Server failures: `ServerEventFailure`, `ServerEventFailureReporter` — [events](events.md)
+- Application events: `ApplicationEvent`, `ApplicationEvents`, `publish`, `ApplicationEventException`, `ApplicationEventHandlerFailure` — [events](events.md)
+- Lifecycle configuration: `LifecycleEventRegistry` — [events](events.md)
+
 ## Testing and build
 
-- `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness` — [testing](testing.md)
+- `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult` — [testing](testing.md)
 - `FrameworkPluginExtension` and `GeneratePluginYaml` — [managed Gradle plug-in](gradle-plugin.md)
 - `ExperimentalFrameworkApi` — opt-in marker for declarations from `framework-incubator`; no stable compatibility promise
-- `DiProcessorProvider`, `CommandsProcessorProvider` — KSP service entrypoints selected by the managed build; do not instantiate in plug-in code
+- `DiProcessorProvider`, `CommandsProcessorProvider`, `EventsProcessorProvider` — KSP service entrypoints selected by the managed build; do not instantiate in plug-in code
 
 ## Generated command linkage
 
 `CommandSetBinding`, `CommandSetContribution`, `CommandSetDefinition`, `CommandRouteDefinition`, `CommandSegmentDefinition`, `CommandParameterDefinition`, `CommandOptionDefinition`, `CommandOptionsDefinition`, `CommandOptionMemberDefinition`, `CommandDocumentation`, `CommandResponse`, `MissingCommandArgument`, and binding helper functions are consumed by generated sources and the runtime. `CommandRuntimeComponent` and generated contribution-index classes are also module linkage. Their binary visibility is not an invitation to author plans manually. Use annotations and generated route classes instead.
+
+## Generated event linkage
+
+`EventSetBinding`, `EventSetContribution`, `EventSetDefinition`, `ServerEventHandlerDefinition`, `ServerEventHandlerKind`, `ApplicationEventHandlerDefinition`, and `EventRuntimeComponent` are runtime/generated linkage. Plug-in code should declare event sets and inject the public capabilities instead of implementing these contracts.
 
 ## Generated API documentation
 
@@ -57,6 +69,7 @@ Published modules produce Dokka HTML and include it in their Javadoc JARs. For e
 ```bash
 ./gradlew :kernel:dokkaGeneratePublicationHtml
 ./gradlew :framework-commands:dokkaGeneratePublicationHtml
+./gradlew :framework-events:dokkaGeneratePublicationHtml
 ```
 
 Use Dokka for declaration signatures and KDoc. Use these reference pages for cross-type contracts and runtime boundaries.

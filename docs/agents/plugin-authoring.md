@@ -26,6 +26,7 @@ frameworkPlugin {
     authors.add("Example")
     foliaSupported()
     commands(strictDocumentation = true)
+    events()
 }
 ```
 
@@ -55,7 +56,15 @@ Read [command-authoring.md](command-authoring.md) for the full command workflow.
 
 The step is complete when handlers receive valid domain values and contain domain behavior rather than token parsing.
 
-## 6. Verify the actual path
+## 6. Add events through the matching dispatch model
+
+Use synchronous `@On` handlers for live server mutation, `@Observe` for coroutine follow-up, temporal queries for one-off or bounded input, and application events for plug-in-local notifications.
+
+Read [event-authoring.md](event-authoring.md) for the full event workflow.
+
+The step is complete when event ownership, cancellation, pressure, and cleanup are explicit.
+
+## 7. Verify the actual path
 
 Run the smallest focused test during development. Finish with `build` and `checkKotlinAbi` for framework changes. Run a Paper or Folia server when the change touches registration, native arguments, ownership, scheduling, or response delivery.
 

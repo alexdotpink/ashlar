@@ -1,6 +1,6 @@
 # Events module design
 
-Status: accepted for implementation
+Status: implemented
 
 The events module gives plug-in authors one Kotlin-first module for Bukkit/Paper server events, Paper lifecycle events, and plug-in-local application events. It keeps their contracts distinct. It does not place a generic wrapper over three different dispatch models.
 
@@ -283,9 +283,9 @@ The server-free event test runtime exercises generated bindings, filtering, canc
 
 Real Paper and Folia fixtures verify registration, unregistration, native priority, cancellation, custom events, lifecycle keys, callback ownership, parallel region dispatch, and plug-in disable. A playable sample demonstrates every public syntax before the module is considered complete.
 
-## Implementation slices
+## Implementation history
 
-Implementation stays incremental:
+The module was delivered in these independently verified slices:
 
 1. Static `@On` server handlers, DI discovery, ownership, failure reporting, and focused tests.
 2. `@Observe`, dynamic context-owned listeners, and shutdown behavior.

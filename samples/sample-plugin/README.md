@@ -1,8 +1,35 @@
-# Command showcase plug-in
+# Command and event showcase plug-in
 
-This Paper/Folia plug-in is a playable reference for the complete command module. Its generated root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias.
+This Paper/Folia plug-in is a playable reference for the complete command and event modules. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. The event catalogue root is `/events`, with `/ev` as its alias.
 
 Start with `/showcase` for clickable links, `/sc guide` for a short path, or `/sc help [page]` for generated, permission-filtered help. Tab completion is part of the demonstration; try it after every literal and for the landmark argument.
+
+## Event checklist
+
+Join the server and wait half a second. The static `@On` handler records the join and the suspending `@Observe` handler sends a clickable `/events` prompt. Then run:
+
+```text
+/events state
+/events publish hello
+/events custom hello
+/events state
+```
+
+The state includes ordinary and suspending application handlers plus the custom Bukkit event. It also includes `lifecycle:commands`, registered through Paper's native lifecycle key. The excluded event set never adds `excluded`.
+
+Try one-off cancellable capture:
+
+```text
+/events choose @s
+```
+
+Send `maybe` in chat; the capture consumes it and asks for `yes` or `no`. Send `yes` to complete the command. Then try a bounded Flow:
+
+```text
+/events collect @s 2
+```
+
+Send two chat messages. The command replies with both projected strings. Disconnecting records the quit through a component-owned dynamic listener; reconnect and run `/events state` to see it.
 
 ## Playable checklist
 

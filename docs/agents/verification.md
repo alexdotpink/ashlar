@@ -11,6 +11,10 @@ Match the check to the claim. An exit code from an unrelated task is not evidenc
 | Command parsing, options, policies, or routes | Focused command tests and sample compilation |
 | Native Minecraft argument or command registration | Real Paper server; Folia too when ownership changes |
 | Response delivery or executor retirement | A real player connection and disconnect path |
+| Event processor or generated binding | Processor tests, generated-source compilation, and `EventTestHarness` tests |
+| Server-event registration, custom event, or lifecycle key | Real Paper server; Folia too when callback ownership or concurrency matters |
+| Temporal event query or application event | Focused harness tests for completion, cancellation, failure, and cleanup |
+| Interactive capture or player-facing observer | Real server with a connected player |
 | Gradle plug-in | Gradle TestKit test and a shaded sample JAR |
 | Documentation | Local-link check, code samples compared with current source, full build if samples changed |
 

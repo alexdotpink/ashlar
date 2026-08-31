@@ -15,12 +15,13 @@ frameworkPlugin {
     website.set("https://example.invalid")
     foliaSupported()
     commands(strictDocumentation = true)
+    events()
 }
 ```
 
 ## Managed behavior
 
-The plug-in applies Kotlin/JVM and Shadow, selects the Java 25 toolchain and JVM target, enables Kotlin progressive mode and Java parameter metadata, adds Paper's repository, and adds the framework BOM, kernel, DI runtime, Paper API, and required KSP processor. `commands()` also adds the command runtime and command KSP processor.
+The plug-in applies Kotlin/JVM and Shadow, selects the Java 25 toolchain and JVM target, enables Kotlin progressive mode and Java parameter metadata, adds Paper's repository, and adds the framework BOM, kernel, DI runtime, Paper API, and required KSP processor. `commands()` adds the command runtime and processor. `events()` adds the event runtime and processor. The features are independent and may be enabled together.
 
 The ordinary `jar` receives the `plain` classifier. The unclassified `shadowJar` is the distributable plug-in JAR and merges service files so generated contribution indexes remain discoverable. Paper is compile-only.
 
@@ -35,6 +36,7 @@ The ordinary `jar` receives the `plain` classifier. The unclassified `shadowJar`
 | `website` | Optional descriptor website |
 | `foliaSupported()` | Writes `folia-supported: true`; call only after testing Folia |
 | `commands(strictDocumentation)` | Enables commands; strict mode turns missing route summaries into KSP errors |
+| `events()` | Enables server, application, and lifecycle events plus generated direct bindings |
 | `allowVersionOverrides(reason)` | Enables deliberate version overrides and records why |
 | `frameworkVersion(version)` | Overrides the aligned framework version after overrides are enabled |
 | `paperApiVersion(version)` | Overrides the Paper API version after overrides are enabled |

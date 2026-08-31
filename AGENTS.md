@@ -4,6 +4,7 @@ Build against the checked-in APIs and examples. The repository targets Kotlin 2.
 
 - Read [docs/agents/plugin-authoring.md](docs/agents/plugin-authoring.md) before creating or changing a framework plug-in.
 - Read [docs/agents/command-authoring.md](docs/agents/command-authoring.md) before adding command routes, arguments, policies, responses, fragments, or graph edges.
+- Read [docs/agents/event-authoring.md](docs/agents/event-authoring.md) before adding server handlers, observers, temporal queries, application events, or lifecycle registrations.
 - Read [docs/agents/verification.md](docs/agents/verification.md) before claiming a plug-in or framework change works.
 - Use [docs/reference/api-index.md](docs/reference/api-index.md) to find the authoritative page for a public type.
 - Use [CONTEXT.md](CONTEXT.md) for project terminology and [docs/adr/](docs/adr/) for design rationale.

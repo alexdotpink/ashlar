@@ -2,9 +2,9 @@
 
 KSP removes reflection and handwritten registration without becoming the framework runtime.
 
-The DI processor reads injected constructors, lifetimes, qualifiers, contributions, and root components. It generates small direct factories plus service indexes. The command processor reads command structure and KDoc. It generates immutable definitions, direct handler dispatch, typed route builders, and command contribution indexes.
+The DI processor reads injected constructors, lifetimes, qualifiers, contributions, and root components. It generates small direct factories plus service indexes. The command processor reads command structure and KDoc. It generates immutable definitions, direct handler dispatch, typed route builders, and command contribution indexes. The event processor reads event-set structure and handler annotations. It generates immutable definitions, direct calls, and event contribution linkage.
 
-Generated code does not parse command lines, execute policies, manage coroutines, render help, access Paper, or implement dependency lifetimes. Those behaviors remain ordinary Kotlin code with ordinary unit tests.
+Generated code does not parse command lines, execute policies, register or dispatch events, manage coroutines or Flow, render help, access Paper, or implement dependency lifetimes. Those behaviors remain ordinary Kotlin code with ordinary unit tests.
 
 KotlinPoet is used for syntax-safe generation. Generated names are deterministic, public only where plug-in code needs them, and treated as build output. Do not edit generated sources or commit `build/generated`.
 
