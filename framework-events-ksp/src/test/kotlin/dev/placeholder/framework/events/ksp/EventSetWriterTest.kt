@@ -31,6 +31,7 @@ class EventSetWriterTest {
                 event = true,
                 priority = "HIGH",
                 ignoreCancelled = true,
+                observer = false,
                 cancellable = true,
                 suspending = false,
                 returnType = "kotlin.Unit",

@@ -33,6 +33,7 @@ internal class EventSetWriter {
                     .build(),
             )
             .addFunction(invoke(model, target))
+            .addFunction(observe(model, target))
             .build()
         return FileSpec.builder(model.packageName, "${model.typeName}_EventsGenerated")
             .addType(binding)
@@ -43,13 +44,15 @@ internal class EventSetWriter {
         CodeBlock.builder()
             .add("%T(handlers = %L)", EVENT_SET_DEFINITION, list(handlers) { handler ->
                 CodeBlock.of(
-                    "%T(name = %S, eventType = %T::class, priority = %T.%L, ignoreCancelled = %L)",
+                    "%T(name = %S, eventType = %T::class, priority = %T.%L, ignoreCancelled = %L, kind = %T.%L)",
                     SERVER_HANDLER_DEFINITION,
                     handler.functionName,
                     handler.eventClassName(),
                     EVENT_PRIORITY,
                     handler.priority,
                     handler.ignoreCancelled,
+                    SERVER_HANDLER_KIND,
+                    if (handler.observer) "OBSERVER" else "SYNCHRONOUS",
                 )
             })
             .build()
@@ -62,6 +65,7 @@ internal class EventSetWriter {
             .add("val typedTarget = target as %T\n", target)
             .beginControlFlow("when (handler)")
         model.handlers.forEachIndexed { index, handler ->
+            if (handler.observer) return@forEachIndexed
             code.add(
                 "%L -> with(typedTarget) { (event as %T).%N() }\n",
                 index,
@@ -73,6 +77,33 @@ internal class EventSetWriter {
             .endControlFlow()
         return FunSpec.builder("invoke")
             .addModifiers(KModifier.OVERRIDE)
+            .addParameter("target", ANY)
+            .addParameter("handler", INT)
+            .addParameter("event", EVENT)
+            .addCode(code.build())
+            .build()
+    }
+
+    private fun observe(
+        model: EventSetModel,
+        target: ClassName,
+    ): FunSpec {
+        val code = CodeBlock.builder()
+            .add("val typedTarget = target as %T\n", target)
+            .beginControlFlow("when (handler)")
+        model.handlers.forEachIndexed { index, handler ->
+            if (!handler.observer) return@forEachIndexed
+            code.add(
+                "%L -> with(typedTarget) { (event as %T).%N() }\n",
+                index,
+                handler.eventClassName(),
+                handler.functionName,
+            )
+        }
+        code.add("else -> %M(handler)\n", INVALID_EVENT_HANDLER)
+            .endControlFlow()
+        return FunSpec.builder("observe")
+            .addModifiers(KModifier.OVERRIDE, KModifier.SUSPEND)
             .addParameter("target", ANY)
             .addParameter("handler", INT)
             .addParameter("event", EVENT)
@@ -102,6 +133,8 @@ internal class EventSetWriter {
             ClassName("dev.placeholder.framework.events.codegen", "EventSetDefinition")
         val SERVER_HANDLER_DEFINITION =
             ClassName("dev.placeholder.framework.events.codegen", "ServerEventHandlerDefinition")
+        val SERVER_HANDLER_KIND =
+            ClassName("dev.placeholder.framework.events.codegen", "ServerEventHandlerKind")
         val EVENT_PRIORITY = ClassName("org.bukkit.event", "EventPriority")
         val EVENT = ClassName("org.bukkit.event", "Event")
         val KCLASS = ClassName("kotlin.reflect", "KClass")

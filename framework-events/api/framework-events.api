@@ -1,8 +1,16 @@
+public abstract interface class dev/placeholder/framework/events/EventRegistration : java/lang/AutoCloseable {
+	public abstract fun close ()V
+}
+
 public abstract interface annotation class dev/placeholder/framework/events/Events : java/lang/annotation/Annotation {
 }
 
 public abstract interface annotation class dev/placeholder/framework/events/ExcludeEventContributions : java/lang/annotation/Annotation {
 	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public abstract interface annotation class dev/placeholder/framework/events/Observe : java/lang/annotation/Annotation {
+	public abstract fun ignoreCancelled ()Z
 }
 
 public abstract interface annotation class dev/placeholder/framework/events/On : java/lang/annotation/Annotation {
@@ -31,6 +39,21 @@ public abstract interface class dev/placeholder/framework/events/ServerEventFail
 	public abstract fun report (Ldev/placeholder/framework/events/ServerEventFailure;)V
 }
 
+public final class dev/placeholder/framework/events/ServerEvents {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;Ldev/placeholder/framework/di/DependencyGraph;)V
+	public final fun getReporter ()Ldev/placeholder/framework/events/ServerEventFailureReporter;
+	public final fun register (Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;)Ldev/placeholder/framework/events/EventRegistration;
+}
+
+public final class dev/placeholder/framework/events/ServerEventsKt {
+	public static final fun await (Ldev/placeholder/framework/events/ServerEvents;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun capture (Ldev/placeholder/framework/events/ServerEvents;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun retry (Lkotlin/jvm/functions/Function1;)Ljava/lang/Void;
+	public static final fun skip ()Ljava/lang/Void;
+	public static final fun stream (Ldev/placeholder/framework/events/ServerEvents;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun withOptionalTimeout-k1IrOU0 (Lkotlin/time/Duration;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class dev/placeholder/framework/events/codegen/EventBindingKt {
 	public static final fun invalidEventHandler (I)Ljava/lang/Void;
 }
@@ -39,6 +62,11 @@ public abstract interface class dev/placeholder/framework/events/codegen/EventSe
 	public abstract fun getDefinition ()Ldev/placeholder/framework/events/codegen/EventSetDefinition;
 	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
 	public abstract fun invoke (Ljava/lang/Object;ILorg/bukkit/event/Event;)V
+	public fun observe (Ljava/lang/Object;ILorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/events/codegen/EventSetContribution$DefaultImpls {
+	public static fun observe (Ldev/placeholder/framework/events/codegen/EventSetContribution;Ljava/lang/Object;ILorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class dev/placeholder/framework/events/codegen/EventSetDefinition {
@@ -53,20 +81,31 @@ public final class dev/placeholder/framework/events/codegen/EventSetDefinition {
 }
 
 public final class dev/placeholder/framework/events/codegen/ServerEventHandlerDefinition {
-	public fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;Z)V
+	public fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLdev/placeholder/framework/events/codegen/ServerEventHandlerKind;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLdev/placeholder/framework/events/codegen/ServerEventHandlerKind;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Lkotlin/reflect/KClass;
 	public final fun component3 ()Lorg/bukkit/event/EventPriority;
 	public final fun component4 ()Z
-	public final fun copy (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;Z)Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;
-	public static synthetic fun copy$default (Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZILjava/lang/Object;)Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;
+	public final fun component5 ()Ldev/placeholder/framework/events/codegen/ServerEventHandlerKind;
+	public final fun copy (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLdev/placeholder/framework/events/codegen/ServerEventHandlerKind;)Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLdev/placeholder/framework/events/codegen/ServerEventHandlerKind;ILjava/lang/Object;)Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getEventType ()Lkotlin/reflect/KClass;
 	public final fun getIgnoreCancelled ()Z
+	public final fun getKind ()Ldev/placeholder/framework/events/codegen/ServerEventHandlerKind;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPriority ()Lorg/bukkit/event/EventPriority;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/events/codegen/ServerEventHandlerKind : java/lang/Enum {
+	public static final field OBSERVER Ldev/placeholder/framework/events/codegen/ServerEventHandlerKind;
+	public static final field SYNCHRONOUS Ldev/placeholder/framework/events/codegen/ServerEventHandlerKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/events/codegen/ServerEventHandlerKind;
+	public static fun values ()[Ldev/placeholder/framework/events/codegen/ServerEventHandlerKind;
 }
 
 public final class dev/placeholder/framework/events/internal/EventRuntimeComponent : dev/placeholder/framework/PluginComponent {

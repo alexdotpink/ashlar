@@ -19,6 +19,7 @@ internal data class ServerHandlerModel(
     val event: Boolean,
     val priority: String,
     val ignoreCancelled: Boolean,
+    val observer: Boolean,
     val cancellable: Boolean,
     val suspending: Boolean,
     val returnType: String,

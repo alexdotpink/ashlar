@@ -10,7 +10,14 @@ public data class ServerEventHandlerDefinition(
     public val eventType: KClass<out Event>,
     public val priority: EventPriority,
     public val ignoreCancelled: Boolean,
+    public val kind: ServerEventHandlerKind = ServerEventHandlerKind.SYNCHRONOUS,
 )
+
+/** Runtime execution kind of one generated server event handler. */
+public enum class ServerEventHandlerKind {
+    SYNCHRONOUS,
+    OBSERVER,
+}
 
 /** Immutable metadata for one generated event set. */
 public data class EventSetDefinition(
@@ -28,6 +35,12 @@ public interface EventSetContribution {
         handler: Int,
         event: Event,
     )
+
+    public suspend fun observe(
+        target: Any,
+        handler: Int,
+        event: Event,
+    ): Unit = invalidEventHandler(handler)
 }
 
 /** Reports an invalid generated event handler index. */

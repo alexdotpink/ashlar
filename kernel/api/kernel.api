@@ -5,6 +5,7 @@ public abstract interface class dev/placeholder/framework/ComponentContext : dev
 	public abstract fun getDependencies ()Ldev/placeholder/framework/di/DependencyResolver;
 	public abstract fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
 	public abstract fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public abstract fun task (Ljava/lang/String;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
 	public static synthetic fun task$default (Ldev/placeholder/framework/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
 }
 

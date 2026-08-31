@@ -9,6 +9,7 @@ import dev.placeholder.framework.di.DependencyGraph
 import dev.placeholder.framework.di.DependencyResolver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineStart
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.bukkit.Server
 import org.bukkit.plugin.Plugin
@@ -253,12 +254,18 @@ private class PluginComponentContext(
     override fun task(
         name: String?,
         block: suspend CoroutineScope.() -> Unit,
-    ): Job = binding.launchTask(name, critical = false, block)
+    ): Job = binding.launchTask(name, critical = false, block = block)
+
+    override fun task(
+        name: String?,
+        start: CoroutineStart,
+        block: suspend CoroutineScope.() -> Unit,
+    ): Job = binding.launchTask(name, critical = false, start = start, block = block)
 
     override fun criticalTask(
         name: String?,
         block: suspend CoroutineScope.() -> Unit,
-    ): Job = binding.launchTask(name, critical = true, block)
+    ): Job = binding.launchTask(name, critical = true, block = block)
 
     override fun <T : AutoCloseable> own(resource: T): T = binding.own(resource)
 }

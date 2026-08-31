@@ -3,6 +3,7 @@ package dev.placeholder.framework
 import dev.placeholder.framework.di.DependencyResolver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineStart
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import org.bukkit.Server
 import org.bukkit.plugin.Plugin
@@ -27,6 +28,13 @@ public interface ComponentContext : PluginLoadContext {
     /** Launches an ordinary supervised task owned by this component. */
     public fun task(
         name: String? = null,
+        block: suspend CoroutineScope.() -> Unit,
+    ): Job
+
+    /** Launches an ordinary supervised task with an explicit coroutine start mode. */
+    public fun task(
+        name: String?,
+        start: CoroutineStart,
         block: suspend CoroutineScope.() -> Unit,
     ): Job
 

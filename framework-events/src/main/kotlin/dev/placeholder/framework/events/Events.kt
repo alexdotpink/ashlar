@@ -16,6 +16,11 @@ public annotation class On(
     val ignoreCancelled: Boolean = false,
 )
 
+/** Declares one plug-in-owned coroutine observer of a server event at MONITOR. */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
+public annotation class Observe(val ignoreCancelled: Boolean = false)
+
 /** Prevents selected generated event-set contributions from loading in this plug-in. */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

@@ -19,7 +19,12 @@ internal class EventSetValidator {
         if (handler.parameterCount != 0) {
             problems += "Server event handler '$label' cannot declare value parameters"
         }
-        if (handler.suspending) problems += "@On server event handler '$label' cannot suspend"
+        if (handler.observer && !handler.suspending) {
+            problems += "@Observe server event handler '$label' must suspend"
+        }
+        if (!handler.observer && handler.suspending) {
+            problems += "@On server event handler '$label' cannot suspend"
+        }
         if (handler.returnType != UNIT_TYPE) problems += "Server event handler '$label' must return Unit"
         if (handler.private || handler.protected) {
             problems += "Server event handler '$label' must be public or internal"

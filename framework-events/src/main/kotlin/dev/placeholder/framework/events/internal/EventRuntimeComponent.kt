@@ -10,6 +10,9 @@ import dev.placeholder.framework.events.ExcludeEventContributions
 import dev.placeholder.framework.events.ServerEventFailure
 import dev.placeholder.framework.events.ServerEventFailureReporter
 import dev.placeholder.framework.events.codegen.EventSetContribution
+import dev.placeholder.framework.events.codegen.ServerEventHandlerKind
+import dev.placeholder.framework.events.serverEventFailureReporter
+import kotlinx.coroutines.CoroutineStart
 import org.bukkit.event.Event
 import org.bukkit.event.EventException
 import org.bukkit.event.HandlerList
@@ -23,17 +26,7 @@ public class EventRuntimeComponent(
     private val graph: DependencyGraph,
 ) : PluginComponent() {
     override fun ComponentContext.start() {
-        graph.bindDefault(
-            ServerEventFailureReporter::class,
-            ServerEventFailureReporter { failure ->
-                logger.error(
-                    "[${failure.eventSet.qualifiedName}] Event handler '${failure.handler}' failed for " +
-                        failure.eventType.qualifiedName,
-                    failure.cause,
-                )
-            },
-        )
-        val reporter = graph.get(ServerEventFailureReporter::class)
+        val reporter = graph.serverEventFailureReporter(plugin)
         val excluded = plugin.javaClass.getAnnotation(ExcludeEventContributions::class.java)
             ?.types
             ?.toSet()
@@ -57,7 +50,16 @@ public class EventRuntimeComponent(
                 listener,
                 definition.priority,
                 EventExecutor { _, event ->
-                    ServerEventHandlerInvoker(reporter).invoke(contribution, target, index, event)
+                    when (definition.kind) {
+                        ServerEventHandlerKind.SYNCHRONOUS ->
+                            ServerEventHandlerInvoker(reporter).invoke(contribution, target, index, event)
+                        ServerEventHandlerKind.OBSERVER -> task(
+                            name = "${contribution.targetType.simpleName}.${definition.name}",
+                            start = CoroutineStart.UNDISPATCHED,
+                        ) {
+                            contribution.observe(target, index, event)
+                        }
+                    }
                 },
                 plugin,
                 definition.ignoreCancelled,

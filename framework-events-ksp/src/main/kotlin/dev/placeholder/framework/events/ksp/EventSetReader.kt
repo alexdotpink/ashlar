@@ -22,7 +22,9 @@ internal class EventSetReader {
     )
 
     private fun serverHandler(function: KSFunctionDeclaration): ServerHandlerModel? {
-        val annotation = function.annotationOrNull(ON_ANNOTATION) ?: return null
+        val on = function.annotationOrNull(ON_ANNOTATION)
+        val observe = function.annotationOrNull(OBSERVE_ANNOTATION)
+        val annotation = on ?: observe ?: return null
         val receiver = function.extensionReceiver?.resolve()
         val receiverDeclaration = receiver?.declaration as? KSClassDeclaration
         val eventPackage = receiverDeclaration?.packageName?.asString().orEmpty()
@@ -39,8 +41,9 @@ internal class EventSetReader {
             eventTypeNames = eventTypes,
             eventQualifiedName = eventQualifiedName,
             event = eventQualifiedName == EVENT_TYPE || EVENT_TYPE in supertypes,
-            priority = values.getValue("priority").enumName(),
+            priority = if (observe != null) "MONITOR" else values.getValue("priority").enumName(),
             ignoreCancelled = values.getValue("ignoreCancelled") as Boolean,
+            observer = observe != null,
             cancellable = CANCELLABLE_TYPE in supertypes || eventQualifiedName == CANCELLABLE_TYPE,
             suspending = Modifier.SUSPEND in function.modifiers,
             returnType = function.returnType?.resolve()?.declaration?.qualifiedName?.asString().orEmpty(),
@@ -75,6 +78,7 @@ internal class EventSetReader {
 
     private companion object {
         const val ON_ANNOTATION = "dev.placeholder.framework.events.On"
+        const val OBSERVE_ANNOTATION = "dev.placeholder.framework.events.Observe"
         const val CANCELLABLE_TYPE = "org.bukkit.event.Cancellable"
         const val EVENT_TYPE = "org.bukkit.event.Event"
     }

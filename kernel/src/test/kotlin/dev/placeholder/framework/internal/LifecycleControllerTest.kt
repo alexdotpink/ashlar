@@ -8,6 +8,7 @@ import dev.placeholder.framework.di.DependencyResolver
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
@@ -152,6 +153,25 @@ class LifecycleControllerTest {
     }
 
     @Test
+    fun `explicit undispatched task enters before launch returns`(): Unit {
+        val controller = controller()
+        controller.startComponents()
+        var entered = false
+
+        val task = controller.rootBinding.context.task(
+            name = "observer",
+            start = CoroutineStart.UNDISPATCHED,
+        ) {
+            entered = true
+            awaitCancellation()
+        }
+
+        assertTrue(entered)
+        task.cancel()
+        controller.shutdown(afterTaskDrain = {})
+    }
+
+    @Test
     fun `disable hook runs after tasks drain and before component stop`(): Unit = runBlocking {
         val events: MutableList<String> = CopyOnWriteArrayList()
         val controller = controller("component" to { RecordingComponent("component", events) })
@@ -255,12 +275,18 @@ class LifecycleControllerTest {
         override fun task(
             name: String?,
             block: suspend CoroutineScope.() -> Unit,
-        ): Job = binding.launchTask(name, critical = false, block)
+        ): Job = binding.launchTask(name, critical = false, block = block)
+
+        override fun task(
+            name: String?,
+            start: CoroutineStart,
+            block: suspend CoroutineScope.() -> Unit,
+        ): Job = binding.launchTask(name, critical = false, start = start, block = block)
 
         override fun criticalTask(
             name: String?,
             block: suspend CoroutineScope.() -> Unit,
-        ): Job = binding.launchTask(name, critical = true, block)
+        ): Job = binding.launchTask(name, critical = true, block = block)
 
         override fun <T : AutoCloseable> own(resource: T): T = binding.own(resource)
     }

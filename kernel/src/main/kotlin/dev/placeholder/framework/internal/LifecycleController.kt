@@ -75,6 +75,7 @@ internal class LifecycleBinding(
     fun launchTask(
         name: String?,
         critical: Boolean,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
         block: suspend CoroutineScope.() -> Unit,
     ): Job {
         requireActive("launch tasks")
@@ -98,7 +99,7 @@ internal class LifecycleBinding(
                 }
             }
         val coroutineName = CoroutineName(name?.let { "$path/$it" } ?: path)
-        return scope.launch(coroutineName + failureHandler, start = CoroutineStart.DEFAULT, block = block)
+        return scope.launch(coroutineName + failureHandler, start = start, block = block)
     }
 
     fun <T : AutoCloseable> own(resource: T): T {
