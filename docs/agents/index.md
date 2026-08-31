@@ -10,6 +10,7 @@ Use this section when an agent is writing a plug-in, reviewing generated framewo
 | Add commands | [Command authoring](command-authoring.md) | Every route has KDoc, typed inputs, and focused tests. |
 | Add event-driven behavior | [Event authoring](event-authoring.md) | Dispatch semantics, ownership, pressure, cleanup, and the relevant server path are verified. |
 | Collect player input | [Input authoring](input-authoring.md) | Parsing, consumption, conflicts, cancellation, and cleanup have focused evidence. |
+| Implement items or menus | [Item and menu implementation](menu-implementation.md) | One approved vertical slice has model, native evidence where required, docs, samples, and ABI coverage. |
 | Change framework runtime code | [Architecture](../explanation/architecture.md) | Unit tests, ABI checks, and affected real-server fixtures pass. |
 | Touch Paper objects from a coroutine | [Access Paper safely](../how-to/access-paper-safely.md) | Every access occurs inside the correct ownership block. |
 | Add DI bindings or contributions | [Dependency injection reference](../reference/dependency-injection.md) | Generated factories compile and lifetime boundaries remain valid. |
@@ -18,5 +19,7 @@ Use this section when an agent is writing a plug-in, reviewing generated framewo
 ## Sources of truth
 
 The Kotlin source and committed `.api` dumps define the current public API. Reference pages describe that API. The sample plug-in provides compile-checked command, event, and input examples. The integration fixture proves behavior on real Paper and Folia servers.
+
+Items and menus are approved designs, not current APIs. Until their first implementation slice lands, their design documents and ADRs are authoritative for implementation work but must not be presented to plug-in authors as available dependencies.
 
 If prose and source disagree, follow source, fix the prose in the same change, and add a regression test when behavior was ambiguous.

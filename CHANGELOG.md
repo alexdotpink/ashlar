@@ -13,3 +13,4 @@
 - Added task-oriented, reference, sample, and coding-agent documentation for every events feature.
 - Accepted the input-module design for typed chat prompts, retry decisions, conflict ownership, cancellation, idle deadlines, and server-free testing.
 - Added typed player chat input with accept, retry, cancel, and pass decisions, protected prompt ownership, idle deadlines, external cancellation, a dedicated test harness, and Paper/Folia fixtures.
+- Accepted the item and menu designs for immutable item models, declarative keyed rendering, typed hosts, navigation, effects, complete storage transactions, durable recovery, standard components, deterministic testing, and live inspection.

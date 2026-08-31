@@ -144,6 +144,156 @@ _Avoid_: Chat event, chat message
 The parser's decision for one attempted answer: accept it, retry with feedback, cancel the prompt, or pass the chat through unchanged.
 _Avoid_: Parse result, validation result
 
+## Menus
+
+**Item module**:
+The reusable framework module that describes and materializes Minecraft item stacks, including modern data components and presentation policy.
+_Avoid_: Item utility, menu item builder
+
+**Item specification**:
+An immutable complete description from which the framework can materialize an equivalent item stack.
+_Avoid_: Item builder, item template
+
+**Item snapshot**:
+An immutable lossless capture of one live item stack, including data the framework does not yet interpret directly.
+_Avoid_: Item clone, serialized item
+
+**Item presentation**:
+The declared tooltip and visual policy applied when materializing an item specification for a particular use.
+_Avoid_: Item flags, menu defaults
+
+**Custom item definition**:
+A namespaced, versioned definition that creates and recognizes one kind of plug-in item with a typed persistent payload.
+_Avoid_: Custom item class, item handler
+
+**Item integrity policy**:
+An optional custom-item rule that authenticates canonical identity and payload data and supports signing-key rotation.
+_Avoid_: Item encryption, anti-dupe check
+
+**Menu module**:
+The framework module that presents declarative inventory interactions while owning rendering, reconciliation, input safety, navigation, and lifecycle.
+_Avoid_: GUI framework, inventory utility
+
+**Menu session**:
+One player's active interaction with a rendered menu, including its local state and navigation history.
+_Avoid_: Open inventory, menu instance
+
+**Menu render**:
+The declarative inventory description produced from the current menu-session state.
+_Avoid_: Inventory builder, menu contents
+
+**Menu reconciliation**:
+The transition from one menu render to the next by applying only the inventory changes required to match the new description.
+_Avoid_: Refresh, redraw, rebuild
+
+**Menu component**:
+A reusable part of a menu render with stable identity and optional menu-session-local state.
+_Avoid_: Widget, menu class
+
+**Standard menu component**:
+A framework-supplied menu component implemented entirely through the same public composition API available to plug-ins.
+_Avoid_: Built-in widget, native component
+
+**Menu state**:
+A value retained for one menu component inside one menu session and observed by later renders.
+_Avoid_: Menu data, inventory state
+
+**Menu local**:
+A typed value scoped through a rendered component subtree for cross-cutting presentation context such as theme or messages.
+_Avoid_: Service locator, thread-local
+
+**Menu feedback**:
+A typed player-facing success, warning, or rejection value whose active menu presentation chooses visual and audible delivery.
+_Avoid_: Chat response, click message
+
+**Menu region**:
+An explicitly bounded ordered set of inventory slots used to place repeated menu content.
+_Avoid_: Container, layout box
+
+**Action slot**:
+A virtual menu slot whose displayed item triggers typed actions and never participates in item storage.
+_Avoid_: Button slot, locked slot
+
+**Slot modifier**:
+An explicit composable transformation of one slot declaration's presentation or behavior that does not claim separate physical ownership.
+_Avoid_: Slot override, layer
+
+**Storage slot**:
+A menu or player-inventory slot that participates in framework-controlled item movement and storage rules.
+_Avoid_: Editable slot, vanilla slot
+
+**Menu storage**:
+A stable, versioned item-storage model that may be attached to one or more menu sessions while retaining shared transaction identity.
+_Avoid_: Inventory contents, shared menu
+
+**Transfer route**:
+An ordered declaration of the storage models considered as destinations for an automatic item transfer.
+_Avoid_: Shift-click handler, destination callback
+
+**Menu transaction**:
+One atomic proposed item movement across storage slots and the player's cursor, including complete before and after values.
+_Avoid_: Inventory event, click action
+
+**Durable menu transaction**:
+A journaled menu transaction with stable identity whose externally committed outcome can be resolved independently of the menu session that proposed it.
+_Avoid_: Background click, detached job
+
+**Transaction domain**:
+The single commit owner for a menu transaction spanning more than one persistent storage model.
+_Avoid_: Transaction manager, rollback group
+
+**Pending menu transaction**:
+A menu transaction awaiting application approval while its original storage and cursor remain authoritative.
+_Avoid_: Loading click, queued action
+
+**Item recovery mailbox**:
+Durable per-player storage for committed items that could not be returned safely to player inventory when a menu session ended.
+_Avoid_: Overflow chest, dropped items
+
+**Menu effect**:
+Keyed resource or suspending work owned by a menu component and cleaned up when its key, component, or session leaves.
+_Avoid_: Render callback, menu task
+
+**Menu error boundary**:
+A keyed component that captures unexpected descendant render, action, and effect failures and renders a retryable fallback.
+_Avoid_: Error handler, exception listener
+
+**Menu action**:
+A typed suspending reaction to one immutable player gesture, owned by its menu component and concurrency policy.
+_Avoid_: Click handler, event callback
+
+**Menu gesture**:
+An immutable typed description of one player's inventory input against a particular committed render revision.
+_Avoid_: Inventory event, click type
+
+**Menu screen**:
+One typed route and declarative render in a menu session's navigation history.
+_Avoid_: Page, submenu, child menu
+
+**Menu host**:
+A concrete Minecraft inventory form whose render exposes that form's typed slots, properties, and interactions.
+_Avoid_: Inventory type, menu layout
+
+**Host remount**:
+The internal replacement of a menu session's native inventory when its declarative host can no longer be reconciled in place.
+_Avoid_: Reopen, inventory switch
+
+**Suspended menu presentation**:
+A menu session state in which its native host is temporarily hidden while another focused framework interaction owns player input.
+_Avoid_: Closed menu, paused session
+
+**Menu close**:
+The typed ending of a menu session after player close, replacement, disconnect, caller cancellation, or plug-in shutdown.
+_Avoid_: Inventory close event, menu result
+
+**Menu test harness**:
+A deterministic server-free driver for the production renderer, reconciler, navigation, action, and transaction engines through a fake native host adapter.
+_Avoid_: Mock inventory, menu unit test
+
+**Menu inspection**:
+A redacted semantic snapshot and bounded typed trace of a live menu session's components, state, renders, gestures, actions, and transactions.
+_Avoid_: Debug log, inventory dump
+
 ## Commands
 
 **Command set**:

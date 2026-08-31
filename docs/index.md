@@ -47,11 +47,14 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Command authoring workflow](agents/command-authoring.md)
 - [Event authoring workflow](agents/event-authoring.md)
 - [Input authoring workflow](agents/input-authoring.md)
+- [Item and menu implementation workflow](agents/menu-implementation.md)
 - [Verification matrix](agents/verification.md)
 
-Architecture decisions live under [docs/adr](adr/). They record why the current API has its shape. They are not usage instructions.
+Architecture decisions are catalogued in the [ADR index](adr/README.md). They record why an API has its shape. They are not usage instructions.
 
 ## Module designs
 
 - [Events module](design/events-module.md)
 - [Input module](design/input-module.md)
+- [Items module](design/items-module.md) — approved, not implemented
+- [Menus module](design/menus-module.md) — approved, not implemented
