@@ -41,6 +41,7 @@ public fun <T> contentState(
 public class PagedItems<T, K : Any> internal constructor(
     private val values: List<T>,
     private val keys: List<K>,
+    private val componentKey: Any,
     public val page: Int,
     public val pageCount: Int,
     private val pageSize: Int,
@@ -75,7 +76,9 @@ public class PagedItems<T, K : Any> internal constructor(
         visible.forEachIndexed { offset, item ->
             val originalIndex = page * pageSize + offset
             val slotIndex = region.slots[offset]
-            chest.builder.component(chest, keys[originalIndex]) { content(item, slotIndex) }
+            chest.builder.component(chest, StandardItemIdentity(componentKey, keys[originalIndex])) {
+                content(item, slotIndex)
+            }
         }
     }
 
@@ -108,6 +111,7 @@ public class PagedItems<T, K : Any> internal constructor(
 public class ScrollingItems<T, K : Any> internal constructor(
     private val values: List<T>,
     private val keys: List<K>,
+    private val componentKey: Any,
     public val offset: Int,
     public val windowSize: Int,
     private val setOffset: (Int) -> Unit,
@@ -147,7 +151,9 @@ public class ScrollingItems<T, K : Any> internal constructor(
             "Scroll window has ${visible.size} items for a ${region.size}-slot region"
         }
         visible.forEachIndexed { index, item ->
-            chest.builder.component(chest, keys[offset + index]) { content(item, region.slots[index]) }
+            chest.builder.component(chest, StandardItemIdentity(componentKey, keys[offset + index])) {
+                content(item, region.slots[index])
+            }
         }
     }
 
@@ -187,7 +193,7 @@ public fun <T, K : Any> paged(
         var page by state(0)
         val pageCount = ((values.size + pageSize - 1) / pageSize).coerceAtLeast(1)
         val visiblePage = page.coerceIn(0, pageCount - 1)
-        result = PagedItems(values, keys, visiblePage, pageCount, pageSize) { page = it }
+        result = PagedItems(values, keys, componentKey, visiblePage, pageCount, pageSize) { page = it }
     }
     return requireNotNull(result)
 }
@@ -209,7 +215,7 @@ public fun <T, K : Any> scrolling(
         var offset by state(0)
         val maximum = (values.size - windowSize).coerceAtLeast(0)
         val visibleOffset = offset.coerceIn(0, maximum)
-        result = ScrollingItems(values, keys, visibleOffset, windowSize) { offset = it }
+        result = ScrollingItems(values, keys, componentKey, visibleOffset, windowSize) { offset = it }
     }
     return requireNotNull(result)
 }
@@ -392,4 +398,11 @@ private fun <T : Any> selectionImpl(
             onPrimary { onSelect(value) }
         }
     }
+}
+
+private data class StandardItemIdentity(
+    val componentKey: Any,
+    val itemKey: Any,
+) {
+    override fun toString(): String = "$componentKey[$itemKey]"
 }

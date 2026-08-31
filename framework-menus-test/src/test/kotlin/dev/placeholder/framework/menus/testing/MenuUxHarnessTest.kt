@@ -13,6 +13,7 @@ import dev.placeholder.framework.menus.effect
 import dev.placeholder.framework.menus.playerInventory
 import dev.placeholder.framework.menus.slot
 import dev.placeholder.framework.menus.standard.searchControl
+import dev.placeholder.framework.menus.standard.paged
 import dev.placeholder.framework.menus.standard.scrolling
 import dev.placeholder.framework.menus.storage.MenuDragMode
 import dev.placeholder.framework.menus.storage.MenuStorageId
@@ -179,10 +180,32 @@ class MenuUxHarnessTest {
             }
         }
 
-        assertEquals("/root/browser/a", menu.chest[0]?.owner.toString())
+        assertEquals("/root/browser/scrolling[a]", menu.chest[0]?.owner.toString())
         menu.primaryClick(8)
         assertEquals("1", menu.render.stateCells["/root/browser/scrolling:offset"])
-        assertEquals("/root/browser/b", menu.chest[0]?.owner.toString())
+        assertEquals("/root/browser/scrolling[b]", menu.chest[0]?.owner.toString())
+    }
+
+    @Test
+    fun `pagination and scrolling namespace identical domain keys`() = menuTest {
+        val menu = open {
+            component("browser") {
+                val values = listOf("a", "b", "c")
+                val pages = paged(values, key = { it }, pageSize = 2)
+                val window = scrolling(values, key = { it }, windowSize = 2)
+                chest("Namespaced", rows = 1) {
+                    pages.items(SlotRegion.of(listOf(0, 1))) { _, index ->
+                        slot(index) { item = icon }
+                    }
+                    window.items(SlotRegion.of(listOf(3, 4))) { _, index ->
+                        slot(index) { item = icon }
+                    }
+                }
+            }
+        }
+
+        assertEquals("/root/browser/pagination[a]", menu.chest[0]?.owner.toString())
+        assertEquals("/root/browser/scrolling[a]", menu.chest[3]?.owner.toString())
     }
 
     @Test
