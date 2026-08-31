@@ -71,7 +71,11 @@ class FrameworkPluginTest {
             .extendsFrom.contains(project.configurations.getByName("implementation")))
         assertTrue(project.configurations.getByName(benchmark.compileOnlyConfigurationName)
             .extendsFrom.contains(project.configurations.getByName("compileOnly")))
-        assertTrue(project.tasks.names.containsAll(setOf("benchmark", "benchmarkCompare", "benchmarkReport")))
+        assertTrue(
+            project.tasks.names.containsAll(
+                setOf("benchmark", "benchmarkJmh", "benchmarkCompare", "benchmarkReport"),
+            ),
+        )
         assertTrue(project.tasks.names.contains("compileBenchmarkKotlin"))
     }
 

@@ -86,6 +86,10 @@ public class BenchmarkExecutionScope internal constructor(
     internal fun <T> fixture(name: String): T =
         checkNotNull(fixtures[name]) { "Fixture '$name' is not active" } as T
 
+    @Suppress("UNCHECKED_CAST")
+    internal fun <T> removeFixture(name: String): T =
+        checkNotNull(fixtures.remove(name)) { "Fixture '$name' is not active" } as T
+
     internal fun recordedMetrics(): Map<BenchmarkMetric, Double> = measurements.toMap()
 
     internal fun clearRecordedMetrics() {
@@ -167,8 +171,8 @@ public class BenchmarkScenarioBuilder internal constructor(private val id: Bench
     /** Declares one lifecycle-owned fixture available through a delegated property. */
     public fun <T : Any> fixture(
         name: String,
-        create: suspend BenchmarkExecutionScope.() -> T,
         close: suspend BenchmarkExecutionScope.(T) -> Unit = {},
+        create: suspend BenchmarkExecutionScope.() -> T,
     ): BenchmarkFixture<T> {
         require(name.matches(FIXTURE_NAME)) { "Invalid benchmark fixture name '$name'" }
         require(fixtures.none { it.name == name }) { "Duplicate benchmark fixture '$name'" }

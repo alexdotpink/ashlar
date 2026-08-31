@@ -149,7 +149,7 @@ public class BenchmarkRunner(
         scope: BenchmarkExecutionScope,
         declaration: FixtureDeclaration<T>,
     ) {
-        declaration.close(scope, scope.fixture(declaration.name))
+        declaration.close(scope, scope.removeFixture(declaration.name))
     }
 
     private fun allocatedBytes(): Long? {

@@ -474,21 +474,25 @@ public final class dev/placeholder/framework/benchmarks/BenchmarkReports {
 public final class dev/placeholder/framework/benchmarks/BenchmarkRunConfiguration {
 	public static final field Companion Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration$Companion;
 	public fun <init> ()V
-	public fun <init> (IIIZZ)V
-	public synthetic fun <init> (IIIZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (IIIIIZZ)V
+	public synthetic fun <init> (IIIIIZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()I
 	public final fun component2 ()I
 	public final fun component3 ()I
-	public final fun component4 ()Z
-	public final fun component5 ()Z
-	public final fun copy (IIIZZ)Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;
-	public static synthetic fun copy$default (Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;IIIZZILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun copy (IIIIIZZ)Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;IIIIIZZILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAuthoritative ()Z
 	public final fun getCollectAllocation ()Z
 	public final fun getForks ()I
 	public final fun getMeasurementIterations ()I
+	public final fun getMeasurementTimeMillis ()I
 	public final fun getWarmupIterations ()I
+	public final fun getWarmupTimeMillis ()I
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -599,8 +603,8 @@ public final class dev/placeholder/framework/benchmarks/BenchmarkScenarioBuilder
 	public final fun budgets (Lkotlin/jvm/functions/Function1;)V
 	public final fun cleanup (Lkotlin/jvm/functions/Function2;)V
 	public final fun evidence ([Ldev/placeholder/framework/benchmarks/BenchmarkLayer;)V
-	public final fun fixture (Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;)Ldev/placeholder/framework/benchmarks/BenchmarkFixture;
-	public static synthetic fun fixture$default (Ldev/placeholder/framework/benchmarks/BenchmarkScenarioBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/BenchmarkFixture;
+	public final fun fixture (Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;)Ldev/placeholder/framework/benchmarks/BenchmarkFixture;
+	public static synthetic fun fixture$default (Ldev/placeholder/framework/benchmarks/BenchmarkScenarioBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/BenchmarkFixture;
 	public final fun getStatus ()Ldev/placeholder/framework/benchmarks/PerformanceContractStatus;
 	public final fun measure (Lkotlin/jvm/functions/Function2;)V
 	public final fun profiles (Lkotlin/jvm/functions/Function1;)V
@@ -734,6 +738,13 @@ public final class dev/placeholder/framework/benchmarks/ByteLimit {
 	public final fun getBytes ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/benchmarks/JmhBenchmarkRunner {
+	public fun <init> (Ldev/placeholder/framework/benchmarks/MeasurementEnvironment;Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;)V
+	public synthetic fun <init> (Ldev/placeholder/framework/benchmarks/MeasurementEnvironment;Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun run (Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ldev/placeholder/framework/benchmarks/BenchmarkRunResult;
+	public static synthetic fun run$default (Ldev/placeholder/framework/benchmarks/JmhBenchmarkRunner;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/BenchmarkRunResult;
 }
 
 public final class dev/placeholder/framework/benchmarks/MeasurementEnvironment {
@@ -881,5 +892,89 @@ public final synthetic class dev/placeholder/framework/benchmarks/SerializableBe
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/placeholder/framework/benchmarks/SerializableBenchmarkBudgets;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
 	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public class dev/placeholder/framework/benchmarks/internal/JmhScenarioBenchmark {
+	public fun <init> ()V
+	public fun measure (Ldev/placeholder/framework/benchmarks/internal/JmhScenarioBenchmark$ScenarioState;)Ljava/lang/Object;
+}
+
+public class dev/placeholder/framework/benchmarks/internal/JmhScenarioBenchmark$ScenarioState {
+	public fun <init> ()V
+	public fun close ()V
+	public fun create ()V
+	public fun setupInvocation ()V
+	public fun verifyInvocation ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType : dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B3 {
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B1 : dev/placeholder/framework/benchmarks/internal/JmhScenarioBenchmark$ScenarioState {
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B2 : dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B1 {
+	public field readyInvocation Z
+	public field readyIteration Z
+	public field readyTrial Z
+	public field setupInvocationMutex I
+	public static final field setupInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupIterationMutex I
+	public static final field setupIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupTrialMutex I
+	public static final field setupTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearInvocationMutex I
+	public static final field tearInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearIterationMutex I
+	public static final field tearIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearTrialMutex I
+	public static final field tearTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B3 : dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B2 {
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType : dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B3 {
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B1 : dev/placeholder/framework/benchmarks/internal/JmhScenarioBenchmark {
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B2 : dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B1 {
+	public field setupInvocationMutex I
+	public static final field setupInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupIterationMutex I
+	public static final field setupIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupTrialMutex I
+	public static final field setupTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearInvocationMutex I
+	public static final field tearInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearIterationMutex I
+	public static final field tearIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearTrialMutex I
+	public static final field tearTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public fun <init> ()V
+}
+
+public class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B3 : dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B2 {
+	public fun <init> ()V
+}
+
+public final class dev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_measure_jmhTest {
+	public fun <init> ()V
+	public fun measure_AverageTime (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public fun measure_SampleTime (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public fun measure_SingleShotTime (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public fun measure_Throughput (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public static fun measure_avgt_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;ILdev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Ldev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+	public static fun measure_sample_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;ILorg/openjdk/jmh/util/SampleBuffer;IJILdev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Ldev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+	public static fun measure_ss_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;IILdev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Ldev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+	public static fun measure_thrpt_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;ILdev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Ldev/placeholder/framework/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
 }
 

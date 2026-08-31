@@ -28,10 +28,11 @@ public object BenchmarkCli {
         error: PrintStream,
     ): Int = when (val command = arguments.firstOrNull()) {
         "run" -> run(arguments.drop(1), output)
+        "jmh" -> runJmh(arguments.drop(1), output)
         "compare" -> compare(arguments.drop(1), output, error)
         "report" -> report(arguments.drop(1), output)
         else -> {
-            error.println("Unknown benchmark command '${command.orEmpty()}'. Expected run, compare, or report.")
+            error.println("Unknown benchmark command '${command.orEmpty()}'. Expected run, jmh, compare, or report.")
             2
         }
     }
@@ -44,6 +45,8 @@ public object BenchmarkCli {
             warmupIterations = options.int("warmups", 5),
             measurementIterations = options.int("iterations", 20),
             forks = options.int("forks", 3),
+            warmupTimeMillis = options.int("warmup-millis", 250),
+            measurementTimeMillis = options.int("measurement-millis", 500),
             collectAllocation = !options.flag("no-allocation"),
             authoritative = options.flag("authoritative"),
         )
@@ -73,6 +76,39 @@ public object BenchmarkCli {
         val destination = Path.of(options.value("output") ?: "build/reports/benchmarks/run.json")
         BenchmarkJson.write(destination, result)
         output.println("Wrote ${result.cases.size} benchmark cases to $destination")
+        return 0
+    }
+
+    private fun runJmh(arguments: List<String>, output: PrintStream): Int {
+        val options = CliOptions(arguments)
+        val classDirectories = options.values("class-dir").ifEmpty { configuredClassDirectories() }.map(Path::of)
+        val suites = BenchmarkDiscovery.discover(classDirectories)
+        val configuration = BenchmarkRunConfiguration(
+            warmupIterations = options.int("warmups", 5),
+            measurementIterations = options.int("iterations", 20),
+            forks = options.int("forks", 3),
+            warmupTimeMillis = options.int("warmup-millis", 250),
+            measurementTimeMillis = options.int("measurement-millis", 500),
+            collectAllocation = !options.flag("no-allocation"),
+            authoritative = options.flag("authoritative"),
+        )
+        val selectedProfiles = options.values("profile").toSet()
+        val selectedScenarios = options.values("scenario").toSet()
+        val environment = MeasurementEnvironment.local(
+            frameworkVersion = options.value("framework-version") ?: "development",
+            environmentId = options.value("environment") ?: "local",
+        )
+        val result = JmhBenchmarkRunner(environment, configuration).run(
+            suites,
+            classDirectories,
+            options.value("revision") ?: "working-tree",
+        ) { id ->
+            (selectedProfiles.isEmpty() || id.profile in selectedProfiles) &&
+                (selectedScenarios.isEmpty() || id.scenario.value in selectedScenarios)
+        }
+        val destination = Path.of(options.value("output") ?: "build/reports/benchmarks/jmh.json")
+        BenchmarkJson.write(destination, result)
+        output.println("Wrote ${result.cases.size} JMH benchmark cases to $destination")
         return 0
     }
 

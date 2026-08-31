@@ -2,6 +2,7 @@ import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
     id("framework.kotlin-library")
+    id("framework.benchmark-contracts")
     alias(libs.plugins.ksp)
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)

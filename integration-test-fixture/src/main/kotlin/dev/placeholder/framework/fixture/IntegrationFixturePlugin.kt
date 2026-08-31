@@ -18,6 +18,21 @@ import dev.placeholder.framework.commands.policy.CommandPolicyContext
 import dev.placeholder.framework.commands.policy.CommandPolicyInterceptor
 import dev.placeholder.framework.commands.policy.CommandPolicyPhase
 import dev.placeholder.framework.commands.graph.CommandGraph
+import dev.placeholder.framework.benchmarks.BenchmarkCaseId
+import dev.placeholder.framework.benchmarks.BenchmarkCaseResult
+import dev.placeholder.framework.benchmarks.BenchmarkJson
+import dev.placeholder.framework.benchmarks.BenchmarkLayer
+import dev.placeholder.framework.benchmarks.BenchmarkMetric
+import dev.placeholder.framework.benchmarks.BenchmarkMetricValue
+import dev.placeholder.framework.benchmarks.BenchmarkProfile
+import dev.placeholder.framework.benchmarks.BenchmarkRunConfiguration
+import dev.placeholder.framework.benchmarks.BenchmarkRunResult
+import dev.placeholder.framework.benchmarks.BenchmarkSample
+import dev.placeholder.framework.benchmarks.BenchmarkStatistics
+import dev.placeholder.framework.benchmarks.BenchmarkTemperature
+import dev.placeholder.framework.benchmarks.BenchmarkId
+import dev.placeholder.framework.benchmarks.MeasurementEnvironment
+import dev.placeholder.framework.benchmarks.PerformanceContractStatus
 import dev.placeholder.framework.di.Binds
 import dev.placeholder.framework.di.Inject
 import dev.placeholder.framework.di.PluginScoped
@@ -63,6 +78,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
@@ -74,6 +90,7 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
     private val applicationEvents by inject<ApplicationEvents>()
     private val playerInput by inject<PlayerInput>()
     private val playerMenus by inject<PlayerMenus>()
+    private val commandBenchmarkProbe by inject<CommandBenchmarkProbe>()
     private val lifecycleProbe by component { ParentProbe(probeResults) }
     override fun ComponentContext.enable(): Unit {
         check(automaticProbe.started) { "The automatic DI component was not started before the plug-in" }
@@ -92,6 +109,7 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
                 withGlobal { runItemIntegrationChecks() }
                 exerciseEvents()
                 exerciseCommands()
+                exerciseCommandBenchmark()
             } catch (failure: Throwable) {
                 probeResults.fail(failure)
             } finally {
@@ -129,6 +147,80 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
                 delay(10)
             }
         }
+    }
+
+    private suspend fun exerciseCommandBenchmark(): Unit {
+        val probe = commandBenchmarkProbe
+        repeat(COMMAND_BENCHMARK_WARMUPS) { sequence ->
+            dispatchMeasuredCommand(probe, sequence)
+        }
+        val endToEndSamples = mutableListOf<BenchmarkSample>()
+        val callbackSamples = mutableListOf<Double>()
+        repeat(COMMAND_BENCHMARK_ITERATIONS) { offset ->
+            val sequence = COMMAND_BENCHMARK_WARMUPS + offset
+            val started = System.nanoTime()
+            val callbackNanos = withGlobal {
+                val callbackStarted = System.nanoTime()
+                check(server.dispatchCommand(server.consoleSender, "frameworkfixture benchmark $sequence"))
+                System.nanoTime() - callbackStarted
+            }
+            probe.await(sequence)
+            endToEndSamples += BenchmarkSample(System.nanoTime() - started)
+            callbackSamples += callbackNanos.toDouble()
+        }
+        val platform = if (server.name.contains("Folia", ignoreCase = true)) {
+            BenchmarkLayer.FOLIA
+        } else {
+            BenchmarkLayer.PAPER
+        }
+        val metrics = BenchmarkStatistics.aggregate(endToEndSamples).toMutableList().apply {
+            add(
+                BenchmarkMetricValue(
+                    BenchmarkMetric.NATIVE_CALLBACK,
+                    BenchmarkStatistics.percentile(callbackSamples, 0.99),
+                ),
+            )
+        }
+        BenchmarkJson.write(
+            Path.of("benchmark-result.json"),
+            BenchmarkRunResult(
+                revision = System.getProperty("framework.benchmark.revision", "working-tree"),
+                environment = MeasurementEnvironment.local(
+                    frameworkVersion = pluginMeta.version,
+                    environmentId = "integration-local",
+                    platform = platform.name,
+                    platformVersion = server.version,
+                ),
+                configuration = BenchmarkRunConfiguration(
+                    warmupIterations = COMMAND_BENCHMARK_WARMUPS,
+                    measurementIterations = COMMAND_BENCHMARK_ITERATIONS,
+                    forks = 1,
+                    collectAllocation = false,
+                ),
+                cases = listOf(
+                    BenchmarkCaseResult(
+                        id = BenchmarkCaseId(
+                            BenchmarkId("commands.dispatch"),
+                            BenchmarkProfile("typical").name,
+                            platform,
+                            BenchmarkTemperature.WARM,
+                        ),
+                        status = PerformanceContractStatus.EXPLORATORY,
+                        metrics = metrics,
+                        samples = endToEndSamples,
+                        supplementalSamples = mapOf(BenchmarkMetric.NATIVE_CALLBACK to callbackSamples),
+                    ),
+                ),
+            ),
+        )
+        probeResults.record("benchmark:commands:${platform.name.lowercase()}")
+    }
+
+    private suspend fun dispatchMeasuredCommand(probe: CommandBenchmarkProbe, sequence: Int) {
+        withGlobal {
+            check(server.dispatchCommand(server.consoleSender, "frameworkfixture benchmark $sequence"))
+        }
+        probe.await(sequence)
     }
 
     private suspend fun exerciseEvents(): Unit = coroutineScope {
@@ -234,6 +326,11 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
             probeResults.fail(scheduled.exceptionOrNull()!!)
             server.globalRegionScheduler.execute(this) { server.shutdown() }
         }
+    }
+
+    private companion object {
+        const val COMMAND_BENCHMARK_WARMUPS: Int = 20
+        const val COMMAND_BENCHMARK_ITERATIONS: Int = 100
     }
 }
 
@@ -387,6 +484,7 @@ internal class FixtureQueryEvent(val value: String) : Event(), Cancellable {
 internal class FixtureCommands(
     private val results: ProbeResults,
     private val routes: FixtureCommandsRoutes,
+    private val benchmarkProbe: CommandBenchmarkProbe,
 ) {
     @ConfigureCommandGraph
     public fun configureGraph(graph: CommandGraph) {
@@ -418,6 +516,11 @@ internal class FixtureCommands(
         return "${block.x}, ${block.y}, ${block.z}"
     }
 
+    /** Minimal handler used to measure native admission and asynchronous completion separately. */
+    public fun benchmark(sequence: Int) {
+        benchmarkProbe.complete(sequence)
+    }
+
     /** This handler is bypassed by a generated typed graph redirect. */
     public fun redirected(): String = error("The graph redirect did not run")
 
@@ -438,6 +541,22 @@ internal class FixtureCommands(
         public suspend fun scoped(value: String): String {
             scopedResults.record("command:scoped:$value")
             return value
+        }
+    }
+}
+
+@Inject
+@PluginScoped
+internal class CommandBenchmarkProbe {
+    private val completed = AtomicInteger(-1)
+
+    fun complete(sequence: Int) {
+        completed.set(sequence)
+    }
+
+    suspend fun await(sequence: Int) {
+        withTimeout(5.seconds) {
+            while (completed.get() < sequence) delay(1)
         }
     }
 }

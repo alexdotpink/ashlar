@@ -92,6 +92,8 @@ public data class BenchmarkRunConfiguration(
     public val warmupIterations: Int = 5,
     public val measurementIterations: Int = 20,
     public val forks: Int = 3,
+    public val warmupTimeMillis: Int = 250,
+    public val measurementTimeMillis: Int = 500,
     public val collectAllocation: Boolean = true,
     public val authoritative: Boolean = false,
 ) {
@@ -99,6 +101,8 @@ public data class BenchmarkRunConfiguration(
         require(warmupIterations >= 0) { "Warmup iterations cannot be negative" }
         require(measurementIterations > 0) { "Measurement iterations must be positive" }
         require(forks > 0) { "Benchmark forks must be positive" }
+        require(warmupTimeMillis > 0) { "Warmup time must be positive" }
+        require(measurementTimeMillis > 0) { "Measurement time must be positive" }
     }
 }
 
