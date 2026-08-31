@@ -7,8 +7,13 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ItemRarity
 import org.bukkit.persistence.PersistentDataType
+import java.util.Collections
+import java.util.Objects
 
-/** Immutable recipe for an item intentionally authored by a plug-in. */
+/**
+ * Immutable recipe for an item intentionally authored by a plug-in.
+ * Built-in mutable containers and arrays passed to [ItemSpecBuilder.data] are defensively copied.
+ */
 public class ItemSpec internal constructor(
     /** Vanilla material used to create the stack. */
     public val material: Material,
@@ -57,7 +62,7 @@ public class ItemSpecBuilder internal constructor(base: ItemSpec? = null) {
         changes[LORE_IDENTITY] = ItemChange.Lore(lines)
     }
 
-    /** Sets any valued Paper data component without waiting for a framework helper. */
+    /** Sets any valued Paper data component, defensively copying common mutable value shapes. */
     public fun <T : Any> data(type: DataComponentType.Valued<T>, value: T) {
         changes[type] = ItemChange.SetValued(type, value)
     }
@@ -173,8 +178,14 @@ internal sealed interface ItemChange {
         override val identity: Any = RARITY_IDENTITY
     }
 
-    data class SetValued(val type: DataComponentType.Valued<*>, val value: Any) : ItemChange {
+    class SetValued(val type: DataComponentType.Valued<*>, value: Any) : ItemChange {
+        val value: Any = freezeComponentValue(value)
         override val identity: Any get() = type
+
+        override fun equals(other: Any?): Boolean =
+            other is SetValued && type == other.type && Objects.deepEquals(value, other.value)
+
+        override fun hashCode(): Int = 31 * type.hashCode() + componentValueHashCode(value)
     }
 
     data class SetNonValued(val type: DataComponentType.NonValued) : ItemChange {
@@ -219,7 +230,10 @@ internal fun ItemChange.applyTo(stack: ItemStack) {
         is ItemChange.Lore -> stack.editMeta { it.lore(lines) }
         is ItemChange.Glint -> stack.editMeta { it.setEnchantmentGlintOverride(enabled) }
         is ItemChange.Rarity -> stack.editMeta { it.setRarity(rarity) }
-        is ItemChange.SetValued -> stack.setData(type as DataComponentType.Valued<Any>, value)
+        is ItemChange.SetValued -> stack.setData(
+            type as DataComponentType.Valued<Any>,
+            copyComponentValue(value),
+        )
         is ItemChange.SetNonValued -> stack.setData(type)
         is ItemChange.Unset -> stack.unsetData(type)
         is ItemChange.Reset -> stack.resetData(type)
@@ -229,6 +243,41 @@ internal fun ItemChange.applyTo(stack: ItemStack) {
         is ItemChange.RemovePersistent -> stack.editPersistentDataContainer { it.remove(key) }
         is ItemChange.Paper -> mutation(stack)
     }
+}
+
+private fun freezeComponentValue(value: Any): Any = when (value) {
+    is ByteArray -> value.copyOf()
+    is ShortArray -> value.copyOf()
+    is IntArray -> value.copyOf()
+    is LongArray -> value.copyOf()
+    is FloatArray -> value.copyOf()
+    is DoubleArray -> value.copyOf()
+    is CharArray -> value.copyOf()
+    is BooleanArray -> value.copyOf()
+    is Array<*> -> value.copyOf()
+    is List<*> -> Collections.unmodifiableList(value.map { it?.let(::freezeComponentValue) })
+    is Set<*> -> Collections.unmodifiableSet(value.mapTo(linkedSetOf()) { it?.let(::freezeComponentValue) })
+    is Map<*, *> -> Collections.unmodifiableMap(
+        value.entries.associateTo(linkedMapOf()) { (key, entryValue) ->
+            key?.let(::freezeComponentValue) to entryValue?.let(::freezeComponentValue)
+        },
+    )
+    else -> value
+}
+
+private fun copyComponentValue(value: Any): Any = freezeComponentValue(value)
+
+private fun componentValueHashCode(value: Any): Int = when (value) {
+    is ByteArray -> value.contentHashCode()
+    is ShortArray -> value.contentHashCode()
+    is IntArray -> value.contentHashCode()
+    is LongArray -> value.contentHashCode()
+    is FloatArray -> value.contentHashCode()
+    is DoubleArray -> value.contentHashCode()
+    is CharArray -> value.contentHashCode()
+    is BooleanArray -> value.contentHashCode()
+    is Array<*> -> value.contentDeepHashCode()
+    else -> value.hashCode()
 }
 
 private const val NAME_IDENTITY: String = "framework:name"

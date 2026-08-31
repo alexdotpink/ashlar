@@ -1,7 +1,7 @@
 public final class dev/placeholder/framework/items/CustomItemBuilder {
 	public final fun data (Ldev/placeholder/framework/items/CustomItemCodec;)V
-	public final fun data (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)V
-	public static synthetic fun data$default (Ldev/placeholder/framework/items/CustomItemBuilder;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILjava/lang/Object;)V
+	public final fun data (Lkotlinx/serialization/KSerializer;)V
+	public final fun data (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;Ljava/lang/String;)V
 	public final fun getMaximumPayloadBytes ()I
 	public final fun getVersion ()I
 	public final fun integrity (Ldev/placeholder/framework/items/HmacKeyring;Z)V
@@ -220,6 +220,17 @@ public final class dev/placeholder/framework/items/ItemSnapshotDecode$Malformed 
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class dev/placeholder/framework/items/ItemSnapshotDecode$NativeIncompatible : dev/placeholder/framework/items/ItemSnapshotDecode {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/placeholder/framework/items/ItemSnapshotDecode$NativeIncompatible;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/items/ItemSnapshotDecode$NativeIncompatible;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/items/ItemSnapshotDecode$NativeIncompatible;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class dev/placeholder/framework/items/ItemSnapshotDecode$UnsupportedVersion : dev/placeholder/framework/items/ItemSnapshotDecode {
 	public fun <init> (I)V
 	public final fun component1 ()I
@@ -295,11 +306,16 @@ public final class dev/placeholder/framework/items/Items {
 }
 
 public final class dev/placeholder/framework/items/KotlinJsonItemCodec : dev/placeholder/framework/items/CustomItemCodec {
-	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)V
-	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static final field Companion Ldev/placeholder/framework/items/KotlinJsonItemCodec$Companion;
+	public static final field DEFAULT_CODEC_ID Ljava/lang/String;
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;Ljava/lang/String;)V
+	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun decode ([B)Ljava/lang/Object;
 	public fun encode (Ljava/lang/Object;)[B
 	public fun getId ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/items/KotlinJsonItemCodec$Companion {
 }
 
 public abstract interface class dev/placeholder/framework/items/PersistentValueCodec {

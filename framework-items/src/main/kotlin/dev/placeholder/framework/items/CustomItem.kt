@@ -196,13 +196,19 @@ public class CustomItemBuilder<T> internal constructor(private val id: Namespace
     private val migrations: MutableMap<Int, CustomItemMigration<T>> = linkedMapOf()
     private var integrity: CustomItemIntegrity? = null
 
-    /** Selects Kotlin Serialization's deterministic JSON codec. */
-    public fun data(serializer: KSerializer<T>, json: Json = DefaultItemJson) {
-        data(KotlinJsonItemCodec(serializer, json))
+    /** Selects the framework's canonical Kotlin Serialization JSON protocol. */
+    public fun data(serializer: KSerializer<T>) {
+        data(KotlinJsonItemCodec(serializer))
+    }
+
+    /** Selects a custom JSON protocol with an explicit durable [codecId]. */
+    public fun data(serializer: KSerializer<T>, json: Json, codecId: String) {
+        data(KotlinJsonItemCodec(serializer, json, codecId))
     }
 
     /** Selects an existing deterministic protocol codec. */
     public fun data(codec: CustomItemCodec<T>) {
+        requireValidCodecId(codec.id)
         this.codec = codec
     }
 
@@ -218,6 +224,7 @@ public class CustomItemBuilder<T> internal constructor(private val id: Namespace
         transform: (O) -> T,
     ) {
         require(fromVersion > 0) { "Migration version must be positive" }
+        requireValidCodecId(codec.id)
         require(
             migrations.put(
                 fromVersion,

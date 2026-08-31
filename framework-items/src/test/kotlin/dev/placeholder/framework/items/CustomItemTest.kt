@@ -1,6 +1,7 @@
 package dev.placeholder.framework.items
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import kotlin.test.Test
@@ -25,6 +26,30 @@ internal class CustomItemTest {
         assertEquals(value, found.data)
         assertEquals(2, found.sourceVersion)
         assertTrue(!found.migrated)
+    }
+
+    @Test
+    fun `Kotlin serialization canonicalizes object key order`() {
+        val codec = KotlinJsonItemCodec(MapPayload.serializer())
+        val first = MapPayload(linkedMapOf("z" to 1, "a" to 2))
+        val second = MapPayload(linkedMapOf("a" to 2, "z" to 1))
+
+        assertContentEquals(codec.encode(first), codec.encode(second))
+        assertEquals(first.values, codec.decode(codec.encode(first)).values)
+    }
+
+    @Test
+    fun `custom JSON configuration requires an honest protocol identity`() {
+        val customJson = Json(DefaultItemJson) { prettyPrint = true }
+
+        assertFailsWith<IllegalArgumentException> {
+            KotlinJsonItemCodec(MapPayload.serializer(), customJson)
+        }
+        val codec = KotlinJsonItemCodec(MapPayload.serializer(), customJson, "pretty-json-v1")
+        assertEquals("pretty-json-v1", codec.id)
+        assertFailsWith<IllegalArgumentException> {
+            KotlinJsonItemCodec(MapPayload.serializer(), customJson, "Not Stable")
+        }
     }
 
     @Test
@@ -186,6 +211,9 @@ internal class CustomItemTest {
 
     @Serializable
     private data class OldToken(val name: String)
+
+    @Serializable
+    private data class MapPayload(val values: Map<String, Int>)
 
     private fun ByteArray.lastIndexOfSubsequence(value: ByteArray): Int =
         indices.reversed().first { start ->

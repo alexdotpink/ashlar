@@ -1,6 +1,8 @@
 package dev.placeholder.framework.items
 
+import io.papermc.paper.datacomponent.DataComponentType
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -62,5 +64,38 @@ internal class ItemSpecTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun `valued component inputs are frozen and compare structurally`() {
+        val listType = TestComponentType<List<String>>("list")
+        val bytesType = TestComponentType<ByteArray>("bytes")
+        val source = mutableListOf("one", "two")
+        val bytes = byteArrayOf(1, 2, 3)
+        val first = item(Material.PAPER) {
+            data(listType, source)
+            data(bytesType, bytes)
+        }
+
+        source += "mutated"
+        bytes[0] = 99
+        val values = first.changes.filterIsInstance<ItemChange.SetValued>().associate { it.type to it.value }
+        assertEquals(listOf("one", "two"), values.getValue(listType))
+        assertTrue((values.getValue(bytesType) as ByteArray).contentEquals(byteArrayOf(1, 2, 3)))
+
+        val equivalent = item(Material.PAPER) {
+            data(listType, mutableListOf("one", "two"))
+            data(bytesType, byteArrayOf(1, 2, 3))
+        }
+        assertEquals(first, equivalent)
+        assertEquals(first.hashCode(), equivalent.hashCode())
+    }
+
+    private class TestComponentType<T : Any>(key: String) : DataComponentType.Valued<T> {
+        private val namespacedKey = NamespacedKey("test", key)
+
+        override fun getKey(): NamespacedKey = namespacedKey
+
+        override fun isPersistent(): Boolean = true
     }
 }

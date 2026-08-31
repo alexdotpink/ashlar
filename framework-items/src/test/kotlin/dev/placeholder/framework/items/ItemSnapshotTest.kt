@@ -7,6 +7,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 internal class ItemSnapshotTest {
@@ -16,7 +17,7 @@ internal class ItemSnapshotTest {
 
         val first = snapshot.encode()
         val second = snapshot.encode()
-        val decoded = assertIs<ItemSnapshotDecode.Found>(ItemSnapshot.decode(first)).snapshot
+        val decoded = assertIs<ItemSnapshotDecode.Found>(SnapshotEncoding.decode(first)).snapshot
 
         assertContentEquals(first, second)
         assertEquals(snapshot, decoded)
@@ -42,13 +43,15 @@ internal class ItemSnapshotTest {
     }
 
     @Test
-    fun `snapshot equality is byte exact`() {
-        val one = nativeSnapshot(Material.PAPER, 1, byteArrayOf(1))
-        val same = nativeSnapshot(Material.PAPER, 1, byteArrayOf(1))
-        val different = nativeSnapshot(Material.PAPER, 1, byteArrayOf(2))
+    fun `snapshot equality uses semantic identity while encoding preserves exact bytes`() {
+        val identity = byteArrayOf(4, 5, 6).sha256()
+        val one = nativeSnapshot(Material.PAPER, 1, byteArrayOf(1), identity)
+        val same = nativeSnapshot(Material.PAPER, 1, byteArrayOf(2), identity)
+        val different = nativeSnapshot(Material.PAPER, 1, byteArrayOf(1), byteArrayOf(9).sha256())
 
         assertEquals(one, same)
         assertEquals(one.hashCode(), same.hashCode())
+        assertNotEquals(one.encode().toList(), same.encode().toList())
         assertNotEquals(one, different)
     }
 
@@ -63,9 +66,21 @@ internal class ItemSnapshotTest {
         assertEquals(12, first.withAmount(12).amount)
         assertEquals(13, first.edit { amount = 13 }.amount)
         assertFalse(first.hasNativeData)
-        assertEquals(first, assertIs<ItemSnapshotDecode.Found>(ItemSnapshot.decode(first.encode())).snapshot)
+        assertFailsWith<IllegalStateException> { first.encode() }
+        assertFailsWith<IllegalStateException> { Items.materialize(first) }
     }
 
-    private fun nativeSnapshot(material: Material, amount: Int, bytes: ByteArray): ItemSnapshot =
-        ItemSnapshot(material, amount, 64, bytes.sha256(), bytes)
+    @Test
+    fun `structurally valid but incompatible native payload is distinct`() {
+        val encoded = nativeSnapshot(Material.PAPER, 1, byteArrayOf(1, 2, 3)).encode()
+
+        assertIs<ItemSnapshotDecode.NativeIncompatible>(ItemSnapshot.decode(encoded))
+    }
+
+    private fun nativeSnapshot(
+        material: Material,
+        amount: Int,
+        bytes: ByteArray,
+        identity: ByteArray = bytes.sha256(),
+    ): ItemSnapshot = ItemSnapshot(material, amount, 64, identity, bytes)
 }

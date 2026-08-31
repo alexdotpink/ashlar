@@ -44,14 +44,17 @@ public class ItemSnapshot internal constructor(
         return ItemSnapshot(material, amount, maximumAmount, stackabilityIdentity, nativeBytes)
     }
 
-    /** Encodes this snapshot in the stable, checksummed framework envelope. */
+    /**
+     * Encodes this native snapshot in the stable, checksummed framework envelope.
+     * Detached snapshots deliberately cannot cross a persistence boundary.
+     */
     public fun encode(): ByteArray = SnapshotEncoding.encode(this)
 
     /** Tests stackability using the amount-normalized identity computed at capture time. */
     public fun stackableWith(other: ItemSnapshot): Boolean =
         material == other.material && stackabilityIdentity.contentEquals(other.stackabilityIdentity)
 
-    /** SHA-256 fingerprint of this complete snapshot, including amount and effective maximum. */
+    /** SHA-256 fingerprint of this snapshot's stable semantic identity and quantity. */
     public fun fingerprint(): String {
         val output = ByteArrayOutputStream()
         DataOutputStream(output).use { data ->
@@ -59,7 +62,7 @@ public class ItemSnapshot internal constructor(
             data.writeInt(amount)
             data.writeInt(maximumAmount)
             data.write(stackabilityIdentity)
-            nativeBytes?.let(data::write)
+            data.writeBoolean(hasNativeData)
         }
         return output.toByteArray().sha256().joinToString("") { "%02x".format(it) }
     }
@@ -71,14 +74,14 @@ public class ItemSnapshot internal constructor(
         other is ItemSnapshot && material == other.material && amount == other.amount &&
             maximumAmount == other.maximumAmount &&
             stackabilityIdentity.contentEquals(other.stackabilityIdentity) &&
-            nullableContentEquals(nativeBytes, other.nativeBytes)
+            hasNativeData == other.hasNativeData
 
     override fun hashCode(): Int {
         var result = material.hashCode()
         result = 31 * result + amount
         result = 31 * result + maximumAmount
         result = 31 * result + stackabilityIdentity.contentHashCode()
-        result = 31 * result + (nativeBytes?.contentHashCode() ?: 0)
+        result = 31 * result + hasNativeData.hashCode()
         return result
     }
 
@@ -105,8 +108,23 @@ public class ItemSnapshot internal constructor(
             return ItemSnapshot(material, amount, maximumAmount, identity, null)
         }
 
-        /** Decodes a stable framework snapshot envelope. */
-        public fun decode(bytes: ByteArray): ItemSnapshotDecode = SnapshotEncoding.decode(bytes)
+        /** Decodes and validates a native framework snapshot against the running pinned Paper version. */
+        public fun decode(bytes: ByteArray): ItemSnapshotDecode {
+            val decoded = SnapshotEncoding.decode(bytes)
+            if (decoded !is ItemSnapshotDecode.Found) return decoded
+            return try {
+                Items.validateNativeSnapshot(decoded.snapshot)
+                decoded
+            } catch (failure: Exception) {
+                ItemSnapshotDecode.NativeIncompatible(
+                    failure.message ?: failure::class.simpleName.orEmpty(),
+                )
+            } catch (failure: LinkageError) {
+                ItemSnapshotDecode.NativeIncompatible(
+                    failure.message ?: failure::class.simpleName.orEmpty(),
+                )
+            }
+        }
     }
 }
 
@@ -191,6 +209,9 @@ public sealed interface ItemSnapshotDecode {
 
     /** Payload integrity verification failed. */
     public data class Corrupt(public val message: String) : ItemSnapshotDecode
+
+    /** The envelope is valid, but its native payload is not compatible with the running Paper version. */
+    public data class NativeIncompatible(public val message: String) : ItemSnapshotDecode
 }
 
 /** Native Paper boundary for authored items and exact live snapshots. */
@@ -211,20 +232,21 @@ public object Items {
         return stack
     }
 
-    /** Captures exact native bytes and amount-independent stackability semantics. */
+    /** Captures exact native bytes and a separate amount-independent semantic identity. */
     public fun capture(stack: ItemStack): ItemSnapshot {
         require(!stack.isEmpty) { "Cannot capture an empty item stack" }
         val copy = stack.clone()
-        val bytes = canonicalNativeBytes(copy.asQuantity(1))
-        require(bytes.size <= ItemSnapshot.MAX_ENCODED_BYTES) {
-            "Native item snapshot is ${bytes.size} bytes; maximum is ${ItemSnapshot.MAX_ENCODED_BYTES}"
+        val amountNormalized = copy.asQuantity(1)
+        val nativeBytes = amountNormalized.serializeAsBytes()
+        require(nativeBytes.size <= ItemSnapshot.MAX_ENCODED_BYTES) {
+            "Native item snapshot is ${nativeBytes.size} bytes; maximum is ${ItemSnapshot.MAX_ENCODED_BYTES}"
         }
         return ItemSnapshot(
             material = copy.type,
             amount = copy.amount,
             maximumAmount = copy.maxStackSize,
-            stackabilityIdentity = bytes.sha256(),
-            nativeBytes = bytes,
+            stackabilityIdentity = canonicalNativeBytes(amountNormalized).sha256(),
+            nativeBytes = nativeBytes,
         )
     }
 
@@ -255,16 +277,26 @@ public object Items {
 
     /** Reconstructs an independent mutable Paper stack from a native [snapshot]. */
     public fun materialize(snapshot: ItemSnapshot): ItemStack {
+        val restored = validateNativeSnapshot(snapshot)
+        restored.amount = snapshot.amount
+        return restored
+    }
+
+    internal fun validateNativeSnapshot(snapshot: ItemSnapshot): ItemStack {
         val bytes = checkNotNull(snapshot.nativeBytes()) {
             "Detached ItemSnapshot '${snapshot.fingerprint().take(12)}' has no native Paper data and cannot be materialized"
         }
-        return ItemStack.deserializeBytes(bytes).also { restored ->
-            check(restored.type == snapshot.material) { "Native item bytes disagree with snapshot material" }
-            restored.amount = snapshot.amount
-            check(restored.maxStackSize == snapshot.maximumAmount) {
-                "Native item bytes disagree with snapshot maximum amount"
-            }
+        val restored = ItemStack.deserializeBytes(bytes)
+        check(!restored.isEmpty) { "Native item bytes contain an empty item" }
+        check(restored.type == snapshot.material) { "Native item bytes disagree with snapshot material" }
+        check(restored.maxStackSize == snapshot.maximumAmount) {
+            "Native item bytes disagree with snapshot maximum amount"
         }
+        val actualIdentity = canonicalNativeBytes(restored.asQuantity(1)).sha256()
+        check(MessageDigest.isEqual(actualIdentity, snapshot.stackabilityIdentity())) {
+            "Native item bytes disagree with snapshot stackability identity"
+        }
+        return restored
     }
 }
 
@@ -280,14 +312,16 @@ public sealed interface PersistentValueRead<out T> {
     public data class Invalid(public val problem: String) : PersistentValueRead<Nothing>
 }
 
-private object SnapshotEncoding {
+internal object SnapshotEncoding {
     private val magic: ByteArray = byteArrayOf('F'.code.toByte(), 'I'.code.toByte(), 'S'.code.toByte(), 'N'.code.toByte())
     private const val VERSION: Int = 1
 
     fun encode(snapshot: ItemSnapshot): ByteArray {
-        val payload = snapshot.nativeBytes()
+        val payload = checkNotNull(snapshot.nativeBytes()) {
+            "Detached ItemSnapshot '${snapshot.fingerprint().take(12)}' cannot be persisted"
+        }
         val identity = snapshot.stackabilityIdentity()
-        val body = ByteArrayOutputStream((payload?.size ?: 0) + identity.size + 64)
+        val body = ByteArrayOutputStream(payload.size + identity.size + 64)
         DataOutputStream(body).use { data ->
             data.write(magic)
             data.writeByte(VERSION)
@@ -296,11 +330,9 @@ private object SnapshotEncoding {
             data.writeInt(snapshot.maximumAmount)
             data.writeInt(identity.size)
             data.write(identity)
-            data.writeBoolean(payload != null)
-            if (payload != null) {
-                data.writeInt(payload.size)
-                data.write(payload)
-            }
+            data.writeBoolean(true)
+            data.writeInt(payload.size)
+            data.write(payload)
         }
         val bodyBytes = body.toByteArray()
         return bodyBytes + bodyBytes.sha256()
@@ -330,11 +362,12 @@ private object SnapshotEncoding {
             val identitySize = input.readInt()
             require(identitySize in 1..128) { "Invalid stackability identity size $identitySize" }
             val identity = ByteArray(identitySize).also(input::readFully)
-            val native = if (input.readBoolean()) {
+            require(input.readBoolean()) { "Persisted snapshot has no native payload" }
+            val native = run {
                 val size = input.readInt()
                 require(size in 1..ItemSnapshot.MAX_ENCODED_BYTES) { "Invalid native payload size $size" }
                 ByteArray(size).also(input::readFully)
-            } else null
+            }
             require(input.available() == 0) { "Trailing bytes after snapshot" }
             ItemSnapshotDecode.Found(ItemSnapshot(material, amount, maximumAmount, identity, native))
         }
@@ -343,12 +376,6 @@ private object SnapshotEncoding {
     }
 
     private const val CHECKSUM_BYTES: Int = 32
-}
-
-private fun nullableContentEquals(left: ByteArray?, right: ByteArray?): Boolean = when {
-    left == null -> right == null
-    right == null -> false
-    else -> left.contentEquals(right)
 }
 
 internal fun ByteArray.sha256(): ByteArray = MessageDigest.getInstance("SHA-256").digest(this)
