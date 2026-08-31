@@ -48,6 +48,7 @@ internal class MenuDurableTransactionRuntimeTest {
 
         val work = runtime.submit(
             sessionScope = sessionScope,
+            session = "menu-session",
             proposal = proposal,
             storages = mapOf(before.id to storage),
             nativeCommit = { MenuNativeCommit.Unavailable },

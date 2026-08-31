@@ -40,6 +40,7 @@ internal class MenuDurableTransactionRuntime(
 
     fun submit(
         sessionScope: CoroutineScope,
+        session: Any,
         proposal: MenuTransactionProposal,
         storages: Map<MenuStorageId, MenuStorage>,
         nativeCommit: suspend (MenuNativeTransaction) -> MenuNativeCommit,
@@ -49,7 +50,7 @@ internal class MenuDurableTransactionRuntime(
         storages.values.mapNotNull(MenuStorage::transactionDomain).forEach(::remember)
         val owner = if (durable) scope else sessionScope
         val job = owner.launch {
-            val submission = coordinator.submit(proposal, storages, session = this@MenuDurableTransactionRuntime)
+            val submission = coordinator.submit(proposal, storages, session)
             if (submission is MenuTransactionSubmission.Committed) {
                 val transaction = submission.transaction
                 val native = runCatching {
