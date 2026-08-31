@@ -1,25 +1,29 @@
-# Item and menu implementation workflow
+# Menu engine implementation workflow
 
-Status: design-stage guidance; the modules are not implemented
+Status: implementation guidance for shipped item and chest-menu modules
 
-Use this page when implementing the approved item or menu designs. Do not use the proposed syntax as if it were already a published API.
+Use this page when changing framework item or menu internals. Plug-in authors should use [menu authoring](menu-authoring.md) and the implemented reference pages instead.
 
 ## Read first
 
-1. [Items module design](../design/items-module.md)
-2. [Menus module design](../design/menus-module.md)
-3. [Architecture](../explanation/architecture.md)
-4. [Coroutines and ownership](../explanation/coroutines-and-ownership.md)
-5. The relevant decisions from [ADR index](../adr/README.md)
-6. [Verification matrix](verification.md)
+1. [Items reference](../reference/items.md)
+2. [Menus reference](../reference/menus.md)
+3. [Storage and transactions reference](../reference/menu-storage.md)
+4. [Menu testing reference](../reference/menu-testing.md)
+5. [Items module design](../design/items-module.md)
+6. [Menus module design](../design/menus-module.md)
+7. [Architecture](../explanation/architecture.md)
+8. [Coroutines and ownership](../explanation/coroutines-and-ownership.md)
+9. The relevant decisions from [ADR index](../adr/README.md)
+10. [Verification matrix](verification.md)
 
-Inspect the current source, API dumps, samples, and test fixtures before changing a planned signature. The design documents are the contract until an implemented API and its reference documentation supersede them.
+Inspect current source, API dumps, samples, and test fixtures before changing a public signature. Source, ABI dumps, and reference pages are authoritative for shipped declarations. Design pages and ADRs constrain unfinished hosts and later slices.
 
 ## Choose one vertical slice
 
 Take the next incomplete slice from the design document. A slice includes its production API, pure model, focused tests, native adapter evidence where applicable, KDoc, reference prose, agent guidance, sample, and ABI update. Do not implement several host families or durability systems in parallel merely because their types can be scaffolded.
 
-The first menu slice must not begin before exact `ItemSnapshot` round trips are proven. Storage must not begin before the action-only renderer and native chest lifecycle are proven. A new concrete host must not begin before the shared gesture and transaction engines pass their existing contract suites.
+The item, action-only chest, storage planner, transaction coordinator, semantic test runtime, and native chest adapter are shipped. A new concrete host starts only after the shared gesture and transaction engines pass their existing contract suites.
 
 ## Invariants that may not be traded away
 
@@ -93,4 +97,4 @@ An implemented slice is incomplete until:
 - API dumps are committed;
 - verification evidence is recorded in the commit or task handoff.
 
-Remove the design-stage warning from this page only after the first published menu API exists. At that point, source and API dumps become authoritative and this workflow must link the implemented references first.
+Keep the implemented references and ABI dumps synchronized with every public change.

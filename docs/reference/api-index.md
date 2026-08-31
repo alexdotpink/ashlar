@@ -63,6 +63,20 @@ This index routes public declarations to their authoritative reference. Generate
 - Custom items: `CustomItemDefinition`, `CustomItemBuilder`, `CustomItemRead`, `customItem`, `CustomItemCodec`, `KotlinJsonItemCodec`, `DefaultItemJson` — [items](items.md)
 - Integrity: `HmacKey`, `HmacKeyring` — [items](items.md)
 
+## Menus
+
+- Sessions: `PlayerMenus`, `MenuOpen`, `MenuChoice`, `MenuClose`, `MenuOpenConflict` — [menus](menus.md)
+- Declaration: `MenuScope`, `ChestScope`, `ActionSlotScope`, `chest`, `component`, `slot`, `flow`, `SlotRegion`, `row`, `rows`, `region`, `RegionOverflow` — [menus](menus.md)
+- State and lifecycle: `MenuState`, `CollectedMenuState`, `state`, `collectAsState`, `effect`, `launchedEffect`, `MenuEffectScope` — [menus](menus.md)
+- Actions: `MenuInteraction`, `MenuGesture`, `MenuGestureKind`, `MenuActionScope`, `MenuActionConcurrency`, `MenuDispatch`, `MenuFeedback` — [menus](menus.md)
+- Navigation and context: `navigator`, `MenuNavigator`, `MenuNavigationScope`, `NativeClose`, `MenuLocal`, `menuLocal`, `provide`, `current` — [menus](menus.md)
+- Errors and inspection: `errorBoundary`, `MenuFailure`, `MenuRetry`, `MenuValidationException`, `MenuInspection`, `MenuTrace`, render and reconciliation snapshots — [menus](menus.md)
+- Focused input: `withFocusedInput`, `focusedChatInput`, `promptControl`, `searchControl` — [menus](menus.md)
+- Standard components: `ContentState`, pagination, scrolling, tabs, state slots, and controls under `menus.standard` — [menus](menus.md)
+- Host catalogue: indexed container and role-specific host DSLs, slot enums, properties, and snapshots — [menu hosts](menu-hosts.md)
+- Storage models, rules, references, gestures, proposals, engine, domains, coordination, journal, and recovery mailbox — [storage and transactions](menu-storage.md)
+- `menuTest`, `MenuTestScope`, `MenuTestSession`, `MenuTestChoice` — [menu testing](menu-testing.md)
+
 ## Testing and build
 
 - `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult`, `InputTestHarness`, `InputTestAttempt` — [testing](testing.md)

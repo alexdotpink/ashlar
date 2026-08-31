@@ -1,8 +1,50 @@
-# Command and event showcase plug-in
+# Framework showcase plug-in
 
-This Paper/Folia plug-in is a playable reference for the command, event, and input modules. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`. Typed input uses `/input` or `/in`.
+This Paper/Folia plug-in is a playable reference for commands, events, typed input, items, and menus. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`, typed input uses `/input` or `/in`, and menus use `/menus` or `/menu`.
 
 Start with `/showcase` for clickable links, `/sc guide` for a short path, or `/sc help [page]` for generated, permission-filtered help. Tab completion is part of the demonstration; try it after every literal and for the landmark argument.
+
+## Menu checklist
+
+Replace `YourName` with the connected player's Minecraft name:
+
+```text
+/menus open YourName
+```
+
+The home screen demonstrates structural item rendering, delegated state, a collected Flow, keyed effects, typed menu locals, feedback, general and specific gestures, and all three action concurrency modes.
+
+- Left- and right-click the emerald. Press a number key over it and try another click gesture.
+- Double-click the clock. The second single-flight action is rejected while the first runs.
+- Click the feather twice. Restart-latest cancels the first invocation.
+- Click the rocket several times. Parallel invocations complete independently.
+- Click the redstone block, then use the retry item rendered by the error boundary.
+
+Open `Components`. It demonstrates retained typed navigation, native-close back behavior, pagination, one-item scrolling, keyed selection, toggle, number stepper, static items, back control, filler, and `ContentState`. Change the page, scroll offset, and selection, return home, then reopen it to see retained screen state. The sign starts a focused typed chat prompt: the menu hides, blank input retries, and accepted input restores the latest render.
+
+Open `Transactional storage`. The top row is a shared external `MenuStorage` with a pessimistic idempotent domain commit. The first slot accepts only diamonds; the second is locked. Test pickup, placement, right-click splitting, shift transfer, hotbar swap, offhand swap, drag, double-click collection, and drops. Shift routes explicitly connect the vault with main inventory, hotbar, and offhand.
+
+Open `Confirmation` and try both controls. Native inventory close on a child screen goes back. Native close from home ends the session.
+
+While a menu is open, use another command to inspect, reject, or close it:
+
+```text
+/menus inspect YourName
+/menus reject YourName
+/menus close YourName
+```
+
+`reject` leaves the current session open. `inspect` reports the redacted semantic snapshot and trace. `close` uses the atomic external close capability.
+
+Test typed selection separately:
+
+```text
+/menus choose YourName
+```
+
+Choose red, green, or blue. Closing without choosing returns a typed close outcome instead.
+
+The module also exposes semantic typed models for hopper, anvil, merchant, furnace-family, brewing, crafting-family, and other role-specific hosts. The current Paper/Folia adapter opens chest hosts only, so the playable sample does not pretend those semantic models are native-ready.
 
 ## Event checklist
 

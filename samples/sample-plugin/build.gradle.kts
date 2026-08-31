@@ -14,6 +14,8 @@ dependencies {
     implementation(project(":framework-commands"))
     implementation(project(":framework-events"))
     implementation(project(":framework-input"))
+    implementation(project(":framework-items"))
+    implementation(project(":framework-menus"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     testImplementation(libs.paper.api)

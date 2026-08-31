@@ -1,6 +1,6 @@
 # Menus module design
 
-Status: approved, not implemented
+Status: core chest runtime and typed semantic host catalogue implemented; non-chest native adapters and native-client proof are pending
 
 The menus module is a declarative, stateful framework for Minecraft inventory interfaces. Plug-in code describes the current screen from immutable state. The runtime owns keyed state, reconciliation, native input, item safety, actions, navigation, effects, storage transactions, lifecycle, diagnostics, and Paper/Folia adaptation.
 
