@@ -1,0 +1,44 @@
+public final class dev/placeholder/framework/menus/testing/MenuTestChoice {
+	public final fun awaitSelected (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getMenu ()Ldev/placeholder/framework/menus/testing/MenuTestSession;
+}
+
+public final class dev/placeholder/framework/menus/testing/MenuTestHarnessKt {
+	public static final fun menuTest (Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class dev/placeholder/framework/menus/testing/MenuTestScope : java/lang/AutoCloseable {
+	public final fun advanceTimeBy-LRDsOJo (J)V
+	public final fun assertNoPendingWork ()V
+	public final fun choose-VURzTcE (Ljava/util/UUID;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun choose-VURzTcE$default (Ldev/placeholder/framework/menus/testing/MenuTestScope;Ljava/util/UUID;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun close ()V
+	public final fun open-VURzTcE (Ljava/util/UUID;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun open-VURzTcE$default (Ldev/placeholder/framework/menus/testing/MenuTestScope;Ljava/util/UUID;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun player-XVRndMw (Ljava/lang/String;)Ljava/util/UUID;
+	public final fun runCurrent ()V
+}
+
+public final class dev/placeholder/framework/menus/testing/MenuTestSession {
+	public final fun assertChest (Lkotlin/jvm/functions/Function1;)V
+	public final fun assertNoPendingWork ()V
+	public final fun assertRevision (J)V
+	public final fun awaitClose (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun close (Ldev/placeholder/framework/menus/MenuClose;)V
+	public static synthetic fun close$default (Ldev/placeholder/framework/menus/testing/MenuTestSession;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)V
+	public final fun feedback ()Ljava/util/List;
+	public final fun gesture (ILdev/placeholder/framework/menus/MenuGesture;)Ldev/placeholder/framework/menus/MenuDispatch;
+	public final fun getChest ()Ldev/placeholder/framework/menus/ChestHostSnapshot;
+	public final fun getPlayer-8gqzS8o ()Ljava/util/UUID;
+	public final fun getRender ()Ldev/placeholder/framework/menus/MenuRenderSnapshot;
+	public final fun inspect ()Ldev/placeholder/framework/menus/MenuInspection;
+	public final fun nativeClose (Ldev/placeholder/framework/menus/MenuNativeClose;)V
+	public static synthetic fun nativeClose$default (Ldev/placeholder/framework/menus/testing/MenuTestSession;Ldev/placeholder/framework/menus/MenuNativeClose;ILjava/lang/Object;)V
+	public final fun nativeCloseCalls ()I
+	public final fun primaryClick (I)Ldev/placeholder/framework/menus/MenuDispatch;
+	public final fun primaryClick (II)Ldev/placeholder/framework/menus/MenuDispatch;
+	public final fun reconciliations ()Ljava/util/List;
+	public final fun secondaryClick (I)Ldev/placeholder/framework/menus/MenuDispatch;
+	public final fun semanticSnapshot ()Ljava/lang/String;
+}
+
