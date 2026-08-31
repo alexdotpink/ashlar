@@ -50,6 +50,9 @@ public interface ItemRecoveryMailbox {
 
     /** Removes items only after their delivery has completed. */
     public suspend fun acknowledge(playerId: UUID, ids: Set<UUID>)
+
+    /** Forgets replay metadata after the durable source can no longer resubmit [deliveryId]. */
+    public suspend fun complete(deliveryId: UUID, playerId: UUID) {}
 }
 
 /** Atomic file-backed recovery mailbox with one checksummed file per player. */
@@ -69,11 +72,19 @@ public class FileItemRecoveryMailbox(
         return lock(playerId).withLock {
             withContext(dispatcher) {
                 val current = read(playerId).toMutableList()
+                val fingerprint = deliveryFingerprint(items)
+                readMarker(playerId, deliveryId)?.let { recorded ->
+                    require(MessageDigest.isEqual(recorded, fingerprint)) {
+                        "Recovery delivery $deliveryId was replayed with a different payload"
+                    }
+                    return@withContext current.filter { entry -> entry.deliveryId == deliveryId }
+                }
                 val replay = current.filter { entry -> entry.deliveryId == deliveryId }
                 if (replay.isNotEmpty()) {
                     require(replay.map(RecoveredMenuItem::item) == items) {
                         "Recovery delivery $deliveryId was replayed with a different payload"
                     }
+                    writeMarker(playerId, deliveryId, fingerprint)
                     return@withContext replay
                 }
                 require(current.size + items.size <= MAX_ITEMS_PER_PLAYER) {
@@ -85,6 +96,7 @@ public class FileItemRecoveryMailbox(
                 }
                 current += added
                 write(playerId, current)
+                writeMarker(playerId, deliveryId, fingerprint)
                 added
             }
         }
@@ -101,6 +113,12 @@ public class FileItemRecoveryMailbox(
                 val retained = read(playerId).filterNot { it.id in ids }
                 if (retained.isEmpty()) Files.deleteIfExists(path(playerId)) else write(playerId, retained)
             }
+        }
+    }
+
+    override suspend fun complete(deliveryId: UUID, playerId: UUID) {
+        lock(playerId).withLock {
+            withContext(dispatcher) { Files.deleteIfExists(markerPath(playerId, deliveryId)) }
         }
     }
 
@@ -129,6 +147,33 @@ public class FileItemRecoveryMailbox(
 
     private fun path(playerId: UUID): Path = directory.resolve("$playerId.fmri")
 
+    private fun markerPath(playerId: UUID, deliveryId: UUID): Path =
+        directory.resolve("$playerId.$deliveryId.fmrd")
+
+    private fun readMarker(playerId: UUID, deliveryId: UUID): ByteArray? = markerPath(playerId, deliveryId)
+        .takeIf(Files::isRegularFile)
+        ?.let(Files::readAllBytes)
+
+    private fun writeMarker(playerId: UUID, deliveryId: UUID, fingerprint: ByteArray) {
+        Files.createDirectories(directory)
+        val temporary = Files.createTempFile(directory, ".menu-delivery-", ".tmp")
+        try {
+            Files.write(temporary, fingerprint)
+            try {
+                Files.move(
+                    temporary,
+                    markerPath(playerId, deliveryId),
+                    StandardCopyOption.ATOMIC_MOVE,
+                    StandardCopyOption.REPLACE_EXISTING,
+                )
+            } catch (_: AtomicMoveNotSupportedException) {
+                Files.move(temporary, markerPath(playerId, deliveryId), StandardCopyOption.REPLACE_EXISTING)
+            }
+        } finally {
+            Files.deleteIfExists(temporary)
+        }
+    }
+
     private fun deliveryEntryId(deliveryId: UUID, index: Int): UUID = UUID.nameUUIDFromBytes(
         "$deliveryId:$index".encodeToByteArray(),
     )
@@ -136,6 +181,19 @@ public class FileItemRecoveryMailbox(
     private companion object {
         const val MAX_ITEMS_PER_PLAYER: Int = 10_000
     }
+}
+
+private fun deliveryFingerprint(items: List<ItemSnapshot>): ByteArray {
+    val output = ByteArrayOutputStream()
+    DataOutputStream(output).use { data ->
+        data.writeInt(items.size)
+        items.forEach { item ->
+            val encoded = item.encode()
+            data.writeInt(encoded.size)
+            data.write(encoded)
+        }
+    }
+    return output.toByteArray().sha256()
 }
 
 private object RecoveryMailboxEncoding {
