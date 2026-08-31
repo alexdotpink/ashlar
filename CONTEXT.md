@@ -308,6 +308,10 @@ _Avoid_: Benchmark method, timing test
 A named, versioned workload scale that gives one benchmark scenario explicit input size, concurrency, and duration.
 _Avoid_: Real-world workload, scale factor
 
+**Performance catalogue**:
+The checked mapping from every public framework capability to its required performance contracts and profiles.
+_Avoid_: Benchmark list, coverage document
+
 **Matched control**:
 The direct Kotlin, Paper, Folia, or toolchain path used to isolate framework overhead from the complete scenario cost.
 _Avoid_: Baseline implementation, raw benchmark
