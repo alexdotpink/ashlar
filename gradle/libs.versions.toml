@@ -16,6 +16,7 @@ kotlinpoet = "2.3.0"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.9.0" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
@@ -35,3 +36,4 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

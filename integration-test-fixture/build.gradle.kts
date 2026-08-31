@@ -14,6 +14,8 @@ dependencies {
     implementation(project(":framework-commands"))
     implementation(project(":framework-events"))
     implementation(project(":framework-input"))
+    implementation(project(":framework-menus"))
+    implementation(project(":framework-items"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     ksp(project(":framework-commands-ksp"))

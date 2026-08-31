@@ -42,6 +42,7 @@ import dev.placeholder.framework.events.await
 import dev.placeholder.framework.events.publish
 import dev.placeholder.framework.events.stream
 import dev.placeholder.framework.input.PlayerInput
+import dev.placeholder.framework.menus.PlayerMenus
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
@@ -72,12 +73,15 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
     private val serverEvents by inject<ServerEvents>()
     private val applicationEvents by inject<ApplicationEvents>()
     private val playerInput by inject<PlayerInput>()
+    private val playerMenus by inject<PlayerMenus>()
     private val lifecycleProbe by component { ParentProbe(probeResults) }
     override fun ComponentContext.enable(): Unit {
         check(automaticProbe.started) { "The automatic DI component was not started before the plug-in" }
         probeResults.record("automatic:injected")
         check(!playerInput.cancel(PlayerRef(UUID(0L, 0L))))
         probeResults.record("input:available")
+        check(playerMenus.inspect(PlayerRef(UUID(0L, 0L))) == null)
+        probeResults.record("menus:available")
         probeResults.record("plugin:enable")
         own(AutoCloseable { probeResults.writeReceipt() })
 
@@ -85,6 +89,7 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
             try {
                 lifecycleProbe.awaitOrdinaryTask()
                 exerciseExecutionContexts()
+                withGlobal { runItemIntegrationChecks() }
                 exerciseEvents()
                 exerciseCommands()
             } catch (failure: Throwable) {
@@ -512,6 +517,7 @@ public class ProbeResults {
                 "automatic:start",
                 "automatic:injected",
                 "input:available",
+                "menus:available",
                 "plugin:enable",
                 "child:task",
                 "execution:global",
