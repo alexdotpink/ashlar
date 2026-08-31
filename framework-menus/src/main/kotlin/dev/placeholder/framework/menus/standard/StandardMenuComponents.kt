@@ -6,7 +6,6 @@ import dev.placeholder.framework.menus.MenuScope
 import dev.placeholder.framework.menus.MenuNavigator
 import dev.placeholder.framework.menus.SlotRegion
 import dev.placeholder.framework.menus.component
-import dev.placeholder.framework.menus.slot
 import dev.placeholder.framework.menus.state
 
 /** Four ordinary states used by asynchronous content components. */
@@ -72,7 +71,7 @@ public class PagedItems<T, K : Any> internal constructor(
         visible.forEachIndexed { offset, item ->
             val originalIndex = page * pageSize + offset
             val slotIndex = region.slots[offset]
-            component(keys[originalIndex]) { content(item, slotIndex) }
+            chest.builder.component(chest, keys[originalIndex]) { content(item, slotIndex) }
         }
     }
 
@@ -101,6 +100,72 @@ public class PagedItems<T, K : Any> internal constructor(
     }
 }
 
+/** A keyed fixed-size window that moves one item at a time. */
+public class ScrollingItems<T, K : Any> internal constructor(
+    private val values: List<T>,
+    private val keys: List<K>,
+    public val offset: Int,
+    public val windowSize: Int,
+    private val setOffset: (Int) -> Unit,
+) {
+    /** Values visible at the current offset. */
+    public val visible: List<T> = values.drop(offset).take(windowSize)
+
+    /** Whether the window may move toward the first item. */
+    public val canPrevious: Boolean
+        get() = offset > 0
+
+    /** Whether the window may move toward the last item. */
+    public val canNext: Boolean
+        get() = offset + windowSize < values.size
+
+    /** Moves the window one item toward the start. */
+    public fun previous(): Boolean {
+        if (!canPrevious) return false
+        setOffset(offset - 1)
+        return true
+    }
+
+    /** Moves the window one item toward the end. */
+    public fun next(): Boolean {
+        if (!canNext) return false
+        setOffset(offset + 1)
+        return true
+    }
+
+    /** Places visible keyed values into [region]. */
+    context(chest: ChestScope)
+    public fun items(
+        region: SlotRegion,
+        content: context(MenuScope) (T, Int) -> Unit,
+    ) {
+        require(region.size >= visible.size) {
+            "Scroll window has ${visible.size} items for a ${region.size}-slot region"
+        }
+        visible.forEachIndexed { index, item ->
+            chest.builder.component(chest, keys[offset + index]) { content(item, region.slots[index]) }
+        }
+    }
+
+    /** Declares a previous-item control. */
+    context(chest: ChestScope)
+    public fun previous(slot: Int, item: ItemSpec) {
+        chest.slot(slot) {
+            this.item = item
+            onPrimary { previous() }
+        }
+    }
+
+    /** Declares a next-item control. */
+    context(chest: ChestScope)
+    public fun next(slot: Int, item: ItemSpec) {
+        chest.slot(slot) {
+            this.item = item
+            onPrimary { next() }
+        }
+    }
+}
+
 /** Creates retained pagination state keyed below the current component. */
 context(menu: MenuScope)
 public fun <T, K : Any> paged(
@@ -119,6 +184,28 @@ public fun <T, K : Any> paged(
         val pageCount = ((values.size + pageSize - 1) / pageSize).coerceAtLeast(1)
         val visiblePage = page.coerceIn(0, pageCount - 1)
         result = PagedItems(values, keys, visiblePage, pageCount, pageSize) { page = it }
+    }
+    return requireNotNull(result)
+}
+
+/** Creates retained one-item scrolling over keyed values. */
+context(menu: MenuScope)
+public fun <T, K : Any> scrolling(
+    items: Iterable<T>,
+    key: (T) -> K,
+    windowSize: Int,
+    componentKey: Any = "scrolling",
+): ScrollingItems<T, K> {
+    require(windowSize > 0) { "Scroll window size must be positive" }
+    val values = items.toList()
+    val keys = values.map(key)
+    require(keys.distinct().size == keys.size) { "Scrolling item keys must be unique" }
+    var result: ScrollingItems<T, K>? = null
+    component(componentKey) {
+        var offset by state(0)
+        val maximum = (values.size - windowSize).coerceAtLeast(0)
+        val visibleOffset = offset.coerceIn(0, maximum)
+        result = ScrollingItems(values, keys, visibleOffset, windowSize) { offset = it }
     }
     return requireNotNull(result)
 }
@@ -196,12 +283,7 @@ public fun <T : Any> selection(
     item: ItemSpec,
     onSelect: suspend (T) -> Unit,
 ) {
-    component(value) {
-        chest.slot(slot) {
-            this.item = item
-            onPrimary { onSelect(value) }
-        }
-    }
+    selectionImpl(chest, slot, value, item, onSelect)
 }
 
 /** Declares a caller-authored static slot with no action. */
@@ -240,11 +322,70 @@ public fun <T : Any> tab(
     item: ItemSpec,
     onSelect: suspend (T) -> Unit,
 ) {
-    selection(slot, value, item, onSelect)
+    selectionImpl(chest, slot, value, item, onSelect)
+}
+
+/** One caller-presented entry in a typed tab row. */
+public data class MenuTab<T : Any>(
+    public val value: T,
+    public val slot: Int,
+    public val item: ItemSpec,
+)
+
+/** Declares a keyed row of typed tabs. */
+context(chest: ChestScope)
+public fun <T : Any> tabs(
+    tabs: Iterable<MenuTab<T>>,
+    onSelect: suspend (T) -> Unit,
+) {
+    val values = tabs.toList()
+    require(values.map(MenuTab<T>::value).distinct().size == values.size) { "Tab values must be unique" }
+    require(values.map(MenuTab<T>::slot).distinct().size == values.size) { "Tab slots must be unique" }
+    values.forEach { tab -> selectionImpl(chest, tab.slot, tab.value, tab.item, onSelect) }
+}
+
+/** Declares a loading presentation slot. */
+context(chest: ChestScope)
+public fun loading(slot: Int, item: ItemSpec) {
+    chest.slot(slot) { this.item = item }
+}
+
+/** Declares an empty-content presentation slot. */
+context(chest: ChestScope)
+public fun emptyContent(slot: Int, item: ItemSpec) {
+    chest.slot(slot) { this.item = item }
+}
+
+/** Declares a failed-content slot with an optional retry action. */
+context(chest: ChestScope)
+public fun failedContent(
+    slot: Int,
+    item: ItemSpec,
+    retry: (suspend () -> Unit)? = null,
+) {
+    chest.slot(slot) {
+        this.item = item
+        if (retry != null) onPrimary { retry() }
+    }
 }
 
 /** Fills an explicit border region with one authored item. */
 context(chest: ChestScope)
 public fun border(region: SlotRegion, item: ItemSpec) {
-    filler(region, item)
+    region.slots.forEach { index -> chest.slot(index) { this.item = item } }
+}
+
+private fun <T : Any> selectionImpl(
+    chest: ChestScope,
+    slot: Int,
+    value: T,
+    item: ItemSpec,
+    onSelect: suspend (T) -> Unit,
+) {
+    chest.builder.component(chest, value) {
+        chest.slot(slot) {
+            this.item = item
+            onPrimary { onSelect(value) }
+        }
+    }
 }

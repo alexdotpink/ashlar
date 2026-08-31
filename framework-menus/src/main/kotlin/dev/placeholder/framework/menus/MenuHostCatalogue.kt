@@ -222,12 +222,24 @@ internal class RenderedHostDescriptor(
     val title: Component,
     val capacity: Int,
     val snapshot: (List<MenuSlotSnapshot>) -> MenuHostSnapshot,
+    val owner: ComponentIdentity = ComponentIdentity(listOf("root")),
+    val boundary: BoundaryIdentity? = null,
 ) {
+    fun ownedBy(scope: MenuScope): RenderedHostDescriptor = RenderedHostDescriptor(
+        title,
+        capacity,
+        snapshot,
+        scope.identity,
+        scope.boundary,
+    )
+
     companion object {
         fun chest(title: Component, rows: Int): RenderedHostDescriptor =
-            RenderedHostDescriptor(title, rows * 9) { slots ->
-                MenuHostSnapshot.Chest(ChestHostSnapshot(title, rows, slots))
-            }
+            RenderedHostDescriptor(
+                title,
+                rows * 9,
+                snapshot = { slots -> MenuHostSnapshot.Chest(ChestHostSnapshot(title, rows, slots)) },
+            )
     }
 }
 

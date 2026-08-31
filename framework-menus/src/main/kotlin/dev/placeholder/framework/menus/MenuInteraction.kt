@@ -96,7 +96,9 @@ public sealed interface MenuDispatch {
     public data object StaleRevision : MenuDispatch
     public data object EmptySlot : MenuDispatch
     public data object UnsupportedGesture : MenuDispatch
+    public data object UnsupportedHostInput : MenuDispatch
     public data object AlreadyRunning : MenuDispatch
+    public data object Intercepted : MenuDispatch
     public data class TransactionRejected(public val failure: MenuTransactionFailure) : MenuDispatch
     public data object Closed : MenuDispatch
 }
@@ -126,17 +128,21 @@ public interface MenuActionScope {
 
     /** Completes a typed choice session with [value]. */
     public fun finish(value: Any)
+
+    /** Temporarily hides native presentation while [block] owns focused player input. */
+    public suspend fun <T> withFocusedInput(block: suspend () -> T): T
 }
 
 internal data class MenuActionIdentity(
-    val component: ComponentIdentity,
+    override val component: ComponentIdentity,
     val slot: Int,
     val name: String,
-)
+) : MenuActionJobIdentity
 
 internal data class MenuActionDeclaration(
     val identity: MenuActionIdentity,
     val concurrency: MenuActionConcurrency,
     val boundary: BoundaryIdentity?,
+    val feedbackTheme: MenuFeedbackTheme,
     val handler: suspend MenuActionScope.(MenuInteraction) -> Unit,
 )

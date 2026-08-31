@@ -3,7 +3,16 @@ package dev.placeholder.framework.menus.internal.paper
 import dev.placeholder.framework.execution.PlayerRef
 import dev.placeholder.framework.items.ItemSnapshot
 import dev.placeholder.framework.items.Items
+import dev.placeholder.framework.menus.EnchantmentButton
+import dev.placeholder.framework.menus.LecternPageDirection
+import dev.placeholder.framework.menus.MenuHostInput
 import dev.placeholder.framework.menus.MenuInteraction
+import io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent
+import io.papermc.paper.event.player.PlayerLecternPageChangeEvent
+import io.papermc.paper.event.player.PlayerLoomPatternSelectEvent
+import io.papermc.paper.event.player.PlayerStonecutterRecipeSelectEvent
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
 import dev.placeholder.framework.menus.storage.MenuDragMode
 import dev.placeholder.framework.menus.storage.PlayerInventorySection
 import java.util.IdentityHashMap
@@ -13,14 +22,18 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
+import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
+import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.event.inventory.TradeSelectEvent
 import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.view.AnvilView
 import org.bukkit.plugin.Plugin
 
 /** Native close categories kept private until the logical session chooses its public outcome. */
@@ -76,11 +89,21 @@ internal class PaperMenuEvents private constructor(
         revision: () -> Long,
         playerInventorySections: () -> Set<PlayerInventorySection> = { emptySet() },
         interaction: (MenuInteraction) -> Unit,
-        nativeClose: (PaperMenuCloseReason) -> Unit,
+        hostInput: (MenuHostInput) -> Unit = {},
+        nativeClose: (PaperMenuCloseReason, ItemSnapshot?) -> Unit,
     ): PaperMenuViewBinding = synchronized(lock) {
         check(!closed) { "The Paper menu event adapter is closed" }
         require(view.player.uniqueId == player.uniqueId) { "The menu view belongs to another player" }
-        val binding = Binding(player, revision, playerInventorySections, interaction, nativeClose)
+        val binding = Binding(
+            view,
+            player,
+            revision,
+            playerInventorySections,
+            interaction,
+            hostInput,
+            nativeClose,
+            lastAnvilRenameText = (view as? AnvilView)?.renameText,
+        )
         check(bindings[view] == null && topBindings[view.topInventory] == null) {
             "The Paper menu view is already bound"
         }
@@ -152,11 +175,108 @@ internal class PaperMenuEvents private constructor(
         )
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onPrepareAnvil(event: PrepareAnvilEvent) {
+        val text = event.view.renameText.orEmpty()
+        val binding = changedAnvilRename(event.view, text) ?: return
+        binding.hostInput(MenuHostInput.AnvilRenameText(binding.player, binding.revision(), text))
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onTradeSelected(event: TradeSelectEvent) {
+        val binding = binding(event.view) ?: return
+        event.isCancelled = true
+        binding.hostInput(
+            MenuHostInput.MerchantTradeSelected(binding.player, binding.revision(), event.index),
+        )
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onLoomPatternSelected(event: PlayerLoomPatternSelectEvent) {
+        val binding = binding(event.loomInventory) ?: return
+        event.isCancelled = true
+        if (event.player.uniqueId != binding.player.uniqueId) return
+        binding.hostInput(
+            MenuHostInput.LoomPatternSelected(
+                binding.player,
+                binding.revision(),
+                RegistryAccess.registryAccess()
+                    .getRegistry(RegistryKey.BANNER_PATTERN)
+                    .getKeyOrThrow(event.patternType),
+            ),
+        )
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onStonecutterRecipeSelected(event: PlayerStonecutterRecipeSelectEvent) {
+        val binding = binding(event.stonecutterInventory) ?: return
+        event.isCancelled = true
+        if (event.player.uniqueId != binding.player.uniqueId) return
+        binding.hostInput(
+            MenuHostInput.StonecutterRecipeSelected(
+                binding.player,
+                binding.revision(),
+                event.getStonecuttingRecipe().key(),
+            ),
+        )
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onEnchantmentButton(event: EnchantItemEvent) {
+        val binding = binding(event.view) ?: return
+        event.isCancelled = true
+        if (event.enchanter.uniqueId != binding.player.uniqueId) return
+        binding.hostInput(
+            MenuHostInput.EnchantmentButtonPressed(
+                binding.player,
+                binding.revision(),
+                EnchantmentButton.fromIndex(event.whichButton()),
+            ),
+        )
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onBeaconEffectsSelected(event: PlayerChangeBeaconEffectEvent) {
+        val binding = binding(event.player.openInventory) ?: return
+        event.isCancelled = true
+        if (event.player.uniqueId != binding.player.uniqueId) return
+        binding.hostInput(
+            MenuHostInput.BeaconEffectsSelected(
+                binding.player,
+                binding.revision(),
+                event.primary?.key(),
+                event.secondary?.key(),
+                event.willConsumeItem(),
+            ),
+        )
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    fun onLecternPageChanged(event: PlayerLecternPageChangeEvent) {
+        val binding = binding(event.player.openInventory) ?: return
+        event.isCancelled = true
+        if (event.player.uniqueId != binding.player.uniqueId) return
+        binding.hostInput(
+            MenuHostInput.LecternPageChanged(
+                binding.player,
+                binding.revision(),
+                event.oldPage,
+                event.newPage,
+                when (event.pageChangeDirection) {
+                    PlayerLecternPageChangeEvent.PageChangeDirection.LEFT -> LecternPageDirection.PREVIOUS
+                    PlayerLecternPageChangeEvent.PageChangeDirection.RIGHT -> LecternPageDirection.NEXT
+                },
+            ),
+        )
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     fun onClose(event: InventoryCloseEvent) {
         val binding = remove(event.view) ?: return
         if (binding.suppressClose) return
-        binding.nativeClose(closeReason(event.reason, binding.player.uniqueId))
+        val cursor = snapshot(event.view.cursor)
+        event.view.setCursor(null)
+        binding.nativeClose(closeReason(event.reason, binding.player.uniqueId), cursor)
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -171,7 +291,11 @@ internal class PaperMenuEvents private constructor(
             if (kickedPlayers.remove(playerId)) PaperMenuCloseReason.KICKED else PaperMenuCloseReason.DISCONNECTED
         }
         removePlayer(playerId).forEach { binding ->
-            if (!binding.suppressClose) binding.nativeClose(reason)
+            if (!binding.suppressClose) {
+                val cursor = snapshot(binding.view.cursor)
+                binding.view.setCursor(null)
+                binding.nativeClose(reason, cursor)
+            }
         }
     }
 
@@ -187,7 +311,11 @@ internal class PaperMenuEvents private constructor(
         }
         HandlerList.unregisterAll(this)
         remaining.forEach { binding ->
-            if (!binding.suppressClose) binding.nativeClose(PaperMenuCloseReason.NATIVE_UNAVAILABLE)
+            if (!binding.suppressClose) {
+                val cursor = snapshot(binding.view.cursor)
+                binding.view.setCursor(null)
+                binding.nativeClose(PaperMenuCloseReason.NATIVE_UNAVAILABLE, cursor)
+            }
         }
     }
 
@@ -200,6 +328,15 @@ internal class PaperMenuEvents private constructor(
     }
 
     private fun binding(view: InventoryView): Binding? = synchronized(lock) { findBinding(view) }
+
+    private fun binding(inventory: Inventory): Binding? = synchronized(lock) { topBindings[inventory] }
+
+    private fun changedAnvilRename(view: InventoryView, text: String): Binding? = synchronized(lock) {
+        val binding = findBinding(view) ?: return@synchronized null
+        if (binding.lastAnvilRenameText == text) return@synchronized null
+        binding.lastAnvilRenameText = text
+        binding
+    }
 
     private fun remove(view: InventoryView): Binding? = synchronized(lock) {
         val binding = findBinding(view) ?: return@synchronized null
@@ -242,11 +379,14 @@ internal class PaperMenuEvents private constructor(
     }
 
     private data class Binding(
+        val view: InventoryView,
         val player: PlayerRef,
         val revision: () -> Long,
         val playerInventorySections: () -> Set<PlayerInventorySection>,
         val interaction: (MenuInteraction) -> Unit,
-        val nativeClose: (PaperMenuCloseReason) -> Unit,
+        val hostInput: (MenuHostInput) -> Unit,
+        val nativeClose: (PaperMenuCloseReason, ItemSnapshot?) -> Unit,
+        var lastAnvilRenameText: String?,
         var suppressClose: Boolean = false,
     )
 }

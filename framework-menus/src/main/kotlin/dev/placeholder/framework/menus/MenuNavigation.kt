@@ -65,28 +65,35 @@ internal class NavigationState<R : Any>(initial: R) : MenuNavigator<R> {
     lateinit var invalidate: () -> Unit
     lateinit var closeSession: () -> Unit
     lateinit var discard: (Long) -> Unit
+    @Volatile
     var nativeClose: NativeClose = NativeClose.END_SESSION
 
     override val current: R
+        @Synchronized
         get() = stack.last().route
 
     internal val currentEntryId: Long
+        @Synchronized
         get() = stack.last().id
 
     override val routes: List<R>
+        @Synchronized
         get() = stack.map(Entry<R>::route)
 
+    @Synchronized
     override fun push(route: R) {
         stack += Entry(nextId++, route)
         invalidate()
     }
 
+    @Synchronized
     override fun replace(route: R) {
         discard(stack.last().id)
         stack[stack.lastIndex] = Entry(nextId++, route)
         invalidate()
     }
 
+    @Synchronized
     override fun back(): Boolean {
         if (stack.size == 1) return false
         discard(stack.removeAt(stack.lastIndex).id)

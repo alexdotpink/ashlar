@@ -20,6 +20,8 @@ internal data class EffectIdentity(
 internal sealed interface EffectDeclaration {
     val identity: EffectIdentity
     val boundary: BoundaryIdentity?
+    val persistsWhilePresentationIsSuspended: Boolean
+        get() = false
 
     data class Synchronous(
         override val identity: EffectIdentity,
@@ -38,6 +40,7 @@ internal sealed interface EffectDeclaration {
         override val boundary: BoundaryIdentity?,
         val flow: Flow<T>,
         val emit: (T) -> Unit,
+        override val persistsWhilePresentationIsSuspended: Boolean = false,
     ) : EffectDeclaration
 }
 

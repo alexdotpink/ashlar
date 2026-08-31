@@ -9,8 +9,10 @@ description = "Deterministic server-free tests for framework menus"
 dependencies {
     api(project(":framework-menus"))
     api(libs.coroutines.test)
+    compileOnlyApi(project(":framework-input"))
     compileOnlyApi(libs.paper.api)
 
+    testImplementation(project(":framework-input"))
     testImplementation(libs.paper.api)
 }
 

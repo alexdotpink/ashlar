@@ -5,6 +5,7 @@ import dev.placeholder.framework.items.ItemSpec
 import dev.placeholder.framework.menus.storage.MenuSlotAddress
 import dev.placeholder.framework.menus.storage.MenuStorage
 import dev.placeholder.framework.menus.storage.MenuStorageId
+import dev.placeholder.framework.menus.storage.MenuStorageSnapshot
 import dev.placeholder.framework.menus.storage.MenuStorageReference
 import dev.placeholder.framework.menus.storage.MenuTransferRoute
 import dev.placeholder.framework.menus.storage.PlayerInventorySection
@@ -74,8 +75,9 @@ public data class MenuRenderSnapshot(
     public val stateCells: Map<String, String>,
     public val navigation: List<String>,
     public val storageParticipants: Set<MenuStorageReference> = emptySet(),
-    public val storages: Map<MenuStorageId, MenuStorage> = emptyMap(),
+    public val storages: Map<MenuStorageId, MenuStorageSnapshot> = emptyMap(),
     public val transferRoutes: List<MenuTransferRoute> = emptyList(),
+    public val hostInputs: Set<MenuHostInputKind> = emptySet(),
 )
 
 /** One semantic change between committed renders. */
@@ -90,6 +92,7 @@ public sealed interface MenuReconciliation {
     public data class Update(
         public val titleChanged: Boolean,
         public val changedSlots: Set<Int>,
+        public val propertiesChanged: Boolean = false,
     ) : MenuReconciliation
 }
 
@@ -180,9 +183,11 @@ internal data class RenderedChest(
 
 internal data class RenderTree(
     val host: RenderedChest,
+    val hostActions: Map<MenuHostInputKind, MenuHostActionDeclaration>,
     val components: Set<ComponentIdentity>,
     val effects: Map<EffectIdentity, EffectDeclaration>,
     val storages: Map<MenuStorageId, MenuStorage>,
     val playerInventory: Set<PlayerInventorySection>,
     val transferRoutes: List<MenuTransferRoute>,
+    val nativeCloseNavigation: NavigationState<Any>?,
 )

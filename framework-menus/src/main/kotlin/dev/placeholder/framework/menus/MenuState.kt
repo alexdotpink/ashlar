@@ -53,12 +53,14 @@ internal class MenuStateStore(private val invalidate: () -> Unit) {
     ): StateBinding<T> = StateBinding(component, initial, register, this)
 
     @Suppress("UNCHECKED_CAST")
+    @Synchronized
     fun <T> value(
         component: ComponentIdentity,
         name: String,
         initial: () -> T,
     ): T = cells.getOrPut(component to name) { StateCell(initial()) }.value as T
 
+    @Synchronized
     fun set(component: ComponentIdentity, name: String, value: Any?) {
         val cell = cells[component to name] ?: error("Menu state '$name' was not bound")
         if (cell.value != value) {
@@ -67,14 +69,17 @@ internal class MenuStateStore(private val invalidate: () -> Unit) {
         }
     }
 
+    @Synchronized
     fun snapshot(): Map<String, String> = cells.entries.associate { (identity, cell) ->
         "${identity.first.semantic()}:${identity.second}" to summarizeMenuValue(cell.value)
     }
 
+    @Synchronized
     fun clear() {
         cells.clear()
     }
 
+    @Synchronized
     fun removeUnder(component: ComponentIdentity) {
         cells.keys.removeIf { (identity, _) -> identity.keys.take(component.keys.size) == component.keys }
     }
@@ -122,7 +127,8 @@ internal class CollectedStateBinding<T>(
 
 internal fun summarizeMenuValue(value: Any?): String = when (value) {
     null -> "null"
-    is CharSequence, is Number, is Boolean, is Enum<*> -> value.toString()
+    is CharSequence -> "${value::class.simpleName}(length=${value.length})"
+    is Number, is Boolean, is Enum<*> -> value.toString()
     is Collection<*> -> "${value::class.simpleName}(size=${value.size})"
     else -> value::class.simpleName ?: "value"
 }

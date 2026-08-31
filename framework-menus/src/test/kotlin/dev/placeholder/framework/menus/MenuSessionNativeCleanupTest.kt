@@ -2,6 +2,9 @@ package dev.placeholder.framework.menus
 
 import dev.placeholder.framework.execution.PlayerRef
 import dev.placeholder.framework.menus.storage.MenuTransactionCoordinator
+import dev.placeholder.framework.menus.storage.MenuDurableTransactionRuntime
+import dev.placeholder.framework.menus.storage.MenuPlayerSettlement
+import dev.placeholder.framework.menus.storage.MenuSettlementResult
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -20,7 +23,11 @@ class MenuSessionNativeCleanupTest {
             player = PlayerRef(UUID.randomUUID()),
             nativeHost = host,
             parentScope = owner,
-            transactions = MenuTransactionCoordinator(),
+            transactions = MenuDurableTransactionRuntime(
+                owner,
+                MenuTransactionCoordinator(),
+                MenuPlayerSettlement { MenuSettlementResult.Pending },
+            ),
             choice = null,
             content = {
                 chest("Cleanup", rows = 1) {}

@@ -2,9 +2,8 @@ package dev.placeholder.framework.menus.internal.paper
 
 import dev.placeholder.framework.execution.EntityOutcome
 import dev.placeholder.framework.execution.PlayerRef
-import dev.placeholder.framework.menus.ChestHostSnapshot
 import dev.placeholder.framework.menus.MenuFeedback
-import dev.placeholder.framework.menus.MenuHostSnapshot
+import dev.placeholder.framework.menus.MenuFeedbackPresentation
 import dev.placeholder.framework.menus.MenuInteraction
 import dev.placeholder.framework.menus.MenuNativeCallbacks
 import dev.placeholder.framework.menus.MenuNativeClose
@@ -13,18 +12,24 @@ import dev.placeholder.framework.menus.MenuNativeHostFactory
 import dev.placeholder.framework.menus.MenuReconciliation
 import dev.placeholder.framework.menus.MenuRenderSnapshot
 import dev.placeholder.framework.menus.storage.MenuStorageReference
+import dev.placeholder.framework.menus.storage.MenuNativeCommit
 import dev.placeholder.framework.menus.storage.MenuNativeTransaction
 import dev.placeholder.framework.menus.storage.MenuTransactionEmission
 import dev.placeholder.framework.menus.storage.PlayerInventorySection
 import dev.placeholder.framework.items.Items
+import java.util.UUID
 import org.bukkit.inventory.InventoryView
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 
 /** Plug-in-owned factory sharing one synchronous native event boundary across menu sessions. */
-internal class PaperMenuNativeHostFactory(private val plugin: Plugin) : MenuNativeHostFactory, AutoCloseable {
+internal class PaperMenuNativeHostFactory(
+    private val plugin: Plugin,
+    private val settlement: PaperMenuPlayerSettlement,
+) : MenuNativeHostFactory, AutoCloseable {
     private val events = PaperMenuEvents(plugin)
 
-    override fun create(player: PlayerRef): MenuNativeHost = PaperMenuNativeHost(plugin, player, events)
+    override fun create(player: PlayerRef): MenuNativeHost = PaperMenuNativeHost(plugin, player, events, settlement)
 
     override fun close() {
         events.close()
@@ -35,19 +40,25 @@ private class PaperMenuNativeHost(
     private val plugin: Plugin,
     private val player: PlayerRef,
     private val events: PaperMenuEvents,
+    private val settlement: PaperMenuPlayerSettlement,
 ) : MenuNativeHost {
+    private val cursorSettlementId: UUID = UUID.randomUUID()
     private var render: MenuRenderSnapshot? = null
     private var callbacks: MenuNativeCallbacks? = null
     private var view: InventoryView? = null
     private var binding: PaperMenuViewBinding? = null
+    private var logicalCursor: dev.placeholder.framework.items.ItemSnapshot? = null
+    private var nativeEnded: Boolean = false
+    private var retainedCursor: Boolean = false
 
     override suspend fun mount(render: MenuRenderSnapshot, callbacks: MenuNativeCallbacks) {
         check(view == null) { "The native menu host is already mounted" }
+        settlement.deliverPending(player)
         this.callbacks = callbacks
-        val chest = render.chest()
+        val host = render.host
         when (
             player.access(plugin) { livePlayer ->
-                val created = PaperChestPresentation.create(livePlayer, chest)
+                val created = PaperChestPresentation.create(livePlayer, host)
                 val createdBinding = bind(created, render)
                 try {
                     PaperChestPresentation.open(livePlayer, created)
@@ -56,8 +67,15 @@ private class PaperMenuNativeHost(
                     createdBinding.unbind()
                     throw failure
                 }
+                if (retainedCursor) {
+                    created.setCursor(logicalCursor?.let(Items::materialize))
+                } else {
+                    logicalCursor = created.cursor.takeUnless(ItemStack::isEmpty)?.let(Items::capture)
+                }
                 view = created
                 binding = createdBinding
+                nativeEnded = false
+                retainedCursor = false
                 this@PaperMenuNativeHost.render = render
             }
         ) {
@@ -69,14 +87,15 @@ private class PaperMenuNativeHost(
     override suspend fun reconcile(render: MenuRenderSnapshot, change: MenuReconciliation) {
         val currentView = checkNotNull(view) { "The native menu host is not mounted" }
         val currentBinding = checkNotNull(binding) { "The native menu host has no event binding" }
-        val chest = render.chest()
+        val host = render.host
+        val previousHost = checkNotNull(this.render).host
         val remount = change is MenuReconciliation.Remount ||
-            change is MenuReconciliation.Update && change.titleChanged
+            PaperChestPresentation.requiresRemount(previousHost, host)
         when (
             player.access(plugin) { livePlayer ->
                 if (remount) {
                     currentBinding.suppressClose()
-                    val replacement = PaperChestPresentation.create(livePlayer, chest)
+                    val replacement = PaperChestPresentation.create(livePlayer, host)
                     val replacementBinding = bind(replacement, render)
                     try {
                         PaperChestPresentation.open(livePlayer, replacement)
@@ -91,7 +110,7 @@ private class PaperMenuNativeHost(
                     binding = replacementBinding
                 } else {
                     val update = change as MenuReconciliation.Update
-                    PaperChestPresentation.update(livePlayer, currentView, chest, update.changedSlots)
+                    PaperChestPresentation.update(livePlayer, currentView, host, update.changedSlots)
                 }
                 this@PaperMenuNativeHost.render = render
             }
@@ -102,35 +121,65 @@ private class PaperMenuNativeHost(
     }
 
     override suspend fun close() {
+        val currentView = view
+        binding?.suppressClose()
+        val cursorToSettle = currentView?.cursor
+            ?.takeUnless(ItemStack::isEmpty)
+            ?.let(Items::capture)
+            ?: logicalCursor
+        player.access(plugin) { livePlayer ->
+            currentView?.setCursor(null)
+            if (currentView != null) PaperChestPresentation.close(livePlayer, currentView)
+        }
+        settlement.settleCursor(cursorSettlementId, player.uniqueId, cursorToSettle)
+        logicalCursor = null
+        binding?.unbind()
+        binding = null
+        view = null
+        render = null
+        callbacks = null
+        nativeEnded = false
+        retainedCursor = false
+    }
+
+    override suspend fun suspendPresentation() {
         val currentView = view ?: return
         binding?.suppressClose()
         when (
             player.access(plugin) { livePlayer ->
+                logicalCursor = currentView.cursor.takeUnless(ItemStack::isEmpty)?.let(Items::capture)
+                currentView.setCursor(null)
                 PaperChestPresentation.close(livePlayer, currentView)
             }
         ) {
-            is EntityOutcome.Completed,
-            EntityOutcome.Retired,
-            -> Unit
+            is EntityOutcome.Completed -> Unit
+            EntityOutcome.Retired -> callbacks?.closed(MenuNativeClose.DISCONNECT)
         }
         binding?.unbind()
         binding = null
         view = null
         render = null
         callbacks = null
+        nativeEnded = false
+        retainedCursor = true
     }
 
     override suspend fun feedback(value: MenuFeedback) {
         player.access(plugin) { livePlayer -> livePlayer.sendActionBar(value.message) }
     }
 
-    override suspend fun commitTransaction(transaction: MenuNativeTransaction) {
-        val currentView = checkNotNull(view) { "Cannot commit a transaction without a mounted menu view" }
-        when (
-            player.access(plugin) { livePlayer ->
-                check(livePlayer.openInventory.topInventory === currentView.topInventory) {
-                    "The player's native inventory changed before the menu transaction committed"
-                }
+    override suspend fun feedback(value: MenuFeedback, presentation: MenuFeedbackPresentation) {
+        player.access(plugin) { livePlayer ->
+            presentation.actionBar?.let(livePlayer::sendActionBar)
+            presentation.sound?.let(livePlayer::playSound)
+        }
+    }
+
+    override suspend fun commitTransaction(transaction: MenuNativeTransaction): MenuNativeCommit {
+        val currentView = view ?: return MenuNativeCommit.Unavailable
+        return when (
+            val outcome = player.access(plugin) { livePlayer ->
+                if (livePlayer.openInventory.topInventory !== currentView.topInventory) return@access false
                 transaction.playerStorages.forEach { (section, storageId) ->
                     val snapshot = transaction.committed.snapshots[storageId] ?: return@forEach
                     val indexes = section.nativeIndexes()
@@ -142,6 +191,7 @@ private class PaperMenuNativeHost(
                     }
                 }
                 currentView.setCursor(transaction.committed.cursor?.let(Items::materialize))
+                logicalCursor = transaction.committed.cursor
                 transaction.committed.emissions.forEach { emission ->
                     when (emission) {
                         is MenuTransactionEmission.Drop -> livePlayer.world.dropItem(
@@ -150,11 +200,19 @@ private class PaperMenuNativeHost(
                         )
                     }
                 }
-                if (transaction.committed.requiresAcknowledgement) livePlayer.updateInventory()
+                if (transaction.committed.requiresAcknowledgement) {
+                    settlement.recordApplied(livePlayer, transaction.committed.id.value)
+                    livePlayer.updateInventory()
+                    livePlayer.saveData()
+                }
+                true
             }
         ) {
-            is EntityOutcome.Completed -> Unit
-            EntityOutcome.Retired -> callbacks?.closed(MenuNativeClose.DISCONNECT)
+            is EntityOutcome.Completed -> if (outcome.value) MenuNativeCommit.Applied else MenuNativeCommit.Unavailable
+            EntityOutcome.Retired -> {
+                callbacks?.closed(MenuNativeClose.DISCONNECT)
+                MenuNativeCommit.Unavailable
+            }
         }
     }
 
@@ -167,9 +225,18 @@ private class PaperMenuNativeHost(
                 .filterIsInstance<MenuStorageReference.Player>()
                 .mapTo(linkedSetOf(), MenuStorageReference.Player::section)
         },
-        interaction = { interaction: MenuInteraction -> callbacks?.dispatch(interaction) },
-        nativeClose = { reason -> callbacks?.closed(reason.semantic()) },
+        interaction = { interaction: MenuInteraction ->
+            logicalCursor = interaction.cursor
+            callbacks?.dispatch(interaction)
+        },
+        hostInput = { input -> callbacks?.dispatch(input) },
+        nativeClose = { reason, cursor ->
+            if (cursor != null) logicalCursor = cursor
+            nativeEnded = true
+            callbacks?.closed(reason.semantic())
+        },
     )
+
 }
 
 private fun PlayerInventorySection.nativeIndexes(): IntRange = when (this) {
@@ -178,10 +245,6 @@ private fun PlayerInventorySection.nativeIndexes(): IntRange = when (this) {
     PlayerInventorySection.ARMOR -> 36..39
     PlayerInventorySection.OFFHAND -> 40..40
 }
-
-private fun MenuRenderSnapshot.chest(): ChestHostSnapshot =
-    (host as? MenuHostSnapshot.Chest)?.chest
-        ?: error("Paper menu adapter does not support ${host::class.simpleName}")
 
 private fun PaperMenuCloseReason.semantic(): MenuNativeClose = when (this) {
     PaperMenuCloseReason.PLAYER_CLOSED -> MenuNativeClose.PLAYER

@@ -4,6 +4,10 @@ import dev.placeholder.framework.items.ItemSnapshot
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 /** Creates session-owned storage which commits immediately in memory. */
 public fun localMenuStorage(
@@ -51,9 +55,49 @@ private class LocalMenuStorage(
     }
 }
 
-private data class ExternalMenuStorage(
+private class ExternalMenuStorage(
     override val id: MenuStorageId,
-    override val snapshots: StateFlow<MenuStorageSnapshot>,
+    source: StateFlow<MenuStorageSnapshot>,
     override val rules: MenuStorageRules,
     override val transactionDomain: MenuTransactionDomain,
-) : MenuStorage
+) : MutableMenuStorage {
+    private val authoritative: MutableStateFlow<MenuStorageSnapshot?> = MutableStateFlow(null)
+    override val snapshots: StateFlow<MenuStorageSnapshot> = MergedStorageState(source, authoritative)
+
+    override fun install(snapshot: MenuStorageSnapshot) {
+        require(snapshot.id == id) { "Cannot install ${snapshot.id} into $id" }
+        require(snapshot.size == rules.size) { "Installed snapshot size does not match storage rules" }
+        val current = snapshots.value
+        require(snapshot.revision >= current.revision) { "Installed snapshot cannot move storage backward" }
+        if (snapshot.revision == current.revision) {
+            require(snapshot == current) { "Storage $id has conflicting values for revision ${snapshot.revision}" }
+            return
+        }
+        authoritative.value = snapshot
+    }
+}
+
+@OptIn(ExperimentalForInheritanceCoroutinesApi::class)
+private class MergedStorageState(
+    private val source: StateFlow<MenuStorageSnapshot>,
+    private val authoritative: StateFlow<MenuStorageSnapshot?>,
+) : StateFlow<MenuStorageSnapshot> {
+    override val replayCache: List<MenuStorageSnapshot>
+        get() = listOf(value)
+
+    override val value: MenuStorageSnapshot
+        get() = newest(source.value, authoritative.value)
+
+    override suspend fun collect(collector: FlowCollector<MenuStorageSnapshot>): Nothing {
+        combine(source, authoritative, ::newest).distinctUntilChanged().collect(collector)
+        error("A merged storage StateFlow completed unexpectedly")
+    }
+}
+
+private fun newest(source: MenuStorageSnapshot, authoritative: MenuStorageSnapshot?): MenuStorageSnapshot = when {
+    authoritative == null -> source
+    source.revision > authoritative.revision -> source
+    source.revision < authoritative.revision -> authoritative
+    source == authoritative -> source
+    else -> error("Storage ${source.id} published conflicting values for revision ${source.revision}")
+}

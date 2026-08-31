@@ -32,7 +32,7 @@ class PaperMenuEventsTest {
             revision = { 42 },
             playerInventorySections = { setOf(PlayerInventorySection.HOTBAR) },
             interaction = interactions::add,
-            nativeClose = {},
+            nativeClose = { _, _ -> },
         )
         val event = InventoryClickEvent(
             fixture.view,
@@ -70,7 +70,7 @@ class PaperMenuEventsTest {
             PlayerRef(fixture.playerId),
             revision = { 1 },
             interaction = interactions::add,
-            nativeClose = {},
+            nativeClose = { _, _ -> },
         )
         val event = InventoryClickEvent(
             fixture.view,
@@ -100,7 +100,7 @@ class PaperMenuEventsTest {
             PlayerRef(first.playerId),
             revision = { 1 },
             interaction = {},
-            nativeClose = closes::add,
+            nativeClose = { reason, _ -> closes += reason },
         )
         firstBinding.suppressClose()
         events.bind(
@@ -108,7 +108,7 @@ class PaperMenuEventsTest {
             PlayerRef(second.playerId),
             revision = { 2 },
             interaction = {},
-            nativeClose = closes::add,
+            nativeClose = { reason, _ -> closes += reason },
         )
 
         events.onClose(InventoryCloseEvent(first.view, InventoryCloseEvent.Reason.OPEN_NEW))

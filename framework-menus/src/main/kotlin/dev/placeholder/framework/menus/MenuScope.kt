@@ -2,11 +2,14 @@ package dev.placeholder.framework.menus
 
 import dev.placeholder.framework.items.ItemSpec
 import dev.placeholder.framework.menus.storage.MenuStorage
+import dev.placeholder.framework.menus.storage.MenuStorageId
+import dev.placeholder.framework.menus.storage.MenuStorageRules
 import dev.placeholder.framework.menus.storage.MenuTransferRoute
 import dev.placeholder.framework.menus.storage.PlayerInventorySection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import net.kyori.adventure.text.Component
+import dev.placeholder.framework.items.ItemSnapshot
 
 /** Compile-time capability for synchronous declarative menu composition. */
 public abstract class MenuScope internal constructor() {
@@ -59,14 +62,35 @@ public abstract class MenuScope internal constructor() {
     }
 }
 
-/** Menu capability inside a concrete chest declaration. */
-public abstract class ChestScope internal constructor() : MenuScope() {
-    /** The declared chest row count. */
-    public abstract val rows: Int
+/** Menu capability shared by every concrete native inventory host. */
+public abstract class InventoryHostScope internal constructor() : MenuScope() {
+    /** Number of physical slots in the native top inventory. */
+    public abstract val capacity: Int
 
     /** Declares one physical action slot. */
     public abstract fun slot(
         index: Int,
+        modifiers: List<SlotModifier> = emptyList(),
+        content: ActionSlotScope.() -> Unit,
+    )
+}
+
+/** Menu capability inside a concrete chest declaration. */
+public abstract class ChestScope internal constructor() : InventoryHostScope() {
+    /** The declared chest row count. */
+    public abstract val rows: Int
+
+    final override val capacity: Int get() = rows * 9
+}
+
+/** Slot-indexed capability for container hosts without specialized roles. */
+public abstract class ContainerHostScope internal constructor() : InventoryHostScope()
+
+/** Role-indexed capability for one specialized native host. */
+public abstract class RoleHostScope<R : Enum<R>> internal constructor() : InventoryHostScope() {
+    /** Declares the physical slot represented by [role]. */
+    public abstract fun slot(
+        role: R,
         modifiers: List<SlotModifier> = emptyList(),
         content: ActionSlotScope.() -> Unit,
     )
@@ -158,6 +182,14 @@ public fun <T> state(initial: T): MenuState<T> = menu.state { initial }
 context(menu: MenuScope)
 public fun <T> state(initial: () -> T): MenuState<T> = menu.state(initial)
 
+/** Retains one session-local, versioned item storage below the current keyed component. */
+context(menu: MenuScope)
+public fun rememberStorage(
+    id: MenuStorageId,
+    initial: List<ItemSnapshot?>,
+    rules: MenuStorageRules = MenuStorageRules.uniform(initial.size),
+): MenuStorage = menu.builder.rememberStorage(menu, id, initial, rules)
+
 /** Collects external state for the lifetime of the keyed component. */
 context(menu: MenuScope)
 public fun <T> collectAsState(
@@ -166,17 +198,37 @@ public fun <T> collectAsState(
 ): CollectedMenuState<T> = menu.collectAsState(flow, initial)
 
 /** Declares one chest slot by physical index. */
-context(menu: MenuScope, chest: ChestScope)
+context(chest: ChestScope)
 public fun slot(
     index: Int,
     modifier: List<SlotModifier> = emptyList(),
     content: ActionSlotScope.() -> Unit,
 ) {
-    chest.builder.slot(chest, menu, index, modifier, content)
+    chest.builder.slot(chest, index, modifier, content)
+}
+
+/** Declares a slot in a fixed-size container host. */
+context(host: ContainerHostScope)
+public fun slot(
+    index: Int,
+    modifier: List<SlotModifier> = emptyList(),
+    content: ActionSlotScope.() -> Unit,
+) {
+    host.builder.slot(host, index, modifier, content)
+}
+
+/** Declares a slot through a specialized host's typed role. */
+context(host: RoleHostScope<R>)
+public fun <R : Enum<R>> slot(
+    role: R,
+    modifier: List<SlotModifier> = emptyList(),
+    content: ActionSlotScope.() -> Unit,
+) {
+    host.slot(role, modifier, content)
 }
 
 /** Declares one chest slot by row and column. */
-context(menu: MenuScope, chest: ChestScope)
+context(chest: ChestScope)
 public fun slot(
     row: Int,
     column: Int,
@@ -184,11 +236,11 @@ public fun slot(
     content: ActionSlotScope.() -> Unit,
 ) {
     require(column in 0..8) { "Chest columns must be between 0 and 8" }
-    chest.builder.slot(chest, menu, row * 9 + column, modifier, content)
+    chest.builder.slot(chest, row * 9 + column, modifier, content)
 }
 
 /** Places keyed repeated children into an explicit ordered region. */
-context(chest: ChestScope)
+context(chest: InventoryHostScope)
 public fun <T, K : Any> flow(
     region: SlotRegion,
     items: Iterable<T>,
@@ -233,12 +285,12 @@ public fun row(row: Int): SlotRegion = SlotRegion.row(row)
 public fun region(rows: IntRange, columns: IntRange): SlotRegion = SlotRegion.rectangle(rows, columns)
 
 /** Binds every slot of [storage] to the ordered physical [region]. */
-context(menu: MenuScope, chest: ChestScope)
+context(host: InventoryHostScope)
 public fun storage(
     storage: MenuStorage,
     region: SlotRegion,
 ) {
-    chest.builder.storage(chest, menu, storage, region)
+    host.builder.storage(host, storage, region)
 }
 
 /** Declares player-inventory sections that may participate in storage gestures. */
@@ -268,7 +320,36 @@ internal class DefaultChestScope(
     override val rows: Int,
 ) : ChestScope() {
     override fun slot(index: Int, modifiers: List<SlotModifier>, content: ActionSlotScope.() -> Unit) {
-        builder.slot(this, this, index, modifiers, content)
+        builder.slot(this, index, modifiers, content)
+    }
+}
+
+internal class DefaultContainerHostScope(
+    override val builder: MenuTreeBuilder,
+    override val identity: ComponentIdentity,
+    override val locals: Map<MenuLocal<*>, Any?>,
+    override val boundary: BoundaryIdentity?,
+    override val capacity: Int,
+) : ContainerHostScope() {
+    override fun slot(index: Int, modifiers: List<SlotModifier>, content: ActionSlotScope.() -> Unit) {
+        builder.slot(this, index, modifiers, content)
+    }
+}
+
+internal class DefaultRoleHostScope<R : Enum<R>>(
+    override val builder: MenuTreeBuilder,
+    override val identity: ComponentIdentity,
+    override val locals: Map<MenuLocal<*>, Any?>,
+    override val boundary: BoundaryIdentity?,
+    override val capacity: Int,
+    private val index: (R) -> Int,
+) : RoleHostScope<R>() {
+    override fun slot(role: R, modifiers: List<SlotModifier>, content: ActionSlotScope.() -> Unit) {
+        builder.slot(this, index(role), modifiers, content)
+    }
+
+    override fun slot(index: Int, modifiers: List<SlotModifier>, content: ActionSlotScope.() -> Unit) {
+        builder.slot(this, index, modifiers, content)
     }
 }
 
@@ -299,6 +380,7 @@ internal class DefaultActionSlotScope(
             MenuActionIdentity(owner.identity, index, kind.name.lowercase()),
             concurrency,
             owner.boundary,
+            owner.local(MenuFeedbackThemeLocal),
             action,
         )
         if (actions.putIfAbsent(kind, declaration) != null) {
@@ -317,6 +399,7 @@ internal class DefaultActionSlotScope(
             MenuActionIdentity(owner.identity, index, "gesture"),
             concurrency,
             owner.boundary,
+            owner.local(MenuFeedbackThemeLocal),
             action,
         )
     }

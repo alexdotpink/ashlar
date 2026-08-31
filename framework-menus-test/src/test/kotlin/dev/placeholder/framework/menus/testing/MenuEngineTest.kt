@@ -224,7 +224,7 @@ class MenuEngineTest {
             }
         }
 
-        assertEquals("supporter", menu.chest[0]?.locals?.get("theme"))
+        assertEquals("String(length=9)", menu.chest[0]?.locals?.get("theme"))
     }
 
     @Test
