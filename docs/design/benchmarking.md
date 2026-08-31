@@ -1,6 +1,6 @@
 # Benchmarking system
 
-Status: design in progress; implementation has not started
+Status: approved; implementation has not started
 
 This page is for framework contributors reviewing the performance architecture. It explains the intended contracts and evidence. It is not an API reference or a guide for writing a plug-in benchmark.
 
