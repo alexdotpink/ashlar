@@ -8,7 +8,7 @@ The items module is the framework-wide item model. It builds authored items, cap
 
 - Express every item feature exposed by the pinned Paper data-component API.
 - Keep authored item definitions immutable, reusable, and readable.
-- Preserve arbitrary live item stacks exactly through storage and transactions.
+- Preserve Paper's exact captured native bytes through storage and transactions.
 - Give custom items namespaced identity, typed versioned payloads, migrations, and structured decode failures.
 - Support optional payload authentication without burdening ordinary items.
 - Materialize presentation deliberately for normal items and decorative menu actions.
@@ -54,7 +54,7 @@ val waypointIcon: ItemSpec = item(Material.COMPASS) {
 }
 ```
 
-The builder is a construction convenience, not a mutable item object. It produces one immutable value. A spec may be copied and transformed without mutating the source:
+The builder is a construction convenience, not a mutable item object. It defensively copies common container and array component values and produces one immutable value. A spec may be copied and transformed without mutating the source:
 
 ```kotlin
 val selectedIcon = waypointIcon.edit {
@@ -63,7 +63,7 @@ val selectedIcon = waypointIcon.edit {
 }
 ```
 
-The API exposes typed helpers for common components and a generic typed `data(type, value)` operation for the complete Paper component catalogue. New Paper components do not require a new framework release before callers can use their typed native component key and value.
+The API exposes typed helpers for common components and a generic typed `data(type, value)` operation for the complete Paper component catalogue. New Paper components do not require a new framework release before callers can use their typed native component key and value. The keyed `paper` mutation is the unavoidable advanced escape hatch: callers must make the callback deterministic and side-effect-free because an arbitrary closure cannot be made deeply immutable by the framework.
 
 Material-specific validation happens before a stack reaches a player. Invalid amounts, contradictory components, unsupported material/component combinations, and oversized persistent payloads produce descriptive failures containing the item definition path.
 
@@ -96,7 +96,9 @@ val after = before.edit {
 val restored: ItemStack = items.materialize(before)
 ```
 
-Capture and materialization must round-trip all data available on the pinned Paper version. Unknown future or uninterpreted payloads remain preserved when a snapshot changes an unrelated field. Transactions, persistence adapters, equality, fingerprints, diagnostics, and recovery use snapshots rather than mutable stacks.
+Capture stores the exact amount-normalized bytes returned by Paper without rewriting them. Materialization gives those opaque bytes back to the same pinned Paper line. Paper itself may normalize an equivalent item during deserialize/serialize, so equality, stackability, and fingerprints use a separate canonical semantic identity rather than requiring byte-identical recapture. Uninterpreted native data remains in the original payload when a snapshot changes only its amount. A native edit necessarily passes through Paper and captures the new exact result. Transactions, persistence adapters, diagnostics, and recovery use snapshots rather than mutable stacks.
+
+Server-free algorithms may use detached semantic snapshots for planning and conservation checks. Detached values have no Paper payload and cannot be materialized or persisted. Durable transaction state must contain native snapshots captured by Paper.
 
 `ItemSpec` and `ItemSnapshot` remain separate because they optimize for different work:
 
@@ -170,7 +172,7 @@ Recipes belong to the future crafting module. Interaction belongs to events. Pre
 
 ## Payload codecs and migrations
 
-Kotlin Serialization is the default codec:
+Kotlin Serialization is the default codec. It uses fixed strict settings and recursively sorts JSON object keys so logically equal map payloads have canonical bytes:
 
 ```kotlin
 customItem<VoucherData>(key("voucher")) {
@@ -186,7 +188,7 @@ customItem<LegacyToken>(key("legacy_token")) {
 }
 ```
 
-The framework owns envelope framing, schema versions, payload limits, canonical signing bytes, and structured diagnostics. A migration converts a known older version into the current typed value:
+Every codec has a constrained durable ID. A custom Kotlin `Json` configuration must supply a different explicit ID; configuration changes that affect wire semantics require another ID. The framework owns envelope framing, schema versions, payload limits, canonical signing bytes, and structured diagnostics. A migration converts a known older version into the current typed value:
 
 ```kotlin
 migrate(fromVersion = 1) { old ->
@@ -215,7 +217,7 @@ Secret retrieval and rotation use plug-in configuration or secret infrastructure
 
 ## Persistence
 
-The item module defines stable snapshot encoding required by menu recovery and storage adapters. Encoding is versioned and bounded. A decoder either reconstructs an exact snapshot or returns a structured incompatibility; it never silently drops unknown data.
+The item module defines stable snapshot encoding required by menu recovery and storage adapters. Encoding is versioned, checksummed, bounded, and native-only. A decoder verifies both the envelope and the native payload against the running pinned Paper line. It either reconstructs a compatible native snapshot or returns a structured malformed, corrupt, unsupported-version, or native-incompatible outcome; it never silently drops unknown data or accepts a detached value as durable state.
 
 The module does not prescribe a database. A plug-in may store snapshot bytes in SQL, document storage, files, or another framework module later.
 

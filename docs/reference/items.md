@@ -36,6 +36,8 @@ val selectedIcon = waypointIcon.edit {
 
 Common helpers cover name, lore, glint, rarity, and persistent values. Use `data(type, value)`, `data(type)`, `unsetData(type)`, and `resetData(type)` for Paper's complete data-component catalogue. These operations use Paper's generic types, so a new component does not require a matching framework release. `paper(key) { stack -> ... }` is the keyed escape hatch for metadata not represented by the typed API.
 
+`data(type, value)` defensively copies arrays, lists, sets, and maps when the spec is built and again when it is materialized. Paper component values outside those common shapes must themselves be immutable. A `paper` mutation cannot be copied; it must be deterministic and side-effect-free, and its key must change whenever its output semantics change. The key is what gives the escape hatch structural equality across renders.
+
 Materialization validates that the material is an item and that its amount fits the effective maximum stack size after component changes:
 
 ```kotlin
@@ -72,7 +74,7 @@ val icon = Items.materialize(
 
 ## Exact snapshots
 
-`ItemSnapshot` captures Paper's native item bytes. It is separate from `ItemSpec` because it must preserve arbitrary live components that the plug-in did not author.
+`ItemSnapshot` captures Paper's opaque native item bytes exactly as `serializeAsBytes()` returns them. It is separate from `ItemSpec` because it must preserve arbitrary live components that the plug-in did not author.
 
 ```kotlin
 val before = Items.capture(stack)
@@ -82,7 +84,7 @@ val restored = Items.materialize(after)
 
 The editor works on an isolated native copy. It supports material, amount, typed data components, component removal, and a `paper` escape hatch. Unchanged native data survives the edit.
 
-Snapshot equality compares the material, amount, effective maximum, stackability identity, and amount-normalized native bytes. The amount lives in the framework envelope, while Paper's native payload retains every other component. Capture computes stackability identity from that native payload. `stackableWith` therefore needs no server access. `withAmount` and amount-only `edit` are server-free too. `fingerprint` hashes the complete snapshot, including its amount and effective maximum.
+The amount lives in the framework envelope, while the captured Paper payload is amount-normalized and otherwise unchanged. Paper may normalize its own serialization when bytes are deserialized and serialized again, so the framework keeps two representations: the exact captured bytes used for persistence and materialization, and a canonical semantic identity used for equality, stackability, and fingerprints. Two native snapshots compare equal when their material, amount, effective maximum, and canonical identity match even if Paper emitted different equivalent byte sequences. `stackableWith`, `withAmount`, and amount-only `edit` need no server access.
 
 Transaction models and server-free tests can create a detached snapshot without inventing a mutable `ItemStack`:
 
@@ -95,7 +97,7 @@ val stone = ItemSnapshot.detached(
 )
 ```
 
-Detached snapshots expose the same amount, maximum, equality, stackability, editing, and persistence behavior. `hasNativeData` is false and `Items.materialize` rejects them with a contract error. Their stackability key belongs to the caller, so equal keys must mean the values may really share a stack.
+Detached snapshots expose the same amount, maximum, equality, stackability, and amount-only editing behavior. They are deliberately process-local semantic values: `hasNativeData` is false, and both `encode()` and `Items.materialize` reject them with a contract error. A transaction journal, mailbox, or database must contain native snapshots captured on Paper. Their stackability key belongs to the caller, so equal keys must mean the values may really share a stack.
 
 `snapshot.encode()` adds a versioned framework header and SHA-256 checksum. `ItemSnapshot.decode(bytes)` returns one of:
 
@@ -105,8 +107,9 @@ Detached snapshots expose the same amount, maximum, equality, stackability, edit
 | `Malformed` | Framing, material, amount, length, or trailing bytes are invalid |
 | `UnsupportedVersion` | A newer framework envelope format wrote the value |
 | `Corrupt` | The checksum covering the complete envelope does not match |
+| `NativeIncompatible` | The envelope is valid, but Paper cannot deserialize it or its material, maximum, or semantic identity disagrees with the envelope |
 
-The native payload belongs to the pinned Paper server line. Call `Items.materialize` after decoding to verify native compatibility before accepting data produced on a different server version.
+`decode` validates the native payload immediately against the running pinned Paper version. It must therefore run inside a live Paper runtime, just like materialization. Structurally valid bytes from an incompatible server line return `NativeIncompatible`; they are never accepted as a detached or partially decoded value.
 
 ## Typed custom items
 
@@ -135,7 +138,19 @@ val WaypointToken = customItem<WaypointTokenData>(
 val stack = WaypointToken.create(data)
 ```
 
-Kotlin Serialization JSON is the default typed codec. It writes defaults, explicit nulls, a fixed class discriminator, and strict JSON. Implement `CustomItemCodec<T>` to use an existing deterministic binary protocol.
+Kotlin Serialization JSON is the default typed codec. It writes defaults, explicit nulls, a fixed class discriminator, strict JSON, and recursively sorted object keys. Its durable codec ID is `kotlin-json-canonical-v1`.
+
+A custom `Json` configuration is a different wire protocol and must have an explicit ID:
+
+```kotlin
+data(
+    serializer = WaypointTokenData.serializer(),
+    json = Json(DefaultItemJson) { prettyPrint = true },
+    codecId = "waypoint-json-pretty-v1",
+)
+```
+
+Change that ID whenever the configuration changes encoded or decoded semantics. Codec IDs use lowercase letters, digits, dots, underscores, and hyphens and are limited to 128 UTF-8 bytes. Implement `CustomItemCodec<T>` to use an existing deterministic binary protocol; custom codecs follow the same ID rules.
 
 Recognition is structured:
 
