@@ -740,6 +740,11 @@ public final class dev/placeholder/framework/benchmarks/ByteLimit {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class dev/placeholder/framework/benchmarks/FrameworkPerformanceCatalogue {
+	public static final field INSTANCE Ldev/placeholder/framework/benchmarks/FrameworkPerformanceCatalogue;
+	public final fun getCatalogue ()Ldev/placeholder/framework/benchmarks/PerformanceCatalogue;
+}
+
 public final class dev/placeholder/framework/benchmarks/JmhBenchmarkRunner {
 	public fun <init> (Ldev/placeholder/framework/benchmarks/MeasurementEnvironment;Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;)V
 	public synthetic fun <init> (Ldev/placeholder/framework/benchmarks/MeasurementEnvironment;Ldev/placeholder/framework/benchmarks/BenchmarkRunConfiguration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -823,6 +828,79 @@ public final class dev/placeholder/framework/benchmarks/MetricDirection : java/l
 }
 
 public final class dev/placeholder/framework/benchmarks/MetricDirection$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/placeholder/framework/benchmarks/PerformanceCapability {
+	public static final field Companion Ldev/placeholder/framework/benchmarks/PerformanceCapability$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ldev/placeholder/framework/benchmarks/BenchmarkId;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ldev/placeholder/framework/benchmarks/BenchmarkId;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ldev/placeholder/framework/benchmarks/BenchmarkId;)Ldev/placeholder/framework/benchmarks/PerformanceCapability;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/benchmarks/PerformanceCapability;Ljava/lang/String;Ljava/lang/String;Ldev/placeholder/framework/benchmarks/BenchmarkId;ILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/PerformanceCapability;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContract ()Ldev/placeholder/framework/benchmarks/BenchmarkId;
+	public final fun getGroup ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/placeholder/framework/benchmarks/PerformanceCapability$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/placeholder/framework/benchmarks/PerformanceCapability$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/placeholder/framework/benchmarks/PerformanceCapability;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/placeholder/framework/benchmarks/PerformanceCapability;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/placeholder/framework/benchmarks/PerformanceCapability$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/placeholder/framework/benchmarks/PerformanceCatalogue {
+	public fun <init> (Ljava/lang/Iterable;)V
+	public final fun getCapabilities ()Ljava/util/List;
+	public final fun validate (Ljava/lang/Iterable;Ljava/util/Set;Z)Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;
+	public static synthetic fun validate$default (Ldev/placeholder/framework/benchmarks/PerformanceCatalogue;Ljava/lang/Iterable;Ljava/util/Set;ZILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;
+}
+
+public final class dev/placeholder/framework/benchmarks/PerformanceCatalogueReport {
+	public static final field Companion Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport$Companion;
+	public fun <init> (IILjava/util/Set;Ljava/util/List;)V
+	public final fun checkComplete ()V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (IILjava/util/Set;Ljava/util/List;)Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;IILjava/util/Set;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCapabilityCount ()I
+	public final fun getComplete ()Z
+	public final fun getContractCount ()I
+	public final fun getExternalContracts ()Ljava/util/Set;
+	public final fun getProblems ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class dev/placeholder/framework/benchmarks/PerformanceCatalogueReport$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ldev/placeholder/framework/benchmarks/PerformanceCatalogueReport;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/placeholder/framework/benchmarks/PerformanceCatalogueReport$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

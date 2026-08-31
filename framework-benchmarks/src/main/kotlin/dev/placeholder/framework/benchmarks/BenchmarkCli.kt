@@ -5,6 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.system.exitProcess
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
 
 /** Command-line entry point used by Gradle benchmark tasks. */
 public object BenchmarkCli {
@@ -31,8 +32,11 @@ public object BenchmarkCli {
         "jmh" -> runJmh(arguments.drop(1), output)
         "compare" -> compare(arguments.drop(1), output, error)
         "report" -> report(arguments.drop(1), output)
+        "catalogue" -> catalogue(arguments.drop(1), output, error)
         else -> {
-            error.println("Unknown benchmark command '${command.orEmpty()}'. Expected run, jmh, compare, or report.")
+            error.println(
+                "Unknown benchmark command '${command.orEmpty()}'. Expected run, jmh, compare, report, or catalogue.",
+            )
             2
         }
     }
@@ -155,6 +159,33 @@ public object BenchmarkCli {
             },
         )
         return 0
+    }
+
+    private fun catalogue(arguments: List<String>, output: PrintStream, error: PrintStream): Int {
+        val options = CliOptions(arguments)
+        val classDirectories = options.values("class-dir").ifEmpty { configuredClassDirectories() }.map(Path::of)
+        val suites = BenchmarkDiscovery.discover(classDirectories)
+        val external = options.values("external").mapTo(linkedSetOf(), ::BenchmarkId)
+        val report = FrameworkPerformanceCatalogue.catalogue.validate(
+            suites = suites,
+            externalContracts = external,
+            releaseReady = options.flag("release-ready"),
+        )
+        options.value("output")?.let { destination ->
+            Path.of(destination).also { path ->
+                path.parent?.let(Files::createDirectories)
+                Files.writeString(path, BenchmarkJson.format.encodeToString(report))
+            }
+        }
+        if (report.complete) {
+            output.println(
+                "Performance catalogue covers ${report.capabilityCount} capabilities with " +
+                    "${report.contractCount} contracts.",
+            )
+            return 0
+        }
+        report.problems.forEach(error::println)
+        return 1
     }
 
     private fun readRun(path: String): BenchmarkRunResult = BenchmarkJson.decodeRun(Files.readString(Path.of(path)))
