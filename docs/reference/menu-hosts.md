@@ -38,6 +38,10 @@ Chest rows range from one through six. Every fixed host rejects indexes outside 
 | `beacon` | `BeaconSlot` | primary and secondary effects |
 | `lectern` | `LecternSlot` | page |
 
+A lectern must put a `WRITABLE_BOOK` or `WRITTEN_BOOK` in `LecternSlot.BOOK`; Paper closes a
+lectern view that has no valid book. Use item data components or the item module's keyed `paper`
+escape hatch to author pages. Page changes arrive through `onPageChanged`.
+
 Example:
 
 ```kotlin
@@ -76,4 +80,4 @@ Input for an old revision returns `MenuDispatch.StaleRevision`. A host with no m
 
 The shipped Paper/Folia adapter materializes every host in this page with the pinned Paper `MenuType` API. Writable Paper view properties are applied for anvil, merchant, furnace family, brewing, crafter, enchantment, beacon, and lectern. Loom and stonecutter selections, merchant selection, anvil rename text, enchantment buttons, beacon submission, and lectern pages enter through typed host input where Paper exposes events.
 
-Server-free tests cover models, property validation, kind mapping, remount decisions, and typed input dispatch. Paper and Folia fixtures cover adapter loading and native mappings. A connected-client run across every specialized host remains release acceptance work.
+Server-free tests cover models, property validation, kind mapping, remount decisions, and typed input dispatch. Paper and Folia fixtures cover adapter loading and native mappings. A Minecraft 26.2 client has opened every listed host, returned through each remount, retained an empty player inventory, and exercised lectern page input. Direct client interaction with anvil, merchant, loom, stonecutter, enchantment, and beacon controls remains release acceptance work.

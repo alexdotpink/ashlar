@@ -50,7 +50,7 @@ Open the native host catalogue:
 /menus hosts YourName
 ```
 
-The three-row index opens every supported Paper/Folia host. Each entry remounts the same logical session into that host, and its arrow returns to the index. The anvil, merchant, loom, stonecutter, enchantment, beacon, and lectern entries also register their typed host-input callbacks.
+The three-row index opens every supported Paper/Folia host. Each inventory-shaped entry remounts the same logical session into that host, and its arrow returns to the index. The lectern uses a real two-page written book: turn the page to exercise typed page input, then close it and rerun the catalogue. The anvil, merchant, loom, stonecutter, enchantment, beacon, and lectern entries register their typed host-input callbacks.
 
 ## Event checklist
 

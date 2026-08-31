@@ -6,5 +6,6 @@
 **/bin/
 **/run/
 *.iml
+*.hprof
 *.log
 .DS_Store

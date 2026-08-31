@@ -1,6 +1,6 @@
 # Menus module design
 
-Status: semantic runtime, typed host catalogue, Paper/Folia adapters, storage engine, durable recovery, diagnostics, and deterministic harness implemented; connected-client acceptance remains pending for cursor-sensitive and specialized-host protocols
+Status: semantic runtime, typed host catalogue, Paper/Folia adapters, storage engine, durable recovery, diagnostics, and deterministic harness implemented; the complete native host catalogue, remounting, display-item conservation, per-screen close-back, and lectern input have connected-client coverage, while cursor-sensitive storage, recovery, focused input, and the remaining specialized controls still need connected-client acceptance
 
 The menus module is a declarative, stateful framework for Minecraft inventory interfaces. Plug-in code describes the current screen from immutable state. The runtime owns keyed state, reconciliation, native input, item safety, actions, navigation, effects, storage transactions, lifecycle, diagnostics, and Paper/Folia adaptation.
 
@@ -665,4 +665,4 @@ Implementation must remain vertical. Each slice ends with docs, tests, and a pla
 
 A slice may deepen an existing interface when evidence requires it. It may not bypass the transaction engine, add a generic raw-event escape hatch, or introduce code generation to make progress appear faster.
 
-Slices 1 through 8 now have production implementations and server-free coverage. Paper and Folia fixtures cover adapter startup and native mappings. Slice 9 remains open for complete connected-client conservation runs, specialized-host interaction runs, load tests, and release acceptance on the pinned server and client versions.
+Slices 1 through 8 now have production implementations and server-free coverage. Paper and Folia fixtures cover adapter startup and native mappings. A Minecraft 26.2 client has opened every native host, remounted back through the catalogue without receiving presentation items, exercised lectern page input, and verified per-screen close-back. Slice 9 remains open for cursor-sensitive storage and recovery runs, the other specialized controls, focused-input acceptance, load tests, and final release acceptance.

@@ -52,6 +52,7 @@ import dev.placeholder.framework.menus.stonecutter
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
+import org.bukkit.inventory.meta.BookMeta
 
 private enum class NativeHostPage {
     INDEX,
@@ -184,13 +185,27 @@ internal fun NativeHostShowcase() {
             onBeaconEffectsSelected { feedback(report("beacon", "${it.primary}/${it.secondary}")) }
         }
         NativeHostPage.LECTERN -> lectern(Component.text("Lectern host")) {
-            slot(LecternSlot.BOOK) { item = backIcon; onPrimary { back() } }
+            slot(LecternSlot.BOOK) { item = lecternBook }
             onPageChanged { feedback(report("page", it.page)) }
         }
     }
 }
 
 private val backIcon: ItemSpec = hostIcon(Material.ARROW, "back to host index")
+
+private val lecternBook: ItemSpec = item(Material.WRITTEN_BOOK) {
+    name = Component.text("Lectern host", NamedTextColor.AQUA)
+    paper("menu-host-showcase-book-v1") { stack ->
+        stack.editMeta(BookMeta::class.java) { book ->
+            book.title(Component.text("Framework menus"))
+            book.author(Component.text("Framework"))
+            book.addPages(
+                Component.text("This is a real lectern host."),
+                Component.text("Turn the page to test typed page input."),
+            )
+        }
+    }
+}
 
 private fun hostIcon(material: Material, label: String): ItemSpec = item(material) {
     name = Component.text(label, NamedTextColor.AQUA)

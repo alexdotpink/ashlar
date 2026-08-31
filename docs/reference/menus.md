@@ -249,7 +249,7 @@ The public `MenuNativeHost`, `MenuNativeCallbacks`, `MenuNativeHostFactory`, and
 `framework-menus.standard` ships components built through the same public declarations as plug-in code:
 
 - `contentState` selects loading, empty, failed, or ready content.
-- `paged` owns a clamped page. `scrolling` owns a clamped fixed-size window that moves one item at a time. Both supply keyed items and controls.
+- `paged` owns a clamped page. `scrolling` owns a clamped fixed-size window that moves one item at a time. Both supply keyed items and controls. Their item identities are namespaced by `componentKey`, so the same domain keys may appear in both components on one screen; set distinct component keys when using two instances of the same component kind.
 - `toggle`, `numberStepper`, and `confirmation` wire caller-authored items to actions.
 - `selection`, `tab`, `tabs`, `staticItem`, `closeControl`, and `backControl` cover common controls.
 - `loading`, `emptyContent`, and `failedContent` provide ordinary state slots; the failed variant may retry.
@@ -261,4 +261,4 @@ These functions do not bypass collision checks, state rules, or action concurren
 
 The module ships typed Paper/Folia adapters for chest, hopper, generic 3x3, shulker, anvil, merchant, furnace, blast furnace, smoker, brewing, crafting, crafter, enchantment, grindstone, smithing, loom, cartography, stonecutter, beacon, and lectern. There is no raw generic inventory escape hatch. See [Menu hosts](menu-hosts.md) for properties, slots, and typed host input.
 
-Server-free tests cover semantic models, reconciliation, host input, storage, diagnostics, and the transaction gesture matrix. Paper and Folia fixtures cover adapter startup and native mappings. A connected client has not yet completed the full conservation, close, remount, focused-input, and specialized-host protocol matrix, so those player-visible claims remain release acceptance work.
+Server-free tests cover semantic models, reconciliation, host input, storage, diagnostics, and the transaction gesture matrix. Paper and Folia fixtures cover adapter startup and native mappings. A Minecraft 26.2 client has verified every host opens, host remounts do not leak presentation items, lectern page input dispatches, and a screen configured with `NativeClose.BACK` returns on Escape. Cursor-sensitive storage, recovery, focused input, and the remaining specialized controls still require connected-client acceptance.
