@@ -124,6 +124,45 @@ class FrameworkPluginTest {
     }
 
     @Test
+    fun `items enables only the item runtime`() {
+        val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
+        project.version = "1.2.3"
+        project.pluginManager.apply(FrameworkPlugin::class.java)
+        val extension = project.extensions.getByType(FrameworkPluginExtension::class.java)
+
+        extension.mainClass.set("example.ExamplePlugin")
+        extension.items()
+        project.extensions.getByType(JavaPluginExtension::class.java)
+            .toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        (project as ProjectInternal).evaluate()
+
+        assertTrue(project.configurations.getByName("implementation").dependencies.any {
+            it.name == "framework-items"
+        })
+        assertFalse(project.pluginManager.hasPlugin("com.google.devtools.ksp"))
+    }
+
+    @Test
+    fun `menus enables its runtime and item dependency without code generation`() {
+        val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
+        project.version = "1.2.3"
+        project.pluginManager.apply(FrameworkPlugin::class.java)
+        val extension = project.extensions.getByType(FrameworkPluginExtension::class.java)
+
+        extension.mainClass.set("example.ExamplePlugin")
+        extension.menus()
+        project.extensions.getByType(JavaPluginExtension::class.java)
+            .toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        (project as ProjectInternal).evaluate()
+
+        val implementation = project.configurations.getByName("implementation").dependencies
+            .mapTo(mutableSetOf()) { it.name }
+        assertTrue("framework-items" in implementation)
+        assertTrue("framework-menus" in implementation)
+        assertFalse(project.pluginManager.hasPlugin("com.google.devtools.ksp"))
+    }
+
+    @Test
     fun `managed version overrides require an explicit reason`() {
         val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
         val extension = project.objects.newInstance(FrameworkPluginExtension::class.java, project)

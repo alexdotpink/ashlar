@@ -42,6 +42,10 @@ public abstract class FrameworkPluginExtension @Inject constructor(private val p
         private set
     internal var inputEnabled: Boolean = false
         private set
+    internal var itemsEnabled: Boolean = false
+        private set
+    internal var menusEnabled: Boolean = false
+        private set
 
     /** Enables the typed command runtime and its two small KSP processors. */
     public fun commands(strictDocumentation: Boolean = false) {
@@ -65,6 +69,18 @@ public abstract class FrameworkPluginExtension @Inject constructor(private val p
         if (inputEnabled) return
         inputEnabled = true
         events()
+    }
+
+    /** Enables immutable item specifications, snapshots, and typed custom items. */
+    public fun items() {
+        itemsEnabled = true
+    }
+
+    /** Enables declarative inventory menus and their item dependency. */
+    public fun menus() {
+        if (menusEnabled) return
+        menusEnabled = true
+        items()
     }
 
     /**

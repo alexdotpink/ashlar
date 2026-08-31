@@ -119,5 +119,11 @@ public class FrameworkPlugin : Plugin<Project> {
         if (extension.inputEnabled) {
             dependencies.add("implementation", "dev.placeholder.framework:framework-input")
         }
+        if (extension.itemsEnabled) {
+            dependencies.add("implementation", "dev.placeholder.framework:framework-items")
+        }
+        if (extension.menusEnabled) {
+            dependencies.add("implementation", "dev.placeholder.framework:framework-menus")
+        }
     }
 }
