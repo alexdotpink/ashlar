@@ -3,6 +3,7 @@ package dev.placeholder.framework.gradle
 import org.gradle.api.GradleException
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.testfixtures.ProjectBuilder
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.junit.jupiter.api.Test
@@ -50,6 +51,28 @@ class FrameworkPluginTest {
                 it.group == "dev.placeholder.framework" && it.name == "kernel"
             },
         )
+    }
+
+    @Test
+    fun `plugin creates an isolated benchmark source set and standard tasks`() {
+        val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
+        project.version = "1.2.3"
+        project.pluginManager.apply(FrameworkPlugin::class.java)
+        val extension = project.extensions.getByType(FrameworkPluginExtension::class.java)
+        extension.mainClass.set("example.ExamplePlugin")
+        project.extensions.getByType(JavaPluginExtension::class.java)
+            .toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        (project as ProjectInternal).evaluate()
+
+        val sourceSets = project.extensions.getByType(SourceSetContainer::class.java)
+        val benchmark = sourceSets.getByName("benchmark")
+
+        assertTrue(project.configurations.getByName(benchmark.implementationConfigurationName)
+            .extendsFrom.contains(project.configurations.getByName("implementation")))
+        assertTrue(project.configurations.getByName(benchmark.compileOnlyConfigurationName)
+            .extendsFrom.contains(project.configurations.getByName("compileOnly")))
+        assertTrue(project.tasks.names.containsAll(setOf("benchmark", "benchmarkCompare", "benchmarkReport")))
+        assertTrue(project.tasks.names.contains("compileBenchmarkKotlin"))
     }
 
     @Test

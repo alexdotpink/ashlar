@@ -157,6 +157,12 @@ public final class dev/placeholder/framework/benchmarks/BenchmarkCaseResult$Comp
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class dev/placeholder/framework/benchmarks/BenchmarkCli {
+	public static final field INSTANCE Ldev/placeholder/framework/benchmarks/BenchmarkCli;
+	public final fun execute (Ljava/util/List;Ljava/io/PrintStream;Ljava/io/PrintStream;)I
+	public static final fun main ([Ljava/lang/String;)V
+}
+
 public final class dev/placeholder/framework/benchmarks/BenchmarkComparator {
 	public fun <init> ()V
 	public fun <init> (Ldev/placeholder/framework/benchmarks/BenchmarkComparisonConfiguration;)V
@@ -237,6 +243,11 @@ public final synthetic class dev/placeholder/framework/benchmarks/BenchmarkCompa
 
 public final class dev/placeholder/framework/benchmarks/BenchmarkComparisonReport$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class dev/placeholder/framework/benchmarks/BenchmarkDiscovery {
+	public static final field INSTANCE Ldev/placeholder/framework/benchmarks/BenchmarkDiscovery;
+	public final fun discover (Ljava/lang/Iterable;)Ljava/util/List;
 }
 
 public final class dev/placeholder/framework/benchmarks/BenchmarkDslKt {

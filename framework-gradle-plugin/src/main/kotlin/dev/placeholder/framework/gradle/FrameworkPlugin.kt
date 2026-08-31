@@ -7,6 +7,7 @@ import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -46,6 +47,7 @@ public class FrameworkPlugin : Plugin<Project> {
 
         configureDescriptor(project, extension)
         configurePackaging(project)
+        configureBenchmarks(project)
 
         project.afterEvaluate {
             configureDependencies(project, extension)
@@ -90,6 +92,92 @@ public class FrameworkPlugin : Plugin<Project> {
         }
         project.tasks.named("assemble").configure {
             it.dependsOn("shadowJar")
+        }
+    }
+
+    private fun configureBenchmarks(project: Project) {
+        val sourceSets = project.extensions.getByType(SourceSetContainer::class.java)
+        val main = sourceSets.named("main").get()
+        val benchmark = sourceSets.maybeCreate("benchmark").apply {
+            compileClasspath += main.output
+            runtimeClasspath += output + compileClasspath
+        }
+        project.configurations.named(benchmark.implementationConfigurationName).configure {
+            it.extendsFrom(project.configurations.getByName("implementation"))
+        }
+        project.configurations.named(benchmark.compileOnlyConfigurationName).configure {
+            it.extendsFrom(project.configurations.getByName("compileOnly"))
+        }
+        project.configurations.named(benchmark.runtimeOnlyConfigurationName).configure {
+            it.extendsFrom(project.configurations.getByName("runtimeOnly"))
+        }
+
+        val reportDirectory = project.layout.buildDirectory.dir("reports/benchmarks")
+        val runResult = reportDirectory.map { it.file("run.json") }
+        val comparisonResult = reportDirectory.map { it.file("comparison.json") }
+        val markdownResult = reportDirectory.map { it.file("summary.md") }
+        val benchmarkTask = project.tasks.register("benchmark", JavaExec::class.java) { task ->
+            task.group = "verification"
+            task.description = "Runs exploratory framework benchmark scenarios."
+            task.dependsOn(benchmark.classesTaskName)
+            task.classpath = benchmark.runtimeClasspath
+            task.mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+            task.outputs.file(runResult)
+            task.outputs.upToDateWhen { false }
+            task.doFirst {
+                val arguments = mutableListOf(
+                    "run",
+                    "--output", runResult.get().asFile.absolutePath,
+                    "--revision", project.providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"),
+                    "--framework-version", project.version.toString(),
+                    "--warmups", project.providers.gradleProperty("benchmarkWarmups").getOrElse("5"),
+                    "--iterations", project.providers.gradleProperty("benchmarkIterations").getOrElse("20"),
+                    "--forks", project.providers.gradleProperty("benchmarkForks").getOrElse("3"),
+                )
+                project.providers.gradleProperty("benchmarkProfiles").orNull
+                    ?.split(',')
+                    ?.filter(String::isNotBlank)
+                    ?.forEach { profile -> arguments += listOf("--profile", profile) }
+                project.providers.gradleProperty("benchmarkScenarios").orNull
+                    ?.split(',')
+                    ?.filter(String::isNotBlank)
+                    ?.forEach { scenario -> arguments += listOf("--scenario", scenario) }
+                task.setArgs(arguments)
+                task.systemProperty("framework.benchmark.classDirs", benchmark.output.classesDirs.asPath)
+            }
+        }
+        project.tasks.register("benchmarkCompare", JavaExec::class.java) { task ->
+            task.group = "verification"
+            task.description = "Compares the current benchmark run with a compatible baseline."
+            task.dependsOn(benchmarkTask)
+            task.classpath = benchmark.runtimeClasspath
+            task.mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+            task.outputs.files(comparisonResult, markdownResult)
+            task.outputs.upToDateWhen { false }
+            task.doFirst {
+                val baseline = project.providers.gradleProperty("benchmarkBaseline").orNull
+                    ?: error("benchmarkCompare requires -PbenchmarkBaseline=/path/to/baseline.json")
+                task.setArgs(
+                    listOf(
+                        "compare",
+                        "--baseline", baseline,
+                        "--candidate", runResult.get().asFile.absolutePath,
+                        "--json", comparisonResult.get().asFile.absolutePath,
+                        "--markdown", markdownResult.get().asFile.absolutePath,
+                    ),
+                )
+            }
+        }
+        project.tasks.register("benchmarkReport", JavaExec::class.java) { task ->
+            task.group = "reporting"
+            task.description = "Renders an existing benchmark comparison."
+            task.classpath = benchmark.runtimeClasspath
+            task.mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+            task.doFirst {
+                val comparison = project.providers.gradleProperty("benchmarkComparison").orNull
+                    ?: comparisonResult.get().asFile.absolutePath
+                task.setArgs(listOf("report", "--comparison", comparison, "--format", "text"))
+            }
         }
     }
 
