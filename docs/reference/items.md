@@ -104,7 +104,7 @@ Detached snapshots expose the same amount, maximum, equality, stackability, edit
 | `Found` | The framework envelope and checksum are valid |
 | `Malformed` | Framing, material, amount, length, or trailing bytes are invalid |
 | `UnsupportedVersion` | A newer framework envelope format wrote the value |
-| `Corrupt` | The native payload checksum does not match |
+| `Corrupt` | The checksum covering the complete envelope does not match |
 
 The native payload belongs to the pinned Paper server line. Call `Items.materialize` after decoding to verify native compatibility before accepting data produced on a different server version.
 

@@ -287,8 +287,8 @@ private object SnapshotEncoding {
     fun encode(snapshot: ItemSnapshot): ByteArray {
         val payload = snapshot.nativeBytes()
         val identity = snapshot.stackabilityIdentity()
-        val output = ByteArrayOutputStream((payload?.size ?: 0) + identity.size + 96)
-        DataOutputStream(output).use { data ->
+        val body = ByteArrayOutputStream((payload?.size ?: 0) + identity.size + 64)
+        DataOutputStream(body).use { data ->
             data.write(magic)
             data.writeByte(VERSION)
             data.writeUTF(snapshot.material.key.asString())
@@ -300,19 +300,28 @@ private object SnapshotEncoding {
             if (payload != null) {
                 data.writeInt(payload.size)
                 data.write(payload)
-                data.write(payload.sha256())
             }
         }
-        return output.toByteArray()
+        val bodyBytes = body.toByteArray()
+        return bodyBytes + bodyBytes.sha256()
     }
 
     fun decode(bytes: ByteArray): ItemSnapshotDecode = try {
         require(bytes.size <= ItemSnapshot.MAX_ENCODED_BYTES + 512) { "Snapshot envelope exceeds size limit" }
-        DataInputStream(ByteArrayInputStream(bytes)).use { input ->
+        require(bytes.size > magic.size + 1 + CHECKSUM_BYTES) { "Snapshot envelope is truncated" }
+        val prefix = bytes.copyOfRange(0, magic.size + 1)
+        require(prefix.copyOfRange(0, magic.size).contentEquals(magic)) { "Snapshot magic is invalid" }
+        val version = prefix.last().toInt() and 0xff
+        if (version != VERSION) return ItemSnapshotDecode.UnsupportedVersion(version)
+        val body = bytes.copyOfRange(0, bytes.size - CHECKSUM_BYTES)
+        val checksum = bytes.copyOfRange(bytes.size - CHECKSUM_BYTES, bytes.size)
+        if (!MessageDigest.isEqual(checksum, body.sha256())) {
+            return ItemSnapshotDecode.Corrupt("Snapshot envelope checksum does not match")
+        }
+        DataInputStream(ByteArrayInputStream(body)).use { input ->
             val actualMagic = ByteArray(magic.size).also(input::readFully)
             require(actualMagic.contentEquals(magic)) { "Snapshot magic is invalid" }
-            val version = input.readUnsignedByte()
-            if (version != VERSION) return ItemSnapshotDecode.UnsupportedVersion(version)
+            input.readUnsignedByte()
             val materialKey = input.readUTF()
             val material = Material.matchMaterial(materialKey)
                 ?: return ItemSnapshotDecode.Malformed("Unknown material '$materialKey'")
@@ -324,12 +333,7 @@ private object SnapshotEncoding {
             val native = if (input.readBoolean()) {
                 val size = input.readInt()
                 require(size in 1..ItemSnapshot.MAX_ENCODED_BYTES) { "Invalid native payload size $size" }
-                val payload = ByteArray(size).also(input::readFully)
-                val digest = ByteArray(32).also(input::readFully)
-                if (!MessageDigest.isEqual(digest, payload.sha256())) {
-                    return ItemSnapshotDecode.Corrupt("Native payload checksum does not match")
-                }
-                payload
+                ByteArray(size).also(input::readFully)
             } else null
             require(input.available() == 0) { "Trailing bytes after snapshot" }
             ItemSnapshotDecode.Found(ItemSnapshot(material, amount, maximumAmount, identity, native))
@@ -337,6 +341,8 @@ private object SnapshotEncoding {
     } catch (failure: Exception) {
         ItemSnapshotDecode.Malformed(failure.message ?: failure::class.simpleName.orEmpty())
     }
+
+    private const val CHECKSUM_BYTES: Int = 32
 }
 
 private fun nullableContentEquals(left: ByteArray?, right: ByteArray?): Boolean = when {
