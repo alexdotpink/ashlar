@@ -1,3 +1,5 @@
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+
 plugins {
     kotlin("jvm")
 }
@@ -25,12 +27,15 @@ dependencies {
 val benchmarkReports = layout.buildDirectory.dir("reports/benchmarks")
 val benchmarkResult = benchmarkReports.map { it.file("run.json") }
 val jmhResult = benchmarkReports.map { it.file("jmh.json") }
+val diagnosticResult = benchmarkReports.map { it.file("diagnostic.json") }
+val diagnosticRecording = benchmarkReports.map { it.file("diagnostic.jfr") }
 
 fun RunFrameworkBenchmarks.configureBenchmarkCommand(command: String, destination: Provider<RegularFile>) {
     group = "verification"
     dependsOn(benchmarkSourceSet.classesTaskName)
     classpath = benchmarkSourceSet.runtimeClasspath
     mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    javaLauncher.set(javaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(25)) })
     commandName.set(command)
     resultFile.set(destination)
     revision.set(providers.gradleProperty("benchmarkRevision").orElse("working-tree"))
@@ -61,4 +66,10 @@ tasks.register<RunFrameworkBenchmarks>("benchmark") {
 tasks.register<RunFrameworkBenchmarks>("benchmarkJmh") {
     description = "Runs isolated benchmark scenarios owned by this module through OpenJDK JMH."
     configureBenchmarkCommand("jmh", jmhResult)
+}
+
+tasks.register<RunFrameworkBenchmarks>("benchmarkDiagnose") {
+    description = "Profiles selected benchmark scenarios in a separate JFR diagnostic pass."
+    configureBenchmarkCommand("diagnose", diagnosticResult)
+    recordingFile.set(diagnosticRecording)
 }

@@ -122,3 +122,98 @@ val benchmarkCatalogue = tasks.register<JavaExec>("benchmarkCatalogue") {
 tasks.named("check") {
     dependsOn(benchmarkCatalogue)
 }
+
+evaluationDependsOn(":framework-benchmarks")
+val benchmarkEngine = project(":framework-benchmarks")
+val benchmarkEngineMain = benchmarkEngine.extensions.getByType(SourceSetContainer::class.java).getByName("main")
+
+tasks.register<JavaExec>("benchmarkBuild") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Measures Gradle, KSP, generated output, and artifact size."
+    dependsOn(benchmarkEngine.tasks.named(benchmarkEngineMain.classesTaskName))
+    classpath = benchmarkEngineMain.runtimeClasspath
+    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    args(
+        "build",
+        "--project-dir", layout.projectDirectory.asFile.absolutePath,
+        "--output", layout.buildDirectory.file("reports/benchmarks/build.json").get().asFile.absolutePath,
+        "--framework-version", version.toString(),
+        "--revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"),
+        "--iterations", providers.gradleProperty("benchmarkBuildIterations").getOrElse("1"),
+    )
+    outputs.file(layout.buildDirectory.file("reports/benchmarks/build.json"))
+    outputs.upToDateWhen { false }
+}
+
+tasks.register("benchmarkAll") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Runs every local JVM contract and the build benchmark."
+    dependsOn(benchmarkModules.map { module -> module.tasks.named("benchmark") })
+    dependsOn("benchmarkBuild", "benchmarkCatalogue", "benchmarkMerge")
+}
+
+tasks.register<JavaExec>("benchmarkMerge") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Merges compatible local module results for paired comparison."
+    val benchmarkTasks = benchmarkModules.map { module -> module.tasks.named("benchmark") }
+    dependsOn(benchmarkTasks)
+    dependsOn(benchmarkEngine.tasks.named(benchmarkEngineMain.classesTaskName))
+    classpath = benchmarkEngineMain.runtimeClasspath
+    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    val results = benchmarkModules.map { module -> module.layout.buildDirectory.file("reports/benchmarks/run.json") }
+    args("merge", "--output", layout.buildDirectory.file("reports/benchmarks/local.json").get().asFile.absolutePath)
+    results.forEach { result -> args("--input", result.get().asFile.absolutePath) }
+    inputs.files(results)
+    outputs.file(layout.buildDirectory.file("reports/benchmarks/local.json"))
+    outputs.upToDateWhen { false }
+}
+
+tasks.register<JavaExec>("benchmarkCompare") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Compares two compatible aggregate benchmark results."
+    dependsOn(benchmarkEngine.tasks.named(benchmarkEngineMain.classesTaskName))
+    classpath = benchmarkEngineMain.runtimeClasspath
+    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    val baseline = providers.gradleProperty("benchmarkBaseline")
+    val candidate = providers.gradleProperty("benchmarkCandidate")
+    val comparison = layout.buildDirectory.file("reports/benchmarks/comparison.json")
+    val markdown = layout.buildDirectory.file("reports/benchmarks/comparison.md")
+    args(
+        "compare",
+        "--baseline", baseline.getOrElse("missing-baseline.json"),
+        "--candidate", candidate.getOrElse("missing-candidate.json"),
+        "--json", comparison.get().asFile.absolutePath,
+        "--markdown", markdown.get().asFile.absolutePath,
+    )
+    inputs.files(baseline, candidate)
+    outputs.files(comparison, markdown)
+    outputs.upToDateWhen { false }
+}
+
+tasks.register("benchmarkPlatforms") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Runs command, scheduler, load, and soak workloads on pinned Paper and Folia."
+    dependsOn(
+        ":integration-test-fixture:paperIntegrationTest",
+        ":integration-test-fixture:foliaIntegrationTest",
+    )
+}
+
+tasks.register<Exec>("benchmarkClient") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Measures player-visible native host behavior through the connected Minecraft 26.2 client."
+    commandLine(
+        "node",
+        layout.projectDirectory.file("scripts/benchmark-client.mjs").asFile.absolutePath,
+        "--port", providers.gradleProperty("benchmarkClientPort").getOrElse("9877"),
+        "--server-port", providers.gradleProperty("benchmarkClientServerPort").getOrElse("25565"),
+        "--config", providers.gradleProperty("benchmarkClientConfig")
+            .getOrElse("/opt/minecraft-test/secondary/game/config/debugbridge.json"),
+        "--output", layout.buildDirectory.file("reports/benchmarks/client.json").get().asFile.absolutePath,
+        "--profile", providers.gradleProperty("benchmarkClientProfile").getOrElse("small"),
+        "--framework-version", version.toString(),
+        "--revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"),
+    )
+    outputs.file(layout.buildDirectory.file("reports/benchmarks/client.json"))
+    outputs.upToDateWhen { false }
+}

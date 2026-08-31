@@ -65,6 +65,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import kotlinx.coroutines.withTimeout
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
@@ -77,6 +78,7 @@ import org.bukkit.event.HandlerList
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.UUID
@@ -92,6 +94,7 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
     private val playerMenus by inject<PlayerMenus>()
     private val commandBenchmarkProbe by inject<CommandBenchmarkProbe>()
     private val lifecycleProbe by component { ParentProbe(probeResults) }
+    private val benchmarkCases = CopyOnWriteArrayList<BenchmarkCaseResult>()
     override fun ComponentContext.enable(): Unit {
         check(automaticProbe.started) { "The automatic DI component was not started before the plug-in" }
         probeResults.record("automatic:injected")
@@ -105,11 +108,14 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
         task("fixture") {
             try {
                 lifecycleProbe.awaitOrdinaryTask()
-                exerciseExecutionContexts()
+                benchmarkCases += exerciseExecutionContexts()
                 withGlobal { runItemIntegrationChecks() }
                 exerciseEvents()
                 exerciseCommands()
                 exerciseCommandBenchmark()
+                exerciseLoadBenchmark()
+                exerciseSoakBenchmark()
+                writeBenchmarkResults()
             } catch (failure: Throwable) {
                 probeResults.fail(failure)
             } finally {
@@ -158,13 +164,14 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
         val callbackSamples = mutableListOf<Double>()
         repeat(COMMAND_BENCHMARK_ITERATIONS) { offset ->
             val sequence = COMMAND_BENCHMARK_WARMUPS + offset
+            val completion = probe.expect(sequence)
             val started = System.nanoTime()
             val callbackNanos = withGlobal {
                 val callbackStarted = System.nanoTime()
                 check(server.dispatchCommand(server.consoleSender, "frameworkfixture benchmark $sequence"))
                 System.nanoTime() - callbackStarted
             }
-            probe.await(sequence)
+            completion.await()
             endToEndSamples += BenchmarkSample(System.nanoTime() - started)
             callbackSamples += callbackNanos.toDouble()
         }
@@ -181,6 +188,118 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
                 ),
             )
         }
+        benchmarkCases += BenchmarkCaseResult(
+            id = BenchmarkCaseId(
+                BenchmarkId("commands.dispatch"),
+                BenchmarkProfile("typical").name,
+                platform,
+                BenchmarkTemperature.WARM,
+            ),
+            status = PerformanceContractStatus.EXPLORATORY,
+            metrics = metrics,
+            samples = endToEndSamples,
+            supplementalSamples = mapOf(BenchmarkMetric.NATIVE_CALLBACK to callbackSamples),
+        )
+        probeResults.record("benchmark:commands:${platform.name.lowercase()}")
+    }
+
+    private suspend fun dispatchMeasuredCommand(probe: CommandBenchmarkProbe, sequence: Int) {
+        val completion = probe.expect(sequence)
+        withGlobal {
+            check(server.dispatchCommand(server.consoleSender, "frameworkfixture benchmark $sequence"))
+        }
+        completion.await()
+    }
+
+    private suspend fun exerciseLoadBenchmark() {
+        val samples = CopyOnWriteArrayList<BenchmarkSample>()
+        val callbacks = CopyOnWriteArrayList<Double>()
+        val scheduling = CopyOnWriteArrayList<Double>()
+        val sequence = AtomicInteger(1_000_000)
+        coroutineScope {
+            repeat(LOAD_ACTORS) {
+                launch {
+                    repeat(LOAD_OPERATIONS_PER_ACTOR) {
+                        val current = sequence.incrementAndGet()
+                        val completion = commandBenchmarkProbe.expect(current)
+                        val started = System.nanoTime()
+                        val callback = withGlobal {
+                            val callbackStarted = System.nanoTime()
+                            check(server.dispatchCommand(server.consoleSender, "frameworkfixture benchmark $current"))
+                            System.nanoTime() - callbackStarted
+                        }
+                        val callbackReturned = System.nanoTime()
+                        completion.await()
+                        samples += BenchmarkSample(System.nanoTime() - started)
+                        callbacks += callback.toDouble()
+                        scheduling += (System.nanoTime() - callbackReturned).toDouble()
+                    }
+                }
+            }
+        }
+        benchmarkCases += BenchmarkCaseResult(
+            id = BenchmarkCaseId(
+                BenchmarkId("load.multiplayer"),
+                "typical",
+                BenchmarkLayer.LOAD,
+                BenchmarkTemperature.WARM,
+            ),
+            status = PerformanceContractStatus.EXPLORATORY,
+            metrics = BenchmarkStatistics.aggregate(samples) + listOf(
+                BenchmarkMetricValue(
+                    BenchmarkMetric.NATIVE_CALLBACK,
+                    BenchmarkStatistics.percentile(callbacks, 0.99),
+                ),
+                BenchmarkMetricValue(
+                    BenchmarkMetric.SCHEDULING,
+                    BenchmarkStatistics.percentile(scheduling, 0.99),
+                ),
+            ),
+            samples = samples,
+            supplementalSamples = mapOf(
+                BenchmarkMetric.NATIVE_CALLBACK to callbacks,
+                BenchmarkMetric.SCHEDULING to scheduling,
+            ),
+        )
+        probeResults.record("benchmark:load")
+    }
+
+    private suspend fun exerciseSoakBenchmark() {
+        val requestedSeconds = System.getProperty("framework.benchmark.soakSeconds", "1").toLong()
+        require(requestedSeconds > 0) { "Soak duration must be positive" }
+        val deadline = System.nanoTime() + requestedSeconds * 1_000_000_000L
+        val samples = mutableListOf<BenchmarkSample>()
+        val memoryBefore = usedHeap()
+        var sequence = 2_000_000
+        do {
+            val started = System.nanoTime()
+            dispatchMeasuredCommand(commandBenchmarkProbe, sequence++)
+            samples += BenchmarkSample(System.nanoTime() - started)
+        } while (System.nanoTime() < deadline)
+        val retained = (usedHeap() - memoryBefore).coerceAtLeast(0L).toDouble()
+        val profile = when {
+            requestedSeconds >= 3_600 -> "stress"
+            requestedSeconds >= 60 -> "typical"
+            else -> "small"
+        }
+        benchmarkCases += BenchmarkCaseResult(
+            id = BenchmarkCaseId(
+                BenchmarkId("soak.lifecycle"),
+                profile,
+                BenchmarkLayer.SOAK,
+                BenchmarkTemperature.WARM,
+            ),
+            status = PerformanceContractStatus.EXPLORATORY,
+            metrics = BenchmarkStatistics.aggregate(samples) +
+                BenchmarkMetricValue(BenchmarkMetric.RETAINED_HEAP, retained),
+            samples = samples,
+            supplementalSamples = mapOf(BenchmarkMetric.RETAINED_HEAP to listOf(retained)),
+        )
+        probeResults.record("benchmark:soak")
+    }
+
+    private fun writeBenchmarkResults() {
+        val platform = benchmarkPlatform()
         BenchmarkJson.write(
             Path.of("benchmark-result.json"),
             BenchmarkRunResult(
@@ -190,6 +309,7 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
                     environmentId = "integration-local",
                     platform = platform.name,
                     platformVersion = server.version,
+                    attributes = mapOf("soakSeconds" to System.getProperty("framework.benchmark.soakSeconds", "1")),
                 ),
                 configuration = BenchmarkRunConfiguration(
                     warmupIterations = COMMAND_BENCHMARK_WARMUPS,
@@ -197,30 +317,20 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
                     forks = 1,
                     collectAllocation = false,
                 ),
-                cases = listOf(
-                    BenchmarkCaseResult(
-                        id = BenchmarkCaseId(
-                            BenchmarkId("commands.dispatch"),
-                            BenchmarkProfile("typical").name,
-                            platform,
-                            BenchmarkTemperature.WARM,
-                        ),
-                        status = PerformanceContractStatus.EXPLORATORY,
-                        metrics = metrics,
-                        samples = endToEndSamples,
-                        supplementalSamples = mapOf(BenchmarkMetric.NATIVE_CALLBACK to callbackSamples),
-                    ),
-                ),
+                cases = benchmarkCases.toList(),
             ),
         )
-        probeResults.record("benchmark:commands:${platform.name.lowercase()}")
     }
 
-    private suspend fun dispatchMeasuredCommand(probe: CommandBenchmarkProbe, sequence: Int) {
-        withGlobal {
-            check(server.dispatchCommand(server.consoleSender, "frameworkfixture benchmark $sequence"))
-        }
-        probe.await(sequence)
+    private fun benchmarkPlatform(): BenchmarkLayer = if (server.name.contains("Folia", ignoreCase = true)) {
+        BenchmarkLayer.FOLIA
+    } else {
+        BenchmarkLayer.PAPER
+    }
+
+    private fun usedHeap(): Long {
+        val runtime = Runtime.getRuntime()
+        return runtime.totalMemory() - runtime.freeMemory()
     }
 
     private suspend fun exerciseEvents(): Unit = coroutineScope {
@@ -276,7 +386,8 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
         probeResults.record("plugin:disable")
     }
 
-    private suspend fun exerciseExecutionContexts(): Unit {
+    private suspend fun exerciseExecutionContexts(): BenchmarkCaseResult {
+        val started = System.nanoTime()
         val location: Location =
             withGlobal {
                 probeResults.record("execution:global")
@@ -296,6 +407,18 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
             is EntityOutcome.Completed -> Unit
             EntityOutcome.Retired -> error("The integration-test entity retired before its ownership check")
         }
+        val sample = BenchmarkSample(System.nanoTime() - started)
+        return BenchmarkCaseResult(
+            id = BenchmarkCaseId(
+                BenchmarkId("kernel.scheduler-handoff"),
+                "small",
+                benchmarkPlatform(),
+                BenchmarkTemperature.WARM,
+            ),
+            status = PerformanceContractStatus.EXPLORATORY,
+            metrics = BenchmarkStatistics.aggregate(listOf(sample)),
+            samples = listOf(sample),
+        )
     }
 
     context(region: RegionContext)
@@ -331,6 +454,8 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
     private companion object {
         const val COMMAND_BENCHMARK_WARMUPS: Int = 20
         const val COMMAND_BENCHMARK_ITERATIONS: Int = 100
+        const val LOAD_ACTORS: Int = 16
+        const val LOAD_OPERATIONS_PER_ACTOR: Int = 4
     }
 }
 
@@ -548,16 +673,14 @@ internal class FixtureCommands(
 @Inject
 @PluginScoped
 internal class CommandBenchmarkProbe {
-    private val completed = AtomicInteger(-1)
+    private val pending = ConcurrentHashMap<Int, CompletableDeferred<Unit>>()
 
-    fun complete(sequence: Int) {
-        completed.set(sequence)
+    fun expect(sequence: Int): CompletableDeferred<Unit> = CompletableDeferred<Unit>().also { completion ->
+        check(pending.putIfAbsent(sequence, completion) == null) { "Benchmark sequence $sequence is already pending" }
     }
 
-    suspend fun await(sequence: Int) {
-        withTimeout(5.seconds) {
-            while (completed.get() < sequence) delay(1)
-        }
+    fun complete(sequence: Int) {
+        checkNotNull(pending.remove(sequence)) { "Benchmark sequence $sequence was not prepared" }.complete(Unit)
     }
 }
 

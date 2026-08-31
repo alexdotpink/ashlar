@@ -6,6 +6,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
@@ -50,6 +51,10 @@ abstract class RunFrameworkBenchmarks : JavaExec() {
     @get:OutputFile
     abstract val resultFile: RegularFileProperty
 
+    @get:Optional
+    @get:OutputFile
+    abstract val recordingFile: RegularFileProperty
+
     @TaskAction
     override fun exec() {
         val arguments = mutableListOf(
@@ -65,6 +70,9 @@ abstract class RunFrameworkBenchmarks : JavaExec() {
         )
         profiles.get().forEach { profile -> arguments += listOf("--profile", profile) }
         scenarios.get().forEach { scenario -> arguments += listOf("--scenario", scenario) }
+        recordingFile.orNull?.let { recording ->
+            arguments += listOf("--recording", recording.asFile.absolutePath)
+        }
         setArgs(arguments)
         systemProperty("framework.benchmark.classDirs", benchmarkClassDirectories.asPath)
         super.exec()

@@ -64,6 +64,7 @@ public abstract class dev/placeholder/framework/gradle/RunFrameworkBenchmarks : 
 	public abstract fun getIterations ()Lorg/gradle/api/provider/Property;
 	public abstract fun getMeasurementMillis ()Lorg/gradle/api/provider/Property;
 	public abstract fun getProfiles ()Lorg/gradle/api/provider/ListProperty;
+	public abstract fun getRecordingFile ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getResultFile ()Lorg/gradle/api/file/RegularFileProperty;
 	public abstract fun getRevision ()Lorg/gradle/api/provider/Property;
 	public abstract fun getScenarios ()Lorg/gradle/api/provider/ListProperty;

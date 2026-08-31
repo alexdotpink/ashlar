@@ -30,12 +30,16 @@ public object BenchmarkCli {
     ): Int = when (val command = arguments.firstOrNull()) {
         "run" -> run(arguments.drop(1), output)
         "jmh" -> runJmh(arguments.drop(1), output)
+        "diagnose" -> diagnose(arguments.drop(1), output)
+        "build" -> build(arguments.drop(1), output)
+        "merge" -> merge(arguments.drop(1), output)
         "compare" -> compare(arguments.drop(1), output, error)
         "report" -> report(arguments.drop(1), output)
         "catalogue" -> catalogue(arguments.drop(1), output, error)
         else -> {
             error.println(
-                "Unknown benchmark command '${command.orEmpty()}'. Expected run, jmh, compare, report, or catalogue.",
+                "Unknown benchmark command '${command.orEmpty()}'. Expected run, jmh, diagnose, build, merge, " +
+                    "compare, report, or catalogue.",
             )
             2
         }
@@ -64,7 +68,9 @@ public object BenchmarkCli {
         )
         val runner = BenchmarkRunner(environment, configuration)
         val cases = runBlocking {
-            suites.map { suite ->
+            suites.filter { suite ->
+                selectedScenarios.isEmpty() || suite.scenarios.any { it.id.value in selectedScenarios }
+            }.map { suite ->
                 runner.run(suite, options.value("revision") ?: "working-tree") { id ->
                     (selectedProfiles.isEmpty() || id.profile in selectedProfiles) &&
                         (selectedScenarios.isEmpty() || id.scenario.value in selectedScenarios)
@@ -113,6 +119,95 @@ public object BenchmarkCli {
         val destination = Path.of(options.value("output") ?: "build/reports/benchmarks/jmh.json")
         BenchmarkJson.write(destination, result)
         output.println("Wrote ${result.cases.size} JMH benchmark cases to $destination")
+        return 0
+    }
+
+    private fun diagnose(arguments: List<String>, output: PrintStream): Int {
+        val options = CliOptions(arguments)
+        val classDirectories = options.values("class-dir").ifEmpty { configuredClassDirectories() }.map(Path::of)
+        val suites = BenchmarkDiscovery.discover(classDirectories)
+        val configuration = BenchmarkRunConfiguration(
+            warmupIterations = options.int("warmups", 1),
+            measurementIterations = options.int("iterations", 3),
+            forks = 1,
+            warmupTimeMillis = options.int("warmup-millis", 250),
+            measurementTimeMillis = options.int("measurement-millis", 500),
+            collectAllocation = false,
+            authoritative = false,
+        )
+        val profiles = options.values("profile").toSet()
+        val scenarios = options.values("scenario").toSet()
+        val environment = MeasurementEnvironment.local(
+            frameworkVersion = options.value("framework-version") ?: "development",
+            environmentId = options.value("environment") ?: "diagnostic-local",
+        )
+        val recording = Path.of(options.required("recording"))
+        val result = BenchmarkDiagnostics.record(recording) {
+            runBlocking {
+                val cases = suites.filter { suite ->
+                    scenarios.isEmpty() || suite.scenarios.any { it.id.value in scenarios }
+                }.map { suite ->
+                    BenchmarkRunner(environment, configuration).run(
+                        suite,
+                        options.value("revision") ?: "working-tree",
+                    ) { id ->
+                        (profiles.isEmpty() || id.profile in profiles) &&
+                            (scenarios.isEmpty() || id.scenario.value in scenarios)
+                    }
+                }.flatMap(BenchmarkRunResult::cases)
+                BenchmarkRunResult(
+                    revision = options.value("revision") ?: "working-tree",
+                    environment = environment,
+                    configuration = configuration,
+                    cases = cases,
+                )
+            }
+        }
+        val destination = Path.of(options.value("output") ?: "build/reports/benchmarks/diagnostic.json")
+        BenchmarkJson.write(destination, result)
+        output.println("Wrote diagnostic result to $destination and JFR recording to $recording")
+        return 0
+    }
+
+    private fun build(arguments: List<String>, output: PrintStream): Int {
+        val options = CliOptions(arguments)
+        val projectDirectory = Path.of(options.value("project-dir") ?: ".").toAbsolutePath().normalize()
+        val environment = MeasurementEnvironment.local(
+            frameworkVersion = options.value("framework-version") ?: "development",
+            environmentId = options.value("environment") ?: "build-local",
+            platform = BenchmarkLayer.BUILD.name,
+            attributes = mapOf("workload" to "framework-build"),
+        )
+        val result = BuildBenchmarkRunner(
+            projectDirectory = projectDirectory,
+            environment = environment,
+            iterations = options.int("iterations", 1),
+        ).run(options.value("revision") ?: "working-tree")
+        val destination = Path.of(options.value("output") ?: "build/reports/benchmarks/build.json")
+        BenchmarkJson.write(destination, result)
+        output.println("Wrote ${result.cases.size} build benchmark cases to $destination")
+        return 0
+    }
+
+    private fun merge(arguments: List<String>, output: PrintStream): Int {
+        val options = CliOptions(arguments)
+        val inputs = options.values("input").map(::readRun)
+        require(inputs.isNotEmpty()) { "Merge requires at least one --input" }
+        val first = inputs.first()
+        require(inputs.all { it.revision == first.revision }) { "Merged runs have different revisions" }
+        require(inputs.all { it.environment.compatibilityKey() == first.environment.compatibilityKey() }) {
+            "Merged runs have incompatible environments"
+        }
+        require(inputs.all { it.configuration == first.configuration }) { "Merged runs used different configurations" }
+        val merged = BenchmarkRunResult(
+            revision = first.revision,
+            environment = first.environment,
+            configuration = first.configuration,
+            cases = inputs.flatMap(BenchmarkRunResult::cases),
+        )
+        val destination = Path.of(options.required("output"))
+        BenchmarkJson.write(destination, merged)
+        output.println("Merged ${inputs.size} runs and ${merged.cases.size} cases into $destination")
         return 0
     }
 

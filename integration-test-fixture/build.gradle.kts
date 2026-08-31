@@ -51,6 +51,8 @@ tasks.runServer {
     build(libs.versions.paperBuildNumber.get().toInt())
     args("--port", "25566")
     systemProperty("com.mojang.eula.agree", "true")
+    systemProperty("framework.benchmark.soakSeconds", providers.gradleProperty("benchmarkSoakSeconds").getOrElse("1"))
+    systemProperty("framework.benchmark.revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"))
     runDirectory.set(layout.buildDirectory.dir("run/paper"))
     pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
     verifyFixtureReceipt()
@@ -61,6 +63,8 @@ runPaper.folia.registerTask {
     build(libs.versions.foliaBuildNumber.get().toInt())
     args("--port", "25567")
     systemProperty("com.mojang.eula.agree", "true")
+    systemProperty("framework.benchmark.soakSeconds", providers.gradleProperty("benchmarkSoakSeconds").getOrElse("1"))
+    systemProperty("framework.benchmark.revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"))
     runDirectory.set(layout.buildDirectory.dir("run/folia"))
     pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
     verifyFixtureReceipt()
@@ -80,6 +84,7 @@ tasks.register("foliaIntegrationTest") {
 
 fun RunServer.verifyFixtureReceipt() {
     val receipt = runDirectory.file("fixture-result.txt")
+    outputs.upToDateWhen { false }
     doFirst {
         receipt.get().asFile.delete()
     }

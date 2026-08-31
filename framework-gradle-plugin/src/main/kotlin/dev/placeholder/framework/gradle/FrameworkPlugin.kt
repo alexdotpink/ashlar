@@ -115,6 +115,8 @@ public class FrameworkPlugin : Plugin<Project> {
         val reportDirectory = project.layout.buildDirectory.dir("reports/benchmarks")
         val runResult = reportDirectory.map { it.file("run.json") }
         val jmhResult = reportDirectory.map { it.file("jmh.json") }
+        val diagnosticResult = reportDirectory.map { it.file("diagnostic.json") }
+        val diagnosticRecording = reportDirectory.map { it.file("diagnostic.jfr") }
         val comparisonResult = reportDirectory.map { it.file("comparison.json") }
         val markdownResult = reportDirectory.map { it.file("summary.md") }
         fun RunFrameworkBenchmarks.configure(command: String) {
@@ -155,6 +157,13 @@ public class FrameworkPlugin : Plugin<Project> {
             task.description = "Runs isolated framework benchmark scenarios through OpenJDK JMH."
             task.configure("jmh")
             task.resultFile.set(jmhResult)
+        }
+        project.tasks.register("benchmarkDiagnose", RunFrameworkBenchmarks::class.java) { task ->
+            task.group = "verification"
+            task.description = "Profiles selected scenarios in a separate JFR diagnostic pass."
+            task.configure("diagnose")
+            task.resultFile.set(diagnosticResult)
+            task.recordingFile.set(diagnosticRecording)
         }
         project.tasks.register("benchmarkCompare", CompareFrameworkBenchmarks::class.java) { task ->
             task.group = "verification"

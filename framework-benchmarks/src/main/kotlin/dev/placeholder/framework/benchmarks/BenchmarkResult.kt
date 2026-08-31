@@ -64,7 +64,8 @@ public data class MeasurementEnvironment(
             cpuModel = detectCpuModel(),
             jvmVendor = System.getProperty("java.vendor"),
             jvmVersion = System.getProperty("java.runtime.version"),
-            jvmArguments = ManagementFactory.getRuntimeMXBean().inputArguments.toList(),
+            jvmArguments = ManagementFactory.getRuntimeMXBean().inputArguments
+                .filterNot { argument -> argument.startsWith("-Dframework.benchmark.") },
             garbageCollectors = ManagementFactory.getGarbageCollectorMXBeans().map { it.name }.sorted(),
             kotlinVersion = KotlinVersion.CURRENT.toString(),
             frameworkVersion = frameworkVersion,
