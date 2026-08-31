@@ -1,0 +1,80 @@
+public abstract interface annotation class dev/placeholder/framework/events/Events : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class dev/placeholder/framework/events/ExcludeEventContributions : java/lang/annotation/Annotation {
+	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public abstract interface annotation class dev/placeholder/framework/events/On : java/lang/annotation/Annotation {
+	public abstract fun ignoreCancelled ()Z
+	public abstract fun priority ()Lorg/bukkit/event/EventPriority;
+}
+
+public final class dev/placeholder/framework/events/ServerEventFailure {
+	public fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Throwable;)V
+	public final fun component1 ()Lkotlin/reflect/KClass;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lkotlin/reflect/KClass;
+	public final fun component4 ()Ljava/lang/Throwable;
+	public final fun copy (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Throwable;)Ldev/placeholder/framework/events/ServerEventFailure;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/events/ServerEventFailure;Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Throwable;ILjava/lang/Object;)Ldev/placeholder/framework/events/ServerEventFailure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getEventSet ()Lkotlin/reflect/KClass;
+	public final fun getEventType ()Lkotlin/reflect/KClass;
+	public final fun getHandler ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/events/ServerEventFailureReporter {
+	public abstract fun report (Ldev/placeholder/framework/events/ServerEventFailure;)V
+}
+
+public final class dev/placeholder/framework/events/codegen/EventBindingKt {
+	public static final fun invalidEventHandler (I)Ljava/lang/Void;
+}
+
+public abstract interface class dev/placeholder/framework/events/codegen/EventSetContribution {
+	public abstract fun getDefinition ()Ldev/placeholder/framework/events/codegen/EventSetDefinition;
+	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
+	public abstract fun invoke (Ljava/lang/Object;ILorg/bukkit/event/Event;)V
+}
+
+public final class dev/placeholder/framework/events/codegen/EventSetDefinition {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Ldev/placeholder/framework/events/codegen/EventSetDefinition;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/events/codegen/EventSetDefinition;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/events/codegen/EventSetDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHandlers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/events/codegen/ServerEventHandlerDefinition {
+	public fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlin/reflect/KClass;
+	public final fun component3 ()Lorg/bukkit/event/EventPriority;
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;Z)Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZILjava/lang/Object;)Ldev/placeholder/framework/events/codegen/ServerEventHandlerDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEventType ()Lkotlin/reflect/KClass;
+	public final fun getIgnoreCancelled ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPriority ()Lorg/bukkit/event/EventPriority;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/events/internal/EventRuntimeComponent : dev/placeholder/framework/PluginComponent {
+	public fun <init> (Ldev/placeholder/framework/di/DependencyGraph;)V
+}
+
+public final class dev/placeholder/framework/generated/FrameworkDependencyContributions_1c3624a19905 : dev/placeholder/framework/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}

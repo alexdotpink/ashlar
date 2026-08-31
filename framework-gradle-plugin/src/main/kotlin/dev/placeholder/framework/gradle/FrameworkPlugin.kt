@@ -105,10 +105,16 @@ public class FrameworkPlugin : Plugin<Project> {
         dependencies.add("implementation", bom)
         dependencies.add("implementation", "dev.placeholder.framework:kernel")
         dependencies.add("compileOnly", "io.papermc.paper:paper-api:$paperVersion")
+        if (extension.commandsEnabled || extension.eventsEnabled) {
+            dependencies.add("ksp", "dev.placeholder.framework:framework-di-ksp")
+        }
         if (extension.commandsEnabled) {
             dependencies.add("implementation", "dev.placeholder.framework:framework-commands")
-            dependencies.add("ksp", "dev.placeholder.framework:framework-di-ksp")
             dependencies.add("ksp", "dev.placeholder.framework:framework-commands-ksp")
+        }
+        if (extension.eventsEnabled) {
+            dependencies.add("implementation", "dev.placeholder.framework:framework-events")
+            dependencies.add("ksp", "dev.placeholder.framework:framework-events-ksp")
         }
     }
 }

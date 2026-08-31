@@ -76,6 +76,29 @@ class FrameworkPluginTest {
     }
 
     @Test
+    fun `events enables runtime and both focused processors`() {
+        val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
+        project.version = "1.2.3"
+        project.pluginManager.apply(FrameworkPlugin::class.java)
+        val extension = project.extensions.getByType(FrameworkPluginExtension::class.java)
+
+        extension.mainClass.set("example.ExamplePlugin")
+        extension.events()
+        project.extensions.getByType(JavaPluginExtension::class.java)
+            .toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        (project as ProjectInternal).evaluate()
+
+        assertTrue(project.pluginManager.hasPlugin("com.google.devtools.ksp"))
+        assertTrue(project.configurations.getByName("implementation").dependencies.any {
+            it.name == "framework-events"
+        })
+        assertEquals(
+            setOf("framework-di-ksp", "framework-events-ksp"),
+            project.configurations.getByName("ksp").dependencies.mapTo(mutableSetOf()) { it.name },
+        )
+    }
+
+    @Test
     fun `managed version overrides require an explicit reason`() {
         val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
         val extension = project.objects.newInstance(FrameworkPluginExtension::class.java, project)

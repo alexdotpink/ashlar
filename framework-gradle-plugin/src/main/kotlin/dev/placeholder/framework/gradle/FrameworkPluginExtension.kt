@@ -38,6 +38,8 @@ public abstract class FrameworkPluginExtension @Inject constructor(private val p
     private var versionOverridesAllowed: Boolean = false
     internal var commandsEnabled: Boolean = false
         private set
+    internal var eventsEnabled: Boolean = false
+        private set
 
     /** Enables the typed command runtime and its two small KSP processors. */
     public fun commands(strictDocumentation: Boolean = false) {
@@ -47,6 +49,13 @@ public abstract class FrameworkPluginExtension @Inject constructor(private val p
         project.extensions.configure(KspExtension::class.java) { ksp ->
             ksp.arg("framework.commands.strictDocumentation", strictDocumentation.toString())
         }
+    }
+
+    /** Enables the typed event runtime and its small KSP processor. */
+    public fun events() {
+        if (eventsEnabled) return
+        eventsEnabled = true
+        project.pluginManager.apply("com.google.devtools.ksp")
     }
 
     /**

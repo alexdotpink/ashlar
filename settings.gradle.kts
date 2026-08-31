@@ -35,6 +35,8 @@ include(
     "framework-di-ksp",
     "framework-commands",
     "framework-commands-ksp",
+    "framework-events",
+    "framework-events-ksp",
     "framework-gradle-plugin",
     "framework-bom",
     "framework-testkit",

@@ -66,6 +66,9 @@ internal class DiProcessor(
         resolver.getSymbolsWithAnnotation(COMMAND_FRAGMENT)
             .filterIsInstance<KSClassDeclaration>()
             .forEach { declaration -> processFactory(declaration, deferred) }
+        resolver.getSymbolsWithAnnotation(EVENTS)
+            .filterIsInstance<KSClassDeclaration>()
+            .forEach { declaration -> processFactory(declaration, deferred) }
         return deferred
     }
 
@@ -133,5 +136,6 @@ internal class DiProcessor(
         const val CONTRIBUTES = "dev.placeholder.framework.di.Contributes"
         const val COMMANDS = "dev.placeholder.framework.commands.Commands"
         const val COMMAND_FRAGMENT = "dev.placeholder.framework.commands.CommandFragment"
+        const val EVENTS = "dev.placeholder.framework.events.Events"
     }
 }

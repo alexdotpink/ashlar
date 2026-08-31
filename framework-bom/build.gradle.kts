@@ -19,6 +19,8 @@ dependencies {
         api(project(":framework-di-ksp"))
         api(project(":framework-commands"))
         api(project(":framework-commands-ksp"))
+        api(project(":framework-events"))
+        api(project(":framework-events-ksp"))
         api(project(":framework-testkit"))
         api(project(":framework-incubator"))
         api("dev.placeholder.framework:framework-gradle-plugin:${project.version}")
