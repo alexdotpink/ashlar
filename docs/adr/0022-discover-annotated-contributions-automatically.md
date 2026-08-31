@@ -1,0 +1,3 @@
+# Discover annotated contributions automatically
+
+KSP will emit one linear contribution index and service-provider entry per compiled module. Before the kernel starts, each framework plug-in loads indexes from its isolated classloader and automatically installs discovered command sets, fragments, argument codecs, suggestion providers, response codecs, renderers, message providers, and observers. Custom policy interceptor classes use generated constructor factories referenced by typed policy metadata. Generated indexes contain typed metadata only; deterministic naming still locates direct constructor factories. Duplicate single bindings and ambiguous routes fail atomically, while a validated plug-in annotation may exclude unwanted library contributions.

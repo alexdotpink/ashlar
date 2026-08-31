@@ -1,0 +1,3 @@
+# Auto-install root components through DI
+
+KSP contribution indexes may automatically install annotated root `PluginComponent` classes, and their injected dependencies determine a validated topological startup order. Components bind their concrete types automatically and use `@Binds` for additional interface types. Qualified external instances remain explicit graph bindings. The kernel remains the sole lifecycle authority, nested component ownership stays explicit, and generated command components start only after all application roots. This supersedes ADR 0002’s static root-declaration mechanism while retaining its module/component distinction and lifecycle behavior.

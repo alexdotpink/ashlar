@@ -1,0 +1,3 @@
+# Keep server-free command tests focused
+
+The command test harness executes generated bindings, token parsing, option scanning, codecs, invocation DI scopes, direct handlers, and basic result conversion through the same immutable plans used in production. Policy, observer, help, Paper registration, delivery, and executor-retirement integration remain runtime unit tests and real Paper/Folia fixtures. The harness does not fake Paper entity, block, region, or world access. This narrower boundary replaced the original plan for one complete server-free runtime harness because the production pipeline depends on lifecycle and Paper delivery behavior.

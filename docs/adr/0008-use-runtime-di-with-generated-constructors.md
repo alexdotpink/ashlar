@@ -1,0 +1,3 @@
+# Use runtime DI with generated constructors
+
+The framework will provide one plug-in-owned dependency graph with plugin, command-invocation, and factory lifetimes. KSP will generate direct constructor factories only; ordinary runtime Kotlin will own resolution, qualifiers, caching, cycle detection, and diagnostics. The kernel remains the sole lifecycle authority for `PluginComponent` instances, automatically binds their concrete types after construction, and requires explicit declarations for interface or qualified bindings. This supersedes ADR 0002 only where it rejected dependency injection; its module/component distinction and lifecycle rules remain unchanged.

@@ -88,7 +88,7 @@ public annotation class Sensitive
 @Retention(AnnotationRetention.BINARY)
 public annotation class Observed
 
-/** Marks a dynamic requirement which may reveal the route in help after denial. */
+/** Reserved marker for restricted route visibility; not consumed by the current command compiler. */
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
 public annotation class Restricted

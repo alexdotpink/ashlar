@@ -1,0 +1,57 @@
+# Managed Gradle plug-in reference
+
+Apply `dev.placeholder.framework` to a Kotlin JVM plug-in project:
+
+```kotlin
+plugins {
+    id("dev.placeholder.framework") version "0.1.0-SNAPSHOT"
+}
+
+frameworkPlugin {
+    pluginName.set("Homes")
+    mainClass.set("dev.example.homes.HomesPlugin")
+    description.set("Player homes")
+    authors.add("Example")
+    website.set("https://example.invalid")
+    foliaSupported()
+    commands(strictDocumentation = true)
+}
+```
+
+## Managed behavior
+
+The plug-in applies Kotlin/JVM and Shadow, selects the Java 25 toolchain and JVM target, enables Kotlin progressive mode and Java parameter metadata, adds Paper's repository, and adds the framework BOM, kernel, DI runtime, Paper API, and required KSP processor. `commands()` also adds the command runtime and command KSP processor.
+
+The ordinary `jar` receives the `plain` classifier. The unclassified `shadowJar` is the distributable plug-in JAR and merges service files so generated contribution indexes remain discoverable. Paper is compile-only.
+
+## Extension
+
+| Member | Meaning |
+| --- | --- |
+| `pluginName` | Required Paper plug-in name |
+| `mainClass` | Required fully qualified `FrameworkPlugin` subclass |
+| `description` | Optional descriptor description |
+| `authors` | Descriptor author list |
+| `website` | Optional descriptor website |
+| `foliaSupported()` | Writes `folia-supported: true`; call only after testing Folia |
+| `commands(strictDocumentation)` | Enables commands; strict mode turns missing route summaries into KSP errors |
+| `allowVersionOverrides(reason)` | Enables deliberate version overrides and records why |
+| `frameworkVersion(version)` | Overrides the aligned framework version after overrides are enabled |
+| `paperApiVersion(version)` | Overrides the Paper API version after overrides are enabled |
+
+Versions are intentionally locked by default. Call `allowVersionOverrides` with a non-blank reason before either override.
+
+## Descriptor generation
+
+`generateFrameworkPluginYaml` generates `plugin.yml` from the extension and project metadata. It writes name, project version, main class, API version, Folia support, description, website, and authors when present.
+
+Do not add `src/main/resources/plugin.yml`. The task fails when a handwritten descriptor exists, preventing two conflicting sources of truth.
+
+## Useful tasks
+
+```bash
+./gradlew generateFrameworkPluginYaml
+./gradlew shadowJar
+```
+
+The generated descriptor is included in the shaded JAR. Use the unclassified JAR from `build/libs` on the server.
