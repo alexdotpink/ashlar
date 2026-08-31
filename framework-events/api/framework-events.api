@@ -205,3 +205,4 @@ public final class dev/placeholder/framework/generated/FrameworkDependencyContri
 	public fun getContributions ()Ljava/util/List;
 	public fun getRootComponents ()Ljava/util/List;
 }
+
