@@ -5,6 +5,7 @@ import java.nio.file.Path
 import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -164,7 +165,7 @@ internal class MenuTransactionEngineTest {
     }
 
     @Test
-    fun `transaction journal round trips the complete detached proposal`() = runTest {
+    fun `transaction journal rejects detached snapshots`() = runTest {
         val journal = FileMenuTransactionJournal(temporaryDirectory.resolve("journal"))
         val before = snapshot(SOURCE, listOf(diamonds(3)))
         val after = MenuStorageSnapshot(SOURCE, 1, listOf(diamonds(2)))
@@ -177,23 +178,19 @@ internal class MenuTransactionEngineTest {
             emissions = listOf(MenuTransactionEmission.Drop(dirt(1))),
         )
 
-        journal.record(JournaledMenuTransaction("vault", proposal))
-        assertEquals(proposal, journal.pending().single().proposal)
-        journal.complete(proposal.id)
-        assertTrue(journal.pending().isEmpty())
+        assertFailsWith<IllegalStateException> {
+            journal.record(JournaledMenuTransaction("vault", proposal))
+        }
     }
 
     @Test
-    fun `recovery mailbox retains exact items until acknowledgement`() = runTest {
+    fun `recovery mailbox rejects detached snapshots`() = runTest {
         val mailbox = FileItemRecoveryMailbox(temporaryDirectory.resolve("mailbox"))
         val player = UUID.randomUUID()
-        val deposited = mailbox.deposit(player, listOf(diamonds(4), dirt(2)))
 
-        assertEquals(deposited, mailbox.pending(player))
-        mailbox.acknowledge(player, setOf(deposited.first().id))
-        assertEquals(listOf(deposited.last()), mailbox.pending(player))
-        mailbox.acknowledge(player, setOf(deposited.last().id))
-        assertTrue(mailbox.pending(player).isEmpty())
+        assertFailsWith<IllegalStateException> {
+            mailbox.deposit(player, listOf(diamonds(4), dirt(2)))
+        }
     }
 
     private fun engine(snapshot: MenuStorageSnapshot): MenuTransactionEngine = MenuTransactionEngine(

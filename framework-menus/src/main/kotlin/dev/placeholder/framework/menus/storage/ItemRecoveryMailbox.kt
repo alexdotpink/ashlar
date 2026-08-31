@@ -25,6 +25,8 @@ import java.util.concurrent.ConcurrentHashMap
 /** One durable item waiting for safe delivery to a player. */
 public data class RecoveredMenuItem(
     public val id: UUID,
+    /** Stable source identifier which makes replayed deposits idempotent. */
+    public val deliveryId: UUID,
     public val playerId: UUID,
     public val item: ItemSnapshot,
     public val storedAt: Instant,
@@ -32,8 +34,16 @@ public data class RecoveredMenuItem(
 
 /** Durable overflow storage used when a menu cannot return an item to live inventory. */
 public interface ItemRecoveryMailbox {
+    /** Stores one replay-safe delivery, returning the existing records when [deliveryId] is repeated. */
+    public suspend fun deposit(
+        deliveryId: UUID,
+        playerId: UUID,
+        items: List<ItemSnapshot>,
+    ): List<RecoveredMenuItem>
+
     /** Stores exact [items] before their source cursor or transaction is acknowledged. */
-    public suspend fun deposit(playerId: UUID, items: List<ItemSnapshot>): List<RecoveredMenuItem>
+    public suspend fun deposit(playerId: UUID, items: List<ItemSnapshot>): List<RecoveredMenuItem> =
+        deposit(UUID.randomUUID(), playerId, items)
 
     /** Returns pending items in insertion order. */
     public suspend fun pending(playerId: UUID): List<RecoveredMenuItem>
@@ -50,16 +60,29 @@ public class FileItemRecoveryMailbox(
 ) : ItemRecoveryMailbox {
     private val locks: ConcurrentHashMap<UUID, Mutex> = ConcurrentHashMap()
 
-    override suspend fun deposit(playerId: UUID, items: List<ItemSnapshot>): List<RecoveredMenuItem> {
+    override suspend fun deposit(
+        deliveryId: UUID,
+        playerId: UUID,
+        items: List<ItemSnapshot>,
+    ): List<RecoveredMenuItem> {
         if (items.isEmpty()) return emptyList()
         return lock(playerId).withLock {
             withContext(dispatcher) {
                 val current = read(playerId).toMutableList()
+                val replay = current.filter { entry -> entry.deliveryId == deliveryId }
+                if (replay.isNotEmpty()) {
+                    require(replay.map(RecoveredMenuItem::item) == items) {
+                        "Recovery delivery $deliveryId was replayed with a different payload"
+                    }
+                    return@withContext replay
+                }
                 require(current.size + items.size <= MAX_ITEMS_PER_PLAYER) {
                     "Recovery mailbox for $playerId exceeds $MAX_ITEMS_PER_PLAYER items"
                 }
                 val now = clock.instant().truncatedTo(ChronoUnit.MILLIS)
-                val added = items.map { item -> RecoveredMenuItem(UUID.randomUUID(), playerId, item, now) }
+                val added = items.mapIndexed { index, item ->
+                    RecoveredMenuItem(deliveryEntryId(deliveryId, index), deliveryId, playerId, item, now)
+                }
                 current += added
                 write(playerId, current)
                 added
@@ -106,6 +129,10 @@ public class FileItemRecoveryMailbox(
 
     private fun path(playerId: UUID): Path = directory.resolve("$playerId.fmri")
 
+    private fun deliveryEntryId(deliveryId: UUID, index: Int): UUID = UUID.nameUUIDFromBytes(
+        "$deliveryId:$index".encodeToByteArray(),
+    )
+
     private companion object {
         const val MAX_ITEMS_PER_PLAYER: Int = 10_000
     }
@@ -113,7 +140,7 @@ public class FileItemRecoveryMailbox(
 
 private object RecoveryMailboxEncoding {
     private val magic: ByteArray = byteArrayOf('F'.code.toByte(), 'M'.code.toByte(), 'R'.code.toByte(), 'I'.code.toByte())
-    private const val VERSION: Int = 1
+    private const val VERSION: Int = 2
     private const val MAX_FILE_BYTES: Int = 64 * 1024 * 1024
 
     fun encode(items: List<RecoveredMenuItem>): ByteArray {
@@ -123,6 +150,8 @@ private object RecoveryMailboxEncoding {
             for (entry in items) {
                 output.writeLong(entry.id.mostSignificantBits)
                 output.writeLong(entry.id.leastSignificantBits)
+                output.writeLong(entry.deliveryId.mostSignificantBits)
+                output.writeLong(entry.deliveryId.leastSignificantBits)
                 output.writeLong(entry.storedAt.toEpochMilli())
                 val item = entry.item.encode()
                 output.writeInt(item.size)
@@ -148,23 +177,24 @@ private object RecoveryMailboxEncoding {
             val actualMagic = ByteArray(magic.size).also(input::readFully)
             require(actualMagic.contentEquals(magic)) { "Recovery mailbox magic is invalid" }
             val version = input.readUnsignedByte()
-            require(version == VERSION) { "Unsupported recovery mailbox version $version" }
+            require(version in 1..VERSION) { "Unsupported recovery mailbox version $version" }
             val size = input.readInt()
             require(size in 1..MAX_FILE_BYTES) { "Invalid recovery mailbox size $size" }
             val body = ByteArray(size).also(input::readFully)
             val digest = ByteArray(32).also(input::readFully)
             require(input.available() == 0) { "Trailing recovery mailbox bytes" }
             require(MessageDigest.isEqual(digest, body.sha256())) { "Recovery mailbox checksum does not match" }
-            decodeBody(playerId, body)
+            decodeBody(playerId, body, version)
         }
     }
 
-    private fun decodeBody(playerId: UUID, body: ByteArray): List<RecoveredMenuItem> =
+    private fun decodeBody(playerId: UUID, body: ByteArray, version: Int): List<RecoveredMenuItem> =
         DataInputStream(ByteArrayInputStream(body)).use { input ->
             val count = input.readInt()
             require(count in 0..10_000) { "Invalid recovery mailbox item count $count" }
             val result = List(count) {
                 val id = UUID(input.readLong(), input.readLong())
+                val deliveryId = if (version >= 2) UUID(input.readLong(), input.readLong()) else id
                 val storedAt = Instant.ofEpochMilli(input.readLong())
                 val size = input.readInt()
                 require(size in 1..ItemSnapshot.MAX_ENCODED_BYTES + 256) { "Invalid recovered item size $size" }
@@ -174,8 +204,9 @@ private object RecoveryMailboxEncoding {
                     is ItemSnapshotDecode.Corrupt -> error(decoded.message)
                     is ItemSnapshotDecode.Malformed -> error(decoded.message)
                     is ItemSnapshotDecode.UnsupportedVersion -> error("Unsupported item version ${decoded.version}")
+                    is ItemSnapshotDecode.NativeIncompatible -> error(decoded.message)
                 }
-                RecoveredMenuItem(id, playerId, snapshot, storedAt)
+                RecoveredMenuItem(id, deliveryId, playerId, snapshot, storedAt)
             }
             require(input.available() == 0) { "Trailing recovery mailbox body bytes" }
             result

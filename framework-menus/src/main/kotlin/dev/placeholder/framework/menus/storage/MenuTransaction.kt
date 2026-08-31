@@ -35,6 +35,8 @@ public data class MenuTransactionProposal(
     public val cursorBefore: ItemSnapshot?,
     public val cursorAfter: ItemSnapshot?,
     public val emissions: List<MenuTransactionEmission> = emptyList(),
+    /** Stable player-section identities required to settle an accepted proposal after restart. */
+    public val playerStorages: Map<PlayerInventorySection, MenuStorageId> = emptyMap(),
 ) {
     init {
         require(changes.isNotEmpty() || cursorBefore != cursorAfter || emissions.isNotEmpty()) {
@@ -42,6 +44,9 @@ public data class MenuTransactionProposal(
         }
         require(changes.all { (id, change) -> id == change.before.id }) {
             "Transaction change keys must match their storage identities"
+        }
+        require(playerStorages.isEmpty() || playerId != null) {
+            "Player storage identities require a player identifier"
         }
     }
 
@@ -126,4 +131,7 @@ public sealed interface MenuTransactionFailure {
 
     /** Persistent participants do not share one transaction domain. */
     public data object MissingTransactionDomain : MenuTransactionFailure
+
+    /** World drops cannot yet be replayed safely after an ambiguous durable commit. */
+    public data object DurableEmissionUnsupported : MenuTransactionFailure
 }

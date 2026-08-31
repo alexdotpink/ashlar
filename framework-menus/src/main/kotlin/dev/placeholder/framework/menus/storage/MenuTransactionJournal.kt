@@ -74,7 +74,7 @@ public class FileMenuTransactionJournal(
 
 private object TransactionJournalEncoding {
     private val magic: ByteArray = byteArrayOf('F'.code.toByte(), 'M'.code.toByte(), 'T'.code.toByte(), 'X'.code.toByte())
-    private const val VERSION: Int = 1
+    private const val VERSION: Int = 2
     private const val MAX_ENTRY_BYTES: Int = 64 * 1024 * 1024
 
     fun encode(entry: JournaledMenuTransaction): ByteArray {
@@ -84,6 +84,12 @@ private object TransactionJournalEncoding {
             output.writeUTF(entry.domainId)
             output.writeUuid(entry.proposal.id.value)
             output.writeNullableUuid(entry.proposal.playerId)
+            output.writeInt(entry.proposal.playerStorages.size)
+            for ((section, storageId) in entry.proposal.playerStorages.toSortedMap()) {
+                output.writeByte(section.ordinal)
+                output.writeUTF(storageId.namespace)
+                output.writeUTF(storageId.value)
+            }
             output.writeInt(entry.proposal.changes.size)
             for ((id, change) in entry.proposal.changes.toSortedMap(compareBy(MenuStorageId::toString))) {
                 output.writeUTF(id.namespace)
@@ -120,22 +126,39 @@ private object TransactionJournalEncoding {
             val actualMagic = ByteArray(magic.size).also(input::readFully)
             require(actualMagic.contentEquals(magic)) { "Transaction journal magic is invalid" }
             val version = input.readUnsignedByte()
-            require(version == VERSION) { "Unsupported transaction journal version $version" }
+            require(version in 1..VERSION) { "Unsupported transaction journal version $version" }
             val bodySize = input.readInt()
             require(bodySize in 1..MAX_ENTRY_BYTES) { "Invalid transaction journal body size $bodySize" }
             val body = ByteArray(bodySize).also(input::readFully)
             val digest = ByteArray(32).also(input::readFully)
             require(input.available() == 0) { "Trailing transaction journal bytes" }
             require(MessageDigest.isEqual(digest, body.sha256())) { "Transaction journal checksum does not match" }
-            decodeBody(body)
+            decodeBody(body, version)
         }
     }
 
-    private fun decodeBody(body: ByteArray): JournaledMenuTransaction =
+    private fun decodeBody(body: ByteArray, version: Int): JournaledMenuTransaction =
         DataInputStream(ByteArrayInputStream(body)).use { input ->
             val domainId = input.readUTF()
             val transactionId = MenuTransactionId(input.readUuid())
             val playerId = input.readNullableUuid()
+            val playerStorages = if (version >= 2) {
+                val playerStorageCount = input.readInt()
+                require(playerStorageCount in 0..PlayerInventorySection.entries.size) {
+                    "Invalid journal player storage count $playerStorageCount"
+                }
+                buildMap {
+                    repeat(playerStorageCount) {
+                        val ordinal = input.readUnsignedByte()
+                        val section = PlayerInventorySection.entries.getOrNull(ordinal)
+                            ?: error("Unknown player inventory section $ordinal")
+                        val storageId = MenuStorageId(input.readUTF(), input.readUTF())
+                        require(put(section, storageId) == null) { "Duplicate journal player section $section" }
+                    }
+                }
+            } else {
+                emptyMap()
+            }
             val changeCount = input.readInt()
             require(changeCount in 0..1024) { "Invalid transaction storage count $changeCount" }
             val changes = linkedMapOf<MenuStorageId, MenuStorageChange>()
@@ -169,6 +192,7 @@ private object TransactionJournalEncoding {
                     cursorBefore = cursorBefore,
                     cursorAfter = cursorAfter,
                     emissions = emissions,
+                    playerStorages = playerStorages,
                 ),
             )
         }
@@ -202,6 +226,7 @@ private fun DataInputStream.readItem(): ItemSnapshot {
         is ItemSnapshotDecode.Corrupt -> error(decoded.message)
         is ItemSnapshotDecode.Malformed -> error(decoded.message)
         is ItemSnapshotDecode.UnsupportedVersion -> error("Unsupported item snapshot version ${decoded.version}")
+        is ItemSnapshotDecode.NativeIncompatible -> error(decoded.message)
     }
 }
 

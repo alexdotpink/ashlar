@@ -141,7 +141,10 @@ public class MenuTransactionEngine(
             is MenuStorageGesture.Drag -> mutable.drag(gesture.targets, gesture.mode)
         }
         if (failure != null) return MenuTransactionPlan.Rejected(failure)
-        return mutable.proposal(id, playerId) ?: MenuTransactionPlan.NoChange
+        val playerStorages = participantIds.entries.mapNotNull { (reference, storageId) ->
+            (reference as? MenuStorageReference.Player)?.section?.let { it to storageId }
+        }.toMap()
+        return mutable.proposal(id, playerId, playerStorages) ?: MenuTransactionPlan.NoChange
     }
 
     private fun resolve(reference: MenuStorageReference): MenuStorageId = when (reference) {
@@ -365,7 +368,11 @@ private class MutableTransactionState(
 
     private fun rule(address: MenuSlotAddress): MenuSlotRule = rules.getValue(address.storage)[address.index]
 
-    fun proposal(id: MenuTransactionId, playerId: UUID?): MenuTransactionPlan.Proposed? {
+    fun proposal(
+        id: MenuTransactionId,
+        playerId: UUID?,
+        playerStorages: Map<PlayerInventorySection, MenuStorageId>,
+    ): MenuTransactionPlan.Proposed? {
         val changes = linkedMapOf<MenuStorageId, MenuStorageChange>()
         for ((storageId, current) in slots) {
             val original = before.storages.getValue(storageId)
@@ -382,6 +389,7 @@ private class MutableTransactionState(
                 cursorBefore = before.cursor,
                 cursorAfter = cursor,
                 emissions = emissions.toList(),
+                playerStorages = playerStorages,
             ),
         )
     }

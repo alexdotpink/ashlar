@@ -3,6 +3,7 @@ package dev.placeholder.framework.menus.storage
 import dev.placeholder.framework.items.ItemSnapshot
 import net.kyori.adventure.text.Component
 import java.util.concurrent.ConcurrentHashMap
+import java.util.UUID
 
 /** Final accepted transaction state ready for native reconciliation and emissions. */
 public data class CommittedMenuTransaction(
@@ -18,6 +19,12 @@ public data class MenuNativeTransaction(
     public val committed: CommittedMenuTransaction,
     public val playerStorages: Map<PlayerInventorySection, MenuStorageId>,
 )
+
+/** Whether a native presentation durably installed an accepted player-bound transaction. */
+public enum class MenuNativeCommit {
+    Applied,
+    Unavailable,
+}
 
 /** Result of attempting one pessimistic transaction commit. */
 public sealed interface MenuTransactionSubmission {
@@ -38,7 +45,9 @@ public class MenuTransactionCoordinator(
         storages: Map<MenuStorageId, MenuStorage>,
         session: Any,
     ): MenuTransactionSubmission {
-        val lockKeys = proposal.resources.map { resource -> resource.lockKey(session) }.toSet()
+        val lockKeys = proposal.resources.map { resource ->
+            resource.lockKey(session, storages, proposal.playerId)
+        }.toSet()
         val acquired = mutableListOf<LockKey>()
         for (key in lockKeys.sortedBy(LockKey::sortKey)) {
             if (!locks.add(key)) {
@@ -79,6 +88,9 @@ public class MenuTransactionCoordinator(
         if (domain != null && persistent.any { it.id !in domain.storages }) {
             return MenuTransactionSubmission.Failed(MenuTransactionFailure.MissingTransactionDomain)
         }
+        if (domain != null && proposal.emissions.isNotEmpty()) {
+            return MenuTransactionSubmission.Failed(MenuTransactionFailure.DurableEmissionUnsupported)
+        }
 
         if (domain != null) journal?.record(JournaledMenuTransaction(domain.id, proposal))
         val authoritative = when (val decision = domain?.commit(proposal)) {
@@ -113,6 +125,12 @@ public class MenuTransactionCoordinator(
             ),
         )
     }
+
+    /** Returns whether [proposal] crosses an external persistence domain. */
+    internal fun isDurable(
+        proposal: MenuTransactionProposal,
+        storages: Map<MenuStorageId, MenuStorage>,
+    ): Boolean = proposal.changes.keys.any { id -> storages[id]?.transactionDomain != null }
 
     /** Clears a durable record after native state and recovery delivery are safely installed. */
     public suspend fun acknowledge(id: MenuTransactionId) {
@@ -172,17 +190,35 @@ private sealed interface LockKey {
         override val sortKey: String = "storage:$id"
     }
 
+    data class SessionStorage(val session: Any, val id: MenuStorageId) : LockKey {
+        override val sortKey: String = "session-storage:${System.identityHashCode(session)}:$id"
+    }
+
     data class Cursor(val session: Any) : LockKey {
         override val sortKey: String = "cursor:${System.identityHashCode(session)}"
     }
 
+    data class PlayerCursor(val playerId: UUID) : LockKey {
+        override val sortKey: String = "player-cursor:$playerId"
+    }
+
     fun publicResource(): MenuTransactionResource = when (this) {
         is Storage -> MenuTransactionResource.Storage(id)
+        is SessionStorage -> MenuTransactionResource.Storage(id)
         is Cursor -> MenuTransactionResource.Cursor
+        is PlayerCursor -> MenuTransactionResource.Cursor
     }
 }
 
-private fun MenuTransactionResource.lockKey(session: Any): LockKey = when (this) {
-    is MenuTransactionResource.Storage -> LockKey.Storage(id)
-    MenuTransactionResource.Cursor -> LockKey.Cursor(session)
+private fun MenuTransactionResource.lockKey(
+    session: Any,
+    storages: Map<MenuStorageId, MenuStorage>,
+    playerId: UUID?,
+): LockKey = when (this) {
+    is MenuTransactionResource.Storage -> if (storages[id]?.transactionDomain == null) {
+        LockKey.SessionStorage(session, id)
+    } else {
+        LockKey.Storage(id)
+    }
+    MenuTransactionResource.Cursor -> playerId?.let(LockKey::PlayerCursor) ?: LockKey.Cursor(session)
 }
