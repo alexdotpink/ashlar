@@ -1,0 +1,30 @@
+public final class dev/placeholder/framework/testkit/ComponentTestHarness : java/lang/AutoCloseable {
+	public fun close ()V
+	public final fun getComponent ()Ldev/placeholder/framework/PluginComponent;
+	public final fun start ()Ldev/placeholder/framework/PluginComponent;
+	public final fun stop ()Ldev/placeholder/framework/testkit/ComponentTestResult;
+}
+
+public final class dev/placeholder/framework/testkit/ComponentTestHarnessKt {
+	public static final fun componentTest-8Mi8wO0 (Ljava/lang/String;JLkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/testkit/ComponentTestHarness;
+	public static synthetic fun componentTest-8Mi8wO0$default (Ljava/lang/String;JLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Ldev/placeholder/framework/testkit/ComponentTestHarness;
+}
+
+public final class dev/placeholder/framework/testkit/ComponentTestResult {
+	public fun <init> (ZLjava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun checkSuccessful ()V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (ZLjava/util/List;Ljava/util/List;Ljava/util/List;)Ldev/placeholder/framework/testkit/ComponentTestResult;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/testkit/ComponentTestResult;ZLjava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/testkit/ComponentTestResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCriticalFailures ()Ljava/util/List;
+	public final fun getLifecycleFailures ()Ljava/util/List;
+	public final fun getTaskFailures ()Ljava/util/List;
+	public final fun getTasksDrained ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

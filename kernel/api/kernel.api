@@ -1,0 +1,146 @@
+public abstract interface class dev/placeholder/framework/ComponentContext : dev/placeholder/framework/PluginLoadContext {
+	public abstract fun criticalTask (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun criticalTask$default (Ldev/placeholder/framework/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public abstract fun getComponentName ()Ljava/lang/String;
+	public abstract fun getDependencies ()Ldev/placeholder/framework/di/DependencyResolver;
+	public abstract fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
+	public abstract fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Ldev/placeholder/framework/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public final class dev/placeholder/framework/ComponentContext$DefaultImpls {
+	public static synthetic fun criticalTask$default (Ldev/placeholder/framework/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Ldev/placeholder/framework/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public final class dev/placeholder/framework/ComponentPhase : java/lang/Enum {
+	public static final field APPLICATION Ldev/placeholder/framework/ComponentPhase;
+	public static final field FRAMEWORK Ldev/placeholder/framework/ComponentPhase;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/ComponentPhase;
+	public static fun values ()[Ldev/placeholder/framework/ComponentPhase;
+}
+
+public abstract interface annotation class dev/placeholder/framework/ExcludeContributions : java/lang/annotation/Annotation {
+	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public abstract interface annotation class dev/placeholder/framework/FrameworkComponent : java/lang/annotation/Annotation {
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun phase ()Ldev/placeholder/framework/ComponentPhase;
+}
+
+public abstract class dev/placeholder/framework/FrameworkPlugin : org/bukkit/plugin/java/JavaPlugin {
+	public fun <init> ()V
+	protected final fun component (Lkotlin/jvm/functions/Function0;)Lkotlin/properties/PropertyDelegateProvider;
+	protected fun configure (Ldev/placeholder/framework/di/DependencyGraph;)V
+	protected final fun criticalTask (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun criticalTask$default (Ldev/placeholder/framework/FrameworkPlugin;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	protected fun disable (Ldev/placeholder/framework/ComponentContext;)V
+	protected fun enable (Ldev/placeholder/framework/ComponentContext;)V
+	protected fun getTaskDrainTimeout-UwyO8pc ()J
+	protected final fun inject (Lkotlin/reflect/KClass;)Lkotlin/properties/ReadOnlyProperty;
+	protected fun load (Ldev/placeholder/framework/PluginLoadContext;)V
+	public final fun onDisable ()V
+	public final fun onEnable ()V
+	public final fun onLoad ()V
+	protected final fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
+	protected final fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Ldev/placeholder/framework/FrameworkPlugin;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	protected fun taskFailureReporter (Lnet/kyori/adventure/text/logger/slf4j/ComponentLogger;)Ldev/placeholder/framework/TaskFailureReporter;
+}
+
+public abstract class dev/placeholder/framework/PluginComponent {
+	public fun <init> ()V
+	protected final fun component (Lkotlin/jvm/functions/Function0;)Lkotlin/properties/PropertyDelegateProvider;
+	protected final fun criticalTask (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun criticalTask$default (Ldev/placeholder/framework/PluginComponent;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	protected final fun inject (Lkotlin/reflect/KClass;)Lkotlin/properties/ReadOnlyProperty;
+	protected final fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
+	protected fun start (Ldev/placeholder/framework/ComponentContext;)V
+	protected fun stop (Ldev/placeholder/framework/ComponentContext;)V
+	protected final fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Ldev/placeholder/framework/PluginComponent;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public abstract interface class dev/placeholder/framework/PluginLoadContext {
+	public abstract fun getLogger ()Lnet/kyori/adventure/text/logger/slf4j/ComponentLogger;
+	public abstract fun getPlugin ()Lorg/bukkit/plugin/Plugin;
+	public abstract fun getServer ()Lorg/bukkit/Server;
+}
+
+public final class dev/placeholder/framework/TaskFailure {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun component4 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Throwable;)Ldev/placeholder/framework/TaskFailure;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/TaskFailure;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Throwable;ILjava/lang/Object;)Ldev/placeholder/framework/TaskFailure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getComponentName ()Ljava/lang/String;
+	public final fun getCritical ()Z
+	public final fun getTaskName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/TaskFailureReporter {
+	public abstract fun report (Ldev/placeholder/framework/TaskFailure;)V
+}
+
+public final class dev/placeholder/framework/execution/EntityContext {
+	public final fun checkOwnership ()V
+	public final fun getEntity ()Lorg/bukkit/entity/Entity;
+}
+
+public abstract interface class dev/placeholder/framework/execution/EntityOutcome {
+	public fun onRetired (Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/execution/EntityOutcome;
+}
+
+public final class dev/placeholder/framework/execution/EntityOutcome$Completed : dev/placeholder/framework/execution/EntityOutcome {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Ldev/placeholder/framework/execution/EntityOutcome$Completed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/execution/EntityOutcome$Completed;Ljava/lang/Object;ILjava/lang/Object;)Ldev/placeholder/framework/execution/EntityOutcome$Completed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun onRetired (Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/execution/EntityOutcome;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/execution/EntityOutcome$DefaultImpls {
+	public static fun onRetired (Ldev/placeholder/framework/execution/EntityOutcome;Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/execution/EntityOutcome;
+}
+
+public final class dev/placeholder/framework/execution/EntityOutcome$Retired : dev/placeholder/framework/execution/EntityOutcome {
+	public static final field INSTANCE Ldev/placeholder/framework/execution/EntityOutcome$Retired;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun onRetired (Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/execution/EntityOutcome;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/execution/ExecutionKt {
+	public static final fun withEntity (Lorg/bukkit/plugin/Plugin;Lorg/bukkit/entity/Entity;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withGlobal (Lorg/bukkit/plugin/Plugin;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withRegion (Lorg/bukkit/plugin/Plugin;Lorg/bukkit/Location;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withRegion (Lorg/bukkit/plugin/Plugin;Lorg/bukkit/World;IILkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/execution/GlobalContext {
+	public final fun checkOwnership ()V
+}
+
+public final class dev/placeholder/framework/execution/OwnershipViolationException : java/lang/IllegalStateException {
+}
+
+public final class dev/placeholder/framework/execution/RegionContext {
+	public final fun checkOwnership ()V
+	public final fun getChunkX ()I
+	public final fun getChunkZ ()I
+	public final fun getWorld ()Lorg/bukkit/World;
+}
+
