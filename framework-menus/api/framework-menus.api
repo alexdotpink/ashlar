@@ -1,0 +1,1662 @@
+public final class dev/placeholder/framework/generated/FrameworkDependencyContributions_8eedf899ad99 : dev/placeholder/framework/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}
+
+public abstract class dev/placeholder/framework/menus/ActionSlotScope {
+	public abstract fun getItem ()Ldev/placeholder/framework/items/ItemSpec;
+	public abstract fun on (Ldev/placeholder/framework/menus/MenuGestureKind;Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun on$default (Ldev/placeholder/framework/menus/ActionSlotScope;Ldev/placeholder/framework/menus/MenuGestureKind;Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun onGesture (Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onGesture$default (Ldev/placeholder/framework/menus/ActionSlotScope;Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun onPrimary (Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onPrimary$default (Ldev/placeholder/framework/menus/ActionSlotScope;Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun onSecondary (Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onSecondary$default (Ldev/placeholder/framework/menus/ActionSlotScope;Ldev/placeholder/framework/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun setItem (Ldev/placeholder/framework/items/ItemSpec;)V
+}
+
+public final class dev/placeholder/framework/menus/ChestHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;ILjava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;ILjava/util/List;)Ldev/placeholder/framework/menus/ChestHostSnapshot;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/ChestHostSnapshot;Lnet/kyori/adventure/text/Component;ILjava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/ChestHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)Ldev/placeholder/framework/menus/MenuSlotSnapshot;
+	public final fun getRows ()I
+	public final fun getSlots ()Ljava/util/List;
+	public final fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class dev/placeholder/framework/menus/ChestScope : dev/placeholder/framework/menus/MenuScope {
+	public abstract fun getRows ()I
+	public abstract fun slot (ILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun slot$default (Ldev/placeholder/framework/menus/ChestScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class dev/placeholder/framework/menus/CollectedMenuState : kotlin/properties/ReadOnlyProperty {
+	public fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;
+	public final fun provideDelegate (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ldev/placeholder/framework/menus/CollectedMenuState;
+}
+
+public final class dev/placeholder/framework/menus/MenuActionConcurrency : java/lang/Enum {
+	public static final field PARALLEL Ldev/placeholder/framework/menus/MenuActionConcurrency;
+	public static final field RESTART_LATEST Ldev/placeholder/framework/menus/MenuActionConcurrency;
+	public static final field SINGLE_FLIGHT Ldev/placeholder/framework/menus/MenuActionConcurrency;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuActionConcurrency;
+	public static fun values ()[Ldev/placeholder/framework/menus/MenuActionConcurrency;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuActionScope {
+	public abstract fun close (Ldev/placeholder/framework/menus/MenuClose;)V
+	public static synthetic fun close$default (Ldev/placeholder/framework/menus/MenuActionScope;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)V
+	public abstract fun feedback (Ldev/placeholder/framework/menus/MenuFeedback;)V
+	public abstract fun finish (Ljava/lang/Object;)V
+}
+
+public final class dev/placeholder/framework/menus/MenuActionScope$DefaultImpls {
+	public static synthetic fun close$default (Ldev/placeholder/framework/menus/MenuActionScope;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)V
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuChoice {
+}
+
+public final class dev/placeholder/framework/menus/MenuChoice$Closed : dev/placeholder/framework/menus/MenuChoice {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuClose;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuClose;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuClose;)Ldev/placeholder/framework/menus/MenuChoice$Closed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuChoice$Closed;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuChoice$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ldev/placeholder/framework/menus/MenuClose;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuChoice$Selected : dev/placeholder/framework/menus/MenuChoice {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Ldev/placeholder/framework/menus/MenuChoice$Selected;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuChoice$Selected;Ljava/lang/Object;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuChoice$Selected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuClose {
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$CallerCancelled : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$CallerCancelled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$Died : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$Died;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$Disconnected : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$Disconnected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$Explicit : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$Explicit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$ExternalInventory : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$ExternalInventory;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$Failed : dev/placeholder/framework/menus/MenuClose {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Ldev/placeholder/framework/menus/MenuClose$Failed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuClose$Failed;Ljava/lang/Throwable;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuClose$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$Kicked : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$Kicked;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$PlayerClosed : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$PlayerClosed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$PluginStopped : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$PluginStopped;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuClose$Replaced : dev/placeholder/framework/menus/MenuClose {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuClose$Replaced;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuComponentPath {
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Ljava/lang/String;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Ldev/placeholder/framework/menus/MenuComponentPath;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuComponentPath;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuComponentPath;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun plus (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuComponentPath;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuDispatch {
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$Accepted : dev/placeholder/framework/menus/MenuDispatch {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuDispatch$Accepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$AlreadyRunning : dev/placeholder/framework/menus/MenuDispatch {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuDispatch$AlreadyRunning;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$Closed : dev/placeholder/framework/menus/MenuDispatch {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuDispatch$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$EmptySlot : dev/placeholder/framework/menus/MenuDispatch {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuDispatch$EmptySlot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$StaleRevision : dev/placeholder/framework/menus/MenuDispatch {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuDispatch$StaleRevision;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$TransactionRejected : dev/placeholder/framework/menus/MenuDispatch {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;)Ldev/placeholder/framework/menus/MenuDispatch$TransactionRejected;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuDispatch$TransactionRejected;Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuDispatch$TransactionRejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailure ()Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuDispatch$UnsupportedGesture : dev/placeholder/framework/menus/MenuDispatch {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuDispatch$UnsupportedGesture;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuEffectScope {
+	public abstract fun onDispose (Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class dev/placeholder/framework/menus/MenuEffectsKt {
+	public static final fun effect (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public static final fun launchedEffect (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class dev/placeholder/framework/menus/MenuFailure {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuComponentPath;Ljava/lang/Throwable;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuComponentPath;
+	public final fun component2 ()Ljava/lang/Throwable;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuComponentPath;Ljava/lang/Throwable;)Ldev/placeholder/framework/menus/MenuFailure;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuFailure;Ldev/placeholder/framework/menus/MenuComponentPath;Ljava/lang/Throwable;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuFailure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getPath ()Ldev/placeholder/framework/menus/MenuComponentPath;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuFeedback {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)Ldev/placeholder/framework/menus/MenuFeedback;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuFeedback;Lnet/kyori/adventure/text/Component;Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuFeedback;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public final fun getSeverity ()Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public final fun getTargetSlot ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuFeedbackSeverity : java/lang/Enum {
+	public static final field INFO Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public static final field REJECTION Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public static final field SUCCESS Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public static final field WARNING Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public static fun values ()[Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuGesture {
+	public abstract fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$Creative : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$Creative;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$DoubleClick : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$DoubleClick;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$Drag : dev/placeholder/framework/menus/MenuGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuDragMode;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuDragMode;)Ldev/placeholder/framework/menus/MenuGesture$Drag;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuGesture$Drag;Ldev/placeholder/framework/menus/storage/MenuDragMode;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuGesture$Drag;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public final fun getMode ()Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$DropOne : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$DropOne;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$DropStack : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$DropStack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$Middle : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$Middle;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$NumberKey : dev/placeholder/framework/menus/MenuGesture {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Ldev/placeholder/framework/menus/MenuGesture$NumberKey;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuGesture$NumberKey;IILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuGesture$NumberKey;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$Outside : dev/placeholder/framework/menus/MenuGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuOutsideButton;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuOutsideButton;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuOutsideButton;)Ldev/placeholder/framework/menus/MenuGesture$Outside;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuGesture$Outside;Ldev/placeholder/framework/menus/MenuOutsideButton;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuGesture$Outside;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getButton ()Ldev/placeholder/framework/menus/MenuOutsideButton;
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$Primary : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$Primary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$Secondary : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$Secondary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$ShiftPrimary : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$ShiftPrimary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$ShiftSecondary : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$ShiftSecondary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGesture$SwapOffhand : dev/placeholder/framework/menus/MenuGesture {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuGesture$SwapOffhand;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Ldev/placeholder/framework/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuGestureKind : java/lang/Enum {
+	public static final field CREATIVE Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field DOUBLE_CLICK Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field DRAG Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field DROP_ONE Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field DROP_STACK Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field MIDDLE Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field NUMBER_KEY Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field OUTSIDE Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field PRIMARY Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field SECONDARY Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field SHIFT_PRIMARY Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field SHIFT_SECONDARY Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static final field SWAP_OFFHAND Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuGestureKind;
+	public static fun values ()[Ldev/placeholder/framework/menus/MenuGestureKind;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuHostSnapshot {
+	public abstract fun getCapacity ()I
+}
+
+public final class dev/placeholder/framework/menus/MenuHostSnapshot$Chest : dev/placeholder/framework/menus/MenuHostSnapshot {
+	public fun <init> (Ldev/placeholder/framework/menus/ChestHostSnapshot;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/ChestHostSnapshot;
+	public final fun copy (Ldev/placeholder/framework/menus/ChestHostSnapshot;)Ldev/placeholder/framework/menus/MenuHostSnapshot$Chest;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuHostSnapshot$Chest;Ldev/placeholder/framework/menus/ChestHostSnapshot;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuHostSnapshot$Chest;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getChest ()Ldev/placeholder/framework/menus/ChestHostSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuInspection {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuRenderSnapshot;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuRenderSnapshot;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuRenderSnapshot;Ljava/util/List;Ljava/util/List;Ljava/util/List;)Ldev/placeholder/framework/menus/MenuInspection;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuInspection;Ldev/placeholder/framework/menus/MenuRenderSnapshot;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuInspection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveEffects ()Ljava/util/List;
+	public final fun getPendingActions ()Ljava/util/List;
+	public final fun getSnapshot ()Ldev/placeholder/framework/menus/MenuRenderSnapshot;
+	public final fun getTrace ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuInteraction {
+	public synthetic fun <init> (Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Ldev/placeholder/framework/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Ldev/placeholder/framework/menus/MenuGesture;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Ldev/placeholder/framework/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Ldev/placeholder/framework/menus/MenuGesture;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-8gqzS8o ()Ljava/util/UUID;
+	public final fun component10 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ldev/placeholder/framework/menus/PlayerInventorySlot;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ldev/placeholder/framework/menus/MenuGesture;
+	public final fun component9 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun copy-NzKgd7c (Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Ldev/placeholder/framework/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Ldev/placeholder/framework/menus/MenuGesture;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;)Ldev/placeholder/framework/menus/MenuInteraction;
+	public static synthetic fun copy-NzKgd7c$default (Ldev/placeholder/framework/menus/MenuInteraction;Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Ldev/placeholder/framework/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Ldev/placeholder/framework/menus/MenuGesture;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuInteraction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClicked ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getCursor ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getGesture ()Ldev/placeholder/framework/menus/MenuGesture;
+	public final fun getHostSlots ()Ljava/util/List;
+	public final fun getPlayer-8gqzS8o ()Ljava/util/UUID;
+	public final fun getPlayerInventory ()Ljava/util/Map;
+	public final fun getPlayerSlot ()Ldev/placeholder/framework/menus/PlayerInventorySlot;
+	public final fun getPlayerSlots ()Ljava/util/List;
+	public final fun getRevision ()J
+	public final fun getSlot ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuLocal {
+	public final fun getName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuLocalsKt {
+	public static final fun current (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/MenuLocal;)Ljava/lang/Object;
+	public static final fun menuLocal (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/menus/MenuLocal;
+	public static final fun provide (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/MenuLocal;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuNativeCallbacks {
+	public abstract fun closed (Ldev/placeholder/framework/menus/MenuNativeClose;)V
+	public abstract fun dispatch (Ldev/placeholder/framework/menus/MenuInteraction;)Ldev/placeholder/framework/menus/MenuDispatch;
+}
+
+public final class dev/placeholder/framework/menus/MenuNativeClose : java/lang/Enum {
+	public static final field DEATH Ldev/placeholder/framework/menus/MenuNativeClose;
+	public static final field DISCONNECT Ldev/placeholder/framework/menus/MenuNativeClose;
+	public static final field EXTERNAL_INVENTORY Ldev/placeholder/framework/menus/MenuNativeClose;
+	public static final field KICK Ldev/placeholder/framework/menus/MenuNativeClose;
+	public static final field PLAYER Ldev/placeholder/framework/menus/MenuNativeClose;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuNativeClose;
+	public static fun values ()[Ldev/placeholder/framework/menus/MenuNativeClose;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuNativeHost {
+	public abstract fun close (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun commitTransaction (Ldev/placeholder/framework/menus/storage/MenuNativeTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun feedback (Ldev/placeholder/framework/menus/MenuFeedback;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun mount (Ldev/placeholder/framework/menus/MenuRenderSnapshot;Ldev/placeholder/framework/menus/MenuNativeCallbacks;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun reconcile (Ldev/placeholder/framework/menus/MenuRenderSnapshot;Ldev/placeholder/framework/menus/MenuReconciliation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/menus/MenuNativeHost$DefaultImpls {
+	public static fun commitTransaction (Ldev/placeholder/framework/menus/MenuNativeHost;Ldev/placeholder/framework/menus/storage/MenuNativeTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun feedback (Ldev/placeholder/framework/menus/MenuNativeHost;Ldev/placeholder/framework/menus/MenuFeedback;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuNativeHostFactory {
+	public abstract fun create-GEWGidA (Ljava/util/UUID;)Ldev/placeholder/framework/menus/MenuNativeHost;
+}
+
+public final class dev/placeholder/framework/menus/MenuNavigationKt {
+	public static final fun navigator (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract class dev/placeholder/framework/menus/MenuNavigationScope {
+	public abstract fun getNavigator ()Ldev/placeholder/framework/menus/MenuNavigator;
+	public abstract fun screen (Lkotlin/jvm/functions/Function1;Ldev/placeholder/framework/menus/NativeClose;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun screen$default (Ldev/placeholder/framework/menus/MenuNavigationScope;Lkotlin/jvm/functions/Function1;Ldev/placeholder/framework/menus/NativeClose;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuNavigator {
+	public abstract fun back ()Z
+	public abstract fun close ()V
+	public abstract fun getCurrent ()Ljava/lang/Object;
+	public abstract fun getRoutes ()Ljava/util/List;
+	public abstract fun push (Ljava/lang/Object;)V
+	public abstract fun replace (Ljava/lang/Object;)V
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuOpen {
+}
+
+public final class dev/placeholder/framework/menus/MenuOpen$Closed : dev/placeholder/framework/menus/MenuOpen {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuClose;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuClose;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuClose;)Ldev/placeholder/framework/menus/MenuOpen$Closed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuOpen$Closed;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuOpen$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ldev/placeholder/framework/menus/MenuClose;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuOpen$Rejected : dev/placeholder/framework/menus/MenuOpen {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/MenuOpen$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuOpenConflict : java/lang/Enum {
+	public static final field REJECT Ldev/placeholder/framework/menus/MenuOpenConflict;
+	public static final field REPLACE Ldev/placeholder/framework/menus/MenuOpenConflict;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuOpenConflict;
+	public static fun values ()[Ldev/placeholder/framework/menus/MenuOpenConflict;
+}
+
+public final class dev/placeholder/framework/menus/MenuOutsideButton : java/lang/Enum {
+	public static final field PRIMARY Ldev/placeholder/framework/menus/MenuOutsideButton;
+	public static final field SECONDARY Ldev/placeholder/framework/menus/MenuOutsideButton;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuOutsideButton;
+	public static fun values ()[Ldev/placeholder/framework/menus/MenuOutsideButton;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuReconciliation {
+}
+
+public final class dev/placeholder/framework/menus/MenuReconciliation$Remount : dev/placeholder/framework/menus/MenuReconciliation {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuHostSnapshot;Ldev/placeholder/framework/menus/MenuHostSnapshot;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuHostSnapshot;
+	public final fun component2 ()Ldev/placeholder/framework/menus/MenuHostSnapshot;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuHostSnapshot;Ldev/placeholder/framework/menus/MenuHostSnapshot;)Ldev/placeholder/framework/menus/MenuReconciliation$Remount;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuReconciliation$Remount;Ldev/placeholder/framework/menus/MenuHostSnapshot;Ldev/placeholder/framework/menus/MenuHostSnapshot;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuReconciliation$Remount;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAfter ()Ldev/placeholder/framework/menus/MenuHostSnapshot;
+	public final fun getBefore ()Ldev/placeholder/framework/menus/MenuHostSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuReconciliation$Update : dev/placeholder/framework/menus/MenuReconciliation {
+	public fun <init> (ZLjava/util/Set;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/util/Set;
+	public final fun copy (ZLjava/util/Set;)Ldev/placeholder/framework/menus/MenuReconciliation$Update;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuReconciliation$Update;ZLjava/util/Set;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuReconciliation$Update;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChangedSlots ()Ljava/util/Set;
+	public final fun getTitleChanged ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuRenderSnapshot {
+	public fun <init> (JLdev/placeholder/framework/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;)V
+	public synthetic fun <init> (JLdev/placeholder/framework/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ldev/placeholder/framework/menus/MenuHostSnapshot;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/Set;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/util/List;
+	public final fun copy (JLdev/placeholder/framework/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;)Ldev/placeholder/framework/menus/MenuRenderSnapshot;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuRenderSnapshot;JLdev/placeholder/framework/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuRenderSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComponents ()Ljava/util/Set;
+	public final fun getHost ()Ldev/placeholder/framework/menus/MenuHostSnapshot;
+	public final fun getNavigation ()Ljava/util/List;
+	public final fun getRevision ()J
+	public final fun getStateCells ()Ljava/util/Map;
+	public final fun getStorageParticipants ()Ljava/util/Set;
+	public final fun getStorages ()Ljava/util/Map;
+	public final fun getTransferRoutes ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuRetry {
+	public abstract fun retry ()V
+}
+
+public abstract class dev/placeholder/framework/menus/MenuScope {
+	public final fun collectAsState (Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;)Ldev/placeholder/framework/menus/CollectedMenuState;
+	public final fun effect (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public final fun launchedEffect (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)V
+	public final fun local (Ldev/placeholder/framework/menus/MenuLocal;)Ljava/lang/Object;
+	public final fun provide (Ldev/placeholder/framework/menus/MenuLocal;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public final fun state (Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/menus/MenuState;
+}
+
+public final class dev/placeholder/framework/menus/MenuScopeKt {
+	public static final fun chest (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/String;ILkotlin/jvm/functions/Function1;)V
+	public static final fun chest (Ldev/placeholder/framework/menus/MenuScope;Lnet/kyori/adventure/text/Component;ILkotlin/jvm/functions/Function1;)V
+	public static final fun collectAsState (Ldev/placeholder/framework/menus/MenuScope;Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;)Ldev/placeholder/framework/menus/CollectedMenuState;
+	public static final fun component (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public static final fun errorBoundary (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun errorBoundary$default (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun flow (Ldev/placeholder/framework/menus/ChestScope;Ldev/placeholder/framework/menus/SlotRegion;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;Ldev/placeholder/framework/menus/RegionOverflow;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun flow$default (Ldev/placeholder/framework/menus/ChestScope;Ldev/placeholder/framework/menus/SlotRegion;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;Ldev/placeholder/framework/menus/RegionOverflow;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun playerInventory (Ldev/placeholder/framework/menus/MenuScope;[Ldev/placeholder/framework/menus/storage/PlayerInventorySection;)V
+	public static final fun region (Lkotlin/ranges/IntRange;Lkotlin/ranges/IntRange;)Ldev/placeholder/framework/menus/SlotRegion;
+	public static final fun row (I)Ldev/placeholder/framework/menus/SlotRegion;
+	public static final fun rows (Lkotlin/ranges/IntRange;)Ldev/placeholder/framework/menus/SlotRegion;
+	public static final fun slot (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/ChestScope;IILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static final fun slot (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/ChestScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun slot$default (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/ChestScope;IILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun slot$default (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/ChestScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun state (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Object;)Ldev/placeholder/framework/menus/MenuState;
+	public static final fun state (Ldev/placeholder/framework/menus/MenuScope;Lkotlin/jvm/functions/Function0;)Ldev/placeholder/framework/menus/MenuState;
+	public static final fun storage (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/ChestScope;Ldev/placeholder/framework/menus/storage/MenuStorage;Ldev/placeholder/framework/menus/SlotRegion;)V
+	public static final fun transfers (Ldev/placeholder/framework/menus/MenuScope;[Ldev/placeholder/framework/menus/storage/MenuTransferRoute;)V
+}
+
+public final class dev/placeholder/framework/menus/MenuSlotSnapshot {
+	public fun <init> (ILdev/placeholder/framework/menus/MenuComponentPath;Ldev/placeholder/framework/items/ItemSpec;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;)V
+	public synthetic fun <init> (ILdev/placeholder/framework/menus/MenuComponentPath;Ldev/placeholder/framework/items/ItemSpec;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ldev/placeholder/framework/menus/MenuComponentPath;
+	public final fun component3 ()Ldev/placeholder/framework/items/ItemSpec;
+	public final fun component4 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun component5 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun component6 ()Ljava/util/Set;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun copy (ILdev/placeholder/framework/menus/MenuComponentPath;Ldev/placeholder/framework/items/ItemSpec;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;)Ldev/placeholder/framework/menus/MenuSlotSnapshot;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuSlotSnapshot;ILdev/placeholder/framework/menus/MenuComponentPath;Ldev/placeholder/framework/items/ItemSpec;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuSlotSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActions ()Ljava/util/Set;
+	public final fun getIndex ()I
+	public final fun getItem ()Ldev/placeholder/framework/items/ItemSpec;
+	public final fun getLocals ()Ljava/util/Map;
+	public final fun getModifiers ()Ljava/util/List;
+	public final fun getOwner ()Ldev/placeholder/framework/menus/MenuComponentPath;
+	public final fun getStorage ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun getStoredItem ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuState : kotlin/properties/ReadWriteProperty {
+	public fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;
+	public final fun provideDelegate (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ldev/placeholder/framework/menus/MenuState;
+	public fun setValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;Ljava/lang/Object;)V
+}
+
+public abstract interface class dev/placeholder/framework/menus/MenuTrace {
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$ActionCompleted : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuTrace$ActionCompleted;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$ActionCompleted;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$ActionCompleted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentity ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$ActionStarted : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuTrace$ActionStarted;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$ActionStarted;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$ActionStarted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentity ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$Closed : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuClose;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuClose;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuClose;)Ldev/placeholder/framework/menus/MenuTrace$Closed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$Closed;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ldev/placeholder/framework/menus/MenuClose;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$Feedback : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun copy (Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)Ldev/placeholder/framework/menus/MenuTrace$Feedback;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$Feedback;Ldev/placeholder/framework/menus/MenuFeedbackSeverity;Ljava/lang/Integer;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$Feedback;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSeverity ()Ldev/placeholder/framework/menus/MenuFeedbackSeverity;
+	public final fun getTargetSlot ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$RenderCommitted : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (JLdev/placeholder/framework/menus/MenuReconciliation;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ldev/placeholder/framework/menus/MenuReconciliation;
+	public final fun copy (JLdev/placeholder/framework/menus/MenuReconciliation;)Ldev/placeholder/framework/menus/MenuTrace$RenderCommitted;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$RenderCommitted;JLdev/placeholder/framework/menus/MenuReconciliation;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$RenderCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReconciliation ()Ldev/placeholder/framework/menus/MenuReconciliation;
+	public final fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$TransactionCommitted : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuTrace$TransactionCommitted;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$TransactionCommitted;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$TransactionCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuTrace$TransactionRejected : dev/placeholder/framework/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/placeholder/framework/menus/MenuTrace$TransactionRejected;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/MenuTrace$TransactionRejected;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/menus/MenuTrace$TransactionRejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/MenuValidationException : java/lang/IllegalArgumentException {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getProblem ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/NativeClose : java/lang/Enum {
+	public static final field BACK Ldev/placeholder/framework/menus/NativeClose;
+	public static final field END_SESSION Ldev/placeholder/framework/menus/NativeClose;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/NativeClose;
+	public static fun values ()[Ldev/placeholder/framework/menus/NativeClose;
+}
+
+public final class dev/placeholder/framework/menus/PlayerInventorySlot {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/PlayerInventorySection;I)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public final fun component2 ()I
+	public final fun copy (Ldev/placeholder/framework/menus/storage/PlayerInventorySection;I)Ldev/placeholder/framework/menus/PlayerInventorySlot;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/PlayerInventorySlot;Ldev/placeholder/framework/menus/storage/PlayerInventorySection;IILjava/lang/Object;)Ldev/placeholder/framework/menus/PlayerInventorySlot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getSection ()Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/PlayerMenus : dev/placeholder/framework/PluginComponent, java/lang/AutoCloseable {
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Ldev/placeholder/framework/menus/MenuNativeHostFactory;)V
+	public fun <init> (Lorg/bukkit/plugin/Plugin;)V
+	public final fun choose-5TgjdDo (Ljava/util/UUID;Ldev/placeholder/framework/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun choose-5TgjdDo$default (Ldev/placeholder/framework/menus/PlayerMenus;Ljava/util/UUID;Ldev/placeholder/framework/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun close ()V
+	public final fun close-Zp1C9ko (Ljava/util/UUID;Ldev/placeholder/framework/menus/MenuClose;)Z
+	public static synthetic fun close-Zp1C9ko$default (Ldev/placeholder/framework/menus/PlayerMenus;Ljava/util/UUID;Ldev/placeholder/framework/menus/MenuClose;ILjava/lang/Object;)Z
+	public final fun inspect-GEWGidA (Ljava/util/UUID;)Ldev/placeholder/framework/menus/MenuInspection;
+	public final fun open-5TgjdDo (Ljava/util/UUID;Ldev/placeholder/framework/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun open-5TgjdDo$default (Ldev/placeholder/framework/menus/PlayerMenus;Ljava/util/UUID;Ldev/placeholder/framework/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/menus/RegionOverflow : java/lang/Enum {
+	public static final field CLIP Ldev/placeholder/framework/menus/RegionOverflow;
+	public static final field ERROR Ldev/placeholder/framework/menus/RegionOverflow;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/RegionOverflow;
+	public static fun values ()[Ldev/placeholder/framework/menus/RegionOverflow;
+}
+
+public final class dev/placeholder/framework/menus/SlotModifier {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Ldev/placeholder/framework/menus/SlotModifier;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/SlotModifier;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/menus/SlotModifier;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun plus (Ldev/placeholder/framework/menus/SlotModifier;)Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/SlotRegion {
+	public static final field Companion Ldev/placeholder/framework/menus/SlotRegion$Companion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSize ()I
+	public final fun getSlots ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/SlotRegion$Companion {
+	public final fun of (Ljava/lang/Iterable;)Ldev/placeholder/framework/menus/SlotRegion;
+	public final fun rectangle (Lkotlin/ranges/IntRange;Lkotlin/ranges/IntRange;)Ldev/placeholder/framework/menus/SlotRegion;
+	public final fun row (I)Ldev/placeholder/framework/menus/SlotRegion;
+	public final fun rows (Lkotlin/ranges/IntRange;)Ldev/placeholder/framework/menus/SlotRegion;
+}
+
+public abstract interface class dev/placeholder/framework/menus/standard/ContentState {
+}
+
+public final class dev/placeholder/framework/menus/standard/ContentState$Empty : dev/placeholder/framework/menus/standard/ContentState {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/standard/ContentState$Empty;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/standard/ContentState$Failed : dev/placeholder/framework/menus/standard/ContentState {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Ldev/placeholder/framework/menus/standard/ContentState$Failed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/standard/ContentState$Failed;Ljava/lang/Throwable;ILjava/lang/Object;)Ldev/placeholder/framework/menus/standard/ContentState$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/standard/ContentState$Loading : dev/placeholder/framework/menus/standard/ContentState {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/standard/ContentState$Loading;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/standard/ContentState$Ready : dev/placeholder/framework/menus/standard/ContentState {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Ldev/placeholder/framework/menus/standard/ContentState$Ready;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/standard/ContentState$Ready;Ljava/lang/Object;ILjava/lang/Object;)Ldev/placeholder/framework/menus/standard/ContentState$Ready;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/standard/PagedItems {
+	public final fun getPage ()I
+	public final fun getPageCount ()I
+	public final fun getVisible ()Ljava/util/List;
+	public final fun items (Ldev/placeholder/framework/menus/ChestScope;Ldev/placeholder/framework/menus/SlotRegion;Lkotlin/jvm/functions/Function3;)V
+	public final fun next ()Z
+	public final fun next (Ldev/placeholder/framework/menus/ChestScope;ILdev/placeholder/framework/items/ItemSpec;)V
+	public final fun previous ()Z
+	public final fun previous (Ldev/placeholder/framework/menus/ChestScope;ILdev/placeholder/framework/items/ItemSpec;)V
+}
+
+public final class dev/placeholder/framework/menus/standard/StandardMenuComponentsKt {
+	public static final fun backControl (Ldev/placeholder/framework/menus/ChestScope;ILdev/placeholder/framework/items/ItemSpec;Ldev/placeholder/framework/menus/MenuNavigator;)V
+	public static final fun border (Ldev/placeholder/framework/menus/ChestScope;Ldev/placeholder/framework/menus/SlotRegion;Ldev/placeholder/framework/items/ItemSpec;)V
+	public static final fun closeControl (Ldev/placeholder/framework/menus/ChestScope;ILdev/placeholder/framework/items/ItemSpec;)V
+	public static final fun confirmation (Ldev/placeholder/framework/menus/ChestScope;ILdev/placeholder/framework/items/ItemSpec;ILdev/placeholder/framework/items/ItemSpec;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public static final fun contentState (Ldev/placeholder/framework/menus/MenuScope;Ldev/placeholder/framework/menus/standard/ContentState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
+	public static final fun filler (Ldev/placeholder/framework/menus/ChestScope;Ldev/placeholder/framework/menus/SlotRegion;Ldev/placeholder/framework/items/ItemSpec;)V
+	public static final fun numberStepper (Ldev/placeholder/framework/menus/ChestScope;ILkotlin/ranges/IntRange;ILdev/placeholder/framework/items/ItemSpec;ILdev/placeholder/framework/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+	public static final fun paged (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/placeholder/framework/menus/standard/PagedItems;
+	public static synthetic fun paged$default (Ldev/placeholder/framework/menus/MenuScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;ILjava/lang/Object;)Ldev/placeholder/framework/menus/standard/PagedItems;
+	public static final fun selection (Ldev/placeholder/framework/menus/ChestScope;ILjava/lang/Object;Ldev/placeholder/framework/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+	public static final fun staticItem (Ldev/placeholder/framework/menus/ChestScope;ILdev/placeholder/framework/items/ItemSpec;)V
+	public static final fun tab (Ldev/placeholder/framework/menus/ChestScope;ILjava/lang/Object;Ldev/placeholder/framework/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+	public static final fun toggle (Ldev/placeholder/framework/menus/ChestScope;IZLdev/placeholder/framework/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class dev/placeholder/framework/menus/storage/CommittedMenuTransaction {
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1--RKRmio ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Z
+	public final fun copy-kxwYIyE (Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;Z)Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;
+	public static synthetic fun copy-kxwYIyE$default (Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;ZILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCursor ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getEmissions ()Ljava/util/List;
+	public final fun getId--RKRmio ()Ljava/util/UUID;
+	public final fun getRequiresAcknowledgement ()Z
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/FileItemRecoveryMailbox : dev/placeholder/framework/menus/storage/ItemRecoveryMailbox {
+	public fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;Ljava/time/Clock;)V
+	public synthetic fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;Ljava/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun acknowledge (Ljava/util/UUID;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deposit (Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun pending (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/menus/storage/FileMenuTransactionJournal : dev/placeholder/framework/menus/storage/MenuTransactionJournal {
+	public fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public synthetic fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun complete-kHl_n18 (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun pending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun record (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/ItemRecoveryMailbox {
+	public abstract fun acknowledge (Ljava/util/UUID;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deposit (Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun pending (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/menus/storage/JournaledMenuTransaction {
+	public fun <init> (Ljava/lang/String;Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;
+	public final fun copy (Ljava/lang/String;Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;)Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;Ljava/lang/String;Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDomainId ()Ljava/lang/String;
+	public final fun getProposal ()Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuDragMode : java/lang/Enum {
+	public static final field EVEN Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public static final field SINGLE Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public static fun values ()[Ldev/placeholder/framework/menus/storage/MenuDragMode;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuNativeTransaction {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;Ljava/util/Map;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;Ljava/util/Map;)Ldev/placeholder/framework/menus/storage/MenuNativeTransaction;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuNativeTransaction;Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;Ljava/util/Map;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuNativeTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCommitted ()Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;
+	public final fun getPlayerStorages ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuSlotAddress {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageId;I)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public final fun component2 ()I
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuStorageId;I)Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuStorageId;IILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getStorage ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuSlotRule {
+	public static final field Companion Ldev/placeholder/framework/menus/storage/MenuSlotRule$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAccepts ()Lkotlin/jvm/functions/Function1;
+	public final fun getCanExtract ()Lkotlin/jvm/functions/Function1;
+	public final fun getMaximumAmount ()Lkotlin/jvm/functions/Function1;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuSlotRule$Companion {
+	public final fun getLocked ()Ldev/placeholder/framework/menus/storage/MenuSlotRule;
+	public final fun getVanilla ()Ldev/placeholder/framework/menus/storage/MenuSlotRule;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuStorage {
+	public abstract fun getId ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public abstract fun getRules ()Ldev/placeholder/framework/menus/storage/MenuStorageRules;
+	public abstract fun getSnapshots ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun getTransactionDomain ()Ldev/placeholder/framework/menus/storage/MenuTransactionDomain;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageChange {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;
+	public final fun component2 ()Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;)Ldev/placeholder/framework/menus/storage/MenuStorageChange;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageChange;Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAfter ()Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;
+	public final fun getBefore ()Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public abstract fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$DoubleCollect : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DoubleCollect;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DoubleCollect;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DoubleCollect;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOrder ()Ljava/util/List;
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$Drag : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ljava/util/List;Ldev/placeholder/framework/menus/storage/MenuDragMode;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public final fun copy (Ljava/util/List;Ldev/placeholder/framework/menus/storage/MenuDragMode;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Drag;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Drag;Ljava/util/List;Ldev/placeholder/framework/menus/storage/MenuDragMode;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Drag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMode ()Ldev/placeholder/framework/menus/storage/MenuDragMode;
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun getTargets ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$DropCursor : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropCursor;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropCursor;ZILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropCursor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOne ()Z
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$DropOne : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropOne;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropOne;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropOne;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$DropStack : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropStack;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropStack;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$DropStack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$HotbarSwap : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun component2 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$HotbarSwap;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$HotbarSwap;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$HotbarSwap;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHotbar ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$OffhandSwap : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun component2 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$OffhandSwap;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$OffhandSwap;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$OffhandSwap;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOffhand ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$Primary : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Primary;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Primary;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Primary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$Secondary : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Secondary;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Secondary;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$Secondary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageGesture$ShiftTransfer : dev/placeholder/framework/menus/storage/MenuStorageGesture {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuSlotAddress;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$ShiftTransfer;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageGesture$ShiftTransfer;Ldev/placeholder/framework/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageGesture$ShiftTransfer;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Ldev/placeholder/framework/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageId {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageId;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNamespace ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuStorageReference {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageReference$Player : dev/placeholder/framework/menus/storage/MenuStorageReference {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/PlayerInventorySection;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/PlayerInventorySection;)Ldev/placeholder/framework/menus/storage/MenuStorageReference$Player;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageReference$Player;Ldev/placeholder/framework/menus/storage/PlayerInventorySection;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageReference$Player;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSection ()Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageReference$Storage : dev/placeholder/framework/menus/storage/MenuStorageReference {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageId;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuStorageId;)Ldev/placeholder/framework/menus/storage/MenuStorageReference$Storage;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageReference$Storage;Ldev/placeholder/framework/menus/storage/MenuStorageId;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageReference$Storage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageRules {
+	public static final field Companion Ldev/placeholder/framework/menus/storage/MenuStorageRules$Companion;
+	public final fun get (I)Ldev/placeholder/framework/menus/storage/MenuSlotRule;
+	public final fun getSize ()I
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageRules$Companion {
+	public final fun of (Ljava/util/List;)Ldev/placeholder/framework/menus/storage/MenuStorageRules;
+	public final fun uniform (ILdev/placeholder/framework/menus/storage/MenuSlotRule;)Ldev/placeholder/framework/menus/storage/MenuStorageRules;
+	public static synthetic fun uniform$default (Ldev/placeholder/framework/menus/storage/MenuStorageRules$Companion;ILdev/placeholder/framework/menus/storage/MenuSlotRule;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageRules;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStorageSnapshot {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageId;JLjava/util/List;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuStorageId;JLjava/util/List;)Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;Ldev/placeholder/framework/menus/storage/MenuStorageId;JLjava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorageSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getId ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public final fun getRevision ()J
+	public final fun getSize ()I
+	public final fun getSlots ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuStoragesKt {
+	public static final fun externalMenuStorage (Ldev/placeholder/framework/menus/storage/MenuStorageId;Lkotlinx/coroutines/flow/StateFlow;Ldev/placeholder/framework/menus/storage/MenuStorageRules;Ldev/placeholder/framework/menus/storage/MenuTransactionDomain;)Ldev/placeholder/framework/menus/storage/MenuStorage;
+	public static final fun localMenuStorage (Ldev/placeholder/framework/menus/storage/MenuStorageId;Ljava/util/List;Ldev/placeholder/framework/menus/storage/MenuStorageRules;)Ldev/placeholder/framework/menus/storage/MenuStorage;
+	public static synthetic fun localMenuStorage$default (Ldev/placeholder/framework/menus/storage/MenuStorageId;Ljava/util/List;Ldev/placeholder/framework/menus/storage/MenuStorageRules;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuStorage;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionCoordinator {
+	public fun <init> ()V
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionJournal;)V
+	public synthetic fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionJournal;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun acknowledge-kHl_n18 (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun recover (Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun submit (Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;Ljava/util/Map;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionDecision {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionDecision$Commit : dev/placeholder/framework/menus/storage/MenuTransactionDecision {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;)Ldev/placeholder/framework/menus/storage/MenuTransactionDecision$Commit;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionDecision$Commit;Ljava/util/Map;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionDecision$Commit;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionDecision$Reject : dev/placeholder/framework/menus/storage/MenuTransactionDecision {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/menus/storage/MenuTransactionDecision$Reject;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionDecision$Reject;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionDecision$Reject;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionDomain {
+	public abstract fun commit (Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getId ()Ljava/lang/String;
+	public abstract fun getStorages ()Ljava/util/Set;
+	public abstract fun resolve-kHl_n18 (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionEmission {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionEmission$Drop : dev/placeholder/framework/menus/storage/MenuTransactionEmission {
+	public fun <init> (Ldev/placeholder/framework/items/ItemSnapshot;)V
+	public final fun component1 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun copy (Ldev/placeholder/framework/items/ItemSnapshot;)Ldev/placeholder/framework/menus/storage/MenuTransactionEmission$Drop;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionEmission$Drop;Ldev/placeholder/framework/items/ItemSnapshot;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionEmission$Drop;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getItem ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionEngine {
+	public fun <init> (Ljava/util/Map;Ljava/util/List;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun plan-nsKklq8 (Ldev/placeholder/framework/menus/storage/MenuTransactionState;Ldev/placeholder/framework/menus/storage/MenuStorageGesture;Ljava/util/UUID;Ljava/util/UUID;)Ldev/placeholder/framework/menus/storage/MenuTransactionPlan;
+	public static synthetic fun plan-nsKklq8$default (Ldev/placeholder/framework/menus/storage/MenuTransactionEngine;Ldev/placeholder/framework/menus/storage/MenuTransactionState;Ldev/placeholder/framework/menus/storage/MenuStorageGesture;Ljava/util/UUID;Ljava/util/UUID;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionPlan;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionEngineKt {
+	public static final fun reference (Ldev/placeholder/framework/menus/storage/MenuStorage;)Ldev/placeholder/framework/menus/storage/MenuStorageReference;
+	public static final fun reference (Ldev/placeholder/framework/menus/storage/PlayerInventorySection;)Ldev/placeholder/framework/menus/storage/MenuStorageReference;
+	public static final fun transferRoute (Ldev/placeholder/framework/menus/storage/MenuStorageReference;[Ldev/placeholder/framework/menus/storage/MenuStorageReference;)Ldev/placeholder/framework/menus/storage/MenuTransferRoute;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionFailure {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionFailure$MissingTransactionDomain : dev/placeholder/framework/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$MissingTransactionDomain;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionFailure$NoTransferRoute : dev/placeholder/framework/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$NoTransferRoute;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionFailure$ResourceBusy : dev/placeholder/framework/menus/storage/MenuTransactionFailure {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionResource;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuTransactionResource;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuTransactionResource;)Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$ResourceBusy;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$ResourceBusy;Ldev/placeholder/framework/menus/storage/MenuTransactionResource;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$ResourceBusy;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getResource ()Ldev/placeholder/framework/menus/storage/MenuTransactionResource;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionFailure$RuleRejected : dev/placeholder/framework/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$RuleRejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionFailure$StaleState : dev/placeholder/framework/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionFailure$StaleState;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionId {
+	public static final field Companion Ldev/placeholder/framework/menus/storage/MenuTransactionId$Companion;
+	public static final synthetic fun box-impl (Ljava/util/UUID;)Ldev/placeholder/framework/menus/storage/MenuTransactionId;
+	public static fun constructor-impl (Ljava/util/UUID;)Ljava/util/UUID;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/UUID;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/UUID;Ljava/util/UUID;)Z
+	public final fun getValue ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/UUID;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/UUID;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/UUID;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionId$Companion {
+	public final fun create--RKRmio ()Ljava/util/UUID;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionJournal {
+	public abstract fun complete-kHl_n18 (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun pending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun record (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionPlan {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionPlan$NoChange : dev/placeholder/framework/menus/storage/MenuTransactionPlan {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$NoChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionPlan$Proposed : dev/placeholder/framework/menus/storage/MenuTransactionPlan {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;)Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$Proposed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$Proposed;Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$Proposed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProposal ()Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionPlan$Rejected : dev/placeholder/framework/menus/storage/MenuTransactionPlan {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;)Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$Rejected;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$Rejected;Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionPlan$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailure ()Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionProposal {
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1--RKRmio ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/UUID;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun component5 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun component6 ()Ljava/util/List;
+	public final fun copy-v-4-YIo (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;)Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;
+	public static synthetic fun copy-v-4-YIo$default (Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionProposal;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChanges ()Ljava/util/Map;
+	public final fun getCursorAfter ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getCursorBefore ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getEmissions ()Ljava/util/List;
+	public final fun getId--RKRmio ()Ljava/util/UUID;
+	public final fun getPlayerId ()Ljava/util/UUID;
+	public final fun getResources ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionRecovery {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionRecovery$Committed : dev/placeholder/framework/menus/storage/MenuTransactionRecovery {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;Ljava/util/Map;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;Ljava/util/Map;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Committed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Committed;Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;Ljava/util/Map;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Committed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionRecovery$MissingDomain : dev/placeholder/framework/menus/storage/MenuTransactionRecovery {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$MissingDomain;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$MissingDomain;Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$MissingDomain;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionRecovery$NotCommitted : dev/placeholder/framework/menus/storage/MenuTransactionRecovery {
+	public synthetic fun <init> (Ljava/util/UUID;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1--RKRmio ()Ljava/util/UUID;
+	public final fun copy-Q8PZ32w (Ljava/util/UUID;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$NotCommitted;
+	public static synthetic fun copy-Q8PZ32w$default (Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$NotCommitted;Ljava/util/UUID;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$NotCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId--RKRmio ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionRecovery$Pending : dev/placeholder/framework/menus/storage/MenuTransactionRecovery {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Pending;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Pending;Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Pending;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Ldev/placeholder/framework/menus/storage/JournaledMenuTransaction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionRecovery$Rejected : dev/placeholder/framework/menus/storage/MenuTransactionRecovery {
+	public synthetic fun <init> (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1--RKRmio ()Ljava/util/UUID;
+	public final fun component2 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy-kHl_n18 (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Rejected;
+	public static synthetic fun copy-kHl_n18$default (Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Rejected;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionRecovery$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId--RKRmio ()Ljava/util/UUID;
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionResolution {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionResolution$Committed : dev/placeholder/framework/menus/storage/MenuTransactionResolution {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;)Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Committed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Committed;Ljava/util/Map;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Committed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionResolution$NotCommitted : dev/placeholder/framework/menus/storage/MenuTransactionResolution {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$NotCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionResolution$Pending : dev/placeholder/framework/menus/storage/MenuTransactionResolution {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Pending;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionResolution$Rejected : dev/placeholder/framework/menus/storage/MenuTransactionResolution {
+	public fun <init> ()V
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Rejected;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Rejected;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionResolution$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionResource {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionResource$Cursor : dev/placeholder/framework/menus/storage/MenuTransactionResource {
+	public static final field INSTANCE Ldev/placeholder/framework/menus/storage/MenuTransactionResource$Cursor;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionResource$Storage : dev/placeholder/framework/menus/storage/MenuTransactionResource {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageId;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuStorageId;)Ldev/placeholder/framework/menus/storage/MenuTransactionResource$Storage;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionResource$Storage;Ldev/placeholder/framework/menus/storage/MenuStorageId;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionResource$Storage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ldev/placeholder/framework/menus/storage/MenuStorageId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionState {
+	public fun <init> (Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;)V
+	public synthetic fun <init> (Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun copy (Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;)Ldev/placeholder/framework/menus/storage/MenuTransactionState;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionState;Ljava/util/Map;Ldev/placeholder/framework/items/ItemSnapshot;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCursor ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getStorages ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/menus/storage/MenuTransactionSubmission {
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionSubmission$Committed : dev/placeholder/framework/menus/storage/MenuTransactionSubmission {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;)Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Committed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Committed;Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Committed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTransaction ()Ldev/placeholder/framework/menus/storage/CommittedMenuTransaction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionSubmission$Failed : dev/placeholder/framework/menus/storage/MenuTransactionSubmission {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;)Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Failed;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Failed;Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailure ()Ldev/placeholder/framework/menus/storage/MenuTransactionFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransactionSubmission$Rejected : dev/placeholder/framework/menus/storage/MenuTransactionSubmission {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Rejected;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Rejected;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransactionSubmission$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/MenuTransferRoute {
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageId;Ljava/util/List;)V
+	public fun <init> (Ldev/placeholder/framework/menus/storage/MenuStorageReference;Ljava/util/List;)V
+	public final fun component1 ()Ldev/placeholder/framework/menus/storage/MenuStorageReference;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ldev/placeholder/framework/menus/storage/MenuStorageReference;Ljava/util/List;)Ldev/placeholder/framework/menus/storage/MenuTransferRoute;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/MenuTransferRoute;Ldev/placeholder/framework/menus/storage/MenuStorageReference;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/MenuTransferRoute;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinations ()Ljava/util/List;
+	public final fun getSource ()Ldev/placeholder/framework/menus/storage/MenuStorageReference;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/menus/storage/PlayerInventorySection : java/lang/Enum {
+	public static final field ARMOR Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public static final field HOTBAR Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public static final field MAIN Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public static final field OFFHAND Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getSize ()I
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+	public static fun values ()[Ldev/placeholder/framework/menus/storage/PlayerInventorySection;
+}
+
+public final class dev/placeholder/framework/menus/storage/RecoveredMenuItem {
+	public fun <init> (Ljava/util/UUID;Ljava/util/UUID;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/time/Instant;)V
+	public final fun component1 ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/UUID;
+	public final fun component3 ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun component4 ()Ljava/time/Instant;
+	public final fun copy (Ljava/util/UUID;Ljava/util/UUID;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/time/Instant;)Ldev/placeholder/framework/menus/storage/RecoveredMenuItem;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/menus/storage/RecoveredMenuItem;Ljava/util/UUID;Ljava/util/UUID;Ldev/placeholder/framework/items/ItemSnapshot;Ljava/time/Instant;ILjava/lang/Object;)Ldev/placeholder/framework/menus/storage/RecoveredMenuItem;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/util/UUID;
+	public final fun getItem ()Ldev/placeholder/framework/items/ItemSnapshot;
+	public final fun getPlayerId ()Ljava/util/UUID;
+	public final fun getStoredAt ()Ljava/time/Instant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
