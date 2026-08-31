@@ -26,6 +26,21 @@ public annotation class Observe(val ignoreCancelled: Boolean = false)
 @Retention(AnnotationRetention.BINARY)
 public annotation class OnApplication
 
+/** Marks one synchronous native-key Paper lifecycle configuration function. */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
+public annotation class ConfigureLifecycleEvents
+
+/** Removes inherited handler metadata from one overriding function. */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
+public annotation class DisableEventHandler
+
+/** Prevents one automatic event-set class branch from contributing handlers. */
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.BINARY)
+public annotation class DisableEvents
+
 /** Prevents selected generated event-set contributions from loading in this plug-in. */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

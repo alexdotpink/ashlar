@@ -1,6 +1,7 @@
 package dev.placeholder.framework.events.codegen
 
 import dev.placeholder.framework.events.ApplicationEvent
+import dev.placeholder.framework.events.LifecycleEventRegistry
 import kotlin.reflect.KClass
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
@@ -55,6 +56,11 @@ public interface EventSetContribution {
         handler: Int,
         event: ApplicationEvent,
     ): Unit = invalidEventHandler(handler)
+
+    public fun configureLifecycle(
+        target: Any,
+        registry: LifecycleEventRegistry,
+    ) {}
 }
 
 /** Reports an invalid generated event handler index. */

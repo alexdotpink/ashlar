@@ -24,6 +24,15 @@ public final class dev/placeholder/framework/events/ApplicationEventsKt {
 	public static final fun publish (Ldev/placeholder/framework/events/ApplicationEvents;Ldev/placeholder/framework/events/ApplicationEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public abstract interface annotation class dev/placeholder/framework/events/ConfigureLifecycleEvents : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class dev/placeholder/framework/events/DisableEventHandler : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class dev/placeholder/framework/events/DisableEvents : java/lang/annotation/Annotation {
+}
+
 public abstract interface class dev/placeholder/framework/events/EventRegistration : java/lang/AutoCloseable {
 	public abstract fun close ()V
 }
@@ -33,6 +42,14 @@ public abstract interface annotation class dev/placeholder/framework/events/Even
 
 public abstract interface annotation class dev/placeholder/framework/events/ExcludeEventContributions : java/lang/annotation/Annotation {
 	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public final class dev/placeholder/framework/events/LifecycleEventRegistry {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;)V
+	public final fun monitor (Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Monitorable;Lkotlin/jvm/functions/Function1;)V
+	public final fun monitor (Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Prioritizable;Lkotlin/jvm/functions/Function1;)V
+	public final fun on (Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Prioritizable;ILkotlin/jvm/functions/Function1;)V
+	public static synthetic fun on$default (Ldev/placeholder/framework/events/LifecycleEventRegistry;Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Prioritizable;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 }
 
 public abstract interface annotation class dev/placeholder/framework/events/Observe : java/lang/annotation/Annotation {
@@ -101,6 +118,7 @@ public final class dev/placeholder/framework/events/codegen/EventBindingKt {
 }
 
 public abstract interface class dev/placeholder/framework/events/codegen/EventSetContribution {
+	public fun configureLifecycle (Ljava/lang/Object;Ldev/placeholder/framework/events/LifecycleEventRegistry;)V
 	public abstract fun getDefinition ()Ldev/placeholder/framework/events/codegen/EventSetDefinition;
 	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
 	public abstract fun invoke (Ljava/lang/Object;ILorg/bukkit/event/Event;)V
@@ -109,6 +127,7 @@ public abstract interface class dev/placeholder/framework/events/codegen/EventSe
 }
 
 public final class dev/placeholder/framework/events/codegen/EventSetContribution$DefaultImpls {
+	public static fun configureLifecycle (Ldev/placeholder/framework/events/codegen/EventSetContribution;Ljava/lang/Object;Ldev/placeholder/framework/events/LifecycleEventRegistry;)V
 	public static fun invokeApplication (Ldev/placeholder/framework/events/codegen/EventSetContribution;Ljava/lang/Object;ILdev/placeholder/framework/events/ApplicationEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun observe (Ldev/placeholder/framework/events/codegen/EventSetContribution;Ljava/lang/Object;ILorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -156,7 +175,7 @@ public final class dev/placeholder/framework/events/codegen/ServerEventHandlerKi
 }
 
 public final class dev/placeholder/framework/events/internal/EventRuntimeComponent : dev/placeholder/framework/PluginComponent {
-	public fun <init> (Ldev/placeholder/framework/di/DependencyGraph;Ldev/placeholder/framework/events/ApplicationEvents;)V
+	public fun <init> (Ldev/placeholder/framework/di/DependencyGraph;Ldev/placeholder/framework/events/ApplicationEvents;Ldev/placeholder/framework/events/LifecycleEventRegistry;)V
 }
 
 public final class dev/placeholder/framework/generated/FrameworkDependencyContributions_1c3624a19905 : dev/placeholder/framework/di/DependencyContributionModule {

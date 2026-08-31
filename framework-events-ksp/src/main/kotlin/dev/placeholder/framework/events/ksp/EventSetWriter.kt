@@ -35,6 +35,11 @@ internal class EventSetWriter {
             .addFunction(invoke(model, target))
             .addFunction(observe(model, target))
             .addFunction(invokeApplication(model, target))
+            .apply {
+                if (model.lifecycleFunctions.isNotEmpty()) {
+                    addFunction(configureLifecycle(model, target))
+                }
+            }
             .build()
         return FileSpec.builder(model.packageName, "${model.typeName}_EventsGenerated")
             .addType(binding)
@@ -150,6 +155,22 @@ internal class EventSetWriter {
             .build()
     }
 
+    private fun configureLifecycle(
+        model: EventSetModel,
+        target: ClassName,
+    ): FunSpec {
+        val code = CodeBlock.builder().add("val typedTarget = target as %T\n", target)
+        model.lifecycleFunctions.forEach { function ->
+            code.add("with(typedTarget) { registry.%N() }\n", function.functionName)
+        }
+        return FunSpec.builder("configureLifecycle")
+            .addModifiers(KModifier.OVERRIDE)
+            .addParameter("target", ANY)
+            .addParameter("registry", LIFECYCLE_REGISTRY)
+            .addCode(code.build())
+            .build()
+    }
+
     private fun ServerHandlerModel.eventClassName(): ClassName =
         ClassName(eventPackageName, eventTypeNames)
 
@@ -180,6 +201,7 @@ internal class EventSetWriter {
         val APPLICATION_HANDLER_DEFINITION =
             ClassName("dev.placeholder.framework.events.codegen", "ApplicationEventHandlerDefinition")
         val APPLICATION_EVENT = ClassName("dev.placeholder.framework.events", "ApplicationEvent")
+        val LIFECYCLE_REGISTRY = ClassName("dev.placeholder.framework.events", "LifecycleEventRegistry")
         val EVENT_PRIORITY = ClassName("org.bukkit.event", "EventPriority")
         val EVENT = ClassName("org.bukkit.event", "Event")
         val KCLASS = ClassName("kotlin.reflect", "KClass")

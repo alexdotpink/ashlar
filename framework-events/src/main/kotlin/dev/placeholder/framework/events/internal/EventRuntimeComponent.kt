@@ -8,6 +8,7 @@ import dev.placeholder.framework.di.DependencyGraph
 import dev.placeholder.framework.di.Inject
 import dev.placeholder.framework.events.ExcludeEventContributions
 import dev.placeholder.framework.events.ApplicationEvents
+import dev.placeholder.framework.events.LifecycleEventRegistry
 import dev.placeholder.framework.events.ServerEventFailure
 import dev.placeholder.framework.events.ServerEventFailureReporter
 import dev.placeholder.framework.events.codegen.EventSetContribution
@@ -26,6 +27,7 @@ import org.bukkit.plugin.EventExecutor
 public class EventRuntimeComponent(
     private val graph: DependencyGraph,
     private val applicationEvents: ApplicationEvents,
+    private val lifecycleEvents: LifecycleEventRegistry,
 ) : PluginComponent() {
     override fun ComponentContext.start() {
         own(applicationEvents)
@@ -35,9 +37,12 @@ public class EventRuntimeComponent(
             ?.toSet()
             .orEmpty()
 
-        graph.contributions(EventSetContribution::class)
+        val contributions = graph.contributions(EventSetContribution::class)
             .filterNot { contribution -> contribution.targetType in excluded }
-            .forEach { contribution -> register(contribution, reporter) }
+        contributions.forEach { contribution ->
+            contribution.configureLifecycle(graph.get(contribution.targetType), lifecycleEvents)
+        }
+        contributions.forEach { contribution -> register(contribution, reporter) }
     }
 
     private fun ComponentContext.register(

@@ -7,6 +7,7 @@ internal data class EventSetModel(
     val open: Boolean,
     val handlers: List<ServerHandlerModel>,
     val applicationHandlers: List<ApplicationHandlerModel> = emptyList(),
+    val lifecycleFunctions: List<LifecycleFunctionModel> = emptyList(),
 ) {
     val typeName: String
         get() = typeNames.joinToString("_")
@@ -22,6 +23,17 @@ internal data class ServerHandlerModel(
     val ignoreCancelled: Boolean,
     val observer: Boolean,
     val cancellable: Boolean,
+    val suspending: Boolean,
+    val returnType: String,
+    val parameterCount: Int,
+    val private: Boolean,
+    val protected: Boolean,
+    val generic: Boolean,
+)
+
+internal data class LifecycleFunctionModel(
+    val functionName: String,
+    val receiverType: String,
     val suspending: Boolean,
     val returnType: String,
     val parameterCount: Int,

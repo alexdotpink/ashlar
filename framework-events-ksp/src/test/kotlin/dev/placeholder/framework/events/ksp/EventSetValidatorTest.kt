@@ -31,7 +31,7 @@ class EventSetValidatorTest {
 
         assertEquals(
             listOf(
-                "A concrete @Events class must be final",
+                "A concrete event-set class must be final",
                 "Event handler 'protect' receiver must extend Event",
                 "Server event handler 'protect' cannot declare value parameters",
                 "@On server event handler 'protect' cannot suspend",

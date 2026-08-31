@@ -10,6 +10,9 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
+import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.symbol.Modifier
+import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.validate
 
 public class DiProcessorProvider : SymbolProcessorProvider {
@@ -66,8 +69,10 @@ internal class DiProcessor(
         resolver.getSymbolsWithAnnotation(COMMAND_FRAGMENT)
             .filterIsInstance<KSClassDeclaration>()
             .forEach { declaration -> processFactory(declaration, deferred) }
-        resolver.getSymbolsWithAnnotation(EVENTS)
-            .filterIsInstance<KSClassDeclaration>()
+        resolver.getAllFiles()
+            .flatMap { file -> classes(file.declarations) }
+            .filter { declaration -> declaration.belongsToEventSetFamily() }
+            .filter { declaration -> Modifier.ABSTRACT !in declaration.modifiers }
             .forEach { declaration -> processFactory(declaration, deferred) }
         return deferred
     }
@@ -130,6 +135,28 @@ internal class DiProcessor(
         problems.forEach { problem -> logger.error(problem, declaration) }
     }
 
+    private fun classes(declarations: Sequence<KSDeclaration>): Sequence<KSClassDeclaration> = sequence {
+        declarations.forEach { declaration ->
+            if (declaration !is KSClassDeclaration) return@forEach
+            yield(declaration)
+            yieldAll(classes(declaration.declarations))
+        }
+    }
+
+    private fun KSClassDeclaration.belongsToEventSetFamily(): Boolean {
+        val hierarchy = sequenceOf(this) + getAllSuperTypes().mapNotNull { type ->
+            type.declaration as? KSClassDeclaration
+        }
+        val declarations = hierarchy.toList()
+        if (declarations.any { declaration -> declaration.hasAnnotation(DISABLE_EVENTS) }) return false
+        return declarations.any { declaration -> declaration.hasAnnotation(EVENTS) }
+    }
+
+    private fun KSClassDeclaration.hasAnnotation(name: String): Boolean =
+        annotations.any { annotation ->
+            annotation.annotationType.resolve().declaration.qualifiedName?.asString() == name
+        }
+
     private companion object {
         const val INJECT = "dev.placeholder.framework.di.Inject"
         const val FRAMEWORK_COMPONENT = "dev.placeholder.framework.FrameworkComponent"
@@ -137,5 +164,6 @@ internal class DiProcessor(
         const val COMMANDS = "dev.placeholder.framework.commands.Commands"
         const val COMMAND_FRAGMENT = "dev.placeholder.framework.commands.CommandFragment"
         const val EVENTS = "dev.placeholder.framework.events.Events"
+        const val DISABLE_EVENTS = "dev.placeholder.framework.events.DisableEvents"
     }
 }

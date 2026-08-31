@@ -2,13 +2,37 @@ package dev.placeholder.framework.events.ksp
 
 internal class EventSetValidator {
     fun validate(model: EventSetModel): List<String> = buildList {
-        if (model.abstract) return@buildList
-        if (model.open) add("A concrete @Events class must be final")
-        if (model.handlers.isEmpty() && model.applicationHandlers.isEmpty()) {
-            add("A concrete @Events class must declare at least one event handler")
+        if (!model.abstract) {
+            if (model.open) add("A concrete event-set class must be final")
+            if (model.handlers.isEmpty() &&
+                model.applicationHandlers.isEmpty() &&
+                model.lifecycleFunctions.isEmpty()
+            ) {
+                add("A concrete event-set class must declare at least one event handler")
+            }
         }
         model.handlers.forEach { handler -> validate(handler, this) }
         model.applicationHandlers.forEach { handler -> validate(handler, this) }
+        model.lifecycleFunctions.forEach { function -> validate(function, this) }
+    }
+
+    private fun validate(
+        function: LifecycleFunctionModel,
+        problems: MutableList<String>,
+    ) {
+        val label = function.functionName
+        if (function.receiverType != LIFECYCLE_REGISTRY_TYPE) {
+            problems += "Lifecycle configuration '$label' must extend LifecycleEventRegistry"
+        }
+        if (function.parameterCount != 0) {
+            problems += "Lifecycle configuration '$label' cannot declare value parameters"
+        }
+        if (function.suspending) problems += "Lifecycle configuration '$label' cannot suspend"
+        if (function.returnType != UNIT_TYPE) problems += "Lifecycle configuration '$label' must return Unit"
+        if (function.private || function.protected) {
+            problems += "Lifecycle configuration '$label' must be public or internal"
+        }
+        if (function.generic) problems += "Lifecycle configuration '$label' cannot declare type parameters"
     }
 
     private fun validate(
@@ -60,5 +84,6 @@ internal class EventSetValidator {
 
     private companion object {
         const val UNIT_TYPE = "kotlin.Unit"
+        const val LIFECYCLE_REGISTRY_TYPE = "dev.placeholder.framework.events.LifecycleEventRegistry"
     }
 }
