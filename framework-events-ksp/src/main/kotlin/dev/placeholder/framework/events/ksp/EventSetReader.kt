@@ -19,7 +19,34 @@ internal class EventSetReader {
             .filterIsInstance<KSFunctionDeclaration>()
             .mapNotNull(::serverHandler)
             .toList(),
+        applicationHandlers = declaration.declarations
+            .filterIsInstance<KSFunctionDeclaration>()
+            .mapNotNull(::applicationHandler)
+            .toList(),
     )
+
+    private fun applicationHandler(function: KSFunctionDeclaration): ApplicationHandlerModel? {
+        function.annotationOrNull(ON_APPLICATION_ANNOTATION) ?: return null
+        val receiver = function.extensionReceiver?.resolve()
+        val receiverDeclaration = receiver?.declaration as? KSClassDeclaration
+        val qualifiedName = receiverDeclaration?.qualifiedName?.asString().orEmpty()
+        val supertypes = receiverDeclaration?.getAllSuperTypes()
+            ?.mapNotNull { type -> type.declaration.qualifiedName?.asString() }
+            ?.toSet()
+            .orEmpty()
+        return ApplicationHandlerModel(
+            functionName = function.simpleName.asString(),
+            eventPackageName = receiverDeclaration?.packageName?.asString().orEmpty(),
+            eventTypeNames = receiverDeclaration?.typeNames().orEmpty(),
+            eventQualifiedName = qualifiedName,
+            applicationEvent = qualifiedName == APPLICATION_EVENT_TYPE || APPLICATION_EVENT_TYPE in supertypes,
+            returnType = function.returnType?.resolve()?.declaration?.qualifiedName?.asString().orEmpty(),
+            parameterCount = function.parameters.size,
+            private = Modifier.PRIVATE in function.modifiers,
+            protected = Modifier.PROTECTED in function.modifiers,
+            generic = function.typeParameters.isNotEmpty(),
+        )
+    }
 
     private fun serverHandler(function: KSFunctionDeclaration): ServerHandlerModel? {
         val on = function.annotationOrNull(ON_ANNOTATION)
@@ -79,6 +106,8 @@ internal class EventSetReader {
     private companion object {
         const val ON_ANNOTATION = "dev.placeholder.framework.events.On"
         const val OBSERVE_ANNOTATION = "dev.placeholder.framework.events.Observe"
+        const val ON_APPLICATION_ANNOTATION = "dev.placeholder.framework.events.OnApplication"
+        const val APPLICATION_EVENT_TYPE = "dev.placeholder.framework.events.ApplicationEvent"
         const val CANCELLABLE_TYPE = "org.bukkit.event.Cancellable"
         const val EVENT_TYPE = "org.bukkit.event.Event"
     }

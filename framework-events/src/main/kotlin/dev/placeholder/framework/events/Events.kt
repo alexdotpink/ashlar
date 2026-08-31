@@ -21,6 +21,11 @@ public annotation class On(
 @Retention(AnnotationRetention.BINARY)
 public annotation class Observe(val ignoreCancelled: Boolean = false)
 
+/** Declares one ordinary or suspending handler for a plug-in-local application event. */
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.BINARY)
+public annotation class OnApplication
+
 /** Prevents selected generated event-set contributions from loading in this plug-in. */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

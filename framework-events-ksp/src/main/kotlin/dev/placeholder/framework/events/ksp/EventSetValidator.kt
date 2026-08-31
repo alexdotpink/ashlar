@@ -4,8 +4,31 @@ internal class EventSetValidator {
     fun validate(model: EventSetModel): List<String> = buildList {
         if (model.abstract) return@buildList
         if (model.open) add("A concrete @Events class must be final")
-        if (model.handlers.isEmpty()) add("A concrete @Events class must declare at least one event handler")
+        if (model.handlers.isEmpty() && model.applicationHandlers.isEmpty()) {
+            add("A concrete @Events class must declare at least one event handler")
+        }
         model.handlers.forEach { handler -> validate(handler, this) }
+        model.applicationHandlers.forEach { handler -> validate(handler, this) }
+    }
+
+    private fun validate(
+        handler: ApplicationHandlerModel,
+        problems: MutableList<String>,
+    ) {
+        val label = handler.functionName
+        if (handler.eventQualifiedName.isBlank()) {
+            problems += "Application event handler '$label' must declare an event extension receiver"
+        } else if (!handler.applicationEvent) {
+            problems += "Application event handler '$label' receiver must implement ApplicationEvent"
+        }
+        if (handler.parameterCount != 0) {
+            problems += "Application event handler '$label' cannot declare value parameters"
+        }
+        if (handler.returnType != UNIT_TYPE) problems += "Application event handler '$label' must return Unit"
+        if (handler.private || handler.protected) {
+            problems += "Application event handler '$label' must be public or internal"
+        }
+        if (handler.generic) problems += "Application event handler '$label' cannot declare type parameters"
     }
 
     private fun validate(

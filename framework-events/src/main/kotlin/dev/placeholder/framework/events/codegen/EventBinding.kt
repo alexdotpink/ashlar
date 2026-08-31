@@ -1,5 +1,6 @@
 package dev.placeholder.framework.events.codegen
 
+import dev.placeholder.framework.events.ApplicationEvent
 import kotlin.reflect.KClass
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
@@ -22,6 +23,13 @@ public enum class ServerEventHandlerKind {
 /** Immutable metadata for one generated event set. */
 public data class EventSetDefinition(
     public val handlers: List<ServerEventHandlerDefinition>,
+    public val applicationHandlers: List<ApplicationEventHandlerDefinition> = emptyList(),
+)
+
+/** Immutable metadata for one generated application event handler. */
+public data class ApplicationEventHandlerDefinition(
+    public val name: String,
+    public val eventType: KClass<out ApplicationEvent>,
 )
 
 /** Non-generic runtime view contributed by each generated event binding. */
@@ -40,6 +48,12 @@ public interface EventSetContribution {
         target: Any,
         handler: Int,
         event: Event,
+    ): Unit = invalidEventHandler(handler)
+
+    public suspend fun invokeApplication(
+        target: Any,
+        handler: Int,
+        event: ApplicationEvent,
     ): Unit = invalidEventHandler(handler)
 }
 

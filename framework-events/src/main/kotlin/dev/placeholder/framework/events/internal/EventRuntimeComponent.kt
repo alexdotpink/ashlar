@@ -7,6 +7,7 @@ import dev.placeholder.framework.PluginComponent
 import dev.placeholder.framework.di.DependencyGraph
 import dev.placeholder.framework.di.Inject
 import dev.placeholder.framework.events.ExcludeEventContributions
+import dev.placeholder.framework.events.ApplicationEvents
 import dev.placeholder.framework.events.ServerEventFailure
 import dev.placeholder.framework.events.ServerEventFailureReporter
 import dev.placeholder.framework.events.codegen.EventSetContribution
@@ -24,8 +25,10 @@ import org.bukkit.plugin.EventExecutor
 @Inject
 public class EventRuntimeComponent(
     private val graph: DependencyGraph,
+    private val applicationEvents: ApplicationEvents,
 ) : PluginComponent() {
     override fun ComponentContext.start() {
+        own(applicationEvents)
         val reporter = graph.serverEventFailureReporter(plugin)
         val excluded = plugin.javaClass.getAnnotation(ExcludeEventContributions::class.java)
             ?.types
