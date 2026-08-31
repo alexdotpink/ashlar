@@ -328,6 +328,10 @@ _Avoid_: Benchmark machine, CI runner
 The measured cost added by a framework path relative to its matched native or direct control under the same workload.
 _Avoid_: Zero overhead, framework speed
 
+**Native callback occupancy**:
+The elapsed time spent inside a Paper or Folia callback before control returns to the platform.
+_Avoid_: Main-thread time, callback speed
+
 ## Commands
 
 **Command set**:
