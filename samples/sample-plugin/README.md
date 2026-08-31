@@ -44,7 +44,13 @@ Test typed selection separately:
 
 Choose red, green, or blue. Closing without choosing returns a typed close outcome instead.
 
-The module also exposes semantic typed models for hopper, anvil, merchant, furnace-family, brewing, crafting-family, and other role-specific hosts. The current Paper/Folia adapter opens chest hosts only, so the playable sample does not pretend those semantic models are native-ready.
+Open the native host catalogue:
+
+```text
+/menus hosts YourName
+```
+
+The three-row index opens every supported Paper/Folia host. Each entry remounts the same logical session into that host, and its arrow returns to the index. The anvil, merchant, loom, stonecutter, enchantment, beacon, and lectern entries also register their typed host-input callbacks.
 
 ## Event checklist
 

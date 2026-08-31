@@ -100,6 +100,14 @@ internal class MenuShowcaseCommands(
         MenuChoice.NotOpened -> "Choice was not opened because another menu is active."
     }
 
+    /** Opens a remounting catalogue of every typed native inventory host. */
+    suspend fun hosts(player: PlayerRef): String = when (
+        val result = menus.open(player) { NativeHostShowcase() }
+    ) {
+        is MenuOpen.Closed -> "Host catalogue closed: ${result.reason.label()}."
+        MenuOpen.Rejected -> "The player already has a menu open."
+    }
+
     /** Demonstrates conflict rejection without disturbing the player's current session. */
     suspend fun reject(player: PlayerRef): String = when (
         val result = menus.open(player, conflict = MenuOpenConflict.REJECT) { ChoiceMenu() }
