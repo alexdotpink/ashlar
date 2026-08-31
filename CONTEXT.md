@@ -294,6 +294,20 @@ _Avoid_: Mock inventory, menu unit test
 A redacted semantic snapshot and bounded typed trace of a live menu session's components, state, renders, gestures, actions, and transactions.
 _Avoid_: Debug log, inventory dump
 
+## Performance
+
+**Performance contract**:
+The versioned scenarios, measurements, and regression budgets that protect one public framework capability.
+_Avoid_: Performance test, benchmark score
+
+**Benchmark scenario**:
+A named framework or plug-in operation with fixed setup, a measured interaction, and correctness checks.
+_Avoid_: Benchmark method, timing test
+
+**Framework overhead**:
+The measured cost added by a framework path relative to its matched native or direct control under the same workload.
+_Avoid_: Zero overhead, framework speed
+
 ## Commands
 
 **Command set**:
