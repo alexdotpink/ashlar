@@ -54,6 +54,15 @@ This index routes public declarations to their authoritative reference. Generate
 - Lifecycle outcomes: `InputConflict`, `InputConflictException`, `InputCancellationReason`, `InputCancellationException` — [input](input.md)
 - Messages: `InputMessages`, `EnglishInputMessages` — [input](input.md)
 
+## Items
+
+- Authored items: `ItemSpec`, `ItemSpecBuilder`, `ItemLoreBuilder`, `item`, `Items` — [items](items.md)
+- Presentation: `ItemPresentation`, `ItemPresentationContext` — [items](items.md)
+- Exact live values: `ItemSnapshot`, `ItemSnapshotEditor`, `ItemSnapshotDecode` — [items](items.md)
+- Persistent values: `PersistentValueCodec`, `PersistentValueCodecs`, `PersistentValueRead` — [items](items.md)
+- Custom items: `CustomItemDefinition`, `CustomItemBuilder`, `CustomItemRead`, `customItem`, `CustomItemCodec`, `KotlinJsonItemCodec`, `DefaultItemJson` — [items](items.md)
+- Integrity: `HmacKey`, `HmacKeyring` — [items](items.md)
+
 ## Testing and build
 
 - `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult`, `InputTestHarness`, `InputTestAttempt` — [testing](testing.md)

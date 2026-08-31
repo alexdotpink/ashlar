@@ -1,6 +1,6 @@
 # Items module design
 
-Status: approved, not implemented
+Status: implemented in `framework-items`
 
 The items module is the framework-wide item model. It builds authored items, captures live items without loss, and gives plug-ins durable typed custom-item identity. Menus depend on it, but hotbars, commands, events, storage, crafting, and later modules use the same API directly.
 
@@ -236,14 +236,14 @@ Item tests must cover:
 
 Property tests should generate legal item snapshots and verify conservation through edit, encode, decode, and materialize cycles. Real Paper fixtures remain responsible for native component behavior; server-free tests own the immutable model and codecs.
 
-## Implementation slices
+## Implementation record
 
-Implementation proceeds vertically and keeps each slice independently usable:
+The shipped module completed the planned slices:
 
-1. Add the artifact, immutable `ItemSpec`, generic typed data components, neutral materialization, and focused Paper round-trip tests.
-2. Add `ItemSnapshot`, exact capture, equality, editing, persistence encoding, and property tests.
-3. Add presentation policies and virtual per-viewer materialization.
-4. Add typed custom-item identity, Kotlin Serialization codecs, structured reads, and migrations.
-5. Add pluggable codecs, optional HMAC integrity, rotation tests, reference docs, samples, and ABI baselines.
+1. The artifact, immutable `ItemSpec`, generic typed data components, neutral materialization, and Paper round-trip checks.
+2. `ItemSnapshot`, exact capture, equality, editing, checksummed persistence encoding, and conservation tests.
+3. Presentation policies and per-viewer materialization context.
+4. Typed custom-item identity, Kotlin Serialization codecs, structured reads, and migrations.
+5. Pluggable codecs, optional HMAC integrity, key rotation, optional presentation coverage, reference docs, and ABI baselines.
 
-No menu code enters the item module. Menus begin only after the snapshot round-trip and persistence contracts are proven.
+No menu code enters the item module. The pinned Paper and Folia fixtures prove the snapshot and persistence contracts before menu storage consumes them.
