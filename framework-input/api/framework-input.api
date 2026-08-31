@@ -1,0 +1,148 @@
+public final class dev/placeholder/framework/generated/FrameworkDependencyContributions_69dc5563395f : dev/placeholder/framework/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}
+
+public abstract interface class dev/placeholder/framework/input/ChatAnswer {
+	public abstract fun getComponent ()Lnet/kyori/adventure/text/Component;
+	public abstract fun getText ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/input/EnglishInputMessages : dev/placeholder/framework/input/InputMessages {
+	public static final field INSTANCE Ldev/placeholder/framework/input/EnglishInputMessages;
+	public fun conflict (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun expired (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/input/InputCancellationException : java/util/concurrent/CancellationException {
+	public fun <init> (Ldev/placeholder/framework/input/InputCancellationReason;)V
+	public final fun getReason ()Ldev/placeholder/framework/input/InputCancellationReason;
+}
+
+public final class dev/placeholder/framework/input/InputCancellationReason : java/lang/Enum {
+	public static final field EXTERNALLY_CANCELLED Ldev/placeholder/framework/input/InputCancellationReason;
+	public static final field IDLE_TIMEOUT Ldev/placeholder/framework/input/InputCancellationReason;
+	public static final field PLAYER_DISCONNECTED Ldev/placeholder/framework/input/InputCancellationReason;
+	public static final field PLUGIN_STOPPED Ldev/placeholder/framework/input/InputCancellationReason;
+	public static final field REPLACED Ldev/placeholder/framework/input/InputCancellationReason;
+	public static final field USER_CANCELLED Ldev/placeholder/framework/input/InputCancellationReason;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/input/InputCancellationReason;
+	public static fun values ()[Ldev/placeholder/framework/input/InputCancellationReason;
+}
+
+public final class dev/placeholder/framework/input/InputConflict : java/lang/Enum {
+	public static final field REJECT Ldev/placeholder/framework/input/InputConflict;
+	public static final field REPLACE Ldev/placeholder/framework/input/InputConflict;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/placeholder/framework/input/InputConflict;
+	public static fun values ()[Ldev/placeholder/framework/input/InputConflict;
+}
+
+public final class dev/placeholder/framework/input/InputConflictException : java/util/concurrent/CancellationException {
+	public synthetic fun <init> (Ljava/util/UUID;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getPlayer-8gqzS8o ()Ljava/util/UUID;
+}
+
+public abstract interface class dev/placeholder/framework/input/InputDecision {
+}
+
+public final class dev/placeholder/framework/input/InputDecision$Accepted : dev/placeholder/framework/input/InputDecision {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Ldev/placeholder/framework/input/InputDecision$Accepted;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/input/InputDecision$Accepted;Ljava/lang/Object;ILjava/lang/Object;)Ldev/placeholder/framework/input/InputDecision$Accepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/input/InputDecision$Cancel : dev/placeholder/framework/input/InputDecision {
+	public static final field INSTANCE Ldev/placeholder/framework/input/InputDecision$Cancel;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/input/InputDecision$Pass : dev/placeholder/framework/input/InputDecision {
+	public static final field INSTANCE Ldev/placeholder/framework/input/InputDecision$Pass;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/input/InputDecision$Retry : dev/placeholder/framework/input/InputDecision {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/input/InputDecision$Retry;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/input/InputDecision$Retry;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Ldev/placeholder/framework/input/InputDecision$Retry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFeedback ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/placeholder/framework/input/InputMessages {
+	public abstract fun conflict (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public abstract fun expired (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+}
+
+public final class dev/placeholder/framework/input/InputTypesKt {
+	public static final fun accept (Ljava/lang/Object;)Ldev/placeholder/framework/input/InputDecision;
+	public static final fun acceptInputValue (Ljava/lang/Object;)Ldev/placeholder/framework/input/InputDecision;
+	public static final fun cancel ()Ldev/placeholder/framework/input/InputDecision;
+	public static final fun pass ()Ldev/placeholder/framework/input/InputDecision;
+	public static final fun retry (Ljava/lang/String;)Ldev/placeholder/framework/input/InputDecision;
+	public static final fun retry (Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/input/InputDecision;
+}
+
+public final class dev/placeholder/framework/input/PlayerInput {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;Ldev/placeholder/framework/di/DependencyGraph;)V
+	public final fun cancel-GEWGidA (Ljava/util/UUID;)Z
+	public final fun chat-z-hPz2U (Ljava/util/UUID;Ljava/lang/String;Lkotlin/time/Duration;Ldev/placeholder/framework/input/InputConflict;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun chat-z-hPz2U (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Ldev/placeholder/framework/input/InputConflict;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun chat-z-hPz2U$default (Ldev/placeholder/framework/input/PlayerInput;Ljava/util/UUID;Ljava/lang/String;Lkotlin/time/Duration;Ldev/placeholder/framework/input/InputConflict;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun chat-z-hPz2U$default (Ldev/placeholder/framework/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Ldev/placeholder/framework/input/InputConflict;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class dev/placeholder/framework/input/internal/InputRuntimeComponent : dev/placeholder/framework/PluginComponent {
+	public fun <init> (Ldev/placeholder/framework/events/ServerEvents;Ldev/placeholder/framework/input/PlayerInput;)V
+}
+
+public final class dev/placeholder/framework/input/testing/InputTestAttempt {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Z)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Z
+	public final fun copy (Lnet/kyori/adventure/text/Component;Z)Ldev/placeholder/framework/input/testing/InputTestAttempt;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/input/testing/InputTestAttempt;Lnet/kyori/adventure/text/Component;ZILjava/lang/Object;)Ldev/placeholder/framework/input/testing/InputTestAttempt;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComponent ()Lnet/kyori/adventure/text/Component;
+	public final fun getConsumed ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/placeholder/framework/input/testing/InputTestHarness : java/lang/AutoCloseable {
+	public fun <init> ()V
+	public fun <init> (Ldev/placeholder/framework/input/InputMessages;)V
+	public synthetic fun <init> (Ldev/placeholder/framework/input/InputMessages;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun answer-Zp1C9ko (Ljava/util/UUID;Ljava/lang/String;)Ldev/placeholder/framework/input/testing/InputTestAttempt;
+	public final fun answer-Zp1C9ko (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;)Ldev/placeholder/framework/input/testing/InputTestAttempt;
+	public final fun clear-GEWGidA (Ljava/util/UUID;)V
+	public fun close ()V
+	public final fun disconnect-GEWGidA (Ljava/util/UUID;)V
+	public final fun getPlayerInput ()Ldev/placeholder/framework/input/PlayerInput;
+	public final fun messages-GEWGidA (Ljava/util/UUID;)Ljava/util/List;
+	public final fun passed-GEWGidA (Ljava/util/UUID;)Ljava/util/List;
+	public final fun plainMessages-GEWGidA (Ljava/util/UUID;)Ljava/util/List;
+	public final fun player-hCtoBx8 (Ljava/lang/String;Ljava/util/Locale;)Ljava/util/UUID;
+	public static synthetic fun player-hCtoBx8$default (Ldev/placeholder/framework/input/testing/InputTestHarness;Ljava/lang/String;Ljava/util/Locale;ILjava/lang/Object;)Ljava/util/UUID;
+	public final fun reconnect-Zp1C9ko (Ljava/util/UUID;Ljava/util/Locale;)V
+	public static synthetic fun reconnect-Zp1C9ko$default (Ldev/placeholder/framework/input/testing/InputTestHarness;Ljava/util/UUID;Ljava/util/Locale;ILjava/lang/Object;)V
+}
+

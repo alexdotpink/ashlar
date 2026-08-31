@@ -138,6 +138,21 @@ public final class dev/placeholder/framework/execution/GlobalContext {
 public final class dev/placeholder/framework/execution/OwnershipViolationException : java/lang/IllegalStateException {
 }
 
+public final class dev/placeholder/framework/execution/PlayerRef {
+	public static final fun access-impl (Ljava/util/UUID;Lorg/bukkit/plugin/Plugin;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun box-impl (Ljava/util/UUID;)Ldev/placeholder/framework/execution/PlayerRef;
+	public static fun constructor-impl (Ljava/util/UUID;)Ljava/util/UUID;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/UUID;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/UUID;Ljava/util/UUID;)Z
+	public final fun getUniqueId ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/UUID;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/UUID;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/UUID;
+}
+
 public final class dev/placeholder/framework/execution/RegionContext {
 	public final fun checkOwnership ()V
 	public final fun getChunkX ()I
