@@ -1,6 +1,6 @@
 # Input module design
 
-Status: accepted for implementation
+Status: implemented
 
 The input module turns server events into typed player prompts. It owns chat interception, retry feedback, conflicts, deadlines, disconnects, cancellation, and cleanup while leaving multi-step conversations as ordinary suspending Kotlin.
 

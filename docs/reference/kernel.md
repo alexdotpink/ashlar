@@ -82,6 +82,8 @@ Plug-ins may override the drain duration. After the limit, the kernel reports un
 
 ## Ownership contexts
 
+`PlayerRef` is a stable UUID-backed player identity shared by commands, events, and input. `access(plugin)` resolves the current player and runs one non-suspending block inside its entity ownership context, returning `EntityOutcome.Retired` when the player is unavailable.
+
 The kernel exposes these suspend functions on Paper `Plugin`:
 
 - `withGlobal { ... }`

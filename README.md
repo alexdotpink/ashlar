@@ -1,6 +1,6 @@
 # Framework
 
-Framework is a Kotlin-only foundation for Paper and Folia plug-ins. The kernel owns plug-in lifecycle, structured coroutine scopes, nested stateful components, deterministic cleanup, and explicit server-ownership transitions. Optional command and event modules provide typed player-facing APIs without expanding the kernel.
+Framework is a Kotlin-only foundation for Paper and Folia plug-ins. The kernel owns plug-in lifecycle, structured coroutine scopes, nested stateful components, deterministic cleanup, and explicit server-ownership transitions. Optional command, event, and input modules provide typed player-facing interfaces without expanding the kernel.
 
 The project currently uses a temporary name and Maven group. Do not publish plug-ins against `dev.placeholder.framework` as a permanent coordinate.
 
@@ -11,6 +11,7 @@ The project currently uses a temporary name and Maven group. Do not publish plug
 - [Agent entrypoint](AGENTS.md)
 - [Run the sample plug-in](samples/sample-plugin/README.md)
 - [Events reference](docs/reference/events.md)
+- [Input reference](docs/reference/input.md)
 - [Project language](CONTEXT.md)
 - [Architecture decisions](docs/adr/)
 

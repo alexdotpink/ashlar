@@ -12,3 +12,4 @@
 - Added the Kotlin events module with static and dynamic server handlers, coroutine observers, temporal queries, structured application events, typed Paper lifecycle events, inherited event sets, a server-free test harness, and Paper/Folia fixtures.
 - Added task-oriented, reference, sample, and coding-agent documentation for every events feature.
 - Accepted the input-module design for typed chat prompts, retry decisions, conflict ownership, cancellation, idle deadlines, and server-free testing.
+- Added typed player chat input with accept, retry, cancel, and pass decisions, protected prompt ownership, idle deadlines, external cancellation, a dedicated test harness, and Paper/Folia fixtures.

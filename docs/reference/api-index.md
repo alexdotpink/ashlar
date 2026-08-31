@@ -7,6 +7,7 @@ This index routes public declarations to their authoritative reference. Generate
 - Lifecycle: `FrameworkPlugin`, `PluginComponent`, `PluginLoadContext`, `ComponentContext`, `FrameworkComponent`, `ComponentPhase`, `ExcludeContributions` — [kernel](kernel.md)
 - Tasks and failures: `TaskFailure`, `TaskFailureReporter` — [kernel](kernel.md)
 - Ownership: `GlobalContext`, `RegionContext`, `EntityContext`, `EntityOutcome`, `OwnershipViolationException`, `withGlobal`, `withRegion`, `withEntity` — [kernel](kernel.md)
+- Stable player identity: `PlayerRef` — [kernel](kernel.md)
 
 ## Dependency injection
 
@@ -36,7 +37,7 @@ This index routes public declarations to their authoritative reference. Generate
 
 ## Native command values
 
-- References: `PlayerRef`, `PlayerSelection`, `EntityRef`, `EntitySelection`, `WorldRef`, `BlockRef`, `LocationSnapshot`, `snapshot` — [native arguments](native-arguments.md)
+- References: `PlayerSelection`, `EntityRef`, `EntitySelection`, `WorldRef`, `BlockRef`, `LocationSnapshot`, `snapshot` — [native arguments](native-arguments.md)
 - Minecraft values and operations: `AxisSelection`, `BlockColumnRef`, `FinePositionSnapshot`, `FineColumnSnapshot`, `MinecraftRotation`, `MinecraftAngle`, `MinecraftTime`, `MinecraftIntegerRange`, `MinecraftDoubleRange`, `PlayerProfileSelection`, `PlayerProfileSnapshot`, `ProfilePropertySnapshot`, `RegistryValueRef`, `RegistryValueKey`, `ScoreboardCriterion`, `BlockPredicate`, `BlockPredicateResult`, `BlockStateInput`, `ItemPredicate`, `ItemStackSnapshot`, `SignedMessageInput`, and native qualifiers — [native arguments](native-arguments.md)
 
 ## Events
@@ -47,9 +48,15 @@ This index routes public declarations to their authoritative reference. Generate
 - Application events: `ApplicationEvent`, `ApplicationEvents`, `publish`, `ApplicationEventException`, `ApplicationEventHandlerFailure` — [events](events.md)
 - Lifecycle configuration: `LifecycleEventRegistry` — [events](events.md)
 
+## Input
+
+- Prompts: `PlayerInput`, `ChatAnswer`, `InputDecision`, `accept`, `retry`, `cancel`, `pass` — [input](input.md)
+- Lifecycle outcomes: `InputConflict`, `InputConflictException`, `InputCancellationReason`, `InputCancellationException` — [input](input.md)
+- Messages: `InputMessages`, `EnglishInputMessages` — [input](input.md)
+
 ## Testing and build
 
-- `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult` — [testing](testing.md)
+- `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult`, `InputTestHarness`, `InputTestAttempt` — [testing](testing.md)
 - `FrameworkPluginExtension` and `GeneratePluginYaml` — [managed Gradle plug-in](gradle-plugin.md)
 - `ExperimentalFrameworkApi` — opt-in marker for declarations from `framework-incubator`; no stable compatibility promise
 - `DiProcessorProvider`, `CommandsProcessorProvider`, `EventsProcessorProvider` — KSP service entrypoints selected by the managed build; do not instantiate in plug-in code

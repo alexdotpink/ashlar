@@ -20,6 +20,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Handle server events](how-to/handle-server-events.md)
 - [Wait for and collect server events](how-to/wait-for-events.md)
 - [Publish application events](how-to/publish-application-events.md)
+- [Collect typed player input](how-to/collect-player-input.md)
 - [Test a plug-in](how-to/test-a-plugin.md)
 
 ## Look up an API
@@ -35,6 +36,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Command results and failures](reference/command-results.md)
 - [Typed routes, fragments, and graphs](reference/command-routes.md)
 - [Events](reference/events.md)
+- [Input](reference/input.md)
 - [Testing APIs](reference/testing.md)
 - [Public API index](reference/api-index.md)
 
@@ -44,6 +46,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Plug-in authoring workflow](agents/plugin-authoring.md)
 - [Command authoring workflow](agents/command-authoring.md)
 - [Event authoring workflow](agents/event-authoring.md)
+- [Input authoring workflow](agents/input-authoring.md)
 - [Verification matrix](agents/verification.md)
 
 Architecture decisions live under [docs/adr](adr/). They record why the current API has its shape. They are not usage instructions.

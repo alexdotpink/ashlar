@@ -15,6 +15,8 @@ Match the check to the claim. An exit code from an unrelated task is not evidenc
 | Server-event registration, custom event, or lifecycle key | Real Paper server; Folia too when callback ownership or concurrency matters |
 | Temporal event query or application event | Focused harness tests for completion, cancellation, failure, and cleanup |
 | Interactive capture or player-facing observer | Real server with a connected player |
+| Player input parsing, conflicts, or deadlines | `InputTestHarness` with accepted, retry, cancellation, and cleanup paths |
+| Native chat consumption or prompt delivery | Real connected client on Paper; Folia too when ownership changes |
 | Gradle plug-in | Gradle TestKit test and a shaded sample JAR |
 | Documentation | Local-link check, code samples compared with current source, full build if samples changed |
 

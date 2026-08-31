@@ -27,6 +27,14 @@ This focused harness does not run the production policy, observer, help, Paper r
 
 Use the harness for generated bindings, cancellation filtering, temporal `await`, `capture`, and `stream` behavior, structured application publication, and cleanup. It intentionally does not emulate Bukkit `HandlerList`, Paper's lifecycle manager, scheduler ownership, or Folia callback concurrency.
 
+## Input test harness
+
+`InputTestHarness()` exposes the production `playerInput` capability. `player(name, locale)` creates a deterministic online `PlayerRef`. `answer` dispatches String or Component chat and returns `InputTestAttempt`, whose `consumed` flag reports whether normal chat would continue.
+
+`messages` and `plainMessages` return delivered prompt and feedback history. `passed` returns chat explicitly released through `pass()`. `disconnect` cancels active input and marks delivery unavailable; `reconnect` restores it. `clear` removes recorded history. Closing the fixture cancels every active prompt.
+
+Run the fixture inside `runTest` to control idle time with `advanceTimeBy`. The harness tests input behavior, not Paper's native event dispatch or entity scheduler.
+
 ## Repository fixtures
 
 ```bash
@@ -39,4 +47,4 @@ Use the harness for generated bindings, cancellation filtering, temporal `await`
 
 The integration fixture is automated and asserts server startup and plug-in behavior. The sample is interactive and has a client checklist in its [README](../../samples/sample-plugin/README.md).
 
-Use a real Paper and Folia server for command and event registration, native Minecraft inputs, custom events, server ownership, scheduling, lifecycle keys, lifecycle disable, and command-tree refresh. Use a connected player for response delivery, suggestions, click events, executor retirement, and interactive event capture.
+Use a real Paper and Folia server for command and event registration, native Minecraft inputs, custom events, server ownership, scheduling, lifecycle keys, lifecycle disable, input listeners, and command-tree refresh. Use a connected player for response delivery, suggestions, click events, executor retirement, event capture, and chat prompts.

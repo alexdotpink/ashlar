@@ -26,7 +26,7 @@ frameworkPlugin {
     authors.add("Example")
     foliaSupported()
     commands(strictDocumentation = true)
-    events()
+    input()
 }
 ```
 
@@ -64,7 +64,13 @@ Read [event-authoring.md](event-authoring.md) for the full event workflow.
 
 The step is complete when event ownership, cancellation, pressure, and cleanup are explicit.
 
-## 7. Verify the actual path
+## 7. Add typed player input
+
+Use `PlayerInput.chat` for typed player chat. Compose multiple prompts with Kotlin control flow and keep suspending domain validation between them.
+
+Read [input-authoring.md](input-authoring.md) for prompt decisions, conflicts, cancellation, and testing.
+
+## 8. Verify the actual path
 
 Run the smallest focused test during development. Finish with `build` and `checkKotlinAbi` for framework changes. Run a Paper or Folia server when the change touches registration, native arguments, ownership, scheduling, or response delivery.
 

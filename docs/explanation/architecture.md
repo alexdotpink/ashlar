@@ -12,4 +12,6 @@ Dependency injection is plug-in-local and generated at constructor boundaries. I
 
 The event module preserves the server's synchronous mutation contract instead of hiding it behind coroutines. `@On` stays in the native callback. `@Observe` projects data before suspension. Temporal queries project one value or a bounded stream, while application events use a separate structured, suspending publication model. These APIs share event-set syntax without pretending their dispatch rules are interchangeable.
 
+The input module builds one typed prompt on the event capture contract. It keeps the cancellation decision inside synchronous chat dispatch, then lets the caller suspend for the typed answer. Multi-step interaction remains Kotlin code, so the module owns prompt mechanics without owning application workflow or state.
+
 The result is intentionally opinionated: typed interfaces over raw strings, one owner for every task and resource, startup failure for ambiguous static configuration, and explicit outcomes for expected server races.

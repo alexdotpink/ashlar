@@ -1,6 +1,6 @@
 # Command and event showcase plug-in
 
-This Paper/Folia plug-in is a playable reference for the complete command and event modules. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. The event catalogue root is `/events`, with `/ev` as its alias.
+This Paper/Folia plug-in is a playable reference for the command, event, and input modules. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`. Typed input uses `/input` or `/in`.
 
 Start with `/showcase` for clickable links, `/sc guide` for a short path, or `/sc help [page]` for generated, permission-filtered help. Tab completion is part of the demonstration; try it after every literal and for the landmark argument.
 
@@ -30,6 +30,58 @@ Send `maybe` in chat; the capture consumes it and asks for `yes` or `no`. Send `
 ```
 
 Send two chat messages. The command replies with both projected strings. Disconnecting records the quit through a component-owned dynamic listener; reconnect and run `/events state` to see it.
+
+## Input checklist
+
+Test typed acceptance, retry, and user cancellation:
+
+```text
+/input choose @s
+maybe
+yes
+
+/input choose @s
+cancel
+```
+
+`maybe` is consumed and produces red retry feedback. `yes` returns `Accepted true.` The cancellation word is chosen by this sample parser rather than reserved by the framework.
+
+Test passed chat:
+
+```text
+/input prefixed @s
+this remains public
+answer:private-value
+```
+
+The first message appears in ordinary chat. The prefixed answer is consumed and completes the command.
+
+Test prompt conflicts and command bypass:
+
+```text
+/input wait @s
+/input ping
+/input choose @s
+/input replace @s
+replacement
+```
+
+`ping` works while chat input is active. `choose` is rejected with conflict feedback. `replace` explicitly cancels the waiting prompt and accepts the replacement answer.
+
+Test timeout, external cancellation, and ordinary Kotlin composition:
+
+```text
+/input timeout @s
+
+/input wait @s
+/input cancel-active @s
+
+/input multi-step @s
+market
+yes
+```
+
+Wait three seconds after `timeout` to see its custom expiry message. External cancellation atomically ends `wait`. The multi-step route produces two independent typed prompts without a conversation DSL.
 
 ## Playable checklist
 
