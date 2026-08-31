@@ -1,0 +1,56 @@
+name: Scheduled performance evidence
+
+on:
+  schedule:
+    - cron: "20 2 * * *"
+    - cron: "20 3 * * 0"
+  workflow_dispatch:
+    inputs:
+      soak_seconds:
+        description: Soak duration per platform
+        required: false
+        default: "60"
+
+permissions:
+  contents: read
+
+jobs:
+  stress:
+    runs-on: [self-hosted, linux, x64, framework-benchmark]
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v5
+      - run: scripts/check-benchmark-worker.sh
+      - name: JVM stress contracts
+        run: >-
+          ./gradlew benchmarkMerge benchmarkBuild
+          -PbenchmarkRevision=${{ github.sha }}
+          -PbenchmarkProfiles=stress
+          -PbenchmarkWarmups=5
+          -PbenchmarkIterations=20
+          -PbenchmarkForks=3
+          --no-build-cache --stacktrace
+      - name: Paper and Folia load and soak
+        env:
+          REQUESTED_SOAK: ${{ inputs.soak_seconds }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          seconds="${REQUESTED_SOAK:-60}"
+          if [ "$SCHEDULE" = "20 3 * * 0" ]; then seconds=3600; fi
+          ./gradlew benchmarkPlatforms -PbenchmarkSoakSeconds="$seconds" -PbenchmarkRevision=${{ github.sha }} --stacktrace
+      - name: Connected-client native hosts
+        run: ./gradlew benchmarkClient -PbenchmarkClientProfile=stress -PbenchmarkRevision=${{ github.sha }} --stacktrace
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: scheduled-performance-evidence
+          path: |
+            build/reports/benchmarks/**
+            integration-test-fixture/build/run/*/benchmark-result.json
+            framework-*/build/reports/benchmarks/*.json
+

@@ -1,0 +1,42 @@
+name: Benchmark smoke
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v5
+      - name: Check catalogue
+        run: ./gradlew benchmarkCatalogue --stacktrace
+      - name: Collect non-authoritative smoke evidence
+        continue-on-error: true
+        run: >-
+          ./gradlew
+          :framework-commands:benchmark
+          :framework-events:benchmark
+          :framework-menus:benchmark
+          -PbenchmarkProfiles=small
+          -PbenchmarkWarmups=1
+          -PbenchmarkIterations=3
+          -PbenchmarkForks=1
+          --stacktrace
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: benchmark-smoke
+          path: |
+            build/reports/benchmarks/catalogue.json
+            framework-*/build/reports/benchmarks/*.json
+

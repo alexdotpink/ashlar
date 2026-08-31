@@ -1,0 +1,67 @@
+name: Paired performance gate
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired:
+    runs-on: [self-hosted, linux, x64, framework-benchmark]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          path: baseline
+      - uses: actions/checkout@v5
+        with:
+          path: candidate
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@v5
+      - name: Verify dedicated worker
+        run: candidate/scripts/check-benchmark-worker.sh
+      - name: Measure baseline
+        working-directory: baseline
+        run: >-
+          ./gradlew benchmarkMerge
+          -PbenchmarkRevision=main
+          -PbenchmarkProfiles=small,typical
+          --no-build-cache --stacktrace
+      - name: Measure candidate
+        working-directory: candidate
+        run: >-
+          ./gradlew benchmarkMerge
+          -PbenchmarkRevision=${{ github.sha }}
+          -PbenchmarkProfiles=small,typical
+          --no-build-cache --stacktrace
+      - name: Compare and confirm failures once
+        shell: bash
+        run: |
+          set +e
+          candidate/gradlew -p candidate benchmarkCompare \
+            -PbenchmarkBaseline="$PWD/baseline/build/reports/benchmarks/local.json" \
+            -PbenchmarkCandidate="$PWD/candidate/build/reports/benchmarks/local.json"
+          first=$?
+          set -e
+          if [ "$first" -ne 0 ]; then
+            (cd baseline && ./gradlew benchmarkMerge -PbenchmarkRevision=main -PbenchmarkProfiles=small,typical --no-build-cache)
+            (cd candidate && ./gradlew benchmarkMerge -PbenchmarkRevision=${{ github.sha }} -PbenchmarkProfiles=small,typical --no-build-cache)
+            candidate/gradlew -p candidate benchmarkCompare \
+              -PbenchmarkBaseline="$PWD/baseline/build/reports/benchmarks/local.json" \
+              -PbenchmarkCandidate="$PWD/candidate/build/reports/benchmarks/local.json"
+          fi
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: paired-performance-evidence
+          path: |
+            baseline/build/reports/benchmarks/*.json
+            candidate/build/reports/benchmarks/*.json
+            candidate/build/reports/benchmarks/*.md
+
