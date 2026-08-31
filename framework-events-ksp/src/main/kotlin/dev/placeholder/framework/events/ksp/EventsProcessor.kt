@@ -46,7 +46,9 @@ internal class EventsProcessor(
                     val sourceFile = checkNotNull(declaration.containingFile)
                     val generated = writer.file(model)
                     codeGenerator.createNewFile(
-                        Dependencies(aggregating = false, sourceFile),
+                        // A concrete event set may inherit handlers from any source file in the
+                        // compilation, so changes to a base class must invalidate its descendants.
+                        Dependencies(aggregating = true, sourceFile),
                         model.packageName,
                         generated.name,
                     ).bufferedWriter().use(generated::writeTo)

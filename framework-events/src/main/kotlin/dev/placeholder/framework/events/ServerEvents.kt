@@ -36,14 +36,16 @@ public fun interface EventRegistration : AutoCloseable {
 }
 
 /** Plug-in-scoped entrypoint for dynamic and temporal server event operations. */
-@Inject
 @PluginScoped
-public class ServerEvents(
-    private val plugin: Plugin,
-    graph: DependencyGraph,
+public class ServerEvents private constructor(
+    private val registrar: ServerEventRegistrar,
+    @PublishedApi internal val reporter: ServerEventFailureReporter,
 ) {
-    @PublishedApi
-    internal val reporter: ServerEventFailureReporter = graph.serverEventFailureReporter(plugin)
+    @Inject
+    public constructor(plugin: Plugin, graph: DependencyGraph) : this(
+        PaperServerEventRegistrar(plugin),
+        graph.serverEventFailureReporter(plugin),
+    )
 
     @PublishedApi
     internal fun <E : Event> register(
@@ -53,31 +55,26 @@ public class ServerEvents(
         name: String,
         handler: E.() -> Unit,
     ): EventRegistration {
-        val listener = object : Listener {}
-        val closed = AtomicBoolean()
-        plugin.server.pluginManager.registerEvent(
-            type.java,
-            listener,
-            priority,
-            EventExecutor { _, event ->
-                runCatching { type.java.cast(event).handler() }
-                    .onFailure { cause ->
-                        reporter.report(
-                            ServerEventFailure(
-                                eventSet = ServerEvents::class,
-                                handler = name,
-                                eventType = type,
-                                cause = cause,
-                            ),
-                        )
-                    }
-            },
-            plugin,
-            ignoreCancelled,
-        )
-        return EventRegistration {
-            if (closed.compareAndSet(false, true)) HandlerList.unregisterAll(listener)
+        return registrar.register(type, priority, ignoreCancelled) { event ->
+            runCatching { type.java.cast(event).handler() }
+                .onFailure { cause ->
+                    reporter.report(
+                        ServerEventFailure(
+                            eventSet = ServerEvents::class,
+                            handler = name,
+                            eventType = type,
+                            cause = cause,
+                        ),
+                    )
+                }
         }
+    }
+
+    internal companion object {
+        fun testing(
+            registrar: ServerEventRegistrar,
+            reporter: ServerEventFailureReporter,
+        ): ServerEvents = ServerEvents(registrar, reporter)
     }
 }
 
@@ -253,4 +250,38 @@ internal fun DependencyGraph.serverEventFailureReporter(plugin: Plugin): ServerE
         },
     )
     return get(ServerEventFailureReporter::class)
+}
+
+internal interface ServerEventRegistrar {
+    fun <E : Event> register(
+        type: KClass<E>,
+        priority: EventPriority,
+        ignoreCancelled: Boolean,
+        handler: (Event) -> Unit,
+    ): EventRegistration
+}
+
+private class PaperServerEventRegistrar(
+    private val plugin: Plugin,
+) : ServerEventRegistrar {
+    override fun <E : Event> register(
+        type: KClass<E>,
+        priority: EventPriority,
+        ignoreCancelled: Boolean,
+        handler: (Event) -> Unit,
+    ): EventRegistration {
+        val listener = object : Listener {}
+        val closed = AtomicBoolean()
+        plugin.server.pluginManager.registerEvent(
+            type.java,
+            listener,
+            priority,
+            EventExecutor { _, event -> handler(event) },
+            plugin,
+            ignoreCancelled,
+        )
+        return EventRegistration {
+            if (closed.compareAndSet(false, true)) HandlerList.unregisterAll(listener)
+        }
+    }
 }

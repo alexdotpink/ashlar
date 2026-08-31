@@ -178,6 +178,28 @@ public final class dev/placeholder/framework/events/internal/EventRuntimeCompone
 	public fun <init> (Ldev/placeholder/framework/di/DependencyGraph;Ldev/placeholder/framework/events/ApplicationEvents;Ldev/placeholder/framework/events/LifecycleEventRegistry;)V
 }
 
+public final class dev/placeholder/framework/events/testing/EventTestHarness : java/lang/AutoCloseable {
+	public fun <init> (Ldev/placeholder/framework/di/DependencyGraph;)V
+	public fun close ()V
+	public final fun dispatch (Lorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getApplicationEvents ()Ldev/placeholder/framework/events/ApplicationEvents;
+	public final fun getServerEvents ()Ldev/placeholder/framework/events/ServerEvents;
+}
+
+public final class dev/placeholder/framework/events/testing/EventTestResult {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public final fun checkSuccessful ()V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Ldev/placeholder/framework/events/testing/EventTestResult;
+	public static synthetic fun copy$default (Ldev/placeholder/framework/events/testing/EventTestResult;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Ldev/placeholder/framework/events/testing/EventTestResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getObserverFailures ()Ljava/util/List;
+	public final fun getServerFailures ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class dev/placeholder/framework/generated/FrameworkDependencyContributions_1c3624a19905 : dev/placeholder/framework/di/DependencyContributionModule {
 	public fun <init> ()V
 	public fun getContributions ()Ljava/util/List;

@@ -9,6 +9,7 @@ public abstract class dev/placeholder/framework/gradle/FrameworkPluginExtension 
 	public final fun allowVersionOverrides (Ljava/lang/String;)V
 	public final fun commands (Z)V
 	public static synthetic fun commands$default (Ldev/placeholder/framework/gradle/FrameworkPluginExtension;ZILjava/lang/Object;)V
+	public final fun events ()V
 	public final fun foliaSupported ()V
 	public final fun frameworkVersion (Ljava/lang/String;)V
 	public final fun getAuthors ()Lorg/gradle/api/provider/ListProperty;

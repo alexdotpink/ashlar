@@ -46,17 +46,21 @@ public class ApplicationEventException(
 }
 
 /** Plug-in-scoped publisher and stream source for application events. */
-@Inject
 @PluginScoped
-public class ApplicationEvents(
-    plugin: Plugin,
+public class ApplicationEvents private constructor(
     private val graph: DependencyGraph,
+    private val excluded: Set<KClass<*>>,
 ) : AutoCloseable {
-    private val excluded: Set<KClass<*>> = plugin.javaClass
-        .getAnnotation(ExcludeEventContributions::class.java)
-        ?.types
-        ?.toSet()
-        .orEmpty()
+    @Inject
+    public constructor(plugin: Plugin, graph: DependencyGraph) : this(
+        graph,
+        plugin.javaClass.getAnnotation(ExcludeEventContributions::class.java)
+            ?.types
+            ?.toSet()
+            .orEmpty(),
+    )
+
+    internal constructor(graph: DependencyGraph) : this(graph, emptySet())
     private val streams: MutableList<ApplicationStream> = CopyOnWriteArrayList()
     private val closed = AtomicBoolean()
 

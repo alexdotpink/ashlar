@@ -27,11 +27,35 @@ import dev.placeholder.framework.execution.RegionContext
 import dev.placeholder.framework.execution.withEntity
 import dev.placeholder.framework.execution.withGlobal
 import dev.placeholder.framework.execution.withRegion
+import dev.placeholder.framework.events.ApplicationEvent
+import dev.placeholder.framework.events.ApplicationEvents
+import dev.placeholder.framework.events.ConfigureLifecycleEvents
+import dev.placeholder.framework.events.Events
+import dev.placeholder.framework.events.LifecycleEventRegistry
+import dev.placeholder.framework.events.Observe
+import dev.placeholder.framework.events.On
+import dev.placeholder.framework.events.OnApplication
+import dev.placeholder.framework.events.ServerEvents
+import dev.placeholder.framework.events.capture
+import dev.placeholder.framework.events.await
+import dev.placeholder.framework.events.publish
+import dev.placeholder.framework.events.stream
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.yield
 import kotlinx.coroutines.withTimeout
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
+import org.bukkit.event.Cancellable
+import org.bukkit.event.Event
+import org.bukkit.event.EventPriority
+import org.bukkit.event.HandlerList
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArrayList
@@ -42,6 +66,8 @@ import kotlin.time.Duration.Companion.seconds
 public class IntegrationFixturePlugin : FrameworkPlugin() {
     private val probeResults by inject<ProbeResults>()
     private val automaticProbe by inject<AutomaticProbe>()
+    private val serverEvents by inject<ServerEvents>()
+    private val applicationEvents by inject<ApplicationEvents>()
     private val lifecycleProbe by component { ParentProbe(probeResults) }
     override fun ComponentContext.enable(): Unit {
         check(automaticProbe.started) { "The automatic DI component was not started before the plug-in" }
@@ -53,6 +79,7 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
             try {
                 lifecycleProbe.awaitOrdinaryTask()
                 exerciseExecutionContexts()
+                exerciseEvents()
                 exerciseCommands()
             } catch (failure: Throwable) {
                 probeResults.fail(failure)
@@ -91,6 +118,55 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
                 delay(10)
             }
         }
+    }
+
+    private suspend fun exerciseEvents(): Unit = coroutineScope {
+        val serverEvent = FixtureServerEvent("static")
+        callEvent(serverEvent)
+        check(serverEvent.isCancelled) { "The generated synchronous event handler did not cancel" }
+
+        val awaited = async(start = CoroutineStart.UNDISPATCHED) {
+            serverEvents.await<FixtureQueryEvent, String> { value }
+        }
+        callEvent(FixtureQueryEvent("awaited"))
+        check(awaited.await() == "awaited")
+
+        val capturedEvent = FixtureQueryEvent("captured")
+        val captured = async(start = CoroutineStart.UNDISPATCHED) {
+            serverEvents.capture<FixtureQueryEvent, String> { value }
+        }
+        callEvent(capturedEvent)
+        check(captured.await() == "captured")
+        check(capturedEvent.isCancelled) { "The event capture did not cancel its selected event" }
+
+        val streamed = async(start = CoroutineStart.UNDISPATCHED) {
+            serverEvents.stream<FixtureQueryEvent, String>(
+                capacity = 1,
+                overflow = BufferOverflow.DROP_OLDEST,
+            ) { value }.first()
+        }
+        yield()
+        callEvent(FixtureQueryEvent("streamed"))
+        check(streamed.await() == "streamed")
+
+        with(applicationEvents) {
+            FixtureApplicationEvent("published").publish()
+        }
+
+        withTimeout(5.seconds) {
+            while (
+                !probeResults.hasEvent("event:observer:static") ||
+                !probeResults.hasEvent("event:application:published") ||
+                !probeResults.hasEvent("event:application-suspend:published") ||
+                !probeResults.hasEvent("event:lifecycle")
+            ) {
+                delay(10)
+            }
+        }
+    }
+
+    private suspend fun callEvent(event: Event) {
+        withGlobal { server.pluginManager.callEvent(event) }
     }
 
     override fun ComponentContext.disable(): Unit {
@@ -214,6 +290,85 @@ private class ChildProbe(
     override fun ComponentContext.stop(): Unit {
         results.record("child:stop")
         started = false
+    }
+}
+
+@Events
+internal class FixtureEvents(
+    private val results: ProbeResults,
+) {
+    @On(priority = EventPriority.HIGH)
+    internal fun FixtureServerEvent.handle() {
+        results.record("event:sync:$value")
+        isCancelled = true
+    }
+
+    @Observe
+    internal suspend fun FixtureServerEvent.observe() {
+        val copied = value
+        results.record("event:observer-prefix:$copied")
+        yield()
+        results.record("event:observer:$copied")
+    }
+
+    @OnApplication
+    internal fun FixtureApplicationEvent.handle() {
+        results.record("event:application:$value")
+    }
+
+    @OnApplication
+    internal suspend fun FixtureApplicationEvent.handleSuspend() {
+        yield()
+        results.record("event:application-suspend:$value")
+    }
+
+    @ConfigureLifecycleEvents
+    internal fun LifecycleEventRegistry.configureFixtureEvents() {
+        on(LifecycleEvents.COMMANDS, priority = -100) {
+            results.record("event:lifecycle")
+        }
+    }
+}
+
+internal data class FixtureApplicationEvent(val value: String) : ApplicationEvent
+
+internal class FixtureServerEvent(val value: String) : Event(), Cancellable {
+    private var cancelled = false
+
+    override fun isCancelled(): Boolean = cancelled
+
+    override fun setCancelled(cancelled: Boolean) {
+        this.cancelled = cancelled
+    }
+
+    override fun getHandlers(): HandlerList = HANDLERS
+
+    companion object {
+        @JvmStatic
+        private val HANDLERS = HandlerList()
+
+        @JvmStatic
+        fun getHandlerList(): HandlerList = HANDLERS
+    }
+}
+
+internal class FixtureQueryEvent(val value: String) : Event(), Cancellable {
+    private var cancelled = false
+
+    override fun isCancelled(): Boolean = cancelled
+
+    override fun setCancelled(cancelled: Boolean) {
+        this.cancelled = cancelled
+    }
+
+    override fun getHandlers(): HandlerList = HANDLERS
+
+    companion object {
+        @JvmStatic
+        private val HANDLERS = HandlerList()
+
+        @JvmStatic
+        fun getHandlerList(): HandlerList = HANDLERS
     }
 }
 
@@ -355,6 +510,12 @@ public class ProbeResults {
                 "execution:global",
                 "execution:region",
                 "execution:entity",
+                "event:sync:static",
+                "event:observer-prefix:static",
+                "event:observer:static",
+                "event:application:published",
+                "event:application-suspend:published",
+                "event:lifecycle",
                 "command:greet:world",
                 "command:greet:Paper",
                 "command:admin:Folia",
@@ -381,6 +542,7 @@ public class ProbeResults {
         assertBefore("plugin:enable", "execution:global")
         assertBefore("execution:global", "execution:region")
         assertBefore("execution:region", "execution:entity")
+        assertBefore("event:observer-prefix:static", "event:observer:static")
         assertBefore("policy:say:frameworkfixture say", "command:say:market square")
         assertBefore("plugin:disable", "parent:stop")
         assertBefore("plugin:disable", "automatic:stop")

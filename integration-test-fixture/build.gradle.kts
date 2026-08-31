@@ -12,9 +12,11 @@ description = "Executable Paper and Folia integration fixture"
 dependencies {
     implementation(project(":kernel"))
     implementation(project(":framework-commands"))
+    implementation(project(":framework-events"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     ksp(project(":framework-commands-ksp"))
+    ksp(project(":framework-events-ksp"))
     ksp(project(":framework-di-ksp"))
 }
 
