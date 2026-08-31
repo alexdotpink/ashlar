@@ -213,14 +213,23 @@ internal class ShowcaseHelpRenderer : CommandHelpRenderer {
         definition: dev.placeholder.framework.commands.codegen.CommandSetDefinition,
         sender: dev.placeholder.framework.commands.CommandSender,
         page: Int,
-    ): Component = Component.text("Command showcase — click or type /sc guide", NamedTextColor.AQUA)
-        .append(Component.newline())
-        .append(DefaultCommandHelpRenderer.render(definition, sender, page))
+    ): Component = decorate(definition, DefaultCommandHelpRenderer.render(definition, sender, page))
 
     override fun render(
         definition: dev.placeholder.framework.commands.codegen.CommandSetDefinition,
         sender: dev.placeholder.framework.commands.CommandSender,
     ): Component = render(definition, sender, 1)
+
+    internal fun decorate(
+        definition: dev.placeholder.framework.commands.codegen.CommandSetDefinition,
+        rendered: Component,
+    ): Component = if (definition.name == "showcase") {
+        Component.text("Command showcase — click or type /sc guide", NamedTextColor.AQUA)
+            .append(Component.newline())
+            .append(rendered)
+    } else {
+        rendered
+    }
 }
 
 internal suspend fun policyDelay() {
