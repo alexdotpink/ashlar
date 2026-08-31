@@ -23,6 +23,7 @@ import dev.placeholder.framework.di.Inject
 import dev.placeholder.framework.di.PluginScoped
 import dev.placeholder.framework.execution.EntityContext
 import dev.placeholder.framework.execution.EntityOutcome
+import dev.placeholder.framework.execution.PlayerRef
 import dev.placeholder.framework.execution.RegionContext
 import dev.placeholder.framework.execution.withEntity
 import dev.placeholder.framework.execution.withGlobal
@@ -40,6 +41,7 @@ import dev.placeholder.framework.events.capture
 import dev.placeholder.framework.events.await
 import dev.placeholder.framework.events.publish
 import dev.placeholder.framework.events.stream
+import dev.placeholder.framework.input.PlayerInput
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
@@ -60,6 +62,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
+import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 /** Executed by the Gradle Paper and Folia integration-test tasks. */
@@ -68,10 +71,13 @@ public class IntegrationFixturePlugin : FrameworkPlugin() {
     private val automaticProbe by inject<AutomaticProbe>()
     private val serverEvents by inject<ServerEvents>()
     private val applicationEvents by inject<ApplicationEvents>()
+    private val playerInput by inject<PlayerInput>()
     private val lifecycleProbe by component { ParentProbe(probeResults) }
     override fun ComponentContext.enable(): Unit {
         check(automaticProbe.started) { "The automatic DI component was not started before the plug-in" }
         probeResults.record("automatic:injected")
+        check(!playerInput.cancel(PlayerRef(UUID(0L, 0L))))
+        probeResults.record("input:available")
         probeResults.record("plugin:enable")
         own(AutoCloseable { probeResults.writeReceipt() })
 
@@ -505,6 +511,7 @@ public class ProbeResults {
                 "parent:start",
                 "automatic:start",
                 "automatic:injected",
+                "input:available",
                 "plugin:enable",
                 "child:task",
                 "execution:global",

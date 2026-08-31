@@ -10,7 +10,7 @@ import dev.placeholder.framework.events.ExcludeEventContributions
 @ExcludeEventContributions(ExcludedSampleEvents::class)
 public class SamplePlugin : FrameworkPlugin() {
     override fun ComponentContext.enable() {
-        logger.info("Framework showcase enabled; use /showcase, /sc, /events, or /ev")
+        logger.info("Framework showcase enabled; use /showcase, /events, or /input")
     }
 
     override fun ComponentContext.disable() {

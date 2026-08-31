@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":kernel"))
     implementation(project(":framework-commands"))
     implementation(project(":framework-events"))
+    implementation(project(":framework-input"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     ksp(project(":framework-commands-ksp"))
