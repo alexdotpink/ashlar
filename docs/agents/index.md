@@ -15,11 +15,10 @@ Use this section when an agent is writing a plug-in, reviewing generated framewo
 | Touch Paper objects from a coroutine | [Access Paper safely](../how-to/access-paper-safely.md) | Every access occurs inside the correct ownership block. |
 | Add DI bindings or contributions | [Dependency injection reference](../reference/dependency-injection.md) | Generated factories compile and lifetime boundaries remain valid. |
 | Verify work | [Verification](verification.md) | Evidence matches the claim being made. |
+| Measure or optimize framework work | [Benchmarking](benchmarking.md) | The owning contract and correct evidence layer pass. |
 
 ## Sources of truth
 
-The Kotlin source and committed `.api` dumps define the current public API. Reference pages describe that API. The sample plug-in provides compile-checked command, event, and input examples. The integration fixture proves behavior on real Paper and Folia servers.
-
-Items and menus are approved designs, not current APIs. Until their first implementation slice lands, their design documents and ADRs are authoritative for implementation work but must not be presented to plug-in authors as available dependencies.
+The Kotlin source and committed `.api` dumps define the current public API. Reference pages describe that API. The sample plug-in provides compile-checked command, event, input, item, menu, and benchmark examples. The integration fixture proves behavior on real Paper and Folia servers.
 
 If prose and source disagree, follow source, fix the prose in the same change, and add a regression test when behavior was ambiguous.

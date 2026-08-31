@@ -47,4 +47,6 @@ Run the fixture inside `runTest` to control idle time with `advanceTimeBy`. The 
 
 The integration fixture is automated and asserts server startup and plug-in behavior. The sample is interactive and has a client checklist in its [README](../../samples/sample-plugin/README.md).
 
+Performance checks are separate from behavioral tests. Use `benchmarkCatalogue` for coverage, module `benchmark` or `benchmarkJmh` tasks for isolated work, `benchmarkPlatforms` for Paper/Folia workloads, and `benchmarkClient` for player-visible native hosts. See the [benchmark reference](benchmarks.md).
+
 Use a real Paper and Folia server for command and event registration, native Minecraft inputs, custom events, server ownership, scheduling, lifecycle keys, lifecycle disable, input listeners, and command-tree refresh. Use a connected player for response delivery, suggestions, click events, executor retirement, event capture, and chat prompts.

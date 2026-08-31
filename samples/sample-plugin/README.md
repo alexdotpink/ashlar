@@ -2,6 +2,20 @@
 
 This Paper/Folia plug-in is a playable reference for commands, events, typed input, items, and menus. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`, typed input uses `/input` or `/in`, and menus use `/menus` or `/menu`.
 
+## Benchmark example
+
+`src/benchmark/kotlin/dev/placeholder/framework/sample/SamplePerformance.kt` uses the same public benchmark DSL available to plug-ins. It starts a typed chat prompt through `InputTestHarness`, supplies answers, and verifies the returned values outside the timed boundary.
+
+```bash
+./gradlew :sample-plugin:benchmark \
+  -PbenchmarkProfiles=small \
+  -PbenchmarkWarmups=1 \
+  -PbenchmarkIterations=3 \
+  -PbenchmarkForks=1
+```
+
+The result is written to `samples/sample-plugin/build/reports/benchmarks/run.json`. Use the [benchmark tutorial](../../docs/tutorials/benchmark-a-plugin.md) to add a contract and the [reference](../../docs/reference/benchmarks.md) for every task, metric, and result field.
+
 Start with `/showcase` for clickable links, `/sc guide` for a short path, or `/sc help [page]` for generated, permission-filtered help. Tab completion is part of the demonstration; try it after every literal and for the landmark argument.
 
 ## Menu checklist

@@ -19,12 +19,17 @@ Match the check to the claim. An exit code from an unrelated task is not evidenc
 | Native chat consumption or prompt delivery | Real connected client on Paper; Folia too when ownership changes |
 | Gradle plug-in | Gradle TestKit test and a shaded sample JAR |
 | Documentation | Local-link check, code samples compared with current source, full build if samples changed |
+| Performance contract or runtime hot path | Owning module benchmark, catalogue, semantic tests, and a paired run on the canonical worker before enforcing budgets |
+| Native performance | Paper and Folia result; connected client too for packet-visible or rendered behavior |
+| Build or KSP performance | `benchmarkBuild`, generated size, artifact size, and a same-worker paired comparison |
 
 Repository commands:
 
 ```bash
 ./gradlew build checkKotlinAbi
 ./gradlew integrationTest
+./gradlew benchmarkCatalogue
+./gradlew benchmarkMerge -PbenchmarkProfiles=small -PbenchmarkWarmups=1 -PbenchmarkIterations=3 -PbenchmarkForks=1
 python3 scripts/check_docs.py
 ```
 

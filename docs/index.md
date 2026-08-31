@@ -5,6 +5,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 ## Learn the framework
 
 - [Build your first plug-in](tutorials/first-plugin.md)
+- [Benchmark a plug-in feature](tutorials/benchmark-a-plugin.md)
 - [Understand the architecture](explanation/architecture.md)
 - [Understand coroutine and Folia ownership](explanation/coroutines-and-ownership.md)
 - [Understand the KSP boundary](explanation/code-generation.md)
@@ -22,6 +23,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Publish application events](how-to/publish-application-events.md)
 - [Collect typed player input](how-to/collect-player-input.md)
 - [Test a plug-in](how-to/test-a-plugin.md)
+- [Diagnose a performance regression](how-to/diagnose-a-performance-regression.md)
 
 ## Look up an API
 
@@ -38,6 +40,7 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Events](reference/events.md)
 - [Input](reference/input.md)
 - [Testing APIs](reference/testing.md)
+- [Benchmarks](reference/benchmarks.md)
 - [Public API index](reference/api-index.md)
 
 ## Agent entrypoints
@@ -49,13 +52,14 @@ Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in
 - [Input authoring workflow](agents/input-authoring.md)
 - [Item and menu implementation workflow](agents/menu-implementation.md)
 - [Verification matrix](agents/verification.md)
+- [Benchmark workflow](agents/benchmarking.md)
 
 Architecture decisions are catalogued in the [ADR index](adr/README.md). They record why an API has its shape. They are not usage instructions.
 
 ## Module designs
 
-- [Benchmarking system](design/benchmarking.md) - approved, not implemented
+- [Benchmarking system](design/benchmarking.md) - implemented; contracts remain exploratory pending canonical baselines
 - [Events module](design/events-module.md)
 - [Input module](design/input-module.md)
-- [Items module](design/items-module.md) — approved, not implemented
-- [Menus module](design/menus-module.md) — approved, not implemented
+- [Items module](design/items-module.md)
+- [Menus module](design/menus-module.md)

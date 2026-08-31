@@ -83,6 +83,7 @@ This index routes public declarations to their authoritative reference. Generate
 
 - `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult`, `InputTestHarness`, `InputTestAttempt` — [testing](testing.md)
 - `FrameworkPluginExtension` and `GeneratePluginYaml` — [managed Gradle plug-in](gradle-plugin.md)
+- Benchmark DSL, model, runners, comparison, JSON, reports, diagnostics, and catalogue under `dev.placeholder.framework.benchmarks` — [benchmarks](benchmarks.md)
 - `ExperimentalFrameworkApi` — opt-in marker for declarations from `framework-incubator`; no stable compatibility promise
 - `DiProcessorProvider`, `CommandsProcessorProvider`, `EventsProcessorProvider` — KSP service entrypoints selected by the managed build; do not instantiate in plug-in code
 

@@ -1,6 +1,6 @@
 # Benchmarking system
 
-Status: approved; implementation has not started
+Status: implemented through local JVM, JMH, Paper, Folia, connected-client, build, load, soak, catalogue, reporting, diagnostics, and CI workflows; contracts remain exploratory until the canonical worker establishes reviewed budgets
 
 This page is for framework contributors reviewing the performance architecture. It explains the intended contracts and evidence. It is not an API reference or a guide for writing a plug-in benchmark.
 
