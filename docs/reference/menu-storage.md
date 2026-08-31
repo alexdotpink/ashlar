@@ -17,6 +17,20 @@ val backpack = localMenuStorage(
 
 `localMenuStorage` accepts proposals immediately and advances its `StateFlow` revision. Keep the returned object stable. Constructing it inside a render would reset the model on each render.
 
+Inside a menu renderer, `rememberStorage(id, initial, rules)` retains a local storage in keyed session state:
+
+```kotlin
+component("draft") {
+    val draft = rememberStorage(
+        MenuStorageId("sample", "draft-kit"),
+        initial = List(9) { null },
+    )
+    storage(draft, region(0..8))
+}
+```
+
+The delegated component key and storage ID form its session identity. Removing that component releases the storage. Rerendering it returns the same storage instance.
+
 External storage attaches an authoritative snapshot stream and one atomic commit owner:
 
 ```kotlin
@@ -48,7 +62,7 @@ val rules = MenuStorageRules.of(
 
 The maximum must be positive. It cannot override item stackability or create more items than the proposal contains. `Locked` rejects insertion and extraction. `Vanilla` accepts Paper's captured maximum.
 
-## Declaring storage in a chest
+## Declaring storage in a host
 
 Bind every storage slot to one equally sized ordered region:
 
@@ -74,7 +88,7 @@ chest("Backpack", rows = 4) {
 }
 ```
 
-A region may not overlap an action slot or another storage. Declare each player section before a route references it. Shift transfers try destinations in the declared order and never guess an undeclared route.
+A region may not overlap an action slot or another storage. Storage works with every `InventoryHostScope`, not only chest. Declare each player section before a route references it. Shift transfers try destinations in the declared order and never guess an undeclared route.
 
 The player inventory sections are `MAIN`, `HOTBAR`, `OFFHAND`, and `ARMOR`. Native player slots are projected to stable `PlayerInventorySlot` values.
 
@@ -84,7 +98,7 @@ The player inventory sections are `MAIN`, `HOTBAR`, `OFFHAND`, and `ARMOR`. Nati
 
 Gestures cover primary and secondary pickup or placement, shift transfer, hotbar and offhand swaps, one-item and stack drops, cursor drops, double collection, and even or single-item drag distribution. The engine checks snapshot revisions, slot rules, exact stackability, effective maximums, conservation, and declared route order. It does not mutate the input snapshots.
 
-`MenuTransactionProposal` contains a stable `MenuTransactionId`, all before and after storage values, cursor before and after, and explicit emissions such as a world drop. `resources` lists only storage identities and the session cursor changed by that proposal.
+`MenuTransactionProposal` contains a stable `MenuTransactionId`, player identity and section mappings when present, all before and after storage values, cursor before and after, and explicit emissions. `resources` lists only storage identities and the player cursor changed by that proposal.
 
 ## Pessimistic commit
 
@@ -107,29 +121,45 @@ class VaultDomain(...) : MenuTransactionDomain {
 
 Commit must be idempotent by transaction ID. Rejection leaves storage and cursor at their before values. A committed snapshot must retain its ID and size and advance its revision. `MenuTransactionSubmission` distinguishes committed, domain rejection, and framework failure.
 
-## Durable journal and restart resolution
+The external storage wrapper publishes an accepted authoritative snapshot immediately, even if the repository's `StateFlow` has not emitted it yet. A later repository value may advance the revision. Publishing different values for the same revision fails.
 
-Pass `FileMenuTransactionJournal` to a coordinator before using an external domain. The coordinator records the intent before submitting persistence. The journal uses atomic replacement and checksummed bounded entries.
+## Durable commit and restart resolution
 
-`recover(domains)` asks each domain to resolve its recorded IDs and returns `MenuTransactionRecovery` values:
+Register each persistent owner with the menu runtime:
 
-- `MissingDomain` keeps the entry because its owner is unavailable.
-- `Pending` keeps it for another resolution pass.
-- `NotCommitted` and `Rejected` complete the journal record.
-- `Committed` returns authoritative snapshots for settlement. The caller acknowledges only after native or mailbox delivery is safe.
+```kotlin
+val registration = menus.registerTransactionDomain(vaultDomain)
+```
 
-The shipped `PlayerMenus` creates a file journal for its native transaction coordinator. Full plug-in restart orchestration of recovered domain outcomes is not yet automatic. Applications using external storage must call and settle recovery explicitly.
+`registerTransactionDomain` returns `MenuRegistration`. Keep it for the lifetime of the domain. Registration starts resolution of matching journal entries. A domain encountered through a live storage also becomes known for that process, but explicit registration is what makes restart resolution available before a menu renders.
+
+The shipped `PlayerMenus` owns `FileMenuTransactionJournal` under the plug-in data folder. Journal format version 2 records the complete proposal and explicit player-section mapping. The runtime writes the journal before calling `MenuTransactionDomain.commit`. Submitted durable work belongs to the plug-in, so menu close, disconnect, replacement, and caller cancellation do not cancel it.
+
+On restart, the runtime calls `resolve(id)`:
+
+- `Pending` keeps the entry for another pass.
+- `NotCommitted` and `Rejected` remove it.
+- `Committed` validates authoritative snapshots and starts player settlement.
+- An unavailable domain leaves its entries untouched until registration.
+
+The runtime removes a committed journal entry only after native application or durable recovery settlement succeeds. If recovery needs to remove player-held items and the current holdings cannot satisfy the exact delta, settlement stays pending. It does not guess or duplicate items.
+
+Durable proposals currently reject `MenuTransactionEmission.Drop` with `DurableEmissionUnsupported`. A world entity cannot share the transaction's durable player receipt. Local, non-durable drop gestures remain supported.
 
 ## Cursor and overflow recovery
 
 `ItemRecoveryMailbox` stores exact snapshots when they cannot safely return to a live inventory. `FileItemRecoveryMailbox` writes one bounded checksummed file per player:
 
 ```kotlin
-val deposited = mailbox.deposit(playerId, overflow)
+val deposited = mailbox.deposit(deliveryId, playerId, overflow)
 val pending = mailbox.pending(playerId)
 mailbox.acknowledge(playerId, deliveredIds)
 ```
 
-Deposit comes before discarding the source cursor or acknowledging the transaction. Acknowledge only IDs actually delivered. The file implementation caps one player at 10,000 entries and serializes access per player.
+The delivery ID makes deposit replay idempotent. Repeating the ID with a different payload fails. The file adapter keeps an atomic replay marker until the durable source completes. Deposit comes before discarding the source cursor or acknowledging the transaction. Acknowledge only item IDs that reached inventory.
 
-The mailbox and restart result types are implemented and tested as isolated durability components. End-to-end native session close, restart settlement, and mailbox delivery still require application wiring and connected-client proof.
+Paper settlement records a transaction receipt in player persistent data and saves player data before journal acknowledgement. A replay sees that receipt instead of applying the delta twice. The runtime clears receipts and delivery replay markers after acknowledgement.
+
+The Paper adapter tries mailbox delivery on player join and before mounting a menu. It acknowledges only entries that fit completely. Entries without capacity remain pending. Cursor settlement always deposits first, then tries live delivery. The file implementation caps one player at 10,000 pending items and serializes access per player.
+
+Server-free tests cover runtime ownership, restart outcomes, player-delta calculation, replay rules, and the complete transaction gesture matrix. Paper and Folia fixtures cover adapter integration. Crash timing, cursor conservation, and join delivery still require connected-client acceptance on the pinned server line.

@@ -1,26 +1,27 @@
 # Menu host reference
 
-A render declares one typed `MenuHostSnapshot`. Host DSLs expose only valid physical slots and host properties. There is no generic raw inventory-type callback.
+A successful render declares one typed `MenuHostSnapshot`. Host DSLs expose the host's valid slots and writable properties. The Paper/Folia adapter uses Paper `MenuType`; no public raw `InventoryType` escape exists.
 
-## Native chest host
+Changing host kind, capacity, or title remounts native presentation without ending the logical menu session. Other property changes produce `MenuReconciliation.Update` with `propertiesChanged = true`.
 
-`chest(title, rows)` supports one through six rows and accepts indexed or row-column slots. `ChestScope` exposes its row count. Paper and Folia materialize, reconcile, remount, and close chest hosts.
+## Chest and fixed indexed containers
 
-## Fixed indexed containers
+These hosts accept physical slot indexes. Chest also accepts row and column coordinates.
 
-These hosts use `ContainerHostScope` and `slot(index)`:
-
-| DSL | Capacity | Semantic snapshot |
+| DSL | Capacity | Scope or snapshot |
 | --- | ---: | --- |
-| `hopper` | 5 | `HopperHostSnapshot` |
-| `generic3x3` | 9 | `Generic3x3HostSnapshot` |
-| `shulker` | 27 | `ShulkerHostSnapshot` |
+| `chest(title, rows)` | 9 to 54 | `ChestScope`, `ChestHostSnapshot` |
+| `hopper` | 5 | `ContainerHostScope`, `HopperHostSnapshot` |
+| `generic3x3` | 9 | `ContainerHostScope`, `Generic3x3HostSnapshot` |
+| `shulker` | 27 | `ContainerHostScope`, `ShulkerHostSnapshot` |
+
+Chest rows range from one through six. Every fixed host rejects indexes outside its capacity.
 
 ## Role-indexed hosts
 
-`RoleHostScope<R>` accepts `slot(role)` so plug-in code does not memorize native indexes:
+`RoleHostScope<R>` accepts `slot(role)`. The role enum owns native index mapping.
 
-| DSL | Slot enum | Host properties |
+| DSL | Slot enum | Writable snapshot properties |
 | --- | --- | --- |
 | `anvil` | `AnvilSlot` | repair cost, maximum cost, repair-item count, level-restriction bypass |
 | `merchant` | `MerchantSlot` | immutable `MerchantOfferSnapshot` list |
@@ -37,7 +38,7 @@ These hosts use `ContainerHostScope` and `slot(index)`:
 | `beacon` | `BeaconSlot` | primary and secondary effects |
 | `lectern` | `LecternSlot` | page |
 
-Example semantic declaration:
+Example:
 
 ```kotlin
 anvil(
@@ -49,11 +50,30 @@ anvil(
         item = renamedToken
         onPrimary { acceptRename() }
     }
+    renameText { input -> previewName(input.text) }
 }
 ```
 
-Host snapshots validate capacity and property bounds. `MenuReconciliation.Update.propertiesChanged` reports property changes without pretending they are slot changes.
+## Typed native input
 
-## Implementation boundary
+Specialized client controls do not pretend to be slot clicks. The adapter projects them through these host-scoped declarations:
 
-The semantic renderer, validation, snapshots, reconciliation, and deterministic test host support this typed catalogue. The current Paper/Folia adapter materializes only `MenuHostSnapshot.Chest`. Opening another host through `PlayerMenus` closes through a failed session because no native adapter exists yet. Keep non-chest declarations in semantic tests until their concrete adapters and native fixtures ship.
+| Host | Declaration | `MenuHostInput` subtype | Default concurrency |
+| --- | --- | --- | --- |
+| Anvil | `renameText` | `AnvilRenameText` | `RESTART_LATEST` |
+| Merchant | `onTradeSelected` | `MerchantTradeSelected` | `RESTART_LATEST` |
+| Loom | `onPatternSelected` | `LoomPatternSelected` | `RESTART_LATEST` |
+| Stonecutter | `onRecipeSelected` | `StonecutterRecipeSelected` | `RESTART_LATEST` |
+| Enchantment | `onEnchantmentButton` | `EnchantmentButtonPressed` | `SINGLE_FLIGHT` |
+| Beacon | `onBeaconEffectsSelected` | `BeaconEffectsSelected` | `SINGLE_FLIGHT` |
+| Lectern | `onPageChanged` | `LecternPageChanged` | `RESTART_LATEST` |
+
+Each input contains `PlayerRef`, committed render revision, and its semantic value. Registry-owned values use Adventure `Key`. Enchantment buttons use `EnchantmentButton`; lectern movement uses `LecternPageDirection`.
+
+Input for an old revision returns `MenuDispatch.StaleRevision`. A host with no matching declaration returns `UnsupportedHostInput`. Declared handlers use ordinary menu action ownership, concurrency, feedback, and error boundaries.
+
+## Native adapter coverage
+
+The shipped Paper/Folia adapter materializes every host in this page with the pinned Paper `MenuType` API. Writable Paper view properties are applied for anvil, merchant, furnace family, brewing, crafter, enchantment, beacon, and lectern. Loom and stonecutter selections, merchant selection, anvil rename text, enchantment buttons, beacon submission, and lectern pages enter through typed host input where Paper exposes events.
+
+Server-free tests cover models, property validation, kind mapping, remount decisions, and typed input dispatch. Paper and Folia fixtures cover adapter loading and native mappings. A connected-client run across every specialized host remains release acceptance work.

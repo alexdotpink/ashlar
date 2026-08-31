@@ -38,7 +38,7 @@ val choice: MenuChoice<Waypoint> = menus.choose(player) {
 }
 ```
 
-`MenuChoice.Selected` carries `T`. Closing before selection returns `MenuChoice.Closed`. Ordinary `open` never has a hidden generic result.
+`MenuChoice.Selected` carries `T`. Closing before selection returns `MenuChoice.Closed`. `MenuChoice.NotOpened` means `MenuOpenConflict.REJECT` preserved an existing session, so no choice session started. Ordinary `open` never has a hidden generic result.
 
 ## Synchronous render
 
@@ -62,7 +62,9 @@ fun WaypointMenu(waypoints: List<Waypoint>) {
 }
 ```
 
-Exactly one `chest` must appear in a successful render. Chest rows range from one through six. Slots use a zero-based index or zero-based row and column. `row`, `rows`, and `region` create ordered `SlotRegion` values. `flow` preserves region order and keys every repeated child by domain identity. Duplicate keys and overflow fail validation. Set `RegionOverflow.CLIP` only when truncation is intentional.
+Exactly one typed host must appear in a successful render. Chest rows range from one through six. Chest slots use a zero-based index or zero-based row and column. Other hosts expose fixed indexes or typed slot roles. See [Menu hosts](menu-hosts.md).
+
+`row`, `rows`, and `region` create ordered `SlotRegion` values. `flow` preserves region order and keys every repeated child by domain identity. Duplicate keys and overflow fail validation. Set `RegionOverflow.CLIP` only when truncation is intentional.
 
 `component(key)` gives descendants stable identity. State, effects, actions, navigation, and failures belong to that identity. Keys must be stable and unique among siblings. A physical slot has one owner. Slot collisions and out-of-host indexes throw `MenuValidationException` before reconciliation.
 
@@ -82,6 +84,8 @@ component("waypoint-list") {
 Reordering calls does not move state. Reusing a delegated name in one component fails. Synchronous changes made by one action enter the conflated render queue and produce the newest state rather than exposing half-built trees.
 
 `collectAsState(flow, initial)` owns collection for the component lifetime. It keeps render synchronous. Removing the component cancels collection. Flow failures reach the nearest error boundary.
+
+`rememberStorage(id, initial, rules)` retains a session-local `MenuStorage` under the current keyed component. Use it when the storage should survive rerenders without outliving the menu session. A declared storage also observes its snapshot flow for the component lifetime. This observation continues while focused input hides native presentation, so the restored host renders the newest persistent revision.
 
 ## Actions and gestures
 
@@ -110,6 +114,22 @@ Suspending actions are keyed by component, slot, and gesture handler:
 | `PARALLEL` | Run independent invocations concurrently |
 
 The default is `SINGLE_FLIGHT`. Actions can emit typed feedback, close the session, or finish a typed choice through `MenuActionScope`. Unexpected failures reach the nearest error boundary.
+
+## Typed host input
+
+Specialized hosts project non-slot native input as immutable `MenuHostInput` values. Handlers run through the same revision checks, action concurrency, feedback theme, error boundary, and cancellation ownership as slot actions.
+
+| Host | Declaration | Input value |
+| --- | --- | --- |
+| Anvil | `renameText` | `AnvilRenameText` |
+| Merchant | `onTradeSelected` | `MerchantTradeSelected` |
+| Loom | `onPatternSelected` | `LoomPatternSelected` |
+| Stonecutter | `onRecipeSelected` | `StonecutterRecipeSelected` |
+| Enchantment | `onEnchantmentButton` | `EnchantmentButtonPressed` |
+| Beacon | `onBeaconEffectsSelected` | `BeaconEffectsSelected` |
+| Lectern | `onPageChanged` | `LecternPageChanged` |
+
+The Paper adapter cancels mutable native selection events before dispatch where the server API permits cancellation. Anvil rename text is deduplicated by the active native binding. Plug-in code never receives the Paper event.
 
 ## Effects
 
@@ -212,11 +232,15 @@ provide(MenuTheme, darkTheme) {
 
 Locals belong in render context: theme, locale-specific presentation, spacing, or standard-component defaults. Services and mutable domain state remain explicit function or constructor dependencies. Inspection records local names and redacted values.
 
+`MenuFeedbackThemeLocal` maps a semantic `MenuFeedback` to `MenuFeedbackPresentation`. The presentation may contain an action bar, sound, and target emphasis. `DefaultMenuFeedbackTheme` supplies the standard mapping. A theme provided around a component is captured by its slot and host-input actions.
+
 ## Reconciliation and diagnostics
 
 Every successful render produces a `MenuRenderSnapshot` with a monotonically increasing revision. `MenuReconciliation.Remount` changes host kind or capacity. `Update` reports title and slot changes for the same host. Action dispatch validates the interaction revision, so a stale client gesture cannot invoke a new handler tree.
 
-`MenuInspection` exposes the current semantic snapshot, a bounded `MenuTrace`, pending action identities, and active effect identities. Trace events cover committed renders, action start and completion, transaction commit and rejection, feedback, and close. Values and item payloads are summarized or omitted.
+`MenuInspection` exposes the current semantic snapshot, a bounded `MenuTrace`, pending action and transaction identities, and active effect identities. The render snapshot contains immutable `MenuStorageSnapshot` values rather than live `MenuStorage` objects. Session trace events cover renders, gestures and interception, actions, storage revisions, transactions, effects, navigation, feedback, focused presentation, and close. Values and item payloads are summarized or omitted.
+
+`PlayerMenus.observe` registers a `MenuObserver` for future trace events and returns a removable `MenuRegistration`. `PlayerMenus.intercept` registers a synchronous `MenuInterceptor` for current-revision gesture input. An interceptor returns `Allow` or `Reject`; rejection may include themed feedback. Host-input handlers do not pass through gesture interceptors.
 
 The public `MenuNativeHost`, `MenuNativeCallbacks`, `MenuNativeHostFactory`, and native transaction methods are adapter seams. Plug-ins normally inject `PlayerMenus`; tests use `framework-menus-test`.
 
@@ -233,8 +257,8 @@ The public `MenuNativeHost`, `MenuNativeCallbacks`, `MenuNativeHostFactory`, and
 
 These functions do not bypass collision checks, state rules, or action concurrency.
 
-## Shipped hosts and limits
+## Shipped hosts and verification limits
 
-The semantic module has a typed host catalogue for indexed containers, anvil, merchant, furnace-family, brewing, crafting, crafter, enchantment, grindstone, smithing, loom, cartography, stonecutter, beacon, and lectern. See [Menu hosts](menu-hosts.md).
+The module ships typed Paper/Folia adapters for chest, hopper, generic 3x3, shulker, anvil, merchant, furnace, blast furnace, smoker, brewing, crafting, crafter, enchantment, grindstone, smithing, loom, cartography, stonecutter, beacon, and lectern. There is no raw generic inventory escape hatch. See [Menu hosts](menu-hosts.md) for properties, slots, and typed host input.
 
-The shipped native adapter supports chest hosts on Paper and Folia. Other host declarations are currently server-free semantic models; their Paper/Folia adapters remain unfinished. There is no raw generic inventory escape hatch. Connected-client conservation, focused-input remount, and chest remount behavior still need full native-client proof; server fixtures and the semantic test module cover the current adapter and engine contracts.
+Server-free tests cover semantic models, reconciliation, host input, storage, diagnostics, and the transaction gesture matrix. Paper and Folia fixtures cover adapter startup and native mappings. A connected client has not yet completed the full conservation, close, remount, focused-input, and specialized-host protocol matrix, so those player-visible claims remain release acceptance work.

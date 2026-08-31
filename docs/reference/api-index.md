@@ -65,17 +65,19 @@ This index routes public declarations to their authoritative reference. Generate
 
 ## Menus
 
-- Sessions: `PlayerMenus`, `MenuOpen`, `MenuChoice`, `MenuClose`, `MenuOpenConflict` — [menus](menus.md)
-- Declaration: `MenuScope`, `ChestScope`, `ActionSlotScope`, `chest`, `component`, `slot`, `flow`, `SlotRegion`, `row`, `rows`, `region`, `RegionOverflow` — [menus](menus.md)
-- State and lifecycle: `MenuState`, `CollectedMenuState`, `state`, `collectAsState`, `effect`, `launchedEffect`, `MenuEffectScope` — [menus](menus.md)
-- Actions: `MenuInteraction`, `MenuGesture`, `MenuGestureKind`, `MenuActionScope`, `MenuActionConcurrency`, `MenuDispatch`, `MenuFeedback` — [menus](menus.md)
+- Sessions: `PlayerMenus`, `MenuOpen`, `MenuChoice`, `MenuClose`, `MenuOpenConflict`, `registerTransactionDomain` — [menus](menus.md), [storage and transactions](menu-storage.md)
+- Declaration: `MenuScope`, `InventoryHostScope`, `ChestScope`, `ContainerHostScope`, `RoleHostScope`, `ActionSlotScope`, host DSLs, `component`, `slot`, `flow`, `SlotRegion`, `row`, `rows`, `region`, `RegionOverflow` — [menus](menus.md), [menu hosts](menu-hosts.md)
+- State and lifecycle: `MenuState`, `CollectedMenuState`, `state`, `rememberStorage`, `collectAsState`, `effect`, `launchedEffect`, `MenuEffectScope` — [menus](menus.md), [storage and transactions](menu-storage.md)
+- Actions and host input: `MenuInteraction`, `MenuGesture`, `MenuGestureKind`, `MenuHostInput`, `MenuHostInputKind`, host-input declarations, `MenuActionScope`, `MenuActionConcurrency`, `MenuDispatch` — [menus](menus.md), [menu hosts](menu-hosts.md)
+- Feedback: `MenuFeedback`, `MenuFeedbackTheme`, `MenuFeedbackPresentation`, `MenuFeedbackThemeLocal`, `DefaultMenuFeedbackTheme` — [menus](menus.md)
 - Navigation and context: `navigator`, `MenuNavigator`, `MenuNavigationScope`, `NativeClose`, `MenuLocal`, `menuLocal`, `provide`, `current` — [menus](menus.md)
-- Errors and inspection: `errorBoundary`, `MenuFailure`, `MenuRetry`, `MenuValidationException`, `MenuInspection`, `MenuTrace`, render and reconciliation snapshots — [menus](menus.md)
+- Policy and inspection: `MenuObserver`, `MenuInterceptor`, `MenuInterception`, `MenuRegistration`, `MenuInspection`, `MenuTrace`, render and reconciliation snapshots — [menus](menus.md)
+- Errors: `errorBoundary`, `MenuFailure`, `MenuRetry`, `MenuValidationException` — [menus](menus.md)
 - Focused input: `withFocusedInput`, `focusedChatInput`, `promptControl`, `searchControl` — [menus](menus.md)
 - Standard components: `ContentState`, pagination, scrolling, tabs, state slots, and controls under `menus.standard` — [menus](menus.md)
 - Host catalogue: indexed container and role-specific host DSLs, slot enums, properties, and snapshots — [menu hosts](menu-hosts.md)
 - Storage models, rules, references, gestures, proposals, engine, domains, coordination, journal, and recovery mailbox — [storage and transactions](menu-storage.md)
-- `menuTest`, `MenuTestScope`, `MenuTestSession`, `MenuTestChoice` — [menu testing](menu-testing.md)
+- `menuTest`, `MenuTestScope`, `MenuTestSession`, `MenuTestChoice`, `assertHost`, `hostInput` — [menu testing](menu-testing.md)
 
 ## Testing and build
 

@@ -1,6 +1,6 @@
 # Menu engine implementation workflow
 
-Status: implementation guidance for shipped item and chest-menu modules
+Status: implementation guidance for shipped item and menu modules
 
 Use this page when changing framework item or menu internals. Plug-in authors should use [menu authoring](menu-authoring.md) and the implemented reference pages instead.
 
@@ -17,13 +17,13 @@ Use this page when changing framework item or menu internals. Plug-in authors sh
 9. The relevant decisions from [ADR index](../adr/README.md)
 10. [Verification matrix](verification.md)
 
-Inspect current source, API dumps, samples, and test fixtures before changing a public signature. Source, ABI dumps, and reference pages are authoritative for shipped declarations. Design pages and ADRs constrain unfinished hosts and later slices.
+Inspect current source, API dumps, samples, and test fixtures before changing a public signature. Source, ABI dumps, and reference pages are authoritative for shipped declarations. Design pages and ADRs constrain later work and release acceptance.
 
 ## Choose one vertical slice
 
 Take the next incomplete slice from the design document. A slice includes its production API, pure model, focused tests, native adapter evidence where applicable, KDoc, reference prose, agent guidance, sample, and ABI update. Do not implement several host families or durability systems in parallel merely because their types can be scaffolded.
 
-The item, action-only chest, storage planner, transaction coordinator, semantic test runtime, and native chest adapter are shipped. A new concrete host starts only after the shared gesture and transaction engines pass their existing contract suites.
+The item model, semantic menu runtime, complete typed host catalogue, Paper/Folia host adapter, storage engine, durable recovery runtime, diagnostics, standard components, and deterministic harness are shipped. New work should deepen one existing interface or complete one remaining acceptance gap. Do not create a parallel host, transaction, or recovery path.
 
 ## Invariants that may not be traded away
 

@@ -10,23 +10,25 @@ Use this page when a plug-in task adds or changes a menu. The implemented refere
 
 ## Build path
 
-1. Decide whether the call returns only a close result or a typed selection. Use `open` or `choose<T>` accordingly. The step is complete when the caller handles every sealed outcome.
-2. Write one synchronous renderer as plain Kotlin functions. Give repeated or stateful children stable domain keys. The step is complete when every physical slot has one owner and every collection has an explicit bounded region.
-3. Put local UI values in delegated `state`; collect external Flow values with `collectAsState`. Keep services as explicit dependencies. The step is complete when render can rerun without performing I/O, registering listeners, launching work, or mutating domain state.
-4. Put suspending work in actions or `launchedEffect`, and closeable registrations in `effect`. Select action concurrency deliberately when the default single-flight behavior is wrong. The step is complete when removal, navigation, close, and caller cancellation own all cleanup.
-5. Add an error boundary where the plug-in has a useful recovery screen. Root failures should remain visible as `MenuClose.Failed`. The step is complete when the fallback can actually repair state before retrying.
-6. Run `menuTest` against the production semantic runtime. The step is complete when state identity, navigation, failure, concurrency, close, and pending-work assertions cover every route added by the task.
-7. Run Paper and Folia fixtures for native adapter changes. Drive a connected client for packet-visible or cursor-sensitive claims. The step is complete only when the verification matches the claim.
+1. Decide whether the call returns only a close result or a typed selection. Use `open` or `choose<T>` accordingly. Handle `MenuChoice.NotOpened` when conflict policy may reject the new session.
+2. Choose the typed host that matches the client protocol. Use host role enums and typed host-input declarations. Do not translate a specialized control into a fake slot click.
+3. Write one synchronous renderer as plain Kotlin functions. Give repeated or stateful children stable domain keys. The step is complete when every physical slot has one owner and every collection has an explicit bounded region.
+4. Put local UI values in delegated `state`; use `rememberStorage` for keyed session storage; collect external Flow values with `collectAsState`. Keep services as explicit dependencies. Render must rerun without I/O, listener registration, work launch, or domain mutation.
+5. Put suspending work in actions or `launchedEffect`, and closeable registrations in `effect`. Select action concurrency deliberately when the default is wrong. Removal, navigation, close, and caller cancellation must own ordinary cleanup.
+6. Provide `MenuFeedbackThemeLocal` around a subtree when its action bar, sound, or target emphasis differs from the default. Feedback remains semantic inside handlers.
+7. Add an error boundary where the plug-in has a useful recovery screen. Root failures should remain visible as `MenuClose.Failed`. The fallback must repair state before retrying.
+8. Run `menuTest` against the production semantic runtime. Cover host type, typed host input, state identity, navigation, failure, concurrency, close, inspection, trace, and pending work for every route added by the task.
+9. Run Paper and Folia fixtures for native adapter changes. Drive a connected client for packet-visible, specialized-control, cursor, close, recovery, or inventory-save claims.
 
 ## Storage branch
 
 Take this branch when any item can enter, leave, move within, or shift-transfer through framework-owned storage.
 
-1. Keep `MenuStorage` stable outside render. Give it a stable domain ID, immutable revisions, and a rule for every slot.
+1. Use `rememberStorage` for session-owned storage. Keep application-owned `MenuStorage` stable outside render. Give either form a stable ID, immutable revisions, and a rule for every slot.
 2. Bind it to an equal-size region. Declare every player inventory participant and every ordered shift route.
-3. For persistence, implement one idempotent `MenuTransactionDomain` that owns every storage in an atomic proposal. Return authoritative advanced revisions only after persistence commits.
+3. For persistence, implement one idempotent `MenuTransactionDomain` that owns every storage in an atomic proposal. Return authoritative advanced revisions only after persistence commits. Register it with `PlayerMenus.registerTransactionDomain` during plug-in startup.
 4. Prove conservation with detached snapshots and `MenuTransactionEngine`. Include rejection, stale revision, resource conflict, cursor, drop, drag, double collect, and maximum-stack cases that apply.
-5. Add journal recovery and mailbox delivery before claiming restart-safe external storage. The current module supplies these pieces but does not install application-specific domain recovery automatically.
+5. Exercise `commit` and `resolve` with stable transaction IDs. The framework owns journal submission, restart resolution, player receipts, mailbox replay, and join or mount delivery after the domain is registered. Durable world-drop emissions are rejected.
 
 ## Review invariants
 
@@ -42,7 +44,11 @@ Check every changed menu against these conditions:
 - Accepted storage movement conserves exact snapshots across storage, player inventory, cursor, and emissions.
 - Persistent commits are pessimistic, idempotent, and atomic across every touched persistent storage.
 - Tests finish with no pending action or effect work.
+- Inspection exposes immutable storage snapshots and redacted trace values, never live storage capabilities.
+- Observers cannot mutate sessions. Interceptors run synchronously and reject before action or storage dispatch.
 
 ## Current implementation boundary
 
-Use chest hosts for live Paper/Folia plug-ins. The semantic typed catalogue supports other host declarations and deterministic tests, but their native adapters are not shipped. Treat native-client conservation, focused-input and title remount behavior, automatic restart settlement, and mailbox delivery as unproven until the task adds matching evidence and application wiring.
+All documented hosts have Paper/Folia adapters. The deterministic harness covers host-generic rendering, typed host input, traces, storage transactions, durable runtime ownership, and randomized conservation. Paper and Folia fixtures cover adapter startup and native mapping.
+
+Do not turn that evidence into a stronger claim. Connected-client acceptance is still required for full cursor conservation, close and remount ordering, focused input, specialized client controls, crash recovery, inventory saving, and automatic mailbox delivery.

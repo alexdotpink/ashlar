@@ -56,10 +56,11 @@ suspend fun chooseWaypoint(player: PlayerRef): Waypoint? =
     }) {
         is MenuChoice.Selected -> result.value
         is MenuChoice.Closed -> null
+        MenuChoice.NotOpened -> null
     }
 ```
 
-The command or component coroutine owns the session. Cancellation closes it. No mutable session handle needs cleanup.
+The command or component coroutine owns the session. Cancellation closes it. `NotOpened` is possible when the call uses `MenuOpenConflict.REJECT` and another session already owns the player.
 
 ## Add live data
 
@@ -74,6 +75,8 @@ fun LiveWaypointPicker(store: WaypointStore) {
 ```
 
 Render remains synchronous. The framework starts and stops collection with the keyed component.
+
+Storage snapshot flows declared with `storage(...)` follow the same ownership rule, but remain observed while focused input hides native presentation. The restored host therefore uses the newest storage revision.
 
 ## Verify the behavior
 

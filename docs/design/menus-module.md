@@ -1,6 +1,6 @@
 # Menus module design
 
-Status: core chest runtime and typed semantic host catalogue implemented; non-chest native adapters and native-client proof are pending
+Status: semantic runtime, typed host catalogue, Paper/Folia adapters, storage engine, durable recovery, diagnostics, and deterministic harness implemented; connected-client acceptance remains pending for cursor-sensitive and specialized-host protocols
 
 The menus module is a declarative, stateful framework for Minecraft inventory interfaces. Plug-in code describes the current screen from immutable state. The runtime owns keyed state, reconciliation, native input, item safety, actions, navigation, effects, storage transactions, lifecycle, diagnostics, and Paper/Folia adaptation.
 
@@ -77,6 +77,7 @@ when (
 ) {
     is MenuChoice.Selected -> use(result.value)
     is MenuChoice.Closed -> handle(result.reason)
+    MenuChoice.NotOpened -> handleConflict()
 }
 ```
 
@@ -663,3 +664,5 @@ Implementation must remain vertical. Each slice ends with docs, tests, and a pla
 9. Finish agent documentation, host matrix, complete samples, API baselines, load tests, and release acceptance across the pinned Paper/Folia/client line.
 
 A slice may deepen an existing interface when evidence requires it. It may not bypass the transaction engine, add a generic raw-event escape hatch, or introduce code generation to make progress appear faster.
+
+Slices 1 through 8 now have production implementations and server-free coverage. Paper and Folia fixtures cover adapter startup and native mappings. Slice 9 remains open for complete connected-client conservation runs, specialized-host interaction runs, load tests, and release acceptance on the pinned server and client versions.
