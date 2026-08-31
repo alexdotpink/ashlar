@@ -182,6 +182,8 @@ CI work is tiered:
 
 Each run emits a readable CLI comparison, stable JSON, and an annotated CI summary with links to raw evidence. A confirmed regression triggers a focused diagnostic rerun with JFR or equivalent profiling, allocation evidence, and GC evidence. Diagnostic recording never contaminates the timed samples used by the gate.
 
+An intentional regression changes the budget in source and includes its paired comparison and rationale in review. The runner has no skip flag, silent waiver, or maintainer-only bypass.
+
 ## Documentation package
 
 Implementation must ship four separate reader paths:
@@ -192,6 +194,10 @@ Implementation must ship four separate reader paths:
 - an agent workflow that selects focused contracts, reads comparison evidence, runs diagnostics, and updates budgets without hiding regressions.
 
 The sample plug-in must exercise cross-feature scenarios with the same public API available to other plug-ins.
+
+## First implementation slice
+
+The first slice proves the complete workflow with command dispatch. It includes the first-class test-only artifact, benchmark source-set wiring, standard Gradle tasks, the scenario DSL, result JSON, a readable comparison, one paired JVM command-dispatch measurement, one Paper/Folia command workload, and one sample plug-in scenario. Later slices copy a working contract pattern instead of inventing all runners before any feature has evidence.
 
 ## Related decisions
 
