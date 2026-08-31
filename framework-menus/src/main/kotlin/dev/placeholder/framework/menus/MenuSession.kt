@@ -33,6 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 import java.util.Collections
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
+import java.util.logging.Level
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
@@ -283,6 +284,7 @@ public class PlayerMenus private constructor(
         session = MenuSessionCore(player, host, requireScope(), requireDurableRuntime(), choice, content,
             observers = { observers.toList() },
             interceptors = { interceptors.toList() },
+            reportFailure = ::reportFailure,
         ) {
             sessions.remove(player, session)
         }
@@ -317,6 +319,7 @@ public class PlayerMenus private constructor(
             content,
             observers = { observers.toList() },
             interceptors = { interceptors.toList() },
+            reportFailure = ::reportFailure,
         ) {
             sessions.remove(player, session)
         }
@@ -337,6 +340,10 @@ public class PlayerMenus private constructor(
 
     private fun requireDurableRuntime(): MenuDurableTransactionRuntime =
         checkNotNull(durableRuntime) { "PlayerMenus is not running" }
+
+    private fun reportFailure(cause: Throwable) {
+        plugin?.logger?.log(Level.SEVERE, "A menu session failed", cause)
+    }
 }
 
 internal class MenuSessionCore(
@@ -348,6 +355,7 @@ internal class MenuSessionCore(
     private val content: context(MenuScope) () -> Unit,
     private val observers: () -> List<MenuObserver> = { emptyList() },
     private val interceptors: () -> List<MenuInterceptor> = { emptyList() },
+    private val reportFailure: (Throwable) -> Unit = {},
     private val onClosed: () -> Unit,
 ) {
     private val ownerScope: CoroutineScope = parentScope
@@ -674,7 +682,7 @@ internal class MenuSessionCore(
             context(root) { content() }
             builder.build()
         } catch (cause: Throwable) {
-            close(MenuClose.Failed(cause))
+            fail(cause)
             return@withLock
         }
         val next = tree.snapshot((snapshot?.revision ?: 0L) + 1L, stateStore, navigationStates)
@@ -695,7 +703,7 @@ internal class MenuSessionCore(
                 if (boundary != null && boundary !in boundaryFailures) {
                     containFailure(boundary, tree.host.host.owner, cause)
                 } else {
-                    close(MenuClose.Failed(cause))
+                    fail(cause)
                 }
                 return@withLock
             }
@@ -795,7 +803,7 @@ internal class MenuSessionCore(
         cause: Throwable,
     ) {
         if (boundary == null) {
-            close(MenuClose.Failed(cause))
+            fail(cause)
             return
         }
         boundaryFailures[boundary] = MenuFailure(component.semantic(), cause)
@@ -849,7 +857,7 @@ internal class MenuSessionCore(
                     }
                 }
             } catch (cause: Throwable) {
-                close(MenuClose.Failed(cause))
+                fail(cause)
                 throw cause
             } finally {
                 presentationMutex.unlock()
@@ -883,6 +891,11 @@ internal class MenuSessionCore(
         trace.add(event)
         val observation = MenuObservation(player, event)
         observers().forEach { observer -> runCatching { observer.observe(observation) } }
+    }
+
+    private fun fail(cause: Throwable) {
+        runCatching { reportFailure(cause) }
+        close(MenuClose.Failed(cause))
     }
 }
 

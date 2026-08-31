@@ -12,8 +12,10 @@ import dev.placeholder.framework.menus.EnchantmentHostSnapshot
 import dev.placeholder.framework.menus.FurnaceHostKind
 import dev.placeholder.framework.menus.FurnaceHostSnapshot
 import dev.placeholder.framework.menus.LecternHostSnapshot
+import dev.placeholder.framework.menus.LecternSlot
 import dev.placeholder.framework.menus.MenuHostSnapshot
 import dev.placeholder.framework.menus.MerchantHostSnapshot
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.enchantments.EnchantmentOffer
 import org.bukkit.inventory.InventoryView
@@ -41,6 +43,7 @@ internal object PaperChestPresentation {
         requireOwnedPlayer(entityContext, player)
         val view = menuType(host).create(player, host.title)
         writeSlots(entityContext, player, view, host, 0 until host.capacity)
+        validateContents(view, host)
         applyProperties(entityContext, view, host)
         return view
     }
@@ -83,6 +86,17 @@ internal object PaperChestPresentation {
             entityContext.checkOwnership()
             view.close()
         }
+    }
+
+    context(entityContext: EntityContext)
+    fun clear(
+        player: Player,
+        view: InventoryView,
+    ) {
+        requireOwnedPlayer(entityContext, player)
+        require(view.player === player) { "The chest view belongs to another player" }
+        entityContext.checkOwnership()
+        view.topInventory.clear()
     }
 
     private fun writeSlots(
@@ -144,7 +158,7 @@ internal object PaperChestPresentation {
             }
             is BrewingHostSnapshot -> (view as BrewingStandView).apply {
                 fuelLevel = host.fuelLevel
-                brewingTicks = host.brewingTicks
+                if (host.brewingTicks > 0) brewingTicks = host.brewingTicks
                 recipeBrewTime = host.recipeBrewTime
             }
             is CrafterHostSnapshot -> (view as CrafterView).let { crafter ->
@@ -164,6 +178,14 @@ internal object PaperChestPresentation {
             }
             is LecternHostSnapshot -> (view as LecternView).page = host.page
             else -> Unit
+        }
+    }
+
+    private fun validateContents(view: InventoryView, host: MenuHostSnapshot) {
+        if (host !is LecternHostSnapshot) return
+        val material = view.topInventory.getItem(LecternSlot.BOOK.index)?.type
+        require(material == Material.WRITABLE_BOOK || material == Material.WRITTEN_BOOK) {
+            "A lectern host requires a writable or written book in LecternSlot.BOOK"
         }
     }
 

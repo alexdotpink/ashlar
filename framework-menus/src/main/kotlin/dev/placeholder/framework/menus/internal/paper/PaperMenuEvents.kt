@@ -273,6 +273,7 @@ internal class PaperMenuEvents private constructor(
     @EventHandler(priority = EventPriority.MONITOR)
     fun onClose(event: InventoryCloseEvent) {
         val binding = remove(event.view) ?: return
+        binding.view.topInventory.clear()
         if (binding.suppressClose) return
         val cursor = snapshot(event.view.cursor)
         event.view.setCursor(null)
@@ -291,6 +292,7 @@ internal class PaperMenuEvents private constructor(
             if (kickedPlayers.remove(playerId)) PaperMenuCloseReason.KICKED else PaperMenuCloseReason.DISCONNECTED
         }
         removePlayer(playerId).forEach { binding ->
+            binding.view.topInventory.clear()
             if (!binding.suppressClose) {
                 val cursor = snapshot(binding.view.cursor)
                 binding.view.setCursor(null)
@@ -311,6 +313,7 @@ internal class PaperMenuEvents private constructor(
         }
         HandlerList.unregisterAll(this)
         remaining.forEach { binding ->
+            binding.view.topInventory.clear()
             if (!binding.suppressClose) {
                 val cursor = snapshot(binding.view.cursor)
                 binding.view.setCursor(null)

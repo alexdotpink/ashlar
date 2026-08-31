@@ -269,7 +269,11 @@ public data class BeaconHostSnapshot(
     public val secondaryEffect: PotionEffectType? = null,
 ) : MenuHostSnapshot { override val capacity: Int = 1; init { validateHostSlots("beacon", capacity, slots) } }
 
-/** Immutable lectern host with its zero-based displayed [page]. */
+/**
+ * Immutable lectern host with its zero-based displayed [page].
+ *
+ * The Paper/Folia presentation requires [LecternSlot.BOOK] to contain a writable or written book.
+ */
 public data class LecternHostSnapshot(
     override val title: Component,
     override val slots: List<MenuSlotSnapshot>,

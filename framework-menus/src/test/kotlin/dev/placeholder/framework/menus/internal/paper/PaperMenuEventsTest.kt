@@ -118,9 +118,29 @@ class PaperMenuEventsTest {
         events.close()
     }
 
+    @Test
+    fun `closing a bound view clears framework presentation items before native settlement`() {
+        val events = PaperMenuEvents()
+        var clears = 0
+        val fixture = viewFixture(topSize = 9, onTopClear = { clears++ })
+        events.bind(
+            fixture.view,
+            PlayerRef(fixture.playerId),
+            revision = { 1 },
+            interaction = {},
+            nativeClose = { _, _ -> },
+        )
+
+        events.onClose(InventoryCloseEvent(fixture.view, InventoryCloseEvent.Reason.PLAYER))
+
+        assertEquals(1, clears)
+        events.close()
+    }
+
     private fun viewFixture(
         topSize: Int,
         playerId: UUID = UUID.randomUUID(),
+        onTopClear: () -> Unit = {},
     ): ViewFixture {
         val playerInventory = playerInventory()
         val player = proxy<Player> { method ->
@@ -131,7 +151,7 @@ class PaperMenuEventsTest {
                 else -> defaultValue(method.returnType)
             }
         }
-        val top = inventory(topSize)
+        val top = inventory(topSize, onTopClear)
         val bottom = playerInventory
         val view = proxy<InventoryView> { method ->
             when (method.name) {
@@ -148,11 +168,12 @@ class PaperMenuEventsTest {
         return ViewFixture(playerId, view)
     }
 
-    private fun inventory(size: Int): Inventory = proxy { method ->
+    private fun inventory(size: Int, onClear: () -> Unit = {}): Inventory = proxy { method ->
         when (method.name) {
             "getSize" -> size
             "getItem" -> null
             "getType" -> InventoryType.CHEST
+            "clear" -> onClear()
             else -> defaultValue(method.returnType)
         }
     }

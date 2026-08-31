@@ -18,6 +18,7 @@ import dev.placeholder.framework.menus.storage.MenuTransactionEmission
 import dev.placeholder.framework.menus.storage.PlayerInventorySection
 import dev.placeholder.framework.items.Items
 import java.util.UUID
+import java.util.logging.Level
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
@@ -98,6 +99,7 @@ private class PaperMenuNativeHost(
                     val replacement = PaperChestPresentation.create(livePlayer, host)
                     val replacementBinding = bind(replacement, render)
                     try {
+                        PaperChestPresentation.clear(livePlayer, currentView)
                         PaperChestPresentation.open(livePlayer, replacement)
                     } catch (failure: Throwable) {
                         replacementBinding.suppressClose()
@@ -121,6 +123,10 @@ private class PaperMenuNativeHost(
     }
 
     override suspend fun close() {
+        if (!plugin.isEnabled) {
+            abandonPresentation()
+            return
+        }
         val currentView = view
         binding?.suppressClose()
         val cursorToSettle = currentView?.cursor
@@ -129,7 +135,10 @@ private class PaperMenuNativeHost(
             ?: logicalCursor
         player.access(plugin) { livePlayer ->
             currentView?.setCursor(null)
-            if (currentView != null) PaperChestPresentation.close(livePlayer, currentView)
+            if (currentView != null) {
+                PaperChestPresentation.clear(livePlayer, currentView)
+                PaperChestPresentation.close(livePlayer, currentView)
+            }
         }
         settlement.settleCursor(cursorSettlementId, player.uniqueId, cursorToSettle)
         logicalCursor = null
@@ -142,6 +151,22 @@ private class PaperMenuNativeHost(
         retainedCursor = false
     }
 
+    private fun abandonPresentation() {
+        binding?.suppressClose()
+        runCatching { view?.topInventory?.clear() }
+            .onFailure { failure ->
+                plugin.logger.log(Level.WARNING, "Could not clear a menu during plug-in shutdown", failure)
+            }
+        binding?.unbind()
+        binding = null
+        view = null
+        render = null
+        callbacks = null
+        logicalCursor = null
+        nativeEnded = false
+        retainedCursor = false
+    }
+
     override suspend fun suspendPresentation() {
         val currentView = view ?: return
         binding?.suppressClose()
@@ -149,6 +174,7 @@ private class PaperMenuNativeHost(
             player.access(plugin) { livePlayer ->
                 logicalCursor = currentView.cursor.takeUnless(ItemStack::isEmpty)?.let(Items::capture)
                 currentView.setCursor(null)
+                PaperChestPresentation.clear(livePlayer, currentView)
                 PaperChestPresentation.close(livePlayer, currentView)
             }
         ) {
