@@ -118,6 +118,32 @@ _Avoid_: Chat capture, consuming listener
 A Flow of framework-owned values selected synchronously from event callbacks, with an explicit bounded capacity and overflow policy.
 _Avoid_: Raw event Flow, event queue
 
+## Input
+
+**Input module**:
+The framework module that prompts one player for typed input while owning retries, conflicts, disconnects, deadlines, and cleanup.
+_Avoid_: Conversation engine, input system
+
+**Input prompt**:
+One suspending player interaction that accepts a typed answer. Plug-in authors compose multiple prompts with ordinary Kotlin control flow.
+_Avoid_: Conversation step, input request, question
+
+**Input cancellation**:
+The expected end of an unanswered input prompt, identified as user choice, external cancellation, deadline expiry, player disconnect, replacement, or plug-in shutdown.
+_Avoid_: Input failure, empty answer
+
+**Active input prompt**:
+The single input prompt currently waiting for one player's answer inside a framework plug-in.
+_Avoid_: Input session, conversation
+
+**Chat answer**:
+The value examined by a chat input prompt, containing convenient plain text and the original Adventure component.
+_Avoid_: Chat event, chat message
+
+**Input decision**:
+The parser's decision for one attempted answer: accept it, retry with feedback, cancel the prompt, or pass the chat through unchanged.
+_Avoid_: Parse result, validation result
+
 ## Commands
 
 **Command set**:

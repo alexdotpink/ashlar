@@ -51,3 +51,4 @@ Architecture decisions live under [docs/adr](adr/). They record why the current 
 ## Module designs
 
 - [Events module](design/events-module.md)
+- [Input module](design/input-module.md)
