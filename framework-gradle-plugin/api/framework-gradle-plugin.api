@@ -18,6 +18,8 @@ public abstract class dev/placeholder/framework/gradle/FrameworkPluginExtension 
 	public final fun getPluginName ()Lorg/gradle/api/provider/Property;
 	public final fun getWebsite ()Lorg/gradle/api/provider/Property;
 	public final fun input ()V
+	public final fun items ()V
+	public final fun menus ()V
 	public final fun paperApiVersion (Ljava/lang/String;)V
 }
 
