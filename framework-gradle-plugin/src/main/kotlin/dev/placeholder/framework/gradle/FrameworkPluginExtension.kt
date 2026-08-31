@@ -40,6 +40,8 @@ public abstract class FrameworkPluginExtension @Inject constructor(private val p
         private set
     internal var eventsEnabled: Boolean = false
         private set
+    internal var inputEnabled: Boolean = false
+        private set
 
     /** Enables the typed command runtime and its two small KSP processors. */
     public fun commands(strictDocumentation: Boolean = false) {
@@ -56,6 +58,13 @@ public abstract class FrameworkPluginExtension @Inject constructor(private val p
         if (eventsEnabled) return
         eventsEnabled = true
         project.pluginManager.apply("com.google.devtools.ksp")
+    }
+
+    /** Enables typed player input and its event dependency. */
+    public fun input() {
+        if (inputEnabled) return
+        inputEnabled = true
+        events()
     }
 
     /**

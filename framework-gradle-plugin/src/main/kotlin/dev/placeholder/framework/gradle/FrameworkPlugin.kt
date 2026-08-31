@@ -116,5 +116,8 @@ public class FrameworkPlugin : Plugin<Project> {
             dependencies.add("implementation", "dev.placeholder.framework:framework-events")
             dependencies.add("ksp", "dev.placeholder.framework:framework-events-ksp")
         }
+        if (extension.inputEnabled) {
+            dependencies.add("implementation", "dev.placeholder.framework:framework-input")
+        }
     }
 }

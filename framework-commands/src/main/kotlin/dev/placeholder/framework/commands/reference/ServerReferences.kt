@@ -11,21 +11,10 @@ import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Entity
-import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 
-/** Stable player identity safe to retain in an asynchronous command. */
-@JvmInline
-public value class PlayerRef(public val uniqueId: UUID) {
-    public suspend fun <T> access(
-        plugin: Plugin,
-        block: context(EntityContext) (Player) -> T,
-    ): EntityOutcome<T> {
-        val player = plugin.withGlobal { plugin.server.getPlayer(uniqueId) }
-            ?: return EntityOutcome.Retired
-        return plugin.withEntity(player) { block(player) }
-    }
-}
+/** Source-compatible name for the kernel-owned stable player identity. */
+public typealias PlayerRef = dev.placeholder.framework.execution.PlayerRef
 
 /** Stable entity identity safe to retain in an asynchronous command. */
 @JvmInline
