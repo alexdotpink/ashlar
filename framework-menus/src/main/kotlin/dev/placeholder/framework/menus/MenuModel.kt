@@ -49,12 +49,20 @@ public data class ChestHostSnapshot(
 
 /** The concrete host rendered by one menu revision. */
 public sealed interface MenuHostSnapshot {
+    /** Adventure title shown by the native host. */
+    public val title: Component
+
     /** The number of physical slots exposed by this host. */
     public val capacity: Int
 
+    /** Physical slots in native top-inventory order. */
+    public val slots: List<MenuSlotSnapshot>
+
     /** Chest-host semantics. */
     public data class Chest(public val chest: ChestHostSnapshot) : MenuHostSnapshot {
+        override val title: Component get() = chest.title
         override val capacity: Int = chest.rows * 9
+        override val slots: List<MenuSlotSnapshot> get() = chest.slots
     }
 }
 
@@ -167,6 +175,7 @@ internal data class RenderedChest(
     val title: Component,
     val rows: Int,
     val slots: Map<Int, RenderedSlot>,
+    val host: RenderedHostDescriptor = RenderedHostDescriptor.chest(title, rows),
 )
 
 internal data class RenderTree(
