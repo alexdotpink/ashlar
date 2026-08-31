@@ -245,7 +245,7 @@ public object Items {
             material = copy.type,
             amount = copy.amount,
             maximumAmount = copy.maxStackSize,
-            stackabilityIdentity = canonicalNativeBytes(amountNormalized).sha256(),
+            stackabilityIdentity = canonicalNativeBytes(nativeBytes).sha256(),
             nativeBytes = nativeBytes,
         )
     }
@@ -292,7 +292,7 @@ public object Items {
         check(restored.maxStackSize == snapshot.maximumAmount) {
             "Native item bytes disagree with snapshot maximum amount"
         }
-        val actualIdentity = canonicalNativeBytes(restored.asQuantity(1)).sha256()
+        val actualIdentity = canonicalNativeBytes(bytes).sha256()
         check(MessageDigest.isEqual(actualIdentity, snapshot.stackabilityIdentity())) {
             "Native item bytes disagree with snapshot stackability identity"
         }
@@ -379,6 +379,3 @@ internal object SnapshotEncoding {
 }
 
 internal fun ByteArray.sha256(): ByteArray = MessageDigest.getInstance("SHA-256").digest(this)
-
-internal fun canonicalNativeBytes(stack: ItemStack): ByteArray =
-    ItemStack.deserializeBytes(stack.serializeAsBytes()).serializeAsBytes()

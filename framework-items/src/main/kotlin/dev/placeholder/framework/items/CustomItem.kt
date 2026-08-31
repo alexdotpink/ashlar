@@ -30,7 +30,9 @@ public class CustomItemDefinition<T> internal constructor(
         context: ItemPresentationContext = ItemPresentationContext(),
     ): ItemStack {
         val stack = Items.materialize(renderer(data), presentation, context)
-        val presentationBytes = if (integrity?.includePresentation == true) canonicalNativeBytes(stack) else null
+        val presentationBytes = if (integrity?.includePresentation == true) {
+            canonicalNativeBytes(stack.serializeAsBytes())
+        } else null
         val envelopeBytes = encodeEnvelope(data, presentationBytes)
         return stack.also {
             stack.editPersistentDataContainer {
@@ -68,7 +70,7 @@ public class CustomItemDefinition<T> internal constructor(
         val presentationBytes = if (integrity?.includePresentation == true) {
             stack.clone().also { copy ->
                 copy.editPersistentDataContainer { it.remove(ENVELOPE_KEY) }
-            }.let(::canonicalNativeBytes)
+            }.let(ItemStack::serializeAsBytes).let(::canonicalNativeBytes)
         } else null
         return readEnvelope(bytes, presentationBytes)
     }
