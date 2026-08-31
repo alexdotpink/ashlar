@@ -297,7 +297,7 @@ _Avoid_: Debug log, inventory dump
 ## Performance
 
 **Performance contract**:
-The versioned scenarios, measurements, and regression budgets that protect one public framework capability.
+The versioned scenarios, measurements, regression budgets, and maturity status that protect one public framework capability.
 _Avoid_: Performance test, benchmark score
 
 **Benchmark scenario**:
@@ -319,6 +319,10 @@ _Avoid_: Performance goal, acceptable speed
 **Performance regression**:
 A statistically confirmed budget violation against a compatible same-worker `main` run.
 _Avoid_: Slowdown, noisy result
+
+**Measurement environment**:
+The hardware, operating system, JVM, framework toolchain, Paper or Folia build, and fixture fingerprint attached to a benchmark run.
+_Avoid_: Benchmark machine, CI runner
 
 **Framework overhead**:
 The measured cost added by a framework path relative to its matched native or direct control under the same workload.
