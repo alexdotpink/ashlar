@@ -12,6 +12,15 @@ allprojects {
     version = rootProject.version
 }
 
+tasks.register("integrationTest") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Runs the pinned Paper and Folia integration fixtures."
+    dependsOn(
+        ":integration-test-fixture:paperIntegrationTest",
+        ":integration-test-fixture:foliaIntegrationTest",
+    )
+}
+
 tasks.register("checkKotlinAbi") {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     description = "Checks the committed Kotlin ABI baselines for all published Kotlin artifacts."

@@ -1,0 +1,6 @@
+name: FrameworkIntegrationFixture
+version: '${version}'
+main: dev.placeholder.framework.fixture.IntegrationFixturePlugin
+api-version: '26.2'
+folia-supported: true
+description: Executable lifecycle and ownership fixture for the framework

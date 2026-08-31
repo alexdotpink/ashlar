@@ -1,0 +1,7 @@
+name: FrameworkSample
+version: '${version}'
+main: dev.placeholder.framework.sample.SamplePlugin
+api-version: '26.2'
+folia-supported: true
+description: Playable showcase of every framework command-module feature
+authors: [Framework maintainers]

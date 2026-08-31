@@ -39,4 +39,8 @@ include(
     "framework-bom",
     "framework-testkit",
     "framework-incubator",
+    "integration-test-fixture",
+    "sample-plugin",
 )
+
+project(":sample-plugin").projectDir = file("samples/sample-plugin")
