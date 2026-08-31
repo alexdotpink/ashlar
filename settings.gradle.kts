@@ -33,6 +33,10 @@ include(
     "kernel",
     "framework-di",
     "framework-di-ksp",
+    "framework-commands",
+    "framework-commands-ksp",
+    "framework-gradle-plugin",
+    "framework-bom",
     "framework-testkit",
     "framework-incubator",
 )

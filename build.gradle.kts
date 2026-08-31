@@ -19,8 +19,11 @@ tasks.register("checkKotlinAbi") {
         ":kernel:checkKotlinAbi",
         ":framework-di:checkKotlinAbi",
         ":framework-di-ksp:checkKotlinAbi",
+        ":framework-commands:checkKotlinAbi",
+        ":framework-commands-ksp:checkKotlinAbi",
         ":framework-testkit:checkKotlinAbi",
         ":framework-incubator:checkKotlinAbi",
+        ":framework-gradle-plugin:checkKotlinAbi",
     )
 }
 
@@ -31,7 +34,10 @@ tasks.register("updateKotlinAbi") {
         ":kernel:updateKotlinAbi",
         ":framework-di:updateKotlinAbi",
         ":framework-di-ksp:updateKotlinAbi",
+        ":framework-commands:updateKotlinAbi",
+        ":framework-commands-ksp:updateKotlinAbi",
         ":framework-testkit:updateKotlinAbi",
         ":framework-incubator:updateKotlinAbi",
+        ":framework-gradle-plugin:updateKotlinAbi",
     )
 }
