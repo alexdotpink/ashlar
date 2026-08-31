@@ -105,7 +105,10 @@ public class ItemSpecBuilder internal constructor(base: ItemSpec? = null) {
         changes[PersistentIdentity(key)] = ItemChange.RemovePersistent(key)
     }
 
-    /** Applies an advanced Paper mutation each time this spec is materialized. */
+    /**
+     * Applies an advanced Paper mutation each time this spec is materialized.
+     * [key] is its structural identity. Change the key when the mutation's output semantics change.
+     */
     public fun paper(key: String, mutation: (ItemStack) -> Unit) {
         require(key.isNotBlank()) { "Paper mutation key must not be blank" }
         changes[PaperIdentity(key)] = ItemChange.Paper(PaperIdentity(key), mutation)

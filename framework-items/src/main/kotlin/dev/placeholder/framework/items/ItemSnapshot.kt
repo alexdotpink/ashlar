@@ -215,8 +215,7 @@ public object Items {
     public fun capture(stack: ItemStack): ItemSnapshot {
         require(!stack.isEmpty) { "Cannot capture an empty item stack" }
         val copy = stack.clone()
-        val firstPass = copy.asQuantity(1).serializeAsBytes()
-        val bytes = ItemStack.deserializeBytes(firstPass).asQuantity(1).serializeAsBytes()
+        val bytes = canonicalNativeBytes(copy.asQuantity(1))
         require(bytes.size <= ItemSnapshot.MAX_ENCODED_BYTES) {
             "Native item snapshot is ${bytes.size} bytes; maximum is ${ItemSnapshot.MAX_ENCODED_BYTES}"
         }
@@ -347,3 +346,6 @@ private fun nullableContentEquals(left: ByteArray?, right: ByteArray?): Boolean 
 }
 
 internal fun ByteArray.sha256(): ByteArray = MessageDigest.getInstance("SHA-256").digest(this)
+
+internal fun canonicalNativeBytes(stack: ItemStack): ByteArray =
+    ItemStack.deserializeBytes(stack.serializeAsBytes()).serializeAsBytes()
