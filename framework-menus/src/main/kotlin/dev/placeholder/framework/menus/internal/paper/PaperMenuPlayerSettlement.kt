@@ -52,7 +52,14 @@ internal class PaperMenuPlayerSettlement(
         if (delta.removals.isEmpty() && delta.additions.isEmpty()) return MenuSettlementResult.Settled
         return lock(playerId).withLock {
             when (val outcome = PlayerRef(playerId).access(plugin) { player -> settleLive(player, delivery, delta) }) {
-                is EntityOutcome.Completed -> outcome.value
+                is EntityOutcome.Completed -> when (outcome.value) {
+                    LiveSettlement.Settled -> MenuSettlementResult.Settled
+                    LiveSettlement.Pending -> MenuSettlementResult.Pending
+                    LiveSettlement.Mailbox -> {
+                        mailbox.deposit(delivery.proposal.id.value, playerId, delta.additions)
+                        MenuSettlementResult.Settled
+                    }
+                }
                 EntityOutcome.Retired -> settleOffline(playerId, delivery, delta)
             }
         }
@@ -125,18 +132,18 @@ internal class PaperMenuPlayerSettlement(
         player: Player,
         delivery: MenuPlayerDelivery,
         delta: PlayerDelta,
-    ): MenuSettlementResult {
+    ): LiveSettlement {
         val receipt = delivery.proposal.id.value
-        if (player.hasReceipt(receipt)) return MenuSettlementResult.Settled
+        if (player.hasReceipt(receipt)) return LiveSettlement.Settled
         val current = (0..40).map { index -> player.inventory.getItem(index).snapshot() }.toMutableList()
-        if (!current.removeExact(delta.removals)) return MenuSettlementResult.Pending
+        if (!current.removeExact(delta.removals)) return LiveSettlement.Pending
         if (!current.insertAll(delta.additions)) {
-            return if (delta.removals.isEmpty()) MenuSettlementResult.Pending else MenuSettlementResult.Pending
+            return if (delta.removals.isEmpty()) LiveSettlement.Mailbox else LiveSettlement.Pending
         }
         current.forEachIndexed { index, item -> player.inventory.setItem(index, item?.let(Items::materialize)) }
         player.addReceipt(receipt)
         player.saveData()
-        return MenuSettlementResult.Settled
+        return LiveSettlement.Settled
     }
 
     private fun lock(playerId: UUID): Mutex = locks.computeIfAbsent(playerId) { Mutex() }
@@ -163,6 +170,12 @@ internal class PaperMenuPlayerSettlement(
     internal fun recordApplied(player: Player, id: UUID) {
         player.addReceipt(id)
     }
+}
+
+private enum class LiveSettlement {
+    Settled,
+    Pending,
+    Mailbox,
 }
 
 internal data class PlayerDelta(
