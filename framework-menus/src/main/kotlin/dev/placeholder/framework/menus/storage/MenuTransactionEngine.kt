@@ -3,7 +3,10 @@ package dev.placeholder.framework.menus.storage
 import dev.placeholder.framework.items.ItemSnapshot
 import java.util.UUID
 
-/** Cursor and storage values used to compute one pure item-movement proposal. */
+/**
+ * Cursor and storage values used to compute one pure item-movement proposal.
+ * [storages] must be keyed by each snapshot's own identity.
+ */
 public data class MenuTransactionState(
     public val storages: Map<MenuStorageId, MenuStorageSnapshot>,
     public val cursor: ItemSnapshot? = null,
@@ -17,7 +20,9 @@ public data class MenuTransactionState(
 
 /** Ordered automatic destinations for shift transfer from one storage. */
 public sealed interface MenuStorageReference {
+    /** A declared menu storage. */
     public data class Storage(public val id: MenuStorageId) : MenuStorageReference
+    /** One symbolic section of the viewing player's inventory. */
     public data class Player(public val section: PlayerInventorySection) : MenuStorageReference
 }
 
@@ -33,7 +38,10 @@ public fun transferRoute(
     vararg destinations: MenuStorageReference,
 ): MenuTransferRoute = MenuTransferRoute(source, destinations.toList())
 
-/** Ordered automatic destinations for shift transfer from one storage participant. */
+/**
+ * Ordered automatic destinations for shift transfer from one storage participant.
+ * The engine fills compatible stacks before empty slots within each destination.
+ */
 public data class MenuTransferRoute(
     public val source: MenuStorageReference,
     public val destinations: List<MenuStorageReference>,
@@ -58,29 +66,40 @@ public enum class MenuDragMode {
 
 /** Storage-level gesture after a host maps physical slots to stable addresses. */
 public sealed interface MenuStorageGesture {
+    /** Address that initiated the gesture, or null for cursor-wide gestures. */
     public val source: MenuSlotAddress?
 
+    /** Pick up, place, merge, or swap a full cursor stack. */
     public data class Primary(override val source: MenuSlotAddress) : MenuStorageGesture
+    /** Pick up half a stack or place one cursor item. */
     public data class Secondary(override val source: MenuSlotAddress) : MenuStorageGesture
+    /** Move a stack through its declared automatic transfer route. */
     public data class ShiftTransfer(override val source: MenuSlotAddress) : MenuStorageGesture
+    /** Swap the source with one hotbar storage address. */
     public data class HotbarSwap(
         override val source: MenuSlotAddress,
         public val hotbar: MenuSlotAddress,
     ) : MenuStorageGesture
+    /** Swap the source with the offhand storage address. */
     public data class OffhandSwap(
         override val source: MenuSlotAddress,
         public val offhand: MenuSlotAddress,
     ) : MenuStorageGesture
+    /** Remove one item from the source for a world-drop emission. */
     public data class DropOne(override val source: MenuSlotAddress) : MenuStorageGesture
+    /** Remove the source stack for a world-drop emission. */
     public data class DropStack(override val source: MenuSlotAddress) : MenuStorageGesture
+    /** Remove one item or the full stack from the logical cursor. */
     public data class DropCursor(public val one: Boolean) : MenuStorageGesture {
         override val source: MenuSlotAddress? = null
     }
+    /** Fill the logical cursor from compatible slots in [order]. */
     public data class DoubleCollect(
         public val order: List<MenuSlotAddress>,
     ) : MenuStorageGesture {
         override val source: MenuSlotAddress? = null
     }
+    /** Distribute the logical cursor across ordered [targets]. */
     public data class Drag(
         public val targets: List<MenuSlotAddress>,
         public val mode: MenuDragMode,
@@ -96,8 +115,11 @@ public sealed interface MenuStorageGesture {
 
 /** Result of pure gesture planning. */
 public sealed interface MenuTransactionPlan {
+    /** Pure planning produced an immutable transaction proposal. */
     public data class Proposed(public val proposal: MenuTransactionProposal) : MenuTransactionPlan
+    /** Pure planning rejected the gesture without changing state. */
     public data class Rejected(public val failure: MenuTransactionFailure) : MenuTransactionPlan
+    /** The gesture was valid but did not change any participant. */
     public data object NoChange : MenuTransactionPlan
 }
 

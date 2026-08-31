@@ -16,7 +16,10 @@ import java.nio.file.StandardCopyOption
 import java.security.MessageDigest
 import java.util.UUID
 
-/** Journal entry written before a transaction crosses an external commit boundary. */
+/**
+ * Journal entry written before a transaction crosses an external commit boundary.
+ * [domainId] identifies the owner that can resolve [proposal] after restart.
+ */
 public data class JournaledMenuTransaction(
     public val domainId: String,
     public val proposal: MenuTransactionProposal,

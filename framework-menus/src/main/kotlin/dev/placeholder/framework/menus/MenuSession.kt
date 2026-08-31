@@ -52,15 +52,25 @@ import org.bukkit.plugin.Plugin
 
 /** Why a logical menu session ended. */
 public sealed interface MenuClose {
+    /** The player closed the native inventory. */
     public data object PlayerClosed : MenuClose
+    /** Another native inventory replaced the menu. */
     public data object ExternalInventory : MenuClose
+    /** Plug-in code explicitly closed the session. */
     public data object Explicit : MenuClose
+    /** A newer menu session replaced this session. */
     public data object Replaced : MenuClose
+    /** The player disconnected. */
     public data object Disconnected : MenuClose
+    /** The player died while viewing the menu. */
     public data object Died : MenuClose
+    /** The server kicked the player. */
     public data object Kicked : MenuClose
+    /** Cancellation of the suspending caller ended the session. */
     public data object CallerCancelled : MenuClose
+    /** Plug-in shutdown ended the session. */
     public data object PluginStopped : MenuClose
+    /** An uncontained runtime failure ended the session. */
     public data class Failed(public val cause: Throwable) : MenuClose
 }
 
@@ -72,14 +82,19 @@ public enum class MenuOpenConflict {
 
 /** Result of attempting to open a logical menu session. */
 public sealed interface MenuOpen {
+    /** The opened session eventually ended with [reason]. */
     public data class Closed(public val reason: MenuClose) : MenuOpen
+    /** Conflict policy refused to replace an existing session. */
     public data object Rejected : MenuOpen
 }
 
 /** Result of a typed menu choice. */
 public sealed interface MenuChoice<out T> {
+    /** A menu action completed the choice with [value]. */
     public data class Selected<T>(public val value: T) : MenuChoice<T>
+    /** The menu closed before choosing a value. */
     public data class Closed(public val reason: MenuClose) : MenuChoice<Nothing>
+    /** Conflict policy prevented the choice menu from opening. */
     public data object NotOpened : MenuChoice<Nothing>
 }
 

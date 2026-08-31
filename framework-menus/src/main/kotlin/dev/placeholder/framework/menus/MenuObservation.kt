@@ -1,6 +1,11 @@
 package dev.placeholder.framework.menus
 
-/** One redacted lifecycle observation emitted by a live menu session. */
+/**
+ * One redacted lifecycle observation emitted by a live menu session.
+ *
+ * @property player stable reference for the observed session owner
+ * @property event semantic lifecycle event without mutable native state
+ */
 public data class MenuObservation(
     public val player: dev.placeholder.framework.execution.PlayerRef,
     public val event: MenuTrace,

@@ -10,9 +10,13 @@ import dev.placeholder.framework.menus.state
 
 /** Four ordinary states used by asynchronous content components. */
 public sealed interface ContentState<out T> {
+    /** Content has not produced a value yet. */
     public data object Loading : ContentState<Nothing>
+    /** Content completed without a displayable value. */
     public data object Empty : ContentState<Nothing>
+    /** Content production failed with [cause]. */
     public data class Failed(public val cause: Throwable) : ContentState<Nothing>
+    /** Content produced [value]. */
     public data class Ready<T>(public val value: T) : ContentState<T>
 }
 

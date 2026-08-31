@@ -5,7 +5,12 @@ import net.kyori.adventure.text.Component
 import java.util.concurrent.ConcurrentHashMap
 import java.util.UUID
 
-/** Final accepted transaction state ready for native reconciliation and emissions. */
+/**
+ * Final accepted transaction state ready for native settlement.
+ *
+ * [requiresAcknowledgement] remains true until native or recovery settlement makes [snapshots],
+ * [cursor], and [emissions] safe and the journal entry can be removed.
+ */
 public data class CommittedMenuTransaction(
     public val id: MenuTransactionId,
     public val snapshots: Map<MenuStorageId, MenuStorageSnapshot>,
@@ -14,7 +19,10 @@ public data class CommittedMenuTransaction(
     public val requiresAcknowledgement: Boolean,
 )
 
-/** Accepted state plus the session-specific identities of player inventory sections. */
+/**
+ * Accepted state plus the session-specific identities of player inventory sections.
+ * The native adapter uses [playerStorages] to install matching snapshots into the player view.
+ */
 public data class MenuNativeTransaction(
     public val committed: CommittedMenuTransaction,
     public val playerStorages: Map<PlayerInventorySection, MenuStorageId>,
@@ -22,14 +30,19 @@ public data class MenuNativeTransaction(
 
 /** Whether a native presentation durably installed an accepted player-bound transaction. */
 public enum class MenuNativeCommit {
+    /** Native player inventory and cursor state now contain the accepted values. */
     Applied,
+    /** Native settlement could not run, so durable recovery must retain the values. */
     Unavailable,
 }
 
 /** Result of attempting one pessimistic transaction commit. */
 public sealed interface MenuTransactionSubmission {
+    /** The proposal committed and is ready for native settlement. */
     public data class Committed(public val transaction: CommittedMenuTransaction) : MenuTransactionSubmission
+    /** The transaction domain rejected the proposal with player-facing text. */
     public data class Rejected(public val message: Component) : MenuTransactionSubmission
+    /** Framework validation or locking rejected the proposal. */
     public data class Failed(public val failure: MenuTransactionFailure) : MenuTransactionSubmission
 }
 
@@ -170,13 +183,18 @@ public class MenuTransactionCoordinator(
 
 /** One restart-resolution result from the durable transaction journal. */
 public sealed interface MenuTransactionRecovery {
+    /** Recovery cannot proceed until the named transaction domain is registered. */
     public data class MissingDomain(public val entry: JournaledMenuTransaction) : MenuTransactionRecovery
+    /** The domain has not reached a durable outcome yet. */
     public data class Pending(public val entry: JournaledMenuTransaction) : MenuTransactionRecovery
+    /** Persistence proved that the proposal did not commit. */
     public data class NotCommitted(public val id: MenuTransactionId) : MenuTransactionRecovery
+    /** Persistence permanently rejected the proposal. */
     public data class Rejected(
         public val id: MenuTransactionId,
         public val message: Component?,
     ) : MenuTransactionRecovery
+    /** Persistence committed the proposal with authoritative snapshots. */
     public data class Committed(
         public val entry: JournaledMenuTransaction,
         public val snapshots: Map<MenuStorageId, MenuStorageSnapshot>,

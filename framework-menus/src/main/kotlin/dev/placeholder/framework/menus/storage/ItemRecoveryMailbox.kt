@@ -22,10 +22,17 @@ import java.time.temporal.ChronoUnit
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-/** One durable item waiting for safe delivery to a player. */
+/**
+ * One durable item waiting for safe delivery to a player.
+ *
+ * @property id stable acknowledgement identifier for this item record
+ * @property deliveryId idempotency identifier shared by one deposited batch
+ * @property playerId player who must receive the item
+ * @property item complete detached item value
+ * @property storedAt timestamp assigned when the mailbox accepted the batch
+ */
 public data class RecoveredMenuItem(
     public val id: UUID,
-    /** Stable source identifier which makes replayed deposits idempotent. */
     public val deliveryId: UUID,
     public val playerId: UUID,
     public val item: ItemSnapshot,

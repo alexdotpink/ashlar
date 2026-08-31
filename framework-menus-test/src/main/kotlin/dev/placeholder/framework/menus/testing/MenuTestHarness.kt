@@ -130,6 +130,7 @@ public class MenuTestScope internal constructor(
 
 /** One controllable logical session driven through immutable interactions. */
 public class MenuTestSession internal constructor(
+    /** Stable player whose production session this test controls. */
     public val player: PlayerRef,
     private val core: dev.placeholder.framework.menus.MenuSessionCore,
     private val host: TestNativeHost,
@@ -341,6 +342,7 @@ public class MenuTestSession internal constructor(
 
 /** Controllable typed-choice session and its eventual selected value. */
 public class MenuTestChoice<T> internal constructor(
+    /** Controllable menu session which will produce this choice. */
     public val menu: MenuTestSession,
     private val selected: CompletableDeferred<Any?>,
 ) {

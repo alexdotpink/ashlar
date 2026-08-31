@@ -50,7 +50,11 @@ public sealed interface MenuHostInput {
     /** Stable category used to select a declared handler. */
     public val kind: MenuHostInputKind
 
-    /** New decoded text entered into an anvil rename field. */
+    /**
+     * New decoded text entered into an anvil rename field.
+     *
+     * @property text complete client-provided rename text
+     */
     public data class AnvilRenameText(
         override val player: PlayerRef,
         override val revision: Long,
@@ -59,7 +63,11 @@ public sealed interface MenuHostInput {
         override val kind: MenuHostInputKind = MenuHostInputKind.ANVIL_RENAME_TEXT
     }
 
-    /** Newly selected zero-based merchant offer. */
+    /**
+     * Newly selected zero-based merchant offer.
+     *
+     * @property index zero-based index in the host's declared offer list
+     */
     public data class MerchantTradeSelected(
         override val player: PlayerRef,
         override val revision: Long,
@@ -72,7 +80,7 @@ public sealed interface MenuHostInput {
         override val kind: MenuHostInputKind = MenuHostInputKind.MERCHANT_TRADE_SELECTED
     }
 
-    /** Newly selected loom pattern by stable registry key. */
+    /** Newly selected loom [pattern] by stable registry key. */
     public data class LoomPatternSelected(
         override val player: PlayerRef,
         override val revision: Long,
@@ -81,7 +89,7 @@ public sealed interface MenuHostInput {
         override val kind: MenuHostInputKind = MenuHostInputKind.LOOM_PATTERN_SELECTED
     }
 
-    /** Newly selected stonecutter recipe by stable recipe key. */
+    /** Newly selected stonecutter [recipe] by stable recipe key. */
     public data class StonecutterRecipeSelected(
         override val player: PlayerRef,
         override val revision: Long,
@@ -90,7 +98,7 @@ public sealed interface MenuHostInput {
         override val kind: MenuHostInputKind = MenuHostInputKind.STONECUTTER_RECIPE_SELECTED
     }
 
-    /** Enchantment button pressed before vanilla mutates the inventory. */
+    /** Enchantment [button] pressed before vanilla mutates the inventory. */
     public data class EnchantmentButtonPressed(
         override val player: PlayerRef,
         override val revision: Long,
@@ -99,7 +107,11 @@ public sealed interface MenuHostInput {
         override val kind: MenuHostInputKind = MenuHostInputKind.ENCHANTMENT_BUTTON
     }
 
-    /** Primary and secondary beacon effect keys submitted by the client. */
+    /**
+     * Primary and secondary beacon effect keys submitted by the client.
+     *
+     * [consumesPayment] reports whether accepting this input consumes the payment slot.
+     */
     public data class BeaconEffectsSelected(
         override val player: PlayerRef,
         override val revision: Long,
@@ -110,7 +122,10 @@ public sealed interface MenuHostInput {
         override val kind: MenuHostInputKind = MenuHostInputKind.BEACON_EFFECTS_SELECTED
     }
 
-    /** One requested lectern page transition. */
+    /**
+     * One requested lectern page transition from [previousPage] to [page] in [direction].
+     * Page values are zero-based.
+     */
     public data class LecternPageChanged(
         override val player: PlayerRef,
         override val revision: Long,

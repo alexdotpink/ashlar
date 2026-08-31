@@ -3,24 +3,28 @@ package dev.placeholder.framework.menus
 import net.kyori.adventure.text.Component
 import org.bukkit.potion.PotionEffectType
 
+/** Declares a five-slot hopper host. */
 context(menu: MenuScope)
 public fun hopper(
     title: Component,
     content: context(ContainerHostScope) () -> Unit,
 ): Unit = containerHost(title, 5, { slots -> HopperHostSnapshot(title, slots) }, content)
 
+/** Declares a generic three-by-three inventory host. */
 context(menu: MenuScope)
 public fun generic3x3(
     title: Component,
     content: context(ContainerHostScope) () -> Unit,
 ): Unit = containerHost(title, 9, { slots -> Generic3x3HostSnapshot(title, slots) }, content)
 
+/** Declares a 27-slot shulker inventory host. */
 context(menu: MenuScope)
 public fun shulker(
     title: Component,
     content: context(ContainerHostScope) () -> Unit,
 ): Unit = containerHost(title, 27, { slots -> ShulkerHostSnapshot(title, slots) }, content)
 
+/** Declares an anvil host with typed [AnvilSlot] positions. */
 context(menu: MenuScope)
 public fun anvil(
     title: Component,
@@ -46,6 +50,7 @@ public fun anvil(
     content,
 )
 
+/** Declares a merchant host with ordered [offers]. */
 context(menu: MenuScope)
 public fun merchant(
     title: Component,
@@ -53,6 +58,7 @@ public fun merchant(
     content: context(RoleHostScope<MerchantSlot>) () -> Unit,
 ): Unit = roleHost(title, 3, MerchantSlot::index, { slots -> MerchantHostSnapshot(title, slots, offers) }, content)
 
+/** Declares a furnace host with client-visible cooking and burning progress. */
 context(menu: MenuScope)
 public fun furnace(
     title: Component,
@@ -61,6 +67,7 @@ public fun furnace(
     content: context(RoleHostScope<FurnaceSlot>) () -> Unit,
 ): Unit = furnaceHost(title, FurnaceHostKind.FURNACE, cooking, burning, content)
 
+/** Declares a blast-furnace host with client-visible cooking and burning progress. */
 context(menu: MenuScope)
 public fun blastFurnace(
     title: Component,
@@ -69,6 +76,7 @@ public fun blastFurnace(
     content: context(RoleHostScope<FurnaceSlot>) () -> Unit,
 ): Unit = furnaceHost(title, FurnaceHostKind.BLAST_FURNACE, cooking, burning, content)
 
+/** Declares a smoker host with client-visible cooking and burning progress. */
 context(menu: MenuScope)
 public fun smoker(
     title: Component,
@@ -77,6 +85,7 @@ public fun smoker(
     content: context(RoleHostScope<FurnaceSlot>) () -> Unit,
 ): Unit = furnaceHost(title, FurnaceHostKind.SMOKER, cooking, burning, content)
 
+/** Declares a brewing-stand host with its native progress values. */
 context(menu: MenuScope)
 public fun brewing(
     title: Component,
@@ -92,12 +101,14 @@ public fun brewing(
     content,
 )
 
+/** Declares a crafting-table host with typed [CraftingSlot] positions. */
 context(menu: MenuScope)
 public fun crafting(
     title: Component,
     content: context(RoleHostScope<CraftingSlot>) () -> Unit,
 ): Unit = roleHost(title, 10, CraftingSlot::index, { slots -> CraftingHostSnapshot(title, slots) }, content)
 
+/** Declares a crafter host and the grid positions disabled for input. */
 context(menu: MenuScope)
 public fun crafter(
     title: Component,
@@ -111,6 +122,7 @@ public fun crafter(
     content,
 )
 
+/** Declares an enchantment-table host with exactly three offer positions. */
 context(menu: MenuScope)
 public fun enchantment(
     title: Component,
@@ -125,36 +137,42 @@ public fun enchantment(
     content,
 )
 
+/** Declares a grindstone host with typed [GrindstoneSlot] positions. */
 context(menu: MenuScope)
 public fun grindstone(
     title: Component,
     content: context(RoleHostScope<GrindstoneSlot>) () -> Unit,
 ): Unit = roleHost(title, 3, GrindstoneSlot::index, { slots -> GrindstoneHostSnapshot(title, slots) }, content)
 
+/** Declares a smithing-table host with typed [SmithingSlot] positions. */
 context(menu: MenuScope)
 public fun smithing(
     title: Component,
     content: context(RoleHostScope<SmithingSlot>) () -> Unit,
 ): Unit = roleHost(title, 4, SmithingSlot::index, { slots -> SmithingHostSnapshot(title, slots) }, content)
 
+/** Declares a loom host with typed [LoomSlot] positions. */
 context(menu: MenuScope)
 public fun loom(
     title: Component,
     content: context(RoleHostScope<LoomSlot>) () -> Unit,
 ): Unit = roleHost(title, 4, LoomSlot::index, { slots -> LoomHostSnapshot(title, slots) }, content)
 
+/** Declares a cartography-table host with typed [CartographySlot] positions. */
 context(menu: MenuScope)
 public fun cartography(
     title: Component,
     content: context(RoleHostScope<CartographySlot>) () -> Unit,
 ): Unit = roleHost(title, 3, CartographySlot::index, { slots -> CartographyHostSnapshot(title, slots) }, content)
 
+/** Declares a stonecutter host with typed [StonecutterSlot] positions. */
 context(menu: MenuScope)
 public fun stonecutter(
     title: Component,
     content: context(RoleHostScope<StonecutterSlot>) () -> Unit,
 ): Unit = roleHost(title, 2, StonecutterSlot::index, { slots -> StonecutterHostSnapshot(title, slots) }, content)
 
+/** Declares a beacon host with the effects selected in its native controls. */
 context(menu: MenuScope)
 public fun beacon(
     title: Component,
@@ -169,6 +187,7 @@ public fun beacon(
     content,
 )
 
+/** Declares a lectern host at zero-based [page]. */
 context(menu: MenuScope)
 public fun lectern(
     title: Component,

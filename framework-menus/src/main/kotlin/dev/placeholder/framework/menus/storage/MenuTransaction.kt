@@ -15,7 +15,10 @@ public value class MenuTransactionId(public val value: UUID) {
     }
 }
 
-/** Immutable before and after values for one storage touched by a transaction. */
+/**
+ * Immutable before and after values for one storage touched by a transaction.
+ * [after] has the same identity and size as [before], with a greater revision.
+ */
 public data class MenuStorageChange(
     public val before: MenuStorageSnapshot,
     public val after: MenuStorageSnapshot,
@@ -27,7 +30,12 @@ public data class MenuStorageChange(
     }
 }
 
-/** Complete immutable item-movement proposal. */
+/**
+ * Complete immutable item-movement proposal.
+ *
+ * [changes], cursor values, and [emissions] describe one atomic decision. [playerId] and
+ * [playerStorages] retain enough identity to settle accepted player inventory state after restart.
+ */
 public data class MenuTransactionProposal(
     public val id: MenuTransactionId,
     public val playerId: UUID? = null,
@@ -35,7 +43,6 @@ public data class MenuTransactionProposal(
     public val cursorBefore: ItemSnapshot?,
     public val cursorAfter: ItemSnapshot?,
     public val emissions: List<MenuTransactionEmission> = emptyList(),
-    /** Stable player-section identities required to settle an accepted proposal after restart. */
     public val playerStorages: Map<PlayerInventorySection, MenuStorageId> = emptyMap(),
 ) {
     init {
