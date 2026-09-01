@@ -1,0 +1,74 @@
+public final class pink/alex/ashlar/gradle/AshlarPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public abstract class pink/alex/ashlar/gradle/AshlarPluginExtension {
+	public fun <init> (Lorg/gradle/api/Project;)V
+	public final fun allowVersionOverrides (Ljava/lang/String;)V
+	public final fun ashlarVersion (Ljava/lang/String;)V
+	public final fun commands (Z)V
+	public static synthetic fun commands$default (Lpink/alex/ashlar/gradle/AshlarPluginExtension;ZILjava/lang/Object;)V
+	public final fun events ()V
+	public final fun foliaSupported ()V
+	public final fun getAuthors ()Lorg/gradle/api/provider/ListProperty;
+	public final fun getDescription ()Lorg/gradle/api/provider/Property;
+	public final fun getMainClass ()Lorg/gradle/api/provider/Property;
+	public final fun getPluginName ()Lorg/gradle/api/provider/Property;
+	public final fun getWebsite ()Lorg/gradle/api/provider/Property;
+	public final fun input ()V
+	public final fun items ()V
+	public final fun menus ()V
+	public final fun paperApiVersion (Ljava/lang/String;)V
+}
+
+public abstract class pink/alex/ashlar/gradle/CompareAshlarBenchmarks : org/gradle/api/tasks/JavaExec {
+	public fun <init> ()V
+	public fun exec ()V
+	public abstract fun getBaselineFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getCandidateFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getJsonReport ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getMarkdownReport ()Lorg/gradle/api/file/RegularFileProperty;
+}
+
+public abstract class pink/alex/ashlar/gradle/GeneratePluginYaml : org/gradle/api/DefaultTask {
+	public fun <init> ()V
+	public final fun generate ()V
+	public abstract fun getApiVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getAuthors ()Lorg/gradle/api/provider/ListProperty;
+	public abstract fun getExistingDescriptor ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getExistingDescriptorPresent ()Lorg/gradle/api/provider/Property;
+	public abstract fun getFoliaSupported ()Lorg/gradle/api/provider/Property;
+	public abstract fun getMainClass ()Lorg/gradle/api/provider/Property;
+	public abstract fun getOutputFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getPluginDescription ()Lorg/gradle/api/provider/Property;
+	public abstract fun getPluginName ()Lorg/gradle/api/provider/Property;
+	public abstract fun getPluginVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getWebsite ()Lorg/gradle/api/provider/Property;
+}
+
+public abstract class pink/alex/ashlar/gradle/ReportAshlarBenchmarks : org/gradle/api/tasks/JavaExec {
+	public fun <init> ()V
+	public fun exec ()V
+	public abstract fun getComparisonFile ()Lorg/gradle/api/file/RegularFileProperty;
+}
+
+public abstract class pink/alex/ashlar/gradle/RunAshlarBenchmarks : org/gradle/api/tasks/JavaExec {
+	public fun <init> ()V
+	public fun exec ()V
+	public abstract fun getAshlarVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getBenchmarkClassDirectories ()Lorg/gradle/api/file/ConfigurableFileCollection;
+	public abstract fun getCommandName ()Lorg/gradle/api/provider/Property;
+	public abstract fun getForks ()Lorg/gradle/api/provider/Property;
+	public abstract fun getIterations ()Lorg/gradle/api/provider/Property;
+	public abstract fun getMeasurementMillis ()Lorg/gradle/api/provider/Property;
+	public abstract fun getProfiles ()Lorg/gradle/api/provider/ListProperty;
+	public abstract fun getRecordingFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getResultFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getRevision ()Lorg/gradle/api/provider/Property;
+	public abstract fun getScenarios ()Lorg/gradle/api/provider/ListProperty;
+	public abstract fun getWarmupMillis ()Lorg/gradle/api/provider/Property;
+	public abstract fun getWarmups ()Lorg/gradle/api/provider/Property;
+}
+

@@ -3,12 +3,12 @@
 Enable menus through the managed build:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     menus()
 }
 ```
 
-This enables `framework-menus` and `framework-items`. The module uses plain Kotlin. It has no annotations, reflection, processor, or generated menu classes.
+This enables `ashlar-menus` and `ashlar-items`. The module uses plain Kotlin. It has no annotations, reflection, processor, or generated menu classes.
 
 ## Sessions
 
@@ -242,11 +242,11 @@ Every successful render produces a `MenuRenderSnapshot` with a monotonically inc
 
 `PlayerMenus.observe` registers a `MenuObserver` for future trace events and returns a removable `MenuRegistration`. `PlayerMenus.intercept` registers a synchronous `MenuInterceptor` for current-revision gesture input. An interceptor returns `Allow` or `Reject`; rejection may include themed feedback. Host-input handlers do not pass through gesture interceptors.
 
-The public `MenuNativeHost`, `MenuNativeCallbacks`, `MenuNativeHostFactory`, and native transaction methods are adapter seams. Plug-ins normally inject `PlayerMenus`; tests use `framework-menus-test`.
+The public `MenuNativeHost`, `MenuNativeCallbacks`, `MenuNativeHostFactory`, and native transaction methods are adapter seams. Plug-ins normally inject `PlayerMenus`; tests use `ashlar-menus-test`.
 
 ## Standard components
 
-`framework-menus.standard` ships components built through the same public declarations as plug-in code:
+`ashlar-menus.standard` ships components built through the same public declarations as plug-in code:
 
 - `contentState` selects loading, empty, failed, or ready content.
 - `paged` owns a clamped page. `scrolling` owns a clamped fixed-size window that moves one item at a time. Both supply keyed items and controls. Their item identities are namespaced by `componentKey`, so the same domain keys may appear in both components on one screen; set distinct component keys when using two instances of the same component kind.

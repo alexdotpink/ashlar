@@ -1,0 +1,3 @@
+public abstract interface annotation class pink/alex/ashlar/incubator/ExperimentalAshlarApi : java/lang/annotation/Annotation {
+}
+

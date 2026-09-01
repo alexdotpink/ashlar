@@ -27,7 +27,7 @@ The events module gives plug-in authors one Kotlin-first module for Bukkit/Paper
 Plug-ins opt in through the managed build:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     events()
 }
 ```
@@ -109,7 +109,7 @@ The context owns the returned registration automatically. The registration may c
 
 ## Temporal server operations
 
-Temporal operations run a selector synchronously in the event callback and let only its framework-owned return value cross a suspension boundary.
+Temporal operations run a selector synchronously in the event callback and let only its ashlar-owned return value cross a suspension boundary.
 
 ### Await
 
@@ -260,7 +260,7 @@ An ordinary override keeps the base handler metadata. Repeating the relevant han
 
 ```kotlin
 @ExcludeEventContributions(OptionalMetricsEvents::class)
-class HomesPlugin : FrameworkPlugin()
+class HomesPlugin : AshlarPlugin()
 ```
 
 ## Failures, shutdown, and interoperability

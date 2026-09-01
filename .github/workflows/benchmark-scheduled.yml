@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   stress:
-    runs-on: [self-hosted, linux, x64, framework-benchmark]
+    runs-on: [self-hosted, linux, x64, ashlar-benchmark]
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@v5
@@ -52,5 +52,5 @@ jobs:
           path: |
             build/reports/benchmarks/**
             integration-test-fixture/build/run/*/benchmark-result.json
-            framework-*/build/reports/benchmarks/*.json
+            ashlar-*/build/reports/benchmarks/*.json
 

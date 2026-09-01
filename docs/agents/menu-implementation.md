@@ -31,7 +31,7 @@ The item model, semantic menu runtime, complete typed host catalogue, Paper/Foli
 - Component state identity never depends on call order.
 - A physical slot has one owner; collisions fail before reconciliation.
 - Plug-in code receives immutable gestures, not mutable Paper events.
-- Native mutation is cancelled for framework-owned storage.
+- Native mutation is cancelled for ashlar-owned storage.
 - Storage movement conserves exact item snapshots across every outcome.
 - External commits are pessimistic; rejection preserves the before-state.
 - Cross-persistent-storage proposals have one atomic owner.
@@ -67,7 +67,7 @@ Do not normalize a captured stack through an authored `ItemSpec`. Do not add gam
 
 For state, rendering, navigation, effects, or components:
 
-1. Drive the production semantic engine through `framework-menus-test`.
+1. Drive the production semantic engine through `ashlar-menus-test`.
 2. Assert stable keys, one render per synchronous mutation batch, and deterministic cleanup.
 3. Capture a semantic snapshot when tree shape changes.
 4. Verify a failure leaves the last committed tree intact or closes through the documented boundary.

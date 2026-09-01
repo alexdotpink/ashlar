@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   paired:
-    runs-on: [self-hosted, linux, x64, framework-benchmark]
+    runs-on: [self-hosted, linux, x64, ashlar-benchmark]
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v5

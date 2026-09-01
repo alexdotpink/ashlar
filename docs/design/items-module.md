@@ -1,8 +1,8 @@
 # Items module design
 
-Status: implemented in `framework-items`
+Status: implemented in `ashlar-items`
 
-The items module is the framework-wide item model. It builds authored items, captures live items without loss, and gives plug-ins durable typed custom-item identity. Menus depend on it, but hotbars, commands, events, storage, crafting, and later modules use the same API directly.
+The items module is the ashlar-wide item model. It builds authored items, captures live items without loss, and gives plug-ins durable typed custom-item identity. Menus depend on it, but hotbars, commands, events, storage, crafting, and later modules use the same API directly.
 
 ## Goals
 
@@ -27,12 +27,12 @@ The items module is the framework-wide item model. It builds authored items, cap
 The managed build exposes one production artifact:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     items()
 }
 ```
 
-`framework-menus` enables items transitively. The item module has no KSP processor, annotations, reflection, or compiler plug-in.
+`ashlar-menus` enables items transitively. The item module has no KSP processor, annotations, reflection, or compiler plug-in.
 
 ## Authored item specifications
 

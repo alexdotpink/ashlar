@@ -24,9 +24,9 @@ jobs:
         continue-on-error: true
         run: >-
           ./gradlew
-          :framework-commands:benchmark
-          :framework-events:benchmark
-          :framework-menus:benchmark
+          :ashlar-commands:benchmark
+          :ashlar-events:benchmark
+          :ashlar-menus:benchmark
           -PbenchmarkProfiles=small
           -PbenchmarkWarmups=1
           -PbenchmarkIterations=3
@@ -38,5 +38,5 @@ jobs:
           name: benchmark-smoke
           path: |
             build/reports/benchmarks/catalogue.json
-            framework-*/build/reports/benchmarks/*.json
+            ashlar-*/build/reports/benchmarks/*.json
 

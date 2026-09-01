@@ -1,3 +1,0 @@
-public abstract interface annotation class dev/placeholder/framework/incubator/ExperimentalFrameworkApi : java/lang/annotation/Annotation {
-}
-

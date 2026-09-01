@@ -1,7 +1,7 @@
-name: FrameworkSample
+name: AshlarSample
 version: '${version}'
-main: dev.placeholder.framework.sample.SamplePlugin
+main: pink.alex.ashlar.sample.SamplePlugin
 api-version: '26.2'
 folia-supported: true
 description: Playable showcase of the framework command, event, and input modules
-authors: [Framework maintainers]
+authors: [Ashlar maintainers]

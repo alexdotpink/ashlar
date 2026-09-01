@@ -1,0 +1,367 @@
+public final class pink/alex/ashlar/items/CustomItemBuilder {
+	public final fun data (Lkotlinx/serialization/KSerializer;)V
+	public final fun data (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;Ljava/lang/String;)V
+	public final fun data (Lpink/alex/ashlar/items/CustomItemCodec;)V
+	public final fun getMaximumPayloadBytes ()I
+	public final fun getVersion ()I
+	public final fun integrity (Lpink/alex/ashlar/items/HmacKeyring;Z)V
+	public static synthetic fun integrity$default (Lpink/alex/ashlar/items/CustomItemBuilder;Lpink/alex/ashlar/items/HmacKeyring;ZILjava/lang/Object;)V
+	public final fun migrate (ILpink/alex/ashlar/items/CustomItemCodec;Lkotlin/jvm/functions/Function1;)V
+	public final fun render (Lkotlin/jvm/functions/Function1;)V
+	public final fun setMaximumPayloadBytes (I)V
+	public final fun setVersion (I)V
+}
+
+public abstract interface class pink/alex/ashlar/items/CustomItemCodec {
+	public abstract fun decode ([B)Ljava/lang/Object;
+	public abstract fun encode (Ljava/lang/Object;)[B
+	public abstract fun getId ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/CustomItemCodecKt {
+	public static final fun getDefaultItemJson ()Lkotlinx/serialization/json/Json;
+}
+
+public final class pink/alex/ashlar/items/CustomItemDefinition {
+	public static final field Companion Lpink/alex/ashlar/items/CustomItemDefinition$Companion;
+	public final fun create (Ljava/lang/Object;Lpink/alex/ashlar/items/ItemPresentation;Lpink/alex/ashlar/items/ItemPresentationContext;)Lorg/bukkit/inventory/ItemStack;
+	public static synthetic fun create$default (Lpink/alex/ashlar/items/CustomItemDefinition;Ljava/lang/Object;Lpink/alex/ashlar/items/ItemPresentation;Lpink/alex/ashlar/items/ItemPresentationContext;ILjava/lang/Object;)Lorg/bukkit/inventory/ItemStack;
+	public final fun getId ()Lorg/bukkit/NamespacedKey;
+	public final fun getMaximumPayloadBytes ()I
+	public final fun getVersion ()I
+	public final fun read (Lorg/bukkit/inventory/ItemStack;)Lpink/alex/ashlar/items/CustomItemRead;
+	public final fun read (Lpink/alex/ashlar/items/ItemSnapshot;)Lpink/alex/ashlar/items/CustomItemRead;
+	public final fun readOrNull (Lorg/bukkit/inventory/ItemStack;)Ljava/lang/Object;
+	public final fun snapshot (Ljava/lang/Object;Lpink/alex/ashlar/items/ItemPresentation;Lpink/alex/ashlar/items/ItemPresentationContext;)Lpink/alex/ashlar/items/ItemSnapshot;
+	public static synthetic fun snapshot$default (Lpink/alex/ashlar/items/CustomItemDefinition;Ljava/lang/Object;Lpink/alex/ashlar/items/ItemPresentation;Lpink/alex/ashlar/items/ItemPresentationContext;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshot;
+}
+
+public final class pink/alex/ashlar/items/CustomItemDefinition$Companion {
+	public final fun getENVELOPE_KEY ()Lorg/bukkit/NamespacedKey;
+}
+
+public final class pink/alex/ashlar/items/CustomItemKt {
+	public static final fun customItem (Lorg/bukkit/NamespacedKey;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/items/CustomItemDefinition;
+}
+
+public abstract interface class pink/alex/ashlar/items/CustomItemRead {
+}
+
+public final class pink/alex/ashlar/items/CustomItemRead$Found : pink/alex/ashlar/items/CustomItemRead {
+	public fun <init> (Ljava/lang/Object;IZ)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()I
+	public final fun component3 ()Z
+	public final fun copy (Ljava/lang/Object;IZ)Lpink/alex/ashlar/items/CustomItemRead$Found;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/CustomItemRead$Found;Ljava/lang/Object;IZILjava/lang/Object;)Lpink/alex/ashlar/items/CustomItemRead$Found;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/Object;
+	public final fun getMigrated ()Z
+	public final fun getSourceVersion ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/CustomItemRead$InvalidData : pink/alex/ashlar/items/CustomItemRead {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/items/CustomItemRead$InvalidData;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/CustomItemRead$InvalidData;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/CustomItemRead$InvalidData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProblem ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/CustomItemRead$InvalidSignature : pink/alex/ashlar/items/CustomItemRead {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/items/CustomItemRead$InvalidSignature;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/CustomItemRead$InvalidSignature;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/CustomItemRead$InvalidSignature;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProblem ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/CustomItemRead$MigrationFailed : pink/alex/ashlar/items/CustomItemRead {
+	public fun <init> (ILjava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;)Lpink/alex/ashlar/items/CustomItemRead$MigrationFailed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/CustomItemRead$MigrationFailed;ILjava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/CustomItemRead$MigrationFailed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFromVersion ()I
+	public final fun getProblem ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/CustomItemRead$NotThisItem : pink/alex/ashlar/items/CustomItemRead {
+	public static final field INSTANCE Lpink/alex/ashlar/items/CustomItemRead$NotThisItem;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/CustomItemRead$UnsupportedVersion : pink/alex/ashlar/items/CustomItemRead {
+	public fun <init> (II)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Lpink/alex/ashlar/items/CustomItemRead$UnsupportedVersion;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/CustomItemRead$UnsupportedVersion;IIILjava/lang/Object;)Lpink/alex/ashlar/items/CustomItemRead$UnsupportedVersion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFound ()I
+	public final fun getSupported ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/HmacKey {
+	public fun <init> (Ljava/lang/String;[B)V
+	public final fun getId ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/HmacKeyring {
+	public fun <init> (Lpink/alex/ashlar/items/HmacKey;Ljava/lang/Iterable;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/items/HmacKey;Ljava/lang/Iterable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getActive ()Lpink/alex/ashlar/items/HmacKey;
+}
+
+public final class pink/alex/ashlar/items/ItemLoreBuilder {
+	public final fun emptyLine ()V
+	public final fun line (Lnet/kyori/adventure/text/Component;)V
+}
+
+public abstract interface class pink/alex/ashlar/items/ItemPresentation {
+	public static final field Companion Lpink/alex/ashlar/items/ItemPresentation$Companion;
+	public abstract fun apply (Lorg/bukkit/inventory/ItemStack;Lpink/alex/ashlar/items/ItemPresentationContext;)V
+}
+
+public final class pink/alex/ashlar/items/ItemPresentation$Companion {
+	public final fun getMenuAction ()Lpink/alex/ashlar/items/ItemPresentation;
+	public final fun getNeutral ()Lpink/alex/ashlar/items/ItemPresentation;
+	public final fun hiding ([Lio/papermc/paper/datacomponent/DataComponentType;)Lpink/alex/ashlar/items/ItemPresentation;
+}
+
+public final class pink/alex/ashlar/items/ItemPresentationContext {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/UUID;Ljava/util/Locale;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/Locale;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/Locale;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/UUID;Ljava/util/Locale;Ljava/lang/String;)Lpink/alex/ashlar/items/ItemPresentationContext;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/ItemPresentationContext;Ljava/util/UUID;Ljava/util/Locale;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemPresentationContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLocale ()Ljava/util/Locale;
+	public final fun getTheme ()Ljava/lang/String;
+	public final fun getViewerId ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshot {
+	public static final field Companion Lpink/alex/ashlar/items/ItemSnapshot$Companion;
+	public static final field MAX_ENCODED_BYTES I
+	public final fun edit (Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun encode ()[B
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun fingerprint ()Ljava/lang/String;
+	public final fun getAmount ()I
+	public final fun getHasNativeData ()Z
+	public final fun getMaterial ()Lorg/bukkit/Material;
+	public final fun getMaximumAmount ()I
+	public fun hashCode ()I
+	public final fun stackableWith (Lpink/alex/ashlar/items/ItemSnapshot;)Z
+	public fun toString ()Ljava/lang/String;
+	public final fun withAmount (I)Lpink/alex/ashlar/items/ItemSnapshot;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshot$Companion {
+	public final fun decode ([B)Lpink/alex/ashlar/items/ItemSnapshotDecode;
+	public final fun detached (Lorg/bukkit/Material;IILjava/lang/String;)Lpink/alex/ashlar/items/ItemSnapshot;
+	public static synthetic fun detached$default (Lpink/alex/ashlar/items/ItemSnapshot$Companion;Lorg/bukkit/Material;IILjava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshot;
+}
+
+public abstract interface class pink/alex/ashlar/items/ItemSnapshotDecode {
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshotDecode$Corrupt : pink/alex/ashlar/items/ItemSnapshotDecode {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/items/ItemSnapshotDecode$Corrupt;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/ItemSnapshotDecode$Corrupt;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshotDecode$Corrupt;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshotDecode$Found : pink/alex/ashlar/items/ItemSnapshotDecode {
+	public fun <init> (Lpink/alex/ashlar/items/ItemSnapshot;)V
+	public final fun component1 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun copy (Lpink/alex/ashlar/items/ItemSnapshot;)Lpink/alex/ashlar/items/ItemSnapshotDecode$Found;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/ItemSnapshotDecode$Found;Lpink/alex/ashlar/items/ItemSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshotDecode$Found;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSnapshot ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshotDecode$Malformed : pink/alex/ashlar/items/ItemSnapshotDecode {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/items/ItemSnapshotDecode$Malformed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/ItemSnapshotDecode$Malformed;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshotDecode$Malformed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshotDecode$NativeIncompatible : pink/alex/ashlar/items/ItemSnapshotDecode {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/items/ItemSnapshotDecode$NativeIncompatible;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/ItemSnapshotDecode$NativeIncompatible;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshotDecode$NativeIncompatible;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshotDecode$UnsupportedVersion : pink/alex/ashlar/items/ItemSnapshotDecode {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lpink/alex/ashlar/items/ItemSnapshotDecode$UnsupportedVersion;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/ItemSnapshotDecode$UnsupportedVersion;IILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSnapshotDecode$UnsupportedVersion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getVersion ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSnapshotEditor {
+	public final fun data (Lio/papermc/paper/datacomponent/DataComponentType$NonValued;)V
+	public final fun data (Lio/papermc/paper/datacomponent/DataComponentType$Valued;Ljava/lang/Object;)V
+	public final fun getAmount ()I
+	public final fun getMaterial ()Lorg/bukkit/Material;
+	public final fun paper (Lkotlin/jvm/functions/Function1;)V
+	public final fun persistent (Lorg/bukkit/NamespacedKey;Ljava/lang/Object;Lpink/alex/ashlar/items/PersistentValueCodec;)V
+	public final fun removePersistent (Lorg/bukkit/NamespacedKey;)V
+	public final fun setAmount (I)V
+	public final fun setMaterial (Lorg/bukkit/Material;)V
+	public final fun unsetData (Lio/papermc/paper/datacomponent/DataComponentType;)V
+}
+
+public final class pink/alex/ashlar/items/ItemSpec {
+	public final fun edit (Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/items/ItemSpec;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()I
+	public final fun getMaterial ()Lorg/bukkit/Material;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/ItemSpecBuilder {
+	public static final field Companion Lpink/alex/ashlar/items/ItemSpecBuilder$Companion;
+	public static final field MAX_ITEM_AMOUNT I
+	public static final field MAX_PERSISTENT_VALUE_BYTES I
+	public final fun data (Lio/papermc/paper/datacomponent/DataComponentType$NonValued;)V
+	public final fun data (Lio/papermc/paper/datacomponent/DataComponentType$Valued;Ljava/lang/Object;)V
+	public final fun getAmount ()I
+	public final fun getMaterial ()Lorg/bukkit/Material;
+	public final fun getName ()Lnet/kyori/adventure/text/Component;
+	public final fun glint (Z)V
+	public static synthetic fun glint$default (Lpink/alex/ashlar/items/ItemSpecBuilder;ZILjava/lang/Object;)V
+	public final fun lore (Lkotlin/jvm/functions/Function1;)V
+	public final fun paper (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun persistent (Lorg/bukkit/NamespacedKey;Ljava/lang/Object;Lpink/alex/ashlar/items/PersistentValueCodec;)V
+	public final fun rarity (Lorg/bukkit/inventory/ItemRarity;)V
+	public final fun removePersistent (Lorg/bukkit/NamespacedKey;)V
+	public final fun resetData (Lio/papermc/paper/datacomponent/DataComponentType;)V
+	public final fun setAmount (I)V
+	public final fun setMaterial (Lorg/bukkit/Material;)V
+	public final fun setName (Lnet/kyori/adventure/text/Component;)V
+	public final fun unsetData (Lio/papermc/paper/datacomponent/DataComponentType;)V
+}
+
+public final class pink/alex/ashlar/items/ItemSpecBuilder$Companion {
+}
+
+public final class pink/alex/ashlar/items/ItemSpecKt {
+	public static final fun item (Lorg/bukkit/Material;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/items/ItemSpec;
+	public static synthetic fun item$default (Lorg/bukkit/Material;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lpink/alex/ashlar/items/ItemSpec;
+}
+
+public final class pink/alex/ashlar/items/Items {
+	public static final field INSTANCE Lpink/alex/ashlar/items/Items;
+	public final fun capture (Lorg/bukkit/inventory/ItemStack;)Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun materialize (Lpink/alex/ashlar/items/ItemSnapshot;)Lorg/bukkit/inventory/ItemStack;
+	public final fun materialize (Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemPresentation;Lpink/alex/ashlar/items/ItemPresentationContext;)Lorg/bukkit/inventory/ItemStack;
+	public static synthetic fun materialize$default (Lpink/alex/ashlar/items/Items;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemPresentation;Lpink/alex/ashlar/items/ItemPresentationContext;ILjava/lang/Object;)Lorg/bukkit/inventory/ItemStack;
+	public final fun persistent (Lorg/bukkit/inventory/ItemStack;Lorg/bukkit/NamespacedKey;Lpink/alex/ashlar/items/PersistentValueCodec;)Lpink/alex/ashlar/items/PersistentValueRead;
+	public final fun persistent (Lpink/alex/ashlar/items/ItemSnapshot;Lorg/bukkit/NamespacedKey;Lpink/alex/ashlar/items/PersistentValueCodec;)Lpink/alex/ashlar/items/PersistentValueRead;
+}
+
+public final class pink/alex/ashlar/items/KotlinJsonItemCodec : pink/alex/ashlar/items/CustomItemCodec {
+	public static final field Companion Lpink/alex/ashlar/items/KotlinJsonItemCodec$Companion;
+	public static final field DEFAULT_CODEC_ID Ljava/lang/String;
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;Ljava/lang/String;)V
+	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun decode ([B)Ljava/lang/Object;
+	public fun encode (Ljava/lang/Object;)[B
+	public fun getId ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/KotlinJsonItemCodec$Companion {
+}
+
+public abstract interface class pink/alex/ashlar/items/PersistentValueCodec {
+	public abstract fun decode ([B)Ljava/lang/Object;
+	public abstract fun encode (Ljava/lang/Object;)[B
+	public abstract fun getId ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/PersistentValueCodecs {
+	public static final field INSTANCE Lpink/alex/ashlar/items/PersistentValueCodecs;
+	public final fun getBytes ()Lpink/alex/ashlar/items/PersistentValueCodec;
+	public final fun getInt32 ()Lpink/alex/ashlar/items/PersistentValueCodec;
+	public final fun getInt64 ()Lpink/alex/ashlar/items/PersistentValueCodec;
+	public final fun getStringUtf8 ()Lpink/alex/ashlar/items/PersistentValueCodec;
+	public final fun getUuid ()Lpink/alex/ashlar/items/PersistentValueCodec;
+}
+
+public abstract interface class pink/alex/ashlar/items/PersistentValueRead {
+}
+
+public final class pink/alex/ashlar/items/PersistentValueRead$Found : pink/alex/ashlar/items/PersistentValueRead {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lpink/alex/ashlar/items/PersistentValueRead$Found;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/PersistentValueRead$Found;Ljava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/items/PersistentValueRead$Found;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/PersistentValueRead$Invalid : pink/alex/ashlar/items/PersistentValueRead {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/items/PersistentValueRead$Invalid;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/items/PersistentValueRead$Invalid;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/items/PersistentValueRead$Invalid;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProblem ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/items/PersistentValueRead$Missing : pink/alex/ashlar/items/PersistentValueRead {
+	public static final field INSTANCE Lpink/alex/ashlar/items/PersistentValueRead$Missing;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

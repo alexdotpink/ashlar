@@ -10,8 +10,8 @@ plugins {
     alias(libs.plugins.ksp) apply false
 }
 
-group = providers.gradleProperty("framework.group").get()
-version = providers.gradleProperty("framework.version").get()
+group = providers.gradleProperty("ashlar.group").get()
+version = providers.gradleProperty("ashlar.version").get()
 
 allprojects {
     group = rootProject.group
@@ -31,21 +31,21 @@ tasks.register("checkKotlinAbi") {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     description = "Checks the committed Kotlin ABI baselines for all published Kotlin artifacts."
     dependsOn(
-        ":kernel:checkKotlinAbi",
-        ":framework-di:checkKotlinAbi",
-        ":framework-di-ksp:checkKotlinAbi",
-        ":framework-commands:checkKotlinAbi",
-        ":framework-commands-ksp:checkKotlinAbi",
-        ":framework-events:checkKotlinAbi",
-        ":framework-events-ksp:checkKotlinAbi",
-        ":framework-input:checkKotlinAbi",
-        ":framework-items:checkKotlinAbi",
-        ":framework-menus:checkKotlinAbi",
-        ":framework-menus-test:checkKotlinAbi",
-        ":framework-benchmarks:checkKotlinAbi",
-        ":framework-testkit:checkKotlinAbi",
-        ":framework-incubator:checkKotlinAbi",
-        ":framework-gradle-plugin:checkKotlinAbi",
+        ":ashlar-kernel:checkKotlinAbi",
+        ":ashlar-di:checkKotlinAbi",
+        ":ashlar-di-ksp:checkKotlinAbi",
+        ":ashlar-commands:checkKotlinAbi",
+        ":ashlar-commands-ksp:checkKotlinAbi",
+        ":ashlar-events:checkKotlinAbi",
+        ":ashlar-events-ksp:checkKotlinAbi",
+        ":ashlar-input:checkKotlinAbi",
+        ":ashlar-items:checkKotlinAbi",
+        ":ashlar-menus:checkKotlinAbi",
+        ":ashlar-menus-test:checkKotlinAbi",
+        ":ashlar-benchmarks:checkKotlinAbi",
+        ":ashlar-testkit:checkKotlinAbi",
+        ":ashlar-incubator:checkKotlinAbi",
+        ":ashlar-gradle-plugin:checkKotlinAbi",
     )
 }
 
@@ -53,32 +53,32 @@ tasks.register("updateKotlinAbi") {
     group = "build setup"
     description = "Updates the Kotlin ABI baselines for all published Kotlin artifacts."
     dependsOn(
-        ":kernel:updateKotlinAbi",
-        ":framework-di:updateKotlinAbi",
-        ":framework-di-ksp:updateKotlinAbi",
-        ":framework-commands:updateKotlinAbi",
-        ":framework-commands-ksp:updateKotlinAbi",
-        ":framework-events:updateKotlinAbi",
-        ":framework-events-ksp:updateKotlinAbi",
-        ":framework-input:updateKotlinAbi",
-        ":framework-items:updateKotlinAbi",
-        ":framework-menus:updateKotlinAbi",
-        ":framework-menus-test:updateKotlinAbi",
-        ":framework-benchmarks:updateKotlinAbi",
-        ":framework-testkit:updateKotlinAbi",
-        ":framework-incubator:updateKotlinAbi",
-        ":framework-gradle-plugin:updateKotlinAbi",
+        ":ashlar-kernel:updateKotlinAbi",
+        ":ashlar-di:updateKotlinAbi",
+        ":ashlar-di-ksp:updateKotlinAbi",
+        ":ashlar-commands:updateKotlinAbi",
+        ":ashlar-commands-ksp:updateKotlinAbi",
+        ":ashlar-events:updateKotlinAbi",
+        ":ashlar-events-ksp:updateKotlinAbi",
+        ":ashlar-input:updateKotlinAbi",
+        ":ashlar-items:updateKotlinAbi",
+        ":ashlar-menus:updateKotlinAbi",
+        ":ashlar-menus-test:updateKotlinAbi",
+        ":ashlar-benchmarks:updateKotlinAbi",
+        ":ashlar-testkit:updateKotlinAbi",
+        ":ashlar-incubator:updateKotlinAbi",
+        ":ashlar-gradle-plugin:updateKotlinAbi",
     )
 }
 
 val benchmarkModuleNames = listOf(
-    "kernel",
-    "framework-di",
-    "framework-commands",
-    "framework-events",
-    "framework-input",
-    "framework-items",
-    "framework-menus",
+    "ashlar-kernel",
+    "ashlar-di",
+    "ashlar-commands",
+    "ashlar-events",
+    "ashlar-input",
+    "ashlar-items",
+    "ashlar-menus",
     "sample-plugin",
 )
 benchmarkModuleNames.forEach { evaluationDependsOn(":$it") }
@@ -87,7 +87,7 @@ val benchmarkModules = benchmarkModuleNames.map { project(":$it") }
 val benchmarkCatalogue = tasks.register<JavaExec>("benchmarkCatalogue") {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     description = "Checks that every framework capability has a complete performance contract."
-    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    mainClass.set("pink.alex.ashlar.benchmarks.BenchmarkCli")
     javaLauncher.set(
         project.extensions.getByType(JavaToolchainService::class.java).launcherFor {
             languageVersion.set(JavaLanguageVersion.of(25))
@@ -114,7 +114,7 @@ val benchmarkCatalogue = tasks.register<JavaExec>("benchmarkCatalogue") {
     if (providers.gradleProperty("benchmarkReleaseReady").map(String::toBoolean).getOrElse(false)) {
         args("--release-ready")
     }
-    systemProperty("framework.benchmark.classDirs", classDirectories.asPath)
+    systemProperty("ashlar.benchmark.classDirs", classDirectories.asPath)
     inputs.files(classDirectories)
     outputs.file(report)
 }
@@ -123,8 +123,8 @@ tasks.named("check") {
     dependsOn(benchmarkCatalogue)
 }
 
-evaluationDependsOn(":framework-benchmarks")
-val benchmarkEngine = project(":framework-benchmarks")
+evaluationDependsOn(":ashlar-benchmarks")
+val benchmarkEngine = project(":ashlar-benchmarks")
 val benchmarkEngineMain = benchmarkEngine.extensions.getByType(SourceSetContainer::class.java).getByName("main")
 
 tasks.register<JavaExec>("benchmarkBuild") {
@@ -132,12 +132,12 @@ tasks.register<JavaExec>("benchmarkBuild") {
     description = "Measures Gradle, KSP, generated output, and artifact size."
     dependsOn(benchmarkEngine.tasks.named(benchmarkEngineMain.classesTaskName))
     classpath = benchmarkEngineMain.runtimeClasspath
-    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    mainClass.set("pink.alex.ashlar.benchmarks.BenchmarkCli")
     args(
         "build",
         "--project-dir", layout.projectDirectory.asFile.absolutePath,
         "--output", layout.buildDirectory.file("reports/benchmarks/build.json").get().asFile.absolutePath,
-        "--framework-version", version.toString(),
+        "--ashlar-version", version.toString(),
         "--revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"),
         "--iterations", providers.gradleProperty("benchmarkBuildIterations").getOrElse("1"),
     )
@@ -159,7 +159,7 @@ tasks.register<JavaExec>("benchmarkMerge") {
     dependsOn(benchmarkTasks)
     dependsOn(benchmarkEngine.tasks.named(benchmarkEngineMain.classesTaskName))
     classpath = benchmarkEngineMain.runtimeClasspath
-    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    mainClass.set("pink.alex.ashlar.benchmarks.BenchmarkCli")
     val results = benchmarkModules.map { module -> module.layout.buildDirectory.file("reports/benchmarks/run.json") }
     args("merge", "--output", layout.buildDirectory.file("reports/benchmarks/local.json").get().asFile.absolutePath)
     results.forEach { result -> args("--input", result.get().asFile.absolutePath) }
@@ -173,7 +173,7 @@ tasks.register<JavaExec>("benchmarkCompare") {
     description = "Compares two compatible aggregate benchmark results."
     dependsOn(benchmarkEngine.tasks.named(benchmarkEngineMain.classesTaskName))
     classpath = benchmarkEngineMain.runtimeClasspath
-    mainClass.set("dev.placeholder.framework.benchmarks.BenchmarkCli")
+    mainClass.set("pink.alex.ashlar.benchmarks.BenchmarkCli")
     val baseline = providers.gradleProperty("benchmarkBaseline")
     val candidate = providers.gradleProperty("benchmarkCandidate")
     val comparison = layout.buildDirectory.file("reports/benchmarks/comparison.json")
@@ -211,7 +211,7 @@ tasks.register<Exec>("benchmarkClient") {
             .getOrElse("/opt/minecraft-test/secondary/game/config/debugbridge.json"),
         "--output", layout.buildDirectory.file("reports/benchmarks/client.json").get().asFile.absolutePath,
         "--profile", providers.gradleProperty("benchmarkClientProfile").getOrElse("small"),
-        "--framework-version", version.toString(),
+        "--ashlar-version", version.toString(),
         "--revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"),
     )
     outputs.file(layout.buildDirectory.file("reports/benchmarks/client.json"))

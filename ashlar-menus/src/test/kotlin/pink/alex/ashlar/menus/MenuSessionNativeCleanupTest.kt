@@ -1,0 +1,58 @@
+package pink.alex.ashlar.menus
+
+import pink.alex.ashlar.execution.PlayerRef
+import pink.alex.ashlar.menus.storage.MenuTransactionCoordinator
+import pink.alex.ashlar.menus.storage.MenuDurableTransactionRuntime
+import pink.alex.ashlar.menus.storage.MenuPlayerSettlement
+import pink.alex.ashlar.menus.storage.MenuSettlementResult
+import java.util.UUID
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+
+class MenuSessionNativeCleanupTest {
+    @Test
+    fun `native host cleanup can finish after its parent scope is cancelled`() = runTest {
+        val owner = CoroutineScope(SupervisorJob() + StandardTestDispatcher(testScheduler))
+        val host = RecordingHost()
+        val session = MenuSessionCore(
+            player = PlayerRef(UUID.randomUUID()),
+            nativeHost = host,
+            parentScope = owner,
+            transactions = MenuDurableTransactionRuntime(
+                owner,
+                MenuTransactionCoordinator(),
+                MenuPlayerSettlement { MenuSettlementResult.Pending },
+            ),
+            choice = null,
+            content = {
+                chest("Cleanup", rows = 1) {}
+            },
+            onClosed = {},
+        )
+        session.start()
+
+        owner.cancel()
+        session.close(MenuClose.PluginStopped)
+        session.closeNativeAndAwait()
+        session.closeNativeAndAwait()
+
+        assertEquals(1, host.closeCount)
+    }
+
+    private class RecordingHost : MenuNativeHost {
+        var closeCount: Int = 0
+
+        override suspend fun mount(render: MenuRenderSnapshot, callbacks: MenuNativeCallbacks) = Unit
+
+        override suspend fun reconcile(render: MenuRenderSnapshot, change: MenuReconciliation) = Unit
+
+        override suspend fun close() {
+            closeCount++
+        }
+    }
+}

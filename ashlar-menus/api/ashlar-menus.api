@@ -1,0 +1,2679 @@
+public final class pink/alex/ashlar/generated/AshlarDependencyContributions_c065e2c4ba0b : pink/alex/ashlar/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}
+
+public abstract class pink/alex/ashlar/menus/ActionSlotScope {
+	public abstract fun getItem ()Lpink/alex/ashlar/items/ItemSpec;
+	public abstract fun on (Lpink/alex/ashlar/menus/MenuGestureKind;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun on$default (Lpink/alex/ashlar/menus/ActionSlotScope;Lpink/alex/ashlar/menus/MenuGestureKind;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun onGesture (Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onGesture$default (Lpink/alex/ashlar/menus/ActionSlotScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun onPrimary (Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onPrimary$default (Lpink/alex/ashlar/menus/ActionSlotScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun onSecondary (Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onSecondary$default (Lpink/alex/ashlar/menus/ActionSlotScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public abstract fun setItem (Lpink/alex/ashlar/items/ItemSpec;)V
+}
+
+public final class pink/alex/ashlar/menus/AnvilHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;IIIZ)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;IIIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()Z
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;IIIZ)Lpink/alex/ashlar/menus/AnvilHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/AnvilHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;IIIZILjava/lang/Object;)Lpink/alex/ashlar/menus/AnvilHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBypassEnchantmentLevelRestriction ()Z
+	public fun getCapacity ()I
+	public final fun getMaximumRepairCost ()I
+	public final fun getRepairCost ()I
+	public final fun getRepairItemCount ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/AnvilSlot : java/lang/Enum {
+	public static final field LEFT Lpink/alex/ashlar/menus/AnvilSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/AnvilSlot;
+	public static final field RIGHT Lpink/alex/ashlar/menus/AnvilSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/AnvilSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/AnvilSlot;
+}
+
+public final class pink/alex/ashlar/menus/BeaconHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Lorg/bukkit/potion/PotionEffectType;Lorg/bukkit/potion/PotionEffectType;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Lorg/bukkit/potion/PotionEffectType;Lorg/bukkit/potion/PotionEffectType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lorg/bukkit/potion/PotionEffectType;
+	public final fun component4 ()Lorg/bukkit/potion/PotionEffectType;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;Lorg/bukkit/potion/PotionEffectType;Lorg/bukkit/potion/PotionEffectType;)Lpink/alex/ashlar/menus/BeaconHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/BeaconHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;Lorg/bukkit/potion/PotionEffectType;Lorg/bukkit/potion/PotionEffectType;ILjava/lang/Object;)Lpink/alex/ashlar/menus/BeaconHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getPrimaryEffect ()Lorg/bukkit/potion/PotionEffectType;
+	public final fun getSecondaryEffect ()Lorg/bukkit/potion/PotionEffectType;
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/BeaconSlot : java/lang/Enum {
+	public static final field PAYMENT Lpink/alex/ashlar/menus/BeaconSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/BeaconSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/BeaconSlot;
+}
+
+public final class pink/alex/ashlar/menus/BrewingHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;III)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;IIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;III)Lpink/alex/ashlar/menus/BrewingHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/BrewingHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;IIIILjava/lang/Object;)Lpink/alex/ashlar/menus/BrewingHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBrewingTicks ()I
+	public fun getCapacity ()I
+	public final fun getFuelLevel ()I
+	public final fun getRecipeBrewTime ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/BrewingSlot : java/lang/Enum {
+	public static final field BOTTLE_ONE Lpink/alex/ashlar/menus/BrewingSlot;
+	public static final field BOTTLE_THREE Lpink/alex/ashlar/menus/BrewingSlot;
+	public static final field BOTTLE_TWO Lpink/alex/ashlar/menus/BrewingSlot;
+	public static final field FUEL Lpink/alex/ashlar/menus/BrewingSlot;
+	public static final field INGREDIENT Lpink/alex/ashlar/menus/BrewingSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/BrewingSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/BrewingSlot;
+}
+
+public final class pink/alex/ashlar/menus/CartographyHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/CartographyHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/CartographyHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/CartographyHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/CartographySlot : java/lang/Enum {
+	public static final field ADDITION Lpink/alex/ashlar/menus/CartographySlot;
+	public static final field MAP Lpink/alex/ashlar/menus/CartographySlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/CartographySlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/CartographySlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/CartographySlot;
+}
+
+public final class pink/alex/ashlar/menus/ChestHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;ILjava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;ILjava/util/List;)Lpink/alex/ashlar/menus/ChestHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/ChestHostSnapshot;Lnet/kyori/adventure/text/Component;ILjava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/ChestHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)Lpink/alex/ashlar/menus/MenuSlotSnapshot;
+	public final fun getRows ()I
+	public final fun getSlots ()Ljava/util/List;
+	public final fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class pink/alex/ashlar/menus/ChestScope : pink/alex/ashlar/menus/InventoryHostScope {
+	public final fun getCapacity ()I
+	public abstract fun getRows ()I
+}
+
+public final class pink/alex/ashlar/menus/CollectedMenuState : kotlin/properties/ReadOnlyProperty {
+	public fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;
+	public final fun provideDelegate (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Lpink/alex/ashlar/menus/CollectedMenuState;
+}
+
+public abstract class pink/alex/ashlar/menus/ContainerHostScope : pink/alex/ashlar/menus/InventoryHostScope {
+}
+
+public final class pink/alex/ashlar/menus/CrafterHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/Set;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/Set;)Lpink/alex/ashlar/menus/CrafterHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/CrafterHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/Set;ILjava/lang/Object;)Lpink/alex/ashlar/menus/CrafterHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getDisabledSlots ()Ljava/util/Set;
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/CrafterSlot : java/lang/Enum {
+	public static final field GRID_EIGHT Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_FIVE Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_FOUR Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_NINE Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_ONE Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_SEVEN Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_SIX Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_THREE Lpink/alex/ashlar/menus/CrafterSlot;
+	public static final field GRID_TWO Lpink/alex/ashlar/menus/CrafterSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/CrafterSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/CrafterSlot;
+}
+
+public final class pink/alex/ashlar/menus/CraftingHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/CraftingHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/CraftingHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/CraftingHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/CraftingSlot : java/lang/Enum {
+	public static final field GRID_EIGHT Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_FIVE Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_FOUR Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_NINE Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_ONE Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_SEVEN Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_SIX Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_THREE Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field GRID_TWO Lpink/alex/ashlar/menus/CraftingSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/CraftingSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/CraftingSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/CraftingSlot;
+}
+
+public final class pink/alex/ashlar/menus/EnchantmentButton : java/lang/Enum {
+	public static final field Companion Lpink/alex/ashlar/menus/EnchantmentButton$Companion;
+	public static final field FIRST Lpink/alex/ashlar/menus/EnchantmentButton;
+	public static final field SECOND Lpink/alex/ashlar/menus/EnchantmentButton;
+	public static final field THIRD Lpink/alex/ashlar/menus/EnchantmentButton;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/EnchantmentButton;
+	public static fun values ()[Lpink/alex/ashlar/menus/EnchantmentButton;
+}
+
+public final class pink/alex/ashlar/menus/EnchantmentButton$Companion {
+	public final fun fromIndex (I)Lpink/alex/ashlar/menus/EnchantmentButton;
+}
+
+public final class pink/alex/ashlar/menus/EnchantmentHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/util/List;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/util/List;)Lpink/alex/ashlar/menus/EnchantmentHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/EnchantmentHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/EnchantmentHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getOffers ()Ljava/util/List;
+	public final fun getSeed ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/EnchantmentOfferSnapshot {
+	public fun <init> (Lorg/bukkit/enchantments/Enchantment;II)V
+	public final fun component1 ()Lorg/bukkit/enchantments/Enchantment;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun copy (Lorg/bukkit/enchantments/Enchantment;II)Lpink/alex/ashlar/menus/EnchantmentOfferSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/EnchantmentOfferSnapshot;Lorg/bukkit/enchantments/Enchantment;IIILjava/lang/Object;)Lpink/alex/ashlar/menus/EnchantmentOfferSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCost ()I
+	public final fun getEnchantment ()Lorg/bukkit/enchantments/Enchantment;
+	public final fun getLevel ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/EnchantmentSlot : java/lang/Enum {
+	public static final field ITEM Lpink/alex/ashlar/menus/EnchantmentSlot;
+	public static final field LAPIS Lpink/alex/ashlar/menus/EnchantmentSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/EnchantmentSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/EnchantmentSlot;
+}
+
+public final class pink/alex/ashlar/menus/FurnaceHostKind : java/lang/Enum {
+	public static final field BLAST_FURNACE Lpink/alex/ashlar/menus/FurnaceHostKind;
+	public static final field FURNACE Lpink/alex/ashlar/menus/FurnaceHostKind;
+	public static final field SMOKER Lpink/alex/ashlar/menus/FurnaceHostKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/FurnaceHostKind;
+	public static fun values ()[Lpink/alex/ashlar/menus/FurnaceHostKind;
+}
+
+public final class pink/alex/ashlar/menus/FurnaceHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Lpink/alex/ashlar/menus/FurnaceHostKind;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Lpink/alex/ashlar/menus/FurnaceHostKind;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lpink/alex/ashlar/menus/FurnaceHostKind;
+	public final fun component4 ()Lpink/alex/ashlar/menus/MenuProgress;
+	public final fun component5 ()Lpink/alex/ashlar/menus/MenuProgress;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;Lpink/alex/ashlar/menus/FurnaceHostKind;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;)Lpink/alex/ashlar/menus/FurnaceHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/FurnaceHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;Lpink/alex/ashlar/menus/FurnaceHostKind;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/FurnaceHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBurning ()Lpink/alex/ashlar/menus/MenuProgress;
+	public fun getCapacity ()I
+	public final fun getCooking ()Lpink/alex/ashlar/menus/MenuProgress;
+	public final fun getKind ()Lpink/alex/ashlar/menus/FurnaceHostKind;
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/FurnaceSlot : java/lang/Enum {
+	public static final field FUEL Lpink/alex/ashlar/menus/FurnaceSlot;
+	public static final field INPUT Lpink/alex/ashlar/menus/FurnaceSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/FurnaceSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/FurnaceSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/FurnaceSlot;
+}
+
+public final class pink/alex/ashlar/menus/Generic3x3HostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/Generic3x3HostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/Generic3x3HostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/Generic3x3HostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/GrindstoneHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/GrindstoneHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/GrindstoneHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/GrindstoneHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/GrindstoneSlot : java/lang/Enum {
+	public static final field BOTTOM Lpink/alex/ashlar/menus/GrindstoneSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/GrindstoneSlot;
+	public static final field TOP Lpink/alex/ashlar/menus/GrindstoneSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/GrindstoneSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/GrindstoneSlot;
+}
+
+public final class pink/alex/ashlar/menus/HopperHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/HopperHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/HopperHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/HopperHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class pink/alex/ashlar/menus/InventoryHostScope : pink/alex/ashlar/menus/MenuScope {
+	public abstract fun getCapacity ()I
+	public abstract fun slot (ILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun slot$default (Lpink/alex/ashlar/menus/InventoryHostScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class pink/alex/ashlar/menus/LecternHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;I)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;I)Lpink/alex/ashlar/menus/LecternHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/LecternHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;IILjava/lang/Object;)Lpink/alex/ashlar/menus/LecternHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getPage ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/LecternPageDirection : java/lang/Enum {
+	public static final field NEXT Lpink/alex/ashlar/menus/LecternPageDirection;
+	public static final field PREVIOUS Lpink/alex/ashlar/menus/LecternPageDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/LecternPageDirection;
+	public static fun values ()[Lpink/alex/ashlar/menus/LecternPageDirection;
+}
+
+public final class pink/alex/ashlar/menus/LecternSlot : java/lang/Enum {
+	public static final field BOOK Lpink/alex/ashlar/menus/LecternSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/LecternSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/LecternSlot;
+}
+
+public final class pink/alex/ashlar/menus/LoomHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/LoomHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/LoomHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/LoomHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/LoomSlot : java/lang/Enum {
+	public static final field BANNER Lpink/alex/ashlar/menus/LoomSlot;
+	public static final field DYE Lpink/alex/ashlar/menus/LoomSlot;
+	public static final field PATTERN Lpink/alex/ashlar/menus/LoomSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/LoomSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/LoomSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/LoomSlot;
+}
+
+public final class pink/alex/ashlar/menus/MenuActionConcurrency : java/lang/Enum {
+	public static final field PARALLEL Lpink/alex/ashlar/menus/MenuActionConcurrency;
+	public static final field RESTART_LATEST Lpink/alex/ashlar/menus/MenuActionConcurrency;
+	public static final field SINGLE_FLIGHT Lpink/alex/ashlar/menus/MenuActionConcurrency;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuActionConcurrency;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuActionConcurrency;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuActionScope {
+	public abstract fun close (Lpink/alex/ashlar/menus/MenuClose;)V
+	public static synthetic fun close$default (Lpink/alex/ashlar/menus/MenuActionScope;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)V
+	public abstract fun feedback (Lpink/alex/ashlar/menus/MenuFeedback;)V
+	public abstract fun finish (Ljava/lang/Object;)V
+	public abstract fun withFocusedInput (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/menus/MenuActionScope$DefaultImpls {
+	public static synthetic fun close$default (Lpink/alex/ashlar/menus/MenuActionScope;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuChoice {
+}
+
+public final class pink/alex/ashlar/menus/MenuChoice$Closed : pink/alex/ashlar/menus/MenuChoice {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuClose;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuClose;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuClose;)Lpink/alex/ashlar/menus/MenuChoice$Closed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuChoice$Closed;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuChoice$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Lpink/alex/ashlar/menus/MenuClose;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuChoice$NotOpened : pink/alex/ashlar/menus/MenuChoice {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuChoice$NotOpened;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuChoice$Selected : pink/alex/ashlar/menus/MenuChoice {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lpink/alex/ashlar/menus/MenuChoice$Selected;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuChoice$Selected;Ljava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuChoice$Selected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuClose {
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$CallerCancelled : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$CallerCancelled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$Died : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$Died;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$Disconnected : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$Disconnected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$Explicit : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$Explicit;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$ExternalInventory : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$ExternalInventory;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$Failed : pink/alex/ashlar/menus/MenuClose {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lpink/alex/ashlar/menus/MenuClose$Failed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuClose$Failed;Ljava/lang/Throwable;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuClose$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$Kicked : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$Kicked;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$PlayerClosed : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$PlayerClosed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$PluginStopped : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$PluginStopped;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuClose$Replaced : pink/alex/ashlar/menus/MenuClose {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuClose$Replaced;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuComponentPath {
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Ljava/lang/String;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lpink/alex/ashlar/menus/MenuComponentPath;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuComponentPath;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuComponentPath;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun plus (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuComponentPath;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuDispatch {
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$Accepted : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$Accepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$AlreadyRunning : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$AlreadyRunning;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$Closed : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$EmptySlot : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$EmptySlot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$Intercepted : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$Intercepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$StaleRevision : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$StaleRevision;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$TransactionRejected : pink/alex/ashlar/menus/MenuDispatch {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;)Lpink/alex/ashlar/menus/MenuDispatch$TransactionRejected;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuDispatch$TransactionRejected;Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuDispatch$TransactionRejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailure ()Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$UnsupportedGesture : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$UnsupportedGesture;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuDispatch$UnsupportedHostInput : pink/alex/ashlar/menus/MenuDispatch {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuDispatch$UnsupportedHostInput;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuEffectScope {
+	public abstract fun onDispose (Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class pink/alex/ashlar/menus/MenuEffectsKt {
+	public static final fun effect (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public static final fun launchedEffect (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class pink/alex/ashlar/menus/MenuFailure {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuComponentPath;Ljava/lang/Throwable;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuComponentPath;
+	public final fun component2 ()Ljava/lang/Throwable;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuComponentPath;Ljava/lang/Throwable;)Lpink/alex/ashlar/menus/MenuFailure;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuFailure;Lpink/alex/ashlar/menus/MenuComponentPath;Ljava/lang/Throwable;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuFailure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getPath ()Lpink/alex/ashlar/menus/MenuComponentPath;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuFeedback {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)Lpink/alex/ashlar/menus/MenuFeedback;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuFeedback;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuFeedback;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public final fun getSeverity ()Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public final fun getTargetSlot ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuFeedbackPresentation {
+	public fun <init> ()V
+	public fun <init> (Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/sound/Sound;Z)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/sound/Sound;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Lnet/kyori/adventure/sound/Sound;
+	public final fun component3 ()Z
+	public final fun copy (Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/sound/Sound;Z)Lpink/alex/ashlar/menus/MenuFeedbackPresentation;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuFeedbackPresentation;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/sound/Sound;ZILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuFeedbackPresentation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActionBar ()Lnet/kyori/adventure/text/Component;
+	public final fun getEmphasizeTarget ()Z
+	public final fun getSound ()Lnet/kyori/adventure/sound/Sound;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuFeedbackSeverity : java/lang/Enum {
+	public static final field INFO Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public static final field REJECTION Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public static final field SUCCESS Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public static final field WARNING Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuFeedbackTheme {
+	public abstract fun present (Lpink/alex/ashlar/menus/MenuFeedback;)Lpink/alex/ashlar/menus/MenuFeedbackPresentation;
+}
+
+public final class pink/alex/ashlar/menus/MenuFeedbackThemeKt {
+	public static final fun getDefaultMenuFeedbackTheme ()Lpink/alex/ashlar/menus/MenuFeedbackTheme;
+	public static final fun getMenuFeedbackThemeLocal ()Lpink/alex/ashlar/menus/MenuLocal;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuGesture {
+	public abstract fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$Creative : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$Creative;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$DoubleClick : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$DoubleClick;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$Drag : pink/alex/ashlar/menus/MenuGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuDragMode;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuDragMode;)Lpink/alex/ashlar/menus/MenuGesture$Drag;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuGesture$Drag;Lpink/alex/ashlar/menus/storage/MenuDragMode;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuGesture$Drag;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public final fun getMode ()Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$DropOne : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$DropOne;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$DropStack : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$DropStack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$Middle : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$Middle;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$NumberKey : pink/alex/ashlar/menus/MenuGesture {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lpink/alex/ashlar/menus/MenuGesture$NumberKey;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuGesture$NumberKey;IILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuGesture$NumberKey;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$Outside : pink/alex/ashlar/menus/MenuGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuOutsideButton;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuOutsideButton;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuOutsideButton;)Lpink/alex/ashlar/menus/MenuGesture$Outside;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuGesture$Outside;Lpink/alex/ashlar/menus/MenuOutsideButton;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuGesture$Outside;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getButton ()Lpink/alex/ashlar/menus/MenuOutsideButton;
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$Primary : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$Primary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$Secondary : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$Secondary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$ShiftPrimary : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$ShiftPrimary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$ShiftSecondary : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$ShiftSecondary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGesture$SwapOffhand : pink/alex/ashlar/menus/MenuGesture {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuGesture$SwapOffhand;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuGestureKind : java/lang/Enum {
+	public static final field CREATIVE Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field DOUBLE_CLICK Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field DRAG Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field DROP_ONE Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field DROP_STACK Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field MIDDLE Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field NUMBER_KEY Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field OUTSIDE Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field PRIMARY Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field SECONDARY Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field SHIFT_PRIMARY Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field SHIFT_SECONDARY Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static final field SWAP_OFFHAND Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuGestureKind;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuGestureKind;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostDslKt {
+	public static final fun anvil (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;IIIZLkotlin/jvm/functions/Function1;)V
+	public static synthetic fun anvil$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;IIIZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun beacon (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lorg/bukkit/potion/PotionEffectType;Lorg/bukkit/potion/PotionEffectType;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun beacon$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lorg/bukkit/potion/PotionEffectType;Lorg/bukkit/potion/PotionEffectType;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun blastFurnace (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun blastFurnace$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun brewing (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;IIILkotlin/jvm/functions/Function1;)V
+	public static synthetic fun brewing$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;IIILkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun cartography (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun crafter (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun crafter$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun crafting (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun enchantment (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;ILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun enchantment$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;ILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun furnace (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun furnace$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun generic3x3 (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun grindstone (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun hopper (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun lectern (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;ILkotlin/jvm/functions/Function1;)V
+	public static synthetic fun lectern$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun loom (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun merchant (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static final fun shulker (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun smithing (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+	public static final fun smoker (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun smoker$default (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lpink/alex/ashlar/menus/MenuProgress;Lpink/alex/ashlar/menus/MenuProgress;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun stonecutter (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuHostInput {
+	public abstract fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public abstract fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public abstract fun getRevision ()J
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$AnvilRenameText : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JLjava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy-ALPNiZU (Ljava/util/UUID;JLjava/lang/String;)Lpink/alex/ashlar/menus/MenuHostInput$AnvilRenameText;
+	public static synthetic fun copy-ALPNiZU$default (Lpink/alex/ashlar/menus/MenuHostInput$AnvilRenameText;Ljava/util/UUID;JLjava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$AnvilRenameText;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public fun getRevision ()J
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$BeaconEffectsSelected : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JLnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()Lnet/kyori/adventure/key/Key;
+	public final fun component4 ()Lnet/kyori/adventure/key/Key;
+	public final fun component5 ()Z
+	public final fun copy-4LSA11E (Ljava/util/UUID;JLnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;Z)Lpink/alex/ashlar/menus/MenuHostInput$BeaconEffectsSelected;
+	public static synthetic fun copy-4LSA11E$default (Lpink/alex/ashlar/menus/MenuHostInput$BeaconEffectsSelected;Ljava/util/UUID;JLnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;ZILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$BeaconEffectsSelected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConsumesPayment ()Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public final fun getPrimary ()Lnet/kyori/adventure/key/Key;
+	public fun getRevision ()J
+	public final fun getSecondary ()Lnet/kyori/adventure/key/Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$EnchantmentButtonPressed : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JLpink/alex/ashlar/menus/EnchantmentButton;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()Lpink/alex/ashlar/menus/EnchantmentButton;
+	public final fun copy-ALPNiZU (Ljava/util/UUID;JLpink/alex/ashlar/menus/EnchantmentButton;)Lpink/alex/ashlar/menus/MenuHostInput$EnchantmentButtonPressed;
+	public static synthetic fun copy-ALPNiZU$default (Lpink/alex/ashlar/menus/MenuHostInput$EnchantmentButtonPressed;Ljava/util/UUID;JLpink/alex/ashlar/menus/EnchantmentButton;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$EnchantmentButtonPressed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getButton ()Lpink/alex/ashlar/menus/EnchantmentButton;
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$LecternPageChanged : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JIILpink/alex/ashlar/menus/LecternPageDirection;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()Lpink/alex/ashlar/menus/LecternPageDirection;
+	public final fun copy-4LSA11E (Ljava/util/UUID;JIILpink/alex/ashlar/menus/LecternPageDirection;)Lpink/alex/ashlar/menus/MenuHostInput$LecternPageChanged;
+	public static synthetic fun copy-4LSA11E$default (Lpink/alex/ashlar/menus/MenuHostInput$LecternPageChanged;Ljava/util/UUID;JIILpink/alex/ashlar/menus/LecternPageDirection;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$LecternPageChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDirection ()Lpink/alex/ashlar/menus/LecternPageDirection;
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public final fun getPage ()I
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public final fun getPreviousPage ()I
+	public fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$LoomPatternSelected : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JLnet/kyori/adventure/key/Key;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()Lnet/kyori/adventure/key/Key;
+	public final fun copy-ALPNiZU (Ljava/util/UUID;JLnet/kyori/adventure/key/Key;)Lpink/alex/ashlar/menus/MenuHostInput$LoomPatternSelected;
+	public static synthetic fun copy-ALPNiZU$default (Lpink/alex/ashlar/menus/MenuHostInput$LoomPatternSelected;Ljava/util/UUID;JLnet/kyori/adventure/key/Key;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$LoomPatternSelected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public final fun getPattern ()Lnet/kyori/adventure/key/Key;
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$MerchantTradeSelected : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()I
+	public final fun copy-ALPNiZU (Ljava/util/UUID;JI)Lpink/alex/ashlar/menus/MenuHostInput$MerchantTradeSelected;
+	public static synthetic fun copy-ALPNiZU$default (Lpink/alex/ashlar/menus/MenuHostInput$MerchantTradeSelected;Ljava/util/UUID;JIILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$MerchantTradeSelected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInput$StonecutterRecipeSelected : pink/alex/ashlar/menus/MenuHostInput {
+	public synthetic fun <init> (Ljava/util/UUID;JLnet/kyori/adventure/key/Key;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()J
+	public final fun component3 ()Lnet/kyori/adventure/key/Key;
+	public final fun copy-ALPNiZU (Ljava/util/UUID;JLnet/kyori/adventure/key/Key;)Lpink/alex/ashlar/menus/MenuHostInput$StonecutterRecipeSelected;
+	public static synthetic fun copy-ALPNiZU$default (Lpink/alex/ashlar/menus/MenuHostInput$StonecutterRecipeSelected;Ljava/util/UUID;JLnet/kyori/adventure/key/Key;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostInput$StonecutterRecipeSelected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKind ()Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public final fun getRecipe ()Lnet/kyori/adventure/key/Key;
+	public fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInputKind : java/lang/Enum {
+	public static final field ANVIL_RENAME_TEXT Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static final field BEACON_EFFECTS_SELECTED Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static final field ENCHANTMENT_BUTTON Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static final field LECTERN_PAGE_CHANGED Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static final field LOOM_PATTERN_SELECTED Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static final field MERCHANT_TRADE_SELECTED Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static final field STONECUTTER_RECIPE_SELECTED Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuHostInputKind;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuHostInputKind;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostInputKt {
+	public static final fun onBeaconEffectsSelected (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onBeaconEffectsSelected$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun onEnchantmentButton (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onEnchantmentButton$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun onPageChanged (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onPageChanged$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun onPatternSelected (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onPatternSelected$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun onRecipeSelected (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onRecipeSelected$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun onTradeSelected (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun onTradeSelected$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun renameText (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun renameText$default (Lpink/alex/ashlar/menus/RoleHostScope;Lpink/alex/ashlar/menus/MenuActionConcurrency;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuHostSnapshot {
+	public abstract fun getCapacity ()I
+	public abstract fun getSlots ()Ljava/util/List;
+	public abstract fun getTitle ()Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/menus/MenuHostSnapshot$Chest : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lpink/alex/ashlar/menus/ChestHostSnapshot;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/ChestHostSnapshot;
+	public final fun copy (Lpink/alex/ashlar/menus/ChestHostSnapshot;)Lpink/alex/ashlar/menus/MenuHostSnapshot$Chest;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuHostSnapshot$Chest;Lpink/alex/ashlar/menus/ChestHostSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuHostSnapshot$Chest;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getChest ()Lpink/alex/ashlar/menus/ChestHostSnapshot;
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuInspection {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuRenderSnapshot;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuRenderSnapshot;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/util/List;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuRenderSnapshot;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/menus/MenuInspection;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuInspection;Lpink/alex/ashlar/menus/MenuRenderSnapshot;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuInspection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveEffects ()Ljava/util/List;
+	public final fun getPendingActions ()Ljava/util/List;
+	public final fun getPendingTransactions ()Ljava/util/List;
+	public final fun getSnapshot ()Lpink/alex/ashlar/menus/MenuRenderSnapshot;
+	public final fun getTrace ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuInteraction {
+	public synthetic fun <init> (Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Lpink/alex/ashlar/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/menus/MenuGesture;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Lpink/alex/ashlar/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/menus/MenuGesture;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component10 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Lpink/alex/ashlar/menus/PlayerInventorySlot;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Lpink/alex/ashlar/menus/MenuGesture;
+	public final fun component9 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun copy-4R3vbEc (Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Lpink/alex/ashlar/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/menus/MenuGesture;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;)Lpink/alex/ashlar/menus/MenuInteraction;
+	public static synthetic fun copy-4R3vbEc$default (Lpink/alex/ashlar/menus/MenuInteraction;Ljava/util/UUID;JLjava/lang/Integer;Ljava/util/List;Lpink/alex/ashlar/menus/PlayerInventorySlot;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/menus/MenuGesture;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuInteraction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClicked ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getCursor ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getGesture ()Lpink/alex/ashlar/menus/MenuGesture;
+	public final fun getHostSlots ()Ljava/util/List;
+	public final fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public final fun getPlayerInventory ()Ljava/util/Map;
+	public final fun getPlayerSlot ()Lpink/alex/ashlar/menus/PlayerInventorySlot;
+	public final fun getPlayerSlots ()Ljava/util/List;
+	public final fun getRevision ()J
+	public final fun getSlot ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuInterception {
+}
+
+public final class pink/alex/ashlar/menus/MenuInterception$Allow : pink/alex/ashlar/menus/MenuInterception {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuInterception$Allow;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuInterception$Reject : pink/alex/ashlar/menus/MenuInterception {
+	public fun <init> ()V
+	public fun <init> (Lpink/alex/ashlar/menus/MenuFeedback;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/menus/MenuFeedback;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuFeedback;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuFeedback;)Lpink/alex/ashlar/menus/MenuInterception$Reject;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuInterception$Reject;Lpink/alex/ashlar/menus/MenuFeedback;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuInterception$Reject;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFeedback ()Lpink/alex/ashlar/menus/MenuFeedback;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuInterceptor {
+	public abstract fun intercept (Lpink/alex/ashlar/menus/MenuInteraction;)Lpink/alex/ashlar/menus/MenuInterception;
+}
+
+public final class pink/alex/ashlar/menus/MenuLocal {
+	public final fun getName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuLocalsKt {
+	public static final fun current (Lpink/alex/ashlar/menus/MenuScope;Lpink/alex/ashlar/menus/MenuLocal;)Ljava/lang/Object;
+	public static final fun menuLocal (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/menus/MenuLocal;
+	public static final fun provide (Lpink/alex/ashlar/menus/MenuScope;Lpink/alex/ashlar/menus/MenuLocal;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuNativeCallbacks {
+	public abstract fun closed (Lpink/alex/ashlar/menus/MenuNativeClose;)V
+	public abstract fun dispatch (Lpink/alex/ashlar/menus/MenuHostInput;)Lpink/alex/ashlar/menus/MenuDispatch;
+	public abstract fun dispatch (Lpink/alex/ashlar/menus/MenuInteraction;)Lpink/alex/ashlar/menus/MenuDispatch;
+}
+
+public final class pink/alex/ashlar/menus/MenuNativeClose : java/lang/Enum {
+	public static final field DEATH Lpink/alex/ashlar/menus/MenuNativeClose;
+	public static final field DISCONNECT Lpink/alex/ashlar/menus/MenuNativeClose;
+	public static final field EXTERNAL_INVENTORY Lpink/alex/ashlar/menus/MenuNativeClose;
+	public static final field KICK Lpink/alex/ashlar/menus/MenuNativeClose;
+	public static final field PLAYER Lpink/alex/ashlar/menus/MenuNativeClose;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuNativeClose;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuNativeClose;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuNativeHost {
+	public abstract fun close (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun commitTransaction (Lpink/alex/ashlar/menus/storage/MenuNativeTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun feedback (Lpink/alex/ashlar/menus/MenuFeedback;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun feedback (Lpink/alex/ashlar/menus/MenuFeedback;Lpink/alex/ashlar/menus/MenuFeedbackPresentation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun mount (Lpink/alex/ashlar/menus/MenuRenderSnapshot;Lpink/alex/ashlar/menus/MenuNativeCallbacks;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun reconcile (Lpink/alex/ashlar/menus/MenuRenderSnapshot;Lpink/alex/ashlar/menus/MenuReconciliation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun suspendPresentation (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/menus/MenuNativeHost$DefaultImpls {
+	public static fun commitTransaction (Lpink/alex/ashlar/menus/MenuNativeHost;Lpink/alex/ashlar/menus/storage/MenuNativeTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun feedback (Lpink/alex/ashlar/menus/MenuNativeHost;Lpink/alex/ashlar/menus/MenuFeedback;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun feedback (Lpink/alex/ashlar/menus/MenuNativeHost;Lpink/alex/ashlar/menus/MenuFeedback;Lpink/alex/ashlar/menus/MenuFeedbackPresentation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun suspendPresentation (Lpink/alex/ashlar/menus/MenuNativeHost;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuNativeHostFactory {
+	public abstract fun create-Qxubp9c (Ljava/util/UUID;)Lpink/alex/ashlar/menus/MenuNativeHost;
+}
+
+public final class pink/alex/ashlar/menus/MenuNavigationKt {
+	public static final fun navigator (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract class pink/alex/ashlar/menus/MenuNavigationScope {
+	public abstract fun getNavigator ()Lpink/alex/ashlar/menus/MenuNavigator;
+	public abstract fun screen (Lkotlin/jvm/functions/Function1;Lpink/alex/ashlar/menus/NativeClose;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun screen$default (Lpink/alex/ashlar/menus/MenuNavigationScope;Lkotlin/jvm/functions/Function1;Lpink/alex/ashlar/menus/NativeClose;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuNavigator {
+	public abstract fun back ()Z
+	public abstract fun close ()V
+	public abstract fun getCurrent ()Ljava/lang/Object;
+	public abstract fun getRoutes ()Ljava/util/List;
+	public abstract fun push (Ljava/lang/Object;)V
+	public abstract fun replace (Ljava/lang/Object;)V
+}
+
+public final class pink/alex/ashlar/menus/MenuObservation {
+	public synthetic fun <init> (Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuTrace;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-F7iSHy8 ()Ljava/util/UUID;
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuTrace;
+	public final fun copy-xJTp0AU (Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuTrace;)Lpink/alex/ashlar/menus/MenuObservation;
+	public static synthetic fun copy-xJTp0AU$default (Lpink/alex/ashlar/menus/MenuObservation;Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuTrace;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuObservation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEvent ()Lpink/alex/ashlar/menus/MenuTrace;
+	public final fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuObserver {
+	public abstract fun observe (Lpink/alex/ashlar/menus/MenuObservation;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuOpen {
+}
+
+public final class pink/alex/ashlar/menus/MenuOpen$Closed : pink/alex/ashlar/menus/MenuOpen {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuClose;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuClose;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuClose;)Lpink/alex/ashlar/menus/MenuOpen$Closed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuOpen$Closed;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuOpen$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Lpink/alex/ashlar/menus/MenuClose;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuOpen$Rejected : pink/alex/ashlar/menus/MenuOpen {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuOpen$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuOpenConflict : java/lang/Enum {
+	public static final field REJECT Lpink/alex/ashlar/menus/MenuOpenConflict;
+	public static final field REPLACE Lpink/alex/ashlar/menus/MenuOpenConflict;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuOpenConflict;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuOpenConflict;
+}
+
+public final class pink/alex/ashlar/menus/MenuOutsideButton : java/lang/Enum {
+	public static final field PRIMARY Lpink/alex/ashlar/menus/MenuOutsideButton;
+	public static final field SECONDARY Lpink/alex/ashlar/menus/MenuOutsideButton;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuOutsideButton;
+	public static fun values ()[Lpink/alex/ashlar/menus/MenuOutsideButton;
+}
+
+public final class pink/alex/ashlar/menus/MenuProgress {
+	public fun <init> (II)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Lpink/alex/ashlar/menus/MenuProgress;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuProgress;IIILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuProgress;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrent ()I
+	public final fun getTotal ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuReconciliation {
+}
+
+public final class pink/alex/ashlar/menus/MenuReconciliation$Remount : pink/alex/ashlar/menus/MenuReconciliation {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuHostSnapshot;Lpink/alex/ashlar/menus/MenuHostSnapshot;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuHostSnapshot;
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuHostSnapshot;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuHostSnapshot;Lpink/alex/ashlar/menus/MenuHostSnapshot;)Lpink/alex/ashlar/menus/MenuReconciliation$Remount;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuReconciliation$Remount;Lpink/alex/ashlar/menus/MenuHostSnapshot;Lpink/alex/ashlar/menus/MenuHostSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuReconciliation$Remount;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAfter ()Lpink/alex/ashlar/menus/MenuHostSnapshot;
+	public final fun getBefore ()Lpink/alex/ashlar/menus/MenuHostSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuReconciliation$Update : pink/alex/ashlar/menus/MenuReconciliation {
+	public fun <init> (ZLjava/util/Set;Z)V
+	public synthetic fun <init> (ZLjava/util/Set;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Z
+	public final fun copy (ZLjava/util/Set;Z)Lpink/alex/ashlar/menus/MenuReconciliation$Update;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuReconciliation$Update;ZLjava/util/Set;ZILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuReconciliation$Update;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChangedSlots ()Ljava/util/Set;
+	public final fun getPropertiesChanged ()Z
+	public final fun getTitleChanged ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuRegistration : java/lang/AutoCloseable {
+	public abstract fun close ()V
+}
+
+public final class pink/alex/ashlar/menus/MenuRenderSnapshot {
+	public fun <init> (JLpink/alex/ashlar/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;)V
+	public synthetic fun <init> (JLpink/alex/ashlar/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuHostSnapshot;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/Set;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/Set;
+	public final fun copy (JLpink/alex/ashlar/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;)Lpink/alex/ashlar/menus/MenuRenderSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuRenderSnapshot;JLpink/alex/ashlar/menus/MenuHostSnapshot;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;Ljava/util/Map;Ljava/util/List;Ljava/util/Set;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuRenderSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComponents ()Ljava/util/Set;
+	public final fun getHost ()Lpink/alex/ashlar/menus/MenuHostSnapshot;
+	public final fun getHostInputs ()Ljava/util/Set;
+	public final fun getNavigation ()Ljava/util/List;
+	public final fun getRevision ()J
+	public final fun getStateCells ()Ljava/util/Map;
+	public final fun getStorageParticipants ()Ljava/util/Set;
+	public final fun getStorages ()Ljava/util/Map;
+	public final fun getTransferRoutes ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuRetry {
+	public abstract fun retry ()V
+}
+
+public abstract class pink/alex/ashlar/menus/MenuScope {
+	public final fun collectAsState (Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;)Lpink/alex/ashlar/menus/CollectedMenuState;
+	public final fun effect (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public final fun launchedEffect (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)V
+	public final fun local (Lpink/alex/ashlar/menus/MenuLocal;)Ljava/lang/Object;
+	public final fun provide (Lpink/alex/ashlar/menus/MenuLocal;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public final fun state (Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/menus/MenuState;
+}
+
+public final class pink/alex/ashlar/menus/MenuScopeKt {
+	public static final fun chest (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/String;ILkotlin/jvm/functions/Function1;)V
+	public static final fun chest (Lpink/alex/ashlar/menus/MenuScope;Lnet/kyori/adventure/text/Component;ILkotlin/jvm/functions/Function1;)V
+	public static final fun collectAsState (Lpink/alex/ashlar/menus/MenuScope;Lkotlinx/coroutines/flow/Flow;Ljava/lang/Object;)Lpink/alex/ashlar/menus/CollectedMenuState;
+	public static final fun component (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)V
+	public static final fun errorBoundary (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun errorBoundary$default (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun flow (Lpink/alex/ashlar/menus/InventoryHostScope;Lpink/alex/ashlar/menus/SlotRegion;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;Lpink/alex/ashlar/menus/RegionOverflow;Lkotlin/jvm/functions/Function3;)V
+	public static synthetic fun flow$default (Lpink/alex/ashlar/menus/InventoryHostScope;Lpink/alex/ashlar/menus/SlotRegion;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;Lpink/alex/ashlar/menus/RegionOverflow;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static final fun playerInventory (Lpink/alex/ashlar/menus/MenuScope;[Lpink/alex/ashlar/menus/storage/PlayerInventorySection;)V
+	public static final fun region (Lkotlin/ranges/IntRange;Lkotlin/ranges/IntRange;)Lpink/alex/ashlar/menus/SlotRegion;
+	public static final fun rememberStorage (Lpink/alex/ashlar/menus/MenuScope;Lpink/alex/ashlar/menus/storage/MenuStorageId;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuStorageRules;)Lpink/alex/ashlar/menus/storage/MenuStorage;
+	public static synthetic fun rememberStorage$default (Lpink/alex/ashlar/menus/MenuScope;Lpink/alex/ashlar/menus/storage/MenuStorageId;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuStorageRules;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorage;
+	public static final fun row (I)Lpink/alex/ashlar/menus/SlotRegion;
+	public static final fun rows (Lkotlin/ranges/IntRange;)Lpink/alex/ashlar/menus/SlotRegion;
+	public static final fun slot (Lpink/alex/ashlar/menus/ChestScope;IILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static final fun slot (Lpink/alex/ashlar/menus/ChestScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static final fun slot (Lpink/alex/ashlar/menus/ContainerHostScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static final fun slot (Lpink/alex/ashlar/menus/RoleHostScope;Ljava/lang/Enum;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun slot$default (Lpink/alex/ashlar/menus/ChestScope;IILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun slot$default (Lpink/alex/ashlar/menus/ChestScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun slot$default (Lpink/alex/ashlar/menus/ContainerHostScope;ILjava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun slot$default (Lpink/alex/ashlar/menus/RoleHostScope;Ljava/lang/Enum;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun state (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Object;)Lpink/alex/ashlar/menus/MenuState;
+	public static final fun state (Lpink/alex/ashlar/menus/MenuScope;Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/menus/MenuState;
+	public static final fun storage (Lpink/alex/ashlar/menus/InventoryHostScope;Lpink/alex/ashlar/menus/storage/MenuStorage;Lpink/alex/ashlar/menus/SlotRegion;)V
+	public static final fun transfers (Lpink/alex/ashlar/menus/MenuScope;[Lpink/alex/ashlar/menus/storage/MenuTransferRoute;)V
+}
+
+public final class pink/alex/ashlar/menus/MenuSlotSnapshot {
+	public fun <init> (ILpink/alex/ashlar/menus/MenuComponentPath;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;)V
+	public synthetic fun <init> (ILpink/alex/ashlar/menus/MenuComponentPath;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuComponentPath;
+	public final fun component3 ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun component4 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun component5 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun component6 ()Ljava/util/Set;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun copy (ILpink/alex/ashlar/menus/MenuComponentPath;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;)Lpink/alex/ashlar/menus/MenuSlotSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuSlotSnapshot;ILpink/alex/ashlar/menus/MenuComponentPath;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Ljava/util/Set;Ljava/util/List;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuSlotSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActions ()Ljava/util/Set;
+	public final fun getIndex ()I
+	public final fun getItem ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun getLocals ()Ljava/util/Map;
+	public final fun getModifiers ()Ljava/util/List;
+	public final fun getOwner ()Lpink/alex/ashlar/menus/MenuComponentPath;
+	public final fun getStorage ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun getStoredItem ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuState : kotlin/properties/ReadWriteProperty {
+	public fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;
+	public final fun provideDelegate (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Lpink/alex/ashlar/menus/MenuState;
+	public fun setValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;Ljava/lang/Object;)V
+}
+
+public abstract interface class pink/alex/ashlar/menus/MenuTrace {
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$ActionCompleted : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuTrace$ActionCompleted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$ActionCompleted;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$ActionCompleted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentity ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$ActionStarted : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuTrace$ActionStarted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$ActionStarted;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$ActionStarted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentity ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$Closed : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuClose;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuClose;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuClose;)Lpink/alex/ashlar/menus/MenuTrace$Closed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$Closed;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$Closed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Lpink/alex/ashlar/menus/MenuClose;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$EffectDisposed : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuTrace$EffectDisposed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$EffectDisposed;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$EffectDisposed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentity ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$EffectStarted : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuTrace$EffectStarted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$EffectStarted;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$EffectStarted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentity ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$Feedback : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;)Lpink/alex/ashlar/menus/MenuTrace$Feedback;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$Feedback;Lpink/alex/ashlar/menus/MenuFeedbackSeverity;Ljava/lang/Integer;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$Feedback;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSeverity ()Lpink/alex/ashlar/menus/MenuFeedbackSeverity;
+	public final fun getTargetSlot ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$GestureIntercepted : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Lpink/alex/ashlar/menus/MenuGestureKind;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public final fun copy (Lpink/alex/ashlar/menus/MenuGestureKind;)Lpink/alex/ashlar/menus/MenuTrace$GestureIntercepted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$GestureIntercepted;Lpink/alex/ashlar/menus/MenuGestureKind;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$GestureIntercepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$GestureReceived : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (JLpink/alex/ashlar/menus/MenuGestureKind;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()J
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (JLpink/alex/ashlar/menus/MenuGestureKind;Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/menus/MenuTrace$GestureReceived;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$GestureReceived;JLpink/alex/ashlar/menus/MenuGestureKind;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$GestureReceived;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHostSlots ()Ljava/util/List;
+	public final fun getKind ()Lpink/alex/ashlar/menus/MenuGestureKind;
+	public final fun getPlayerSlots ()Ljava/util/List;
+	public final fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$NavigationChanged : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lpink/alex/ashlar/menus/MenuTrace$NavigationChanged;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$NavigationChanged;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$NavigationChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoutes ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$PresentationRestored : pink/alex/ashlar/menus/MenuTrace {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuTrace$PresentationRestored;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$PresentationSuspended : pink/alex/ashlar/menus/MenuTrace {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/MenuTrace$PresentationSuspended;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$RecoveryDelivered : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lpink/alex/ashlar/menus/MenuTrace$RecoveryDelivered;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$RecoveryDelivered;IILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$RecoveryDelivered;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getItemCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$RenderCommitted : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (JLpink/alex/ashlar/menus/MenuReconciliation;)V
+	public final fun component1 ()J
+	public final fun component2 ()Lpink/alex/ashlar/menus/MenuReconciliation;
+	public final fun copy (JLpink/alex/ashlar/menus/MenuReconciliation;)Lpink/alex/ashlar/menus/MenuTrace$RenderCommitted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$RenderCommitted;JLpink/alex/ashlar/menus/MenuReconciliation;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$RenderCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReconciliation ()Lpink/alex/ashlar/menus/MenuReconciliation;
+	public final fun getRevision ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$StorageChanged : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;J)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()J
+	public final fun copy (Ljava/lang/String;J)Lpink/alex/ashlar/menus/MenuTrace$StorageChanged;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$StorageChanged;Ljava/lang/String;JILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$StorageChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRevision ()J
+	public final fun getStorage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$TransactionCommitted : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuTrace$TransactionCommitted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$TransactionCommitted;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$TransactionCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuTrace$TransactionRejected : pink/alex/ashlar/menus/MenuTrace {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/menus/MenuTrace$TransactionRejected;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MenuTrace$TransactionRejected;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuTrace$TransactionRejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MenuValidationException : java/lang/IllegalArgumentException {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getProblem ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MerchantHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/menus/MerchantHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MerchantHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MerchantHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public final fun getOffers ()Ljava/util/List;
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MerchantOfferSnapshot {
+	public fun <init> (Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;IIZIFIIZ)V
+	public synthetic fun <init> (Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;IIZIFIIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun component10 ()I
+	public final fun component11 ()Z
+	public final fun component2 ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun component3 ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()Z
+	public final fun component7 ()I
+	public final fun component8 ()F
+	public final fun component9 ()I
+	public final fun copy (Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;IIZIFIIZ)Lpink/alex/ashlar/menus/MerchantOfferSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/MerchantOfferSnapshot;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/items/ItemSpec;IIZIFIIZILjava/lang/Object;)Lpink/alex/ashlar/menus/MerchantOfferSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDemand ()I
+	public final fun getFirstCost ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun getIgnoresDiscounts ()Z
+	public final fun getMaximumUses ()I
+	public final fun getPriceMultiplier ()F
+	public final fun getResult ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun getRewardsExperience ()Z
+	public final fun getSecondCost ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun getSpecialPrice ()I
+	public final fun getUses ()I
+	public final fun getVillagerExperience ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/MerchantSlot : java/lang/Enum {
+	public static final field FIRST_COST Lpink/alex/ashlar/menus/MerchantSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/MerchantSlot;
+	public static final field SECOND_COST Lpink/alex/ashlar/menus/MerchantSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/MerchantSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/MerchantSlot;
+}
+
+public final class pink/alex/ashlar/menus/NativeClose : java/lang/Enum {
+	public static final field BACK Lpink/alex/ashlar/menus/NativeClose;
+	public static final field END_SESSION Lpink/alex/ashlar/menus/NativeClose;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/NativeClose;
+	public static fun values ()[Lpink/alex/ashlar/menus/NativeClose;
+}
+
+public final class pink/alex/ashlar/menus/PlayerInventorySlot {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;I)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public final fun component2 ()I
+	public final fun copy (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;I)Lpink/alex/ashlar/menus/PlayerInventorySlot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/PlayerInventorySlot;Lpink/alex/ashlar/menus/storage/PlayerInventorySection;IILjava/lang/Object;)Lpink/alex/ashlar/menus/PlayerInventorySlot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getSection ()Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/PlayerMenus : pink/alex/ashlar/PluginComponent, java/lang/AutoCloseable {
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lpink/alex/ashlar/menus/MenuNativeHostFactory;)V
+	public fun <init> (Lorg/bukkit/plugin/Plugin;)V
+	public final fun choose-9pzO2Yo (Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun choose-9pzO2Yo$default (Lpink/alex/ashlar/menus/PlayerMenus;Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun close ()V
+	public final fun close-xJTp0AU (Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuClose;)Z
+	public static synthetic fun close-xJTp0AU$default (Lpink/alex/ashlar/menus/PlayerMenus;Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)Z
+	public final fun inspect-Qxubp9c (Ljava/util/UUID;)Lpink/alex/ashlar/menus/MenuInspection;
+	public final fun intercept (Lpink/alex/ashlar/menus/MenuInterceptor;)Lpink/alex/ashlar/menus/MenuRegistration;
+	public final fun observe (Lpink/alex/ashlar/menus/MenuObserver;)Lpink/alex/ashlar/menus/MenuRegistration;
+	public final fun open-9pzO2Yo (Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun open-9pzO2Yo$default (Lpink/alex/ashlar/menus/PlayerMenus;Ljava/util/UUID;Lpink/alex/ashlar/menus/MenuOpenConflict;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun registerTransactionDomain (Lpink/alex/ashlar/menus/storage/MenuTransactionDomain;)Lpink/alex/ashlar/menus/MenuRegistration;
+}
+
+public final class pink/alex/ashlar/menus/RegionOverflow : java/lang/Enum {
+	public static final field CLIP Lpink/alex/ashlar/menus/RegionOverflow;
+	public static final field ERROR Lpink/alex/ashlar/menus/RegionOverflow;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/RegionOverflow;
+	public static fun values ()[Lpink/alex/ashlar/menus/RegionOverflow;
+}
+
+public abstract class pink/alex/ashlar/menus/RoleHostScope : pink/alex/ashlar/menus/InventoryHostScope {
+	public abstract fun slot (Ljava/lang/Enum;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun slot$default (Lpink/alex/ashlar/menus/RoleHostScope;Ljava/lang/Enum;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class pink/alex/ashlar/menus/ShulkerHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/ShulkerHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/ShulkerHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/ShulkerHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/SlotModifier {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lpink/alex/ashlar/menus/SlotModifier;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/SlotModifier;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/SlotModifier;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun plus (Lpink/alex/ashlar/menus/SlotModifier;)Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/SlotRegion {
+	public static final field Companion Lpink/alex/ashlar/menus/SlotRegion$Companion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSize ()I
+	public final fun getSlots ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/SlotRegion$Companion {
+	public final fun of (Ljava/lang/Iterable;)Lpink/alex/ashlar/menus/SlotRegion;
+	public final fun rectangle (Lkotlin/ranges/IntRange;Lkotlin/ranges/IntRange;)Lpink/alex/ashlar/menus/SlotRegion;
+	public final fun row (I)Lpink/alex/ashlar/menus/SlotRegion;
+	public final fun rows (Lkotlin/ranges/IntRange;)Lpink/alex/ashlar/menus/SlotRegion;
+}
+
+public final class pink/alex/ashlar/menus/SmithingHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/SmithingHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/SmithingHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/SmithingHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/SmithingSlot : java/lang/Enum {
+	public static final field ADDITION Lpink/alex/ashlar/menus/SmithingSlot;
+	public static final field BASE Lpink/alex/ashlar/menus/SmithingSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/SmithingSlot;
+	public static final field TEMPLATE Lpink/alex/ashlar/menus/SmithingSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/SmithingSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/SmithingSlot;
+}
+
+public final class pink/alex/ashlar/menus/StonecutterHostSnapshot : pink/alex/ashlar/menus/MenuHostSnapshot {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Ljava/util/List;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lnet/kyori/adventure/text/Component;Ljava/util/List;)Lpink/alex/ashlar/menus/StonecutterHostSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/StonecutterHostSnapshot;Lnet/kyori/adventure/text/Component;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/StonecutterHostSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCapacity ()I
+	public fun getSlots ()Ljava/util/List;
+	public fun getTitle ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/StonecutterSlot : java/lang/Enum {
+	public static final field INPUT Lpink/alex/ashlar/menus/StonecutterSlot;
+	public static final field RESULT Lpink/alex/ashlar/menus/StonecutterSlot;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getIndex ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/StonecutterSlot;
+	public static fun values ()[Lpink/alex/ashlar/menus/StonecutterSlot;
+}
+
+public final class pink/alex/ashlar/menus/input/FocusedMenuInputKt {
+	public static final fun focusedChatInput-0SsBp_A (Lpink/alex/ashlar/menus/MenuActionScope;Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun focusedChatInput-0SsBp_A$default (Lpink/alex/ashlar/menus/MenuActionScope;Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/menus/standard/ContentState {
+}
+
+public final class pink/alex/ashlar/menus/standard/ContentState$Empty : pink/alex/ashlar/menus/standard/ContentState {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/standard/ContentState$Empty;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/standard/ContentState$Failed : pink/alex/ashlar/menus/standard/ContentState {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lpink/alex/ashlar/menus/standard/ContentState$Failed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/standard/ContentState$Failed;Ljava/lang/Throwable;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/ContentState$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/standard/ContentState$Loading : pink/alex/ashlar/menus/standard/ContentState {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/standard/ContentState$Loading;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/standard/ContentState$Ready : pink/alex/ashlar/menus/standard/ContentState {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lpink/alex/ashlar/menus/standard/ContentState$Ready;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/standard/ContentState$Ready;Ljava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/ContentState$Ready;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/standard/MenuTab {
+	public fun <init> (Ljava/lang/Object;ILpink/alex/ashlar/items/ItemSpec;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()I
+	public final fun component3 ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun copy (Ljava/lang/Object;ILpink/alex/ashlar/items/ItemSpec;)Lpink/alex/ashlar/menus/standard/MenuTab;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/standard/MenuTab;Ljava/lang/Object;ILpink/alex/ashlar/items/ItemSpec;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/MenuTab;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getItem ()Lpink/alex/ashlar/items/ItemSpec;
+	public final fun getSlot ()I
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/standard/PagedItems {
+	public final fun getPage ()I
+	public final fun getPageCount ()I
+	public final fun getVisible ()Ljava/util/List;
+	public final fun items (Lpink/alex/ashlar/menus/ChestScope;Lpink/alex/ashlar/menus/SlotRegion;Lkotlin/jvm/functions/Function3;)V
+	public final fun next ()Z
+	public final fun next (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+	public final fun previous ()Z
+	public final fun previous (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+}
+
+public final class pink/alex/ashlar/menus/standard/PromptControlsKt {
+	public static final fun promptControl-Ni60xLg (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun promptControl-Ni60xLg$default (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+	public static final fun searchControl-ptRO0ag (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun searchControl-ptRO0ag$default (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+}
+
+public final class pink/alex/ashlar/menus/standard/ScrollingItems {
+	public final fun getCanNext ()Z
+	public final fun getCanPrevious ()Z
+	public final fun getOffset ()I
+	public final fun getVisible ()Ljava/util/List;
+	public final fun getWindowSize ()I
+	public final fun items (Lpink/alex/ashlar/menus/ChestScope;Lpink/alex/ashlar/menus/SlotRegion;Lkotlin/jvm/functions/Function3;)V
+	public final fun next ()Z
+	public final fun next (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+	public final fun previous ()Z
+	public final fun previous (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+}
+
+public final class pink/alex/ashlar/menus/standard/StandardMenuComponentsKt {
+	public static final fun backControl (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lpink/alex/ashlar/menus/MenuNavigator;)V
+	public static final fun border (Lpink/alex/ashlar/menus/ChestScope;Lpink/alex/ashlar/menus/SlotRegion;Lpink/alex/ashlar/items/ItemSpec;)V
+	public static final fun closeControl (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+	public static final fun confirmation (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;ILpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public static final fun contentState (Lpink/alex/ashlar/menus/MenuScope;Lpink/alex/ashlar/menus/standard/ContentState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
+	public static final fun emptyContent (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+	public static final fun failedContent (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun failedContent$default (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun filler (Lpink/alex/ashlar/menus/ChestScope;Lpink/alex/ashlar/menus/SlotRegion;Lpink/alex/ashlar/items/ItemSpec;)V
+	public static final fun loading (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+	public static final fun numberStepper (Lpink/alex/ashlar/menus/ChestScope;ILkotlin/ranges/IntRange;ILpink/alex/ashlar/items/ItemSpec;ILpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+	public static final fun paged (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/PagedItems;
+	public static synthetic fun paged$default (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/PagedItems;
+	public static final fun scrolling (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/ScrollingItems;
+	public static synthetic fun scrolling$default (Lpink/alex/ashlar/menus/MenuScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/menus/standard/ScrollingItems;
+	public static final fun selection (Lpink/alex/ashlar/menus/ChestScope;ILjava/lang/Object;Lpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+	public static final fun staticItem (Lpink/alex/ashlar/menus/ChestScope;ILpink/alex/ashlar/items/ItemSpec;)V
+	public static final fun tab (Lpink/alex/ashlar/menus/ChestScope;ILjava/lang/Object;Lpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+	public static final fun tabs (Lpink/alex/ashlar/menus/ChestScope;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;)V
+	public static final fun toggle (Lpink/alex/ashlar/menus/ChestScope;IZLpink/alex/ashlar/items/ItemSpec;Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class pink/alex/ashlar/menus/storage/CommittedMenuTransaction {
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-FOMFgzo ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Z
+	public final fun copy-Uq8-YGw (Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;Z)Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;
+	public static synthetic fun copy-Uq8-YGw$default (Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;ZILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCursor ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getEmissions ()Ljava/util/List;
+	public final fun getId-FOMFgzo ()Ljava/util/UUID;
+	public final fun getRequiresAcknowledgement ()Z
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/FileItemRecoveryMailbox : pink/alex/ashlar/menus/storage/ItemRecoveryMailbox {
+	public fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;Ljava/time/Clock;)V
+	public synthetic fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;Ljava/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun acknowledge (Ljava/util/UUID;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun complete (Ljava/util/UUID;Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deposit (Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deposit (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun pending (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/menus/storage/FileMenuTransactionJournal : pink/alex/ashlar/menus/storage/MenuTransactionJournal {
+	public fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public synthetic fun <init> (Ljava/nio/file/Path;Lkotlinx/coroutines/CoroutineDispatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun complete-mRwy8-Y (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun pending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun record (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/ItemRecoveryMailbox {
+	public abstract fun acknowledge (Ljava/util/UUID;Ljava/util/Set;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun complete (Ljava/util/UUID;Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deposit (Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deposit (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun pending (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/menus/storage/ItemRecoveryMailbox$DefaultImpls {
+	public static fun complete (Lpink/alex/ashlar/menus/storage/ItemRecoveryMailbox;Ljava/util/UUID;Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun deposit (Lpink/alex/ashlar/menus/storage/ItemRecoveryMailbox;Ljava/util/UUID;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/menus/storage/JournaledMenuTransaction {
+	public fun <init> (Ljava/lang/String;Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;
+	public final fun copy (Ljava/lang/String;Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;)Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;Ljava/lang/String;Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDomainId ()Ljava/lang/String;
+	public final fun getProposal ()Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuDragMode : java/lang/Enum {
+	public static final field EVEN Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public static final field SINGLE Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public static fun values ()[Lpink/alex/ashlar/menus/storage/MenuDragMode;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuNativeCommit : java/lang/Enum {
+	public static final field Applied Lpink/alex/ashlar/menus/storage/MenuNativeCommit;
+	public static final field Unavailable Lpink/alex/ashlar/menus/storage/MenuNativeCommit;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/storage/MenuNativeCommit;
+	public static fun values ()[Lpink/alex/ashlar/menus/storage/MenuNativeCommit;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuNativeTransaction {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;Ljava/util/Map;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;Ljava/util/Map;)Lpink/alex/ashlar/menus/storage/MenuNativeTransaction;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuNativeTransaction;Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuNativeTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCommitted ()Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;
+	public final fun getPlayerStorages ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuSlotAddress {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageId;I)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public final fun component2 ()I
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuStorageId;I)Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuStorageId;IILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getStorage ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuSlotRule {
+	public static final field Companion Lpink/alex/ashlar/menus/storage/MenuSlotRule$Companion;
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAccepts ()Lkotlin/jvm/functions/Function1;
+	public final fun getCanExtract ()Lkotlin/jvm/functions/Function1;
+	public final fun getMaximumAmount ()Lkotlin/jvm/functions/Function1;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuSlotRule$Companion {
+	public final fun getLocked ()Lpink/alex/ashlar/menus/storage/MenuSlotRule;
+	public final fun getVanilla ()Lpink/alex/ashlar/menus/storage/MenuSlotRule;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuStorage {
+	public abstract fun getId ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public abstract fun getRules ()Lpink/alex/ashlar/menus/storage/MenuStorageRules;
+	public abstract fun getSnapshots ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun getTransactionDomain ()Lpink/alex/ashlar/menus/storage/MenuTransactionDomain;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageChange {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;
+	public final fun component2 ()Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;)Lpink/alex/ashlar/menus/storage/MenuStorageChange;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageChange;Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAfter ()Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;
+	public final fun getBefore ()Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public abstract fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$DoubleCollect : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DoubleCollect;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DoubleCollect;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DoubleCollect;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOrder ()Ljava/util/List;
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$Drag : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuDragMode;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public final fun copy (Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuDragMode;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Drag;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Drag;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuDragMode;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Drag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMode ()Lpink/alex/ashlar/menus/storage/MenuDragMode;
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun getTargets ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$DropCursor : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropCursor;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropCursor;ZILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropCursor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOne ()Z
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$DropOne : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropOne;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropOne;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropOne;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$DropStack : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropStack;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropStack;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$DropStack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$HotbarSwap : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun component2 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$HotbarSwap;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$HotbarSwap;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$HotbarSwap;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHotbar ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$OffhandSwap : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun component2 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$OffhandSwap;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$OffhandSwap;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$OffhandSwap;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOffhand ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$Primary : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Primary;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Primary;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Primary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$Secondary : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Secondary;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Secondary;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$Secondary;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageGesture$ShiftTransfer : pink/alex/ashlar/menus/storage/MenuStorageGesture {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuSlotAddress;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$ShiftTransfer;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageGesture$ShiftTransfer;Lpink/alex/ashlar/menus/storage/MenuSlotAddress;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageGesture$ShiftTransfer;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getSource ()Lpink/alex/ashlar/menus/storage/MenuSlotAddress;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageId {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageId;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNamespace ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuStorageReference {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageReference$Player : pink/alex/ashlar/menus/storage/MenuStorageReference {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;)Lpink/alex/ashlar/menus/storage/MenuStorageReference$Player;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageReference$Player;Lpink/alex/ashlar/menus/storage/PlayerInventorySection;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageReference$Player;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSection ()Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageReference$Storage : pink/alex/ashlar/menus/storage/MenuStorageReference {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageId;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuStorageId;)Lpink/alex/ashlar/menus/storage/MenuStorageReference$Storage;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageReference$Storage;Lpink/alex/ashlar/menus/storage/MenuStorageId;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageReference$Storage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageRules {
+	public static final field Companion Lpink/alex/ashlar/menus/storage/MenuStorageRules$Companion;
+	public final fun get (I)Lpink/alex/ashlar/menus/storage/MenuSlotRule;
+	public final fun getSize ()I
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageRules$Companion {
+	public final fun of (Ljava/util/List;)Lpink/alex/ashlar/menus/storage/MenuStorageRules;
+	public final fun uniform (ILpink/alex/ashlar/menus/storage/MenuSlotRule;)Lpink/alex/ashlar/menus/storage/MenuStorageRules;
+	public static synthetic fun uniform$default (Lpink/alex/ashlar/menus/storage/MenuStorageRules$Companion;ILpink/alex/ashlar/menus/storage/MenuSlotRule;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageRules;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStorageSnapshot {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageId;JLjava/util/List;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public final fun component2 ()J
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuStorageId;JLjava/util/List;)Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;Lpink/alex/ashlar/menus/storage/MenuStorageId;JLjava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorageSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getId ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public final fun getRevision ()J
+	public final fun getSize ()I
+	public final fun getSlots ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuStoragesKt {
+	public static final fun externalMenuStorage (Lpink/alex/ashlar/menus/storage/MenuStorageId;Lkotlinx/coroutines/flow/StateFlow;Lpink/alex/ashlar/menus/storage/MenuStorageRules;Lpink/alex/ashlar/menus/storage/MenuTransactionDomain;)Lpink/alex/ashlar/menus/storage/MenuStorage;
+	public static final fun localMenuStorage (Lpink/alex/ashlar/menus/storage/MenuStorageId;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuStorageRules;)Lpink/alex/ashlar/menus/storage/MenuStorage;
+	public static synthetic fun localMenuStorage$default (Lpink/alex/ashlar/menus/storage/MenuStorageId;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuStorageRules;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuStorage;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionCoordinator {
+	public fun <init> ()V
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionJournal;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionJournal;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun acknowledge-mRwy8-Y (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun recover (Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun submit (Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;Ljava/util/Map;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionDecision {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionDecision$Commit : pink/alex/ashlar/menus/storage/MenuTransactionDecision {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;)Lpink/alex/ashlar/menus/storage/MenuTransactionDecision$Commit;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionDecision$Commit;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionDecision$Commit;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionDecision$Reject : pink/alex/ashlar/menus/storage/MenuTransactionDecision {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/menus/storage/MenuTransactionDecision$Reject;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionDecision$Reject;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionDecision$Reject;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionDomain {
+	public abstract fun commit (Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getId ()Ljava/lang/String;
+	public abstract fun getStorages ()Ljava/util/Set;
+	public abstract fun resolve-mRwy8-Y (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionEmission {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionEmission$Drop : pink/alex/ashlar/menus/storage/MenuTransactionEmission {
+	public fun <init> (Lpink/alex/ashlar/items/ItemSnapshot;)V
+	public final fun component1 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun copy (Lpink/alex/ashlar/items/ItemSnapshot;)Lpink/alex/ashlar/menus/storage/MenuTransactionEmission$Drop;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionEmission$Drop;Lpink/alex/ashlar/items/ItemSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionEmission$Drop;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getItem ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionEngine {
+	public fun <init> (Ljava/util/Map;Ljava/util/List;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun plan-FsR4UtE (Lpink/alex/ashlar/menus/storage/MenuTransactionState;Lpink/alex/ashlar/menus/storage/MenuStorageGesture;Ljava/util/UUID;Ljava/util/UUID;)Lpink/alex/ashlar/menus/storage/MenuTransactionPlan;
+	public static synthetic fun plan-FsR4UtE$default (Lpink/alex/ashlar/menus/storage/MenuTransactionEngine;Lpink/alex/ashlar/menus/storage/MenuTransactionState;Lpink/alex/ashlar/menus/storage/MenuStorageGesture;Ljava/util/UUID;Ljava/util/UUID;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionPlan;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionEngineKt {
+	public static final fun reference (Lpink/alex/ashlar/menus/storage/MenuStorage;)Lpink/alex/ashlar/menus/storage/MenuStorageReference;
+	public static final fun reference (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;)Lpink/alex/ashlar/menus/storage/MenuStorageReference;
+	public static final fun transferRoute (Lpink/alex/ashlar/menus/storage/MenuStorageReference;[Lpink/alex/ashlar/menus/storage/MenuStorageReference;)Lpink/alex/ashlar/menus/storage/MenuTransferRoute;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionFailure$DurableEmissionUnsupported : pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$DurableEmissionUnsupported;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionFailure$MissingTransactionDomain : pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$MissingTransactionDomain;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionFailure$NoTransferRoute : pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$NoTransferRoute;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionFailure$ResourceBusy : pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionResource;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuTransactionResource;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuTransactionResource;)Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$ResourceBusy;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$ResourceBusy;Lpink/alex/ashlar/menus/storage/MenuTransactionResource;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$ResourceBusy;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getResource ()Lpink/alex/ashlar/menus/storage/MenuTransactionResource;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionFailure$RuleRejected : pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$RuleRejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionFailure$StaleState : pink/alex/ashlar/menus/storage/MenuTransactionFailure {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionFailure$StaleState;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionId {
+	public static final field Companion Lpink/alex/ashlar/menus/storage/MenuTransactionId$Companion;
+	public static final synthetic fun box-impl (Ljava/util/UUID;)Lpink/alex/ashlar/menus/storage/MenuTransactionId;
+	public static fun constructor-impl (Ljava/util/UUID;)Ljava/util/UUID;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/UUID;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/UUID;Ljava/util/UUID;)Z
+	public final fun getValue ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/UUID;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/UUID;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/UUID;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionId$Companion {
+	public final fun create-FOMFgzo ()Ljava/util/UUID;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionJournal {
+	public abstract fun complete-mRwy8-Y (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun pending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun record (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionPlan {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionPlan$NoChange : pink/alex/ashlar/menus/storage/MenuTransactionPlan {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$NoChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionPlan$Proposed : pink/alex/ashlar/menus/storage/MenuTransactionPlan {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;)Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$Proposed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$Proposed;Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$Proposed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProposal ()Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionPlan$Rejected : pink/alex/ashlar/menus/storage/MenuTransactionPlan {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;)Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$Rejected;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$Rejected;Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionPlan$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailure ()Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionProposal {
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;Ljava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-FOMFgzo ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/UUID;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun component5 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun copy-SZ6G3PM (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;Ljava/util/Map;)Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;
+	public static synthetic fun copy-SZ6G3PM$default (Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;Ljava/util/UUID;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/util/List;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionProposal;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChanges ()Ljava/util/Map;
+	public final fun getCursorAfter ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getCursorBefore ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getEmissions ()Ljava/util/List;
+	public final fun getId-FOMFgzo ()Ljava/util/UUID;
+	public final fun getPlayerId ()Ljava/util/UUID;
+	public final fun getPlayerStorages ()Ljava/util/Map;
+	public final fun getResources ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionRecovery {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionRecovery$Committed : pink/alex/ashlar/menus/storage/MenuTransactionRecovery {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;Ljava/util/Map;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;Ljava/util/Map;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Committed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Committed;Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Committed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionRecovery$MissingDomain : pink/alex/ashlar/menus/storage/MenuTransactionRecovery {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$MissingDomain;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$MissingDomain;Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$MissingDomain;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionRecovery$NotCommitted : pink/alex/ashlar/menus/storage/MenuTransactionRecovery {
+	public synthetic fun <init> (Ljava/util/UUID;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-FOMFgzo ()Ljava/util/UUID;
+	public final fun copy-YAneLoM (Ljava/util/UUID;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$NotCommitted;
+	public static synthetic fun copy-YAneLoM$default (Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$NotCommitted;Ljava/util/UUID;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$NotCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId-FOMFgzo ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionRecovery$Pending : pink/alex/ashlar/menus/storage/MenuTransactionRecovery {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Pending;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Pending;Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Pending;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Lpink/alex/ashlar/menus/storage/JournaledMenuTransaction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionRecovery$Rejected : pink/alex/ashlar/menus/storage/MenuTransactionRecovery {
+	public synthetic fun <init> (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-FOMFgzo ()Ljava/util/UUID;
+	public final fun component2 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy-mRwy8-Y (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Rejected;
+	public static synthetic fun copy-mRwy8-Y$default (Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Rejected;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionRecovery$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId-FOMFgzo ()Ljava/util/UUID;
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionResolution {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionResolution$Committed : pink/alex/ashlar/menus/storage/MenuTransactionResolution {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;)Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Committed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Committed;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Committed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSnapshots ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionResolution$NotCommitted : pink/alex/ashlar/menus/storage/MenuTransactionResolution {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$NotCommitted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionResolution$Pending : pink/alex/ashlar/menus/storage/MenuTransactionResolution {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Pending;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionResolution$Rejected : pink/alex/ashlar/menus/storage/MenuTransactionResolution {
+	public fun <init> ()V
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public synthetic fun <init> (Lnet/kyori/adventure/text/Component;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Rejected;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Rejected;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionResolution$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionResource {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionResource$Cursor : pink/alex/ashlar/menus/storage/MenuTransactionResource {
+	public static final field INSTANCE Lpink/alex/ashlar/menus/storage/MenuTransactionResource$Cursor;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionResource$Storage : pink/alex/ashlar/menus/storage/MenuTransactionResource {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageId;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuStorageId;)Lpink/alex/ashlar/menus/storage/MenuTransactionResource$Storage;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionResource$Storage;Lpink/alex/ashlar/menus/storage/MenuStorageId;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionResource$Storage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Lpink/alex/ashlar/menus/storage/MenuStorageId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionState {
+	public fun <init> (Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;)V
+	public synthetic fun <init> (Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun copy (Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;)Lpink/alex/ashlar/menus/storage/MenuTransactionState;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionState;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCursor ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getStorages ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/menus/storage/MenuTransactionSubmission {
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionSubmission$Committed : pink/alex/ashlar/menus/storage/MenuTransactionSubmission {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;)Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Committed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Committed;Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Committed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTransaction ()Lpink/alex/ashlar/menus/storage/CommittedMenuTransaction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionSubmission$Failed : pink/alex/ashlar/menus/storage/MenuTransactionSubmission {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;)Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Failed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Failed;Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFailure ()Lpink/alex/ashlar/menus/storage/MenuTransactionFailure;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransactionSubmission$Rejected : pink/alex/ashlar/menus/storage/MenuTransactionSubmission {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Rejected;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Rejected;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransactionSubmission$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/MenuTransferRoute {
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageId;Ljava/util/List;)V
+	public fun <init> (Lpink/alex/ashlar/menus/storage/MenuStorageReference;Ljava/util/List;)V
+	public final fun component1 ()Lpink/alex/ashlar/menus/storage/MenuStorageReference;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lpink/alex/ashlar/menus/storage/MenuStorageReference;Ljava/util/List;)Lpink/alex/ashlar/menus/storage/MenuTransferRoute;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/MenuTransferRoute;Lpink/alex/ashlar/menus/storage/MenuStorageReference;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/MenuTransferRoute;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinations ()Ljava/util/List;
+	public final fun getSource ()Lpink/alex/ashlar/menus/storage/MenuStorageReference;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/menus/storage/PlayerInventorySection : java/lang/Enum {
+	public static final field ARMOR Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public static final field HOTBAR Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public static final field MAIN Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public static final field OFFHAND Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getSize ()I
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+	public static fun values ()[Lpink/alex/ashlar/menus/storage/PlayerInventorySection;
+}
+
+public final class pink/alex/ashlar/menus/storage/RecoveredMenuItem {
+	public fun <init> (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/UUID;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/time/Instant;)V
+	public final fun component1 ()Ljava/util/UUID;
+	public final fun component2 ()Ljava/util/UUID;
+	public final fun component3 ()Ljava/util/UUID;
+	public final fun component4 ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun component5 ()Ljava/time/Instant;
+	public final fun copy (Ljava/util/UUID;Ljava/util/UUID;Ljava/util/UUID;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/time/Instant;)Lpink/alex/ashlar/menus/storage/RecoveredMenuItem;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/menus/storage/RecoveredMenuItem;Ljava/util/UUID;Ljava/util/UUID;Ljava/util/UUID;Lpink/alex/ashlar/items/ItemSnapshot;Ljava/time/Instant;ILjava/lang/Object;)Lpink/alex/ashlar/menus/storage/RecoveredMenuItem;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDeliveryId ()Ljava/util/UUID;
+	public final fun getId ()Ljava/util/UUID;
+	public final fun getItem ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getPlayerId ()Ljava/util/UUID;
+	public final fun getStoredAt ()Ljava/time/Instant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

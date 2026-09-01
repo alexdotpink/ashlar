@@ -4,7 +4,7 @@ This index routes public declarations to their authoritative reference. Generate
 
 ## Kernel
 
-- Lifecycle: `FrameworkPlugin`, `PluginComponent`, `PluginLoadContext`, `ComponentContext`, `FrameworkComponent`, `ComponentPhase`, `ExcludeContributions` — [kernel](kernel.md)
+- Lifecycle: `AshlarPlugin`, `PluginComponent`, `PluginLoadContext`, `ComponentContext`, `AshlarComponent`, `ComponentPhase`, `ExcludeContributions` — [kernel](kernel.md)
 - Tasks and failures: `TaskFailure`, `TaskFailureReporter` — [kernel](kernel.md)
 - Ownership: `GlobalContext`, `RegionContext`, `EntityContext`, `EntityOutcome`, `OwnershipViolationException`, `withGlobal`, `withRegion`, `withEntity` — [kernel](kernel.md)
 - Stable player identity: `PlayerRef` — [kernel](kernel.md)
@@ -82,9 +82,9 @@ This index routes public declarations to their authoritative reference. Generate
 ## Testing and build
 
 - `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult`, `InputTestHarness`, `InputTestAttempt` — [testing](testing.md)
-- `FrameworkPluginExtension` and `GeneratePluginYaml` — [managed Gradle plug-in](gradle-plugin.md)
-- Benchmark DSL, model, runners, comparison, JSON, reports, diagnostics, and catalogue under `dev.placeholder.framework.benchmarks` — [benchmarks](benchmarks.md)
-- `ExperimentalFrameworkApi` — opt-in marker for declarations from `framework-incubator`; no stable compatibility promise
+- `AshlarPluginExtension` and `GeneratePluginYaml` — [managed Gradle plug-in](gradle-plugin.md)
+- Benchmark DSL, model, runners, comparison, JSON, reports, diagnostics, and catalogue under `pink.alex.ashlar.benchmarks` — [benchmarks](benchmarks.md)
+- `ExperimentalAshlarApi` — opt-in marker for declarations from `ashlar-incubator`; no stable compatibility promise
 - `DiProcessorProvider`, `CommandsProcessorProvider`, `EventsProcessorProvider` — KSP service entrypoints selected by the managed build; do not instantiate in plug-in code
 
 ## Generated command linkage
@@ -100,9 +100,9 @@ This index routes public declarations to their authoritative reference. Generate
 Published modules produce Dokka HTML and include it in their Javadoc JARs. For example:
 
 ```bash
-./gradlew :kernel:dokkaGeneratePublicationHtml
-./gradlew :framework-commands:dokkaGeneratePublicationHtml
-./gradlew :framework-events:dokkaGeneratePublicationHtml
+./gradlew :ashlar-kernel:dokkaGeneratePublicationHtml
+./gradlew :ashlar-commands:dokkaGeneratePublicationHtml
+./gradlew :ashlar-events:dokkaGeneratePublicationHtml
 ```
 
 Use Dokka for declaration signatures and KDoc. Use these reference pages for cross-type contracts and runtime boundaries.

@@ -1,10 +1,10 @@
-# Framework showcase plug-in
+# Ashlar showcase plug-in
 
 This Paper/Folia plug-in is a playable reference for commands, events, typed input, items, and menus. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`, typed input uses `/input` or `/in`, and menus use `/menus` or `/menu`.
 
 ## Benchmark example
 
-`src/benchmark/kotlin/dev/placeholder/framework/sample/SamplePerformance.kt` uses the same public benchmark DSL available to plug-ins. It starts a typed chat prompt through `InputTestHarness`, supplies answers, and verifies the returned values outside the timed boundary.
+`src/benchmark/kotlin/pink/alex/ashlar/sample/SamplePerformance.kt` uses the same public benchmark DSL available to plug-ins. It starts a typed chat prompt through `InputTestHarness`, supplies answers, and verifies the returned values outside the timed boundary.
 
 ```bash
 ./gradlew :sample-plugin:benchmark \

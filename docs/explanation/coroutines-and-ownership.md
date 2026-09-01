@@ -2,7 +2,7 @@
 
 A coroutine context answers where suspended work resumes. Paper and Folia ownership answers which server state may be accessed at that instant. They are related operationally but are not the same guarantee.
 
-Framework tasks run in supervised, plug-in-owned coroutine scopes. This gives cancellation, naming, failure reporting, and bounded shutdown. It does not grant ownership of the global region, a chunk region, or an entity.
+Ashlar tasks run in supervised, plug-in-owned coroutine scopes. This gives cancellation, naming, failure reporting, and bounded shutdown. It does not grant ownership of the global region, a chunk region, or an entity.
 
 `withGlobal`, `withRegion`, and `withEntity` bridge that gap. Each schedules one non-suspending callback on the platform's correct scheduler and suspends the caller until the callback finishes. If the caller already owns the target, the block runs inline. Afterward, the coroutine resumes in its previous context.
 

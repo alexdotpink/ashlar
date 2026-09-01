@@ -34,7 +34,7 @@ It borrows React's useful properties: declarative output, stable component ident
 Consumers choose from three artifacts:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     menus()
 }
 
@@ -43,9 +43,9 @@ dependencies {
 }
 ```
 
-- `framework-items` contains the shared item model and is enabled transitively.
-- `framework-menus` contains the production runtime, typed hosts, storage, recovery, standard components, and diagnostics.
-- `framework-menus-test` contains the deterministic harness and assertions.
+- `ashlar-items` contains the shared item model and is enabled transitively.
+- `ashlar-menus` contains the production runtime, typed hosts, storage, recovery, standard components, and diagnostics.
+- `ashlar-menus-test` contains the deterministic harness and assertions.
 
 Internal engine and adapter projects may exist without becoming consumer choices. Command inspection and input prompts activate when those framework capabilities are installed.
 
@@ -218,7 +218,7 @@ provide(WaypointTheme, supporterTheme) {
 }
 ```
 
-Framework locals cover viewer identity, locale, host capabilities, item presentation, feedback presentation, and navigator where present. Plug-in locals are appropriate for theme, messages, density, or other presentation policy. Repositories, databases, and domain services remain explicit dependencies; menu locals are not ambient DI. Values live in the immutable render tree, not thread-local storage.
+Ashlar locals cover viewer identity, locale, host capabilities, item presentation, feedback presentation, and navigator where present. Plug-in locals are appropriate for theme, messages, density, or other presentation policy. Repositories, databases, and domain services remain explicit dependencies; menu locals are not ambient DI. Values live in the immutable render tree, not thread-local storage.
 
 ## Layout
 
@@ -407,7 +407,7 @@ chest(title = "Vault", rows = 6) {
 }
 ```
 
-The runtime cancels native mutation for framework-owned hosts. It computes a complete before/after proposal covering every involved storage model, player inventory slot, and logical cursor, validates the proposal, and commits it atomically. Plug-in handlers never implement vanilla drag distribution, merging, swaps, shift transfer, stack limits, or cursor recovery.
+The runtime cancels native mutation for ashlar-owned hosts. It computes a complete before/after proposal covering every involved storage model, player inventory slot, and logical cursor, validates the proposal, and commits it atomically. Plug-in handlers never implement vanilla drag distribution, merging, swaps, shift transfer, stack limits, or cursor recovery.
 
 ## Storage rules and transfer routes
 
@@ -479,7 +479,7 @@ commit { proposal ->
 
 Pending work locks only the storage identities and cursor resources involved in that proposal. Conflicting gestures reject immediately; unrelated action slots and independent storage continue. The runtime never queues a stale gesture.
 
-One persistent storage automatically owns transactions between itself and framework-managed player inventory or cursor state. A proposal crossing multiple persistent models requires one transaction domain:
+One persistent storage automatically owns transactions between itself and ashlar-managed player inventory or cursor state. A proposal crossing multiple persistent models requires one transaction domain:
 
 ```kotlin
 val trade = transactionDomain(
@@ -556,7 +556,7 @@ Standard components receive no privileged runtime API. Plug-ins may wrap, copy, 
 
 ## Deterministic testing
 
-`framework-menus-test` drives the production semantic engine through a fake native host adapter:
+`ashlar-menus-test` drives the production semantic engine through a fake native host adapter:
 
 ```kotlin
 menuTest {

@@ -1,6 +1,6 @@
 # Access Paper safely from coroutines
 
-Framework tasks and command handlers do not own a Paper server region. Enter the relevant ownership block around each Paper access.
+Ashlar tasks and command handlers do not own a Paper server region. Enter the relevant ownership block around each Paper access.
 
 ## Global state
 

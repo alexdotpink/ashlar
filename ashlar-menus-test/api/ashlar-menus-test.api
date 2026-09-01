@@ -1,0 +1,60 @@
+public final class pink/alex/ashlar/menus/testing/MenuTestChoice {
+	public final fun awaitSelected (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getMenu ()Lpink/alex/ashlar/menus/testing/MenuTestSession;
+}
+
+public final class pink/alex/ashlar/menus/testing/MenuTestHarnessKt {
+	public static final fun menuTest (Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class pink/alex/ashlar/menus/testing/MenuTestScope : java/lang/AutoCloseable {
+	public final fun advanceTimeBy-LRDsOJo (J)V
+	public final fun assertNoPendingWork (Z)V
+	public static synthetic fun assertNoPendingWork$default (Lpink/alex/ashlar/menus/testing/MenuTestScope;ZILjava/lang/Object;)V
+	public final fun choose-4LSA11E (Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun choose-4LSA11E$default (Lpink/alex/ashlar/menus/testing/MenuTestScope;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun close ()V
+	public final fun intercept (Lpink/alex/ashlar/menus/MenuInterceptor;)Lpink/alex/ashlar/menus/MenuRegistration;
+	public final fun observe (Lpink/alex/ashlar/menus/MenuObserver;)Lpink/alex/ashlar/menus/MenuRegistration;
+	public final fun open-4LSA11E (Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun open-4LSA11E$default (Lpink/alex/ashlar/menus/testing/MenuTestScope;Ljava/util/UUID;Ljava/util/Map;Lpink/alex/ashlar/items/ItemSnapshot;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun player-O2GdxfU (Ljava/lang/String;)Ljava/util/UUID;
+	public final fun runCurrent ()V
+}
+
+public final class pink/alex/ashlar/menus/testing/MenuTestSession {
+	public final fun assertChest (Lkotlin/jvm/functions/Function1;)V
+	public final fun assertNoItemCreationOrLoss ()V
+	public final fun assertNoPendingWork (Z)V
+	public static synthetic fun assertNoPendingWork$default (Lpink/alex/ashlar/menus/testing/MenuTestSession;ZILjava/lang/Object;)V
+	public final fun assertRevision (J)V
+	public final fun assertStorageItem (Lpink/alex/ashlar/menus/storage/MenuStorageId;ILpink/alex/ashlar/items/ItemSnapshot;)V
+	public final fun awaitClose (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun close (Lpink/alex/ashlar/menus/MenuClose;)V
+	public static synthetic fun close$default (Lpink/alex/ashlar/menus/testing/MenuTestSession;Lpink/alex/ashlar/menus/MenuClose;ILjava/lang/Object;)V
+	public final fun drag (Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuDragMode;)Lpink/alex/ashlar/menus/MenuDispatch;
+	public static synthetic fun drag$default (Lpink/alex/ashlar/menus/testing/MenuTestSession;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/menus/storage/MenuDragMode;ILjava/lang/Object;)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun feedback ()Ljava/util/List;
+	public final fun gesture (ILpink/alex/ashlar/menus/MenuGesture;)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun getChest ()Lpink/alex/ashlar/menus/ChestHostSnapshot;
+	public final fun getCursor ()Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+	public final fun getRender ()Lpink/alex/ashlar/menus/MenuRenderSnapshot;
+	public final fun hostInput (Lpink/alex/ashlar/menus/MenuHostInput;)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun inspect ()Lpink/alex/ashlar/menus/MenuInspection;
+	public final fun isPresented ()Z
+	public final fun nativeClose (Lpink/alex/ashlar/menus/MenuNativeClose;)V
+	public static synthetic fun nativeClose$default (Lpink/alex/ashlar/menus/testing/MenuTestSession;Lpink/alex/ashlar/menus/MenuNativeClose;ILjava/lang/Object;)V
+	public final fun nativeCloseCalls ()I
+	public final fun playerGesture (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;ILpink/alex/ashlar/menus/MenuGesture;)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun playerItem (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;I)Lpink/alex/ashlar/items/ItemSnapshot;
+	public final fun presentationSuspensions ()I
+	public final fun primaryClick (I)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun primaryClick (II)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun reconciliations ()Ljava/util/List;
+	public final fun secondaryClick (I)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun semanticSnapshot ()Ljava/lang/String;
+	public final fun shiftClick (I)Lpink/alex/ashlar/menus/MenuDispatch;
+	public final fun shiftClick (Lpink/alex/ashlar/menus/storage/PlayerInventorySection;I)Lpink/alex/ashlar/menus/MenuDispatch;
+}
+

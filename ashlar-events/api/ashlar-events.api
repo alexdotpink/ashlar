@@ -1,0 +1,208 @@
+public abstract interface class pink/alex/ashlar/events/ApplicationEvent {
+}
+
+public final class pink/alex/ashlar/events/ApplicationEventException : java/lang/RuntimeException {
+	public fun <init> (Lkotlin/reflect/KClass;Ljava/util/List;)V
+	public final fun getEventType ()Lkotlin/reflect/KClass;
+	public final fun getFailures ()Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/events/ApplicationEventHandlerFailure : java/lang/RuntimeException {
+	public fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public final fun getEventSet ()Lkotlin/reflect/KClass;
+	public final fun getHandler ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/events/ApplicationEvents : java/lang/AutoCloseable {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/di/DependencyGraph;)V
+	public fun close ()V
+	public final fun publish (Lpink/alex/ashlar/events/ApplicationEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun stream (Lkotlin/reflect/KClass;Lkotlinx/coroutines/channels/BufferOverflow;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class pink/alex/ashlar/events/ApplicationEventsKt {
+	public static final fun publish (Lpink/alex/ashlar/events/ApplicationEvents;Lpink/alex/ashlar/events/ApplicationEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/ConfigureLifecycleEvents : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/DisableEventHandler : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/DisableEvents : java/lang/annotation/Annotation {
+}
+
+public abstract interface class pink/alex/ashlar/events/EventRegistration : java/lang/AutoCloseable {
+	public abstract fun close ()V
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/Events : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/ExcludeEventContributions : java/lang/annotation/Annotation {
+	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public final class pink/alex/ashlar/events/LifecycleEventRegistry {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;)V
+	public final fun monitor (Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Monitorable;Lkotlin/jvm/functions/Function1;)V
+	public final fun monitor (Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Prioritizable;Lkotlin/jvm/functions/Function1;)V
+	public final fun on (Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Prioritizable;ILkotlin/jvm/functions/Function1;)V
+	public static synthetic fun on$default (Lpink/alex/ashlar/events/LifecycleEventRegistry;Lio/papermc/paper/plugin/lifecycle/event/types/LifecycleEventType$Prioritizable;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/Observe : java/lang/annotation/Annotation {
+	public abstract fun ignoreCancelled ()Z
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/On : java/lang/annotation/Annotation {
+	public abstract fun ignoreCancelled ()Z
+	public abstract fun priority ()Lorg/bukkit/event/EventPriority;
+}
+
+public abstract interface annotation class pink/alex/ashlar/events/OnApplication : java/lang/annotation/Annotation {
+}
+
+public final class pink/alex/ashlar/events/ServerEventFailure {
+	public fun <init> (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Throwable;)V
+	public final fun component1 ()Lkotlin/reflect/KClass;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lkotlin/reflect/KClass;
+	public final fun component4 ()Ljava/lang/Throwable;
+	public final fun copy (Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Throwable;)Lpink/alex/ashlar/events/ServerEventFailure;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/events/ServerEventFailure;Lkotlin/reflect/KClass;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Throwable;ILjava/lang/Object;)Lpink/alex/ashlar/events/ServerEventFailure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getEventSet ()Lkotlin/reflect/KClass;
+	public final fun getEventType ()Lkotlin/reflect/KClass;
+	public final fun getHandler ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/events/ServerEventFailureReporter {
+	public abstract fun report (Lpink/alex/ashlar/events/ServerEventFailure;)V
+}
+
+public final class pink/alex/ashlar/events/ServerEvents {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/di/DependencyGraph;)V
+	public final fun getReporter ()Lpink/alex/ashlar/events/ServerEventFailureReporter;
+	public final fun register (Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLjava/lang/String;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/events/EventRegistration;
+}
+
+public final class pink/alex/ashlar/events/ServerEventsKt {
+	public static final fun await (Lpink/alex/ashlar/events/ServerEvents;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun capture (Lpink/alex/ashlar/events/ServerEvents;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun retry (Lkotlin/jvm/functions/Function1;)Ljava/lang/Void;
+	public static final fun skip ()Ljava/lang/Void;
+	public static final fun stream (Lpink/alex/ashlar/events/ServerEvents;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun withOptionalTimeout-k1IrOU0 (Lkotlin/time/Duration;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/events/codegen/ApplicationEventHandlerDefinition {
+	public fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlin/reflect/KClass;
+	public final fun copy (Ljava/lang/String;Lkotlin/reflect/KClass;)Lpink/alex/ashlar/events/codegen/ApplicationEventHandlerDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/events/codegen/ApplicationEventHandlerDefinition;Ljava/lang/String;Lkotlin/reflect/KClass;ILjava/lang/Object;)Lpink/alex/ashlar/events/codegen/ApplicationEventHandlerDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEventType ()Lkotlin/reflect/KClass;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/events/codegen/EventBindingKt {
+	public static final fun invalidEventHandler (I)Ljava/lang/Void;
+}
+
+public abstract interface class pink/alex/ashlar/events/codegen/EventSetContribution {
+	public fun configureLifecycle (Ljava/lang/Object;Lpink/alex/ashlar/events/LifecycleEventRegistry;)V
+	public abstract fun getDefinition ()Lpink/alex/ashlar/events/codegen/EventSetDefinition;
+	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
+	public abstract fun invoke (Ljava/lang/Object;ILorg/bukkit/event/Event;)V
+	public fun invokeApplication (Ljava/lang/Object;ILpink/alex/ashlar/events/ApplicationEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observe (Ljava/lang/Object;ILorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/events/codegen/EventSetContribution$DefaultImpls {
+	public static fun configureLifecycle (Lpink/alex/ashlar/events/codegen/EventSetContribution;Ljava/lang/Object;Lpink/alex/ashlar/events/LifecycleEventRegistry;)V
+	public static fun invokeApplication (Lpink/alex/ashlar/events/codegen/EventSetContribution;Ljava/lang/Object;ILpink/alex/ashlar/events/ApplicationEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun observe (Lpink/alex/ashlar/events/codegen/EventSetContribution;Ljava/lang/Object;ILorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/events/codegen/EventSetDefinition {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/events/codegen/EventSetDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/events/codegen/EventSetDefinition;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/events/codegen/EventSetDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getApplicationHandlers ()Ljava/util/List;
+	public final fun getHandlers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/events/codegen/ServerEventHandlerDefinition {
+	public fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLpink/alex/ashlar/events/codegen/ServerEventHandlerKind;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLpink/alex/ashlar/events/codegen/ServerEventHandlerKind;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlin/reflect/KClass;
+	public final fun component3 ()Lorg/bukkit/event/EventPriority;
+	public final fun component4 ()Z
+	public final fun component5 ()Lpink/alex/ashlar/events/codegen/ServerEventHandlerKind;
+	public final fun copy (Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLpink/alex/ashlar/events/codegen/ServerEventHandlerKind;)Lpink/alex/ashlar/events/codegen/ServerEventHandlerDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/events/codegen/ServerEventHandlerDefinition;Ljava/lang/String;Lkotlin/reflect/KClass;Lorg/bukkit/event/EventPriority;ZLpink/alex/ashlar/events/codegen/ServerEventHandlerKind;ILjava/lang/Object;)Lpink/alex/ashlar/events/codegen/ServerEventHandlerDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEventType ()Lkotlin/reflect/KClass;
+	public final fun getIgnoreCancelled ()Z
+	public final fun getKind ()Lpink/alex/ashlar/events/codegen/ServerEventHandlerKind;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPriority ()Lorg/bukkit/event/EventPriority;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/events/codegen/ServerEventHandlerKind : java/lang/Enum {
+	public static final field OBSERVER Lpink/alex/ashlar/events/codegen/ServerEventHandlerKind;
+	public static final field SYNCHRONOUS Lpink/alex/ashlar/events/codegen/ServerEventHandlerKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/events/codegen/ServerEventHandlerKind;
+	public static fun values ()[Lpink/alex/ashlar/events/codegen/ServerEventHandlerKind;
+}
+
+public final class pink/alex/ashlar/events/internal/EventRuntimeComponent : pink/alex/ashlar/PluginComponent {
+	public fun <init> (Lpink/alex/ashlar/di/DependencyGraph;Lpink/alex/ashlar/events/ApplicationEvents;Lpink/alex/ashlar/events/LifecycleEventRegistry;)V
+}
+
+public final class pink/alex/ashlar/events/testing/EventTestHarness : java/lang/AutoCloseable {
+	public fun <init> (Lpink/alex/ashlar/di/DependencyGraph;)V
+	public fun close ()V
+	public final fun dispatch (Lorg/bukkit/event/Event;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getApplicationEvents ()Lpink/alex/ashlar/events/ApplicationEvents;
+	public final fun getServerEvents ()Lpink/alex/ashlar/events/ServerEvents;
+}
+
+public final class pink/alex/ashlar/events/testing/EventTestResult {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public final fun checkSuccessful ()V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/events/testing/EventTestResult;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/events/testing/EventTestResult;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/events/testing/EventTestResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getObserverFailures ()Ljava/util/List;
+	public final fun getServerFailures ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/generated/AshlarDependencyContributions_5173528be798 : pink/alex/ashlar/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}
+

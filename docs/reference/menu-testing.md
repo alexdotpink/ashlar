@@ -1,6 +1,6 @@
 # Menu testing reference
 
-Add `framework-menus-test` to test dependencies. It runs the production semantic session runtime with virtual time and a deterministic native host.
+Add `ashlar-menus-test` to test dependencies. It runs the production semantic session runtime with virtual time and a deterministic native host.
 
 ```kotlin
 @Test

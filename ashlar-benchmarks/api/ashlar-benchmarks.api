@@ -1,0 +1,1069 @@
+public final class pink/alex/ashlar/benchmarks/AbsoluteMetricBudget {
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;D)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun component2 ()D
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;D)Lpink/alex/ashlar/benchmarks/AbsoluteMetricBudget;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/AbsoluteMetricBudget;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/AbsoluteMetricBudget;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLimit ()D
+	public final fun getMetric ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/benchmarks/AshlarPerformanceCatalogue {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/AshlarPerformanceCatalogue;
+	public final fun getCatalogue ()Lpink/alex/ashlar/benchmarks/PerformanceCatalogue;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkBudgets {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/benchmarks/BenchmarkBudgets;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkBudgets;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkBudgets;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAbsolute ()Ljava/util/List;
+	public final fun getRelative ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkBudgetsBuilder {
+	public final fun getAdmission ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getAllocation ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getArtifactBytes ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getClientFrameP99 ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getEndToEnd ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getMean ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getNativeCallback ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getP50 ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getP95 ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getP99 ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getPacketBytes ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getRetainedHeap ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getScheduling ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getThroughput ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+	public final fun getTickP99 ()Lpink/alex/ashlar/benchmarks/MetricBudgetSelector;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkBudgetsKt {
+	public static final fun getBytesPerOperation (I)Lpink/alex/ashlar/benchmarks/ByteLimit;
+	public static final fun getKibibytesPerOperation (I)Lpink/alex/ashlar/benchmarks/ByteLimit;
+	public static final fun getPercent (I)Lpink/alex/ashlar/benchmarks/RegressionLimit;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCaseComparison {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison$Companion;
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public final fun component2 ()Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison;Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEvaluations ()Ljava/util/List;
+	public final fun getFailed ()Z
+	public final fun getId ()Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public final fun getInconclusive ()Z
+	public final fun getMetrics ()Ljava/util/List;
+	public final fun getStatus ()Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkCaseComparison$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkCaseComparison;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCaseComparison$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCaseId {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkCaseId$Companion;
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkId;Ljava/lang/String;Lpink/alex/ashlar/benchmarks/BenchmarkLayer;Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public final fun component4 ()Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkId;Ljava/lang/String;Lpink/alex/ashlar/benchmarks/BenchmarkLayer;Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/BenchmarkId;Ljava/lang/String;Lpink/alex/ashlar/benchmarks/BenchmarkLayer;Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLayer ()Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public final fun getProfile ()Ljava/lang/String;
+	public final fun getScenario ()Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public final fun getTemperature ()Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkCaseId$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkCaseId$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCaseId$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCaseResult {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult$Companion;
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public final fun component2 ()Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult;Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBudgets ()Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;
+	public final fun getId ()Lpink/alex/ashlar/benchmarks/BenchmarkCaseId;
+	public final fun getMetrics ()Ljava/util/List;
+	public final fun getSamples ()Ljava/util/List;
+	public final fun getStatus ()Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public final fun getSupplementalSamples ()Ljava/util/Map;
+	public fun hashCode ()I
+	public final fun metric (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;)Ljava/lang/Double;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkCaseResult$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkCaseResult;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCaseResult$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkCli {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkCli;
+	public final fun execute (Ljava/util/List;Ljava/io/PrintStream;Ljava/io/PrintStream;)I
+	public static final fun main ([Ljava/lang/String;)V
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkComparator {
+	public fun <init> ()V
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun compare (Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration$Companion;
+	public fun <init> ()V
+	public fun <init> (DID)V
+	public synthetic fun <init> (DIDILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()D
+	public final fun component2 ()I
+	public final fun component3 ()D
+	public final fun copy (DID)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;DIDILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConfidence ()D
+	public final fun getNoiseFloorFraction ()D
+	public final fun getResamples ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkComparisonConfiguration$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkComparisonReport {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport$Companion;
+	public fun <init> (ILjava/lang/String;Ljava/lang/String;ZLjava/util/List;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;)V
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;ZLjava/util/List;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public final fun copy (ILjava/lang/String;Ljava/lang/String;ZLjava/util/List;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;ILjava/lang/String;Ljava/lang/String;ZLjava/util/List;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaselineRevision ()Ljava/lang/String;
+	public final fun getCandidateRevision ()Ljava/lang/String;
+	public final fun getCases ()Ljava/util/List;
+	public final fun getEnvironmentCompatible ()Z
+	public final fun getMissingBaselineCases ()Ljava/util/List;
+	public final fun getMissingCandidateCases ()Ljava/util/List;
+	public final fun getSchemaVersion ()I
+	public final fun getStatus ()Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkComparisonReport$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkComparisonReport$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkDiagnostics {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkDiagnostics;
+	public final fun record (Ljava/nio/file/Path;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkDiscovery {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkDiscovery;
+	public final fun discover (Ljava/lang/Iterable;)Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkDslKt {
+	public static final fun benchmarkScenario (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/benchmarks/BenchmarkScenario;
+	public static final fun benchmarkSuite (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/benchmarks/BenchmarkSuite;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkExecutionScope {
+	public final fun consume (Ljava/lang/Object;)V
+	public final fun getLayer ()Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public final fun getProfile ()Lpink/alex/ashlar/benchmarks/BenchmarkProfile;
+	public final fun getScenario ()Lpink/alex/ashlar/benchmarks/BenchmarkScenario;
+	public final fun getTemperature ()Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+	public final fun record (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;D)V
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkFixture : kotlin/properties/ReadOnlyProperty {
+	public fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkGateStatus : java/lang/Enum {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus$Companion;
+	public static final field FAILED Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public static final field INCOMPATIBLE Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public static final field INCONCLUSIVE Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public static final field MISSING_CASES Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public static final field PASSED Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BenchmarkGateStatus;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkGateStatus$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkId {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkId;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkId$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkId$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkId;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkJson {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkJson;
+	public final fun decodeComparison (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;
+	public final fun decodeRun (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+	public final fun encode (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;)Ljava/lang/String;
+	public final fun encode (Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;)Ljava/lang/String;
+	public final fun getFormat ()Lkotlinx/serialization/json/Json;
+	public final fun write (Ljava/nio/file/Path;Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;)V
+	public final fun write (Ljava/nio/file/Path;Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;)V
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkLayer : java/lang/Enum {
+	public static final field BUILD Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field CALIBRATION Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field CLIENT Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkLayer$Companion;
+	public static final field FOLIA Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field JVM Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field LOAD Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field PAPER Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static final field SOAK Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BenchmarkLayer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkLayer$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkMetric : java/lang/Enum {
+	public static final field ADMISSION Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field ALLOCATION Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field ARTIFACT_BYTES Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field CLIENT_FRAME_P99 Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkMetric$Companion;
+	public static final field DISK_BYTES Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field DROPPED_VALUES Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field END_TO_END Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field GC_PAUSE Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field GENERATED_BYTES Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field LATENCY_MEAN Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field LATENCY_P50 Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field LATENCY_P95 Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field LATENCY_P99 Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field NATIVE_CALLBACK Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field PACKET_BYTES Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field RETAINED_HEAP Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field SCHEDULING Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field THROUGHPUT Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static final field TICK_P99 Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun getDirection ()Lpink/alex/ashlar/benchmarks/MetricDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getUnit ()Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkMetric$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkMetricComparison {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison$Companion;
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DDDDD)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun component5 ()D
+	public final fun component6 ()D
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DDDDD)Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DDDDDILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaseline ()D
+	public final fun getCandidate ()D
+	public final fun getConfidenceLower ()D
+	public final fun getConfidenceUpper ()D
+	public final fun getMetric ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun getRegressionFraction ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkMetricComparison$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkMetricComparison;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkMetricComparison$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkMetricValue {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue$Companion;
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;D)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun component2 ()D
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;D)Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMetric ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun getUnit ()Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public final fun getValue ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkMetricValue$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkMetricValue;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkMetricValue$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkProfile {
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;)Lpink/alex/ashlar/benchmarks/BenchmarkProfile;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkProfile;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkProfile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (Ljava/lang/String;)J
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParameters ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkProfile$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkProfile$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkProfile;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkProfile;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkProfilesBuilder {
+	public final fun profile (Ljava/lang/String;[Lkotlin/Pair;)V
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkReports {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkReports;
+	public final fun markdown (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;)Ljava/lang/String;
+	public final fun text (Lpink/alex/ashlar/benchmarks/BenchmarkComparisonReport;)Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkRunConfiguration {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration$Companion;
+	public fun <init> ()V
+	public fun <init> (IIIIIZZ)V
+	public synthetic fun <init> (IIIIIZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun copy (IIIIIZZ)Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;IIIIIZZILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAuthoritative ()Z
+	public final fun getCollectAllocation ()Z
+	public final fun getForks ()I
+	public final fun getMeasurementIterations ()I
+	public final fun getMeasurementTimeMillis ()I
+	public final fun getWarmupIterations ()I
+	public final fun getWarmupTimeMillis ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkRunConfiguration$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkRunConfiguration$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkRunResult {
+	public static final field CURRENT_SCHEMA_VERSION I
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkRunResult$Companion;
+	public fun <init> (ILjava/lang/String;Ljava/lang/String;JLpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;Ljava/util/List;)V
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;JLpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()J
+	public final fun component5 ()Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public final fun component6 ()Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;
+	public final fun component7 ()Ljava/util/List;
+	public final fun copy (ILjava/lang/String;Ljava/lang/String;JLpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;Ljava/util/List;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;ILjava/lang/String;Ljava/lang/String;JLpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCases ()Ljava/util/List;
+	public final fun getConfiguration ()Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;
+	public final fun getEnvironment ()Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public final fun getRevision ()Ljava/lang/String;
+	public final fun getRunId ()Ljava/lang/String;
+	public final fun getSchemaVersion ()I
+	public final fun getStartedAtEpochMillis ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkRunResult$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkRunResult$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkRunResult$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkRunner {
+	public fun <init> (Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun run (Lpink/alex/ashlar/benchmarks/BenchmarkSuite;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun run$default (Lpink/alex/ashlar/benchmarks/BenchmarkRunner;Lpink/alex/ashlar/benchmarks/BenchmarkSuite;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkSample {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkSample$Companion;
+	public fun <init> (JLjava/lang/Long;)V
+	public synthetic fun <init> (JLjava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ljava/lang/Long;
+	public final fun copy (JLjava/lang/Long;)Lpink/alex/ashlar/benchmarks/BenchmarkSample;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BenchmarkSample;JLjava/lang/Long;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkSample;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAllocatedBytes ()Ljava/lang/Long;
+	public final fun getDurationNanos ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BenchmarkSample$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkSample$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BenchmarkSample;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BenchmarkSample;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkSample$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkScenario {
+	public final fun getBudgets ()Lpink/alex/ashlar/benchmarks/BenchmarkBudgets;
+	public final fun getId ()Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public final fun getLayers ()Ljava/util/Set;
+	public final fun getProfiles ()Ljava/util/List;
+	public final fun getStatus ()Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public final fun getTemperatures ()Ljava/util/Set;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkScenarioBuilder {
+	public final fun budgets (Lkotlin/jvm/functions/Function1;)V
+	public final fun cleanup (Lkotlin/jvm/functions/Function2;)V
+	public final fun evidence ([Lpink/alex/ashlar/benchmarks/BenchmarkLayer;)V
+	public final fun fixture (Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;)Lpink/alex/ashlar/benchmarks/BenchmarkFixture;
+	public static synthetic fun fixture$default (Lpink/alex/ashlar/benchmarks/BenchmarkScenarioBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkFixture;
+	public final fun getStatus ()Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public final fun measure (Lkotlin/jvm/functions/Function2;)V
+	public final fun profiles (Lkotlin/jvm/functions/Function1;)V
+	public final fun setStatus (Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;)V
+	public final fun setup (Lkotlin/jvm/functions/Function2;)V
+	public final fun temperatures ([Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;)V
+	public final fun verify (Lkotlin/jvm/functions/Function3;)V
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkStatistics {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BenchmarkStatistics;
+	public final fun aggregate (Ljava/util/List;)Ljava/util/List;
+	public final fun percentile (Ljava/util/List;D)D
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkSuite {
+	public final fun getNamespace ()Ljava/lang/String;
+	public final fun getScenarios ()Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkSuiteBuilder {
+	public final fun benchmarkScenario (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkTemperature : java/lang/Enum {
+	public static final field COLD Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkTemperature$Companion;
+	public static final field WARM Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BenchmarkTemperature;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkTemperature$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkUnit : java/lang/Enum {
+	public static final field BYTES Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static final field BYTES_PER_OPERATION Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static final field COUNT Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BenchmarkUnit$Companion;
+	public static final field NANOSECONDS Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static final field OPERATIONS_PER_SECOND Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static final field PERCENT Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BenchmarkUnit;
+}
+
+public final class pink/alex/ashlar/benchmarks/BenchmarkUnit$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BudgetEvaluation {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BudgetEvaluation$Companion;
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BudgetKind;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DLpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;DLjava/lang/Double;Ljava/lang/Double;Ljava/lang/String;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/benchmarks/BudgetKind;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DLpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;DLjava/lang/Double;Ljava/lang/Double;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BudgetKind;
+	public final fun component2 ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun component3 ()D
+	public final fun component4 ()Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public final fun component5 ()D
+	public final fun component6 ()Ljava/lang/Double;
+	public final fun component7 ()Ljava/lang/Double;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BudgetKind;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DLpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;DLjava/lang/Double;Ljava/lang/Double;Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BudgetEvaluation;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/BudgetEvaluation;Lpink/alex/ashlar/benchmarks/BudgetKind;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;DLpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;DLjava/lang/Double;Ljava/lang/Double;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BudgetEvaluation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConfidenceLower ()Ljava/lang/Double;
+	public final fun getConfidenceUpper ()Ljava/lang/Double;
+	public final fun getKind ()Lpink/alex/ashlar/benchmarks/BudgetKind;
+	public final fun getLimit ()D
+	public final fun getMetric ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun getObserved ()D
+	public final fun getReason ()Ljava/lang/String;
+	public final fun getStatus ()Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/BudgetEvaluation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/BudgetEvaluation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/BudgetEvaluation;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/BudgetEvaluation;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BudgetEvaluation$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BudgetEvaluationStatus : java/lang/Enum {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus$Companion;
+	public static final field FAILED Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public static final field INCONCLUSIVE Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public static final field NOT_ENFORCED Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public static final field PASSED Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BudgetEvaluationStatus;
+}
+
+public final class pink/alex/ashlar/benchmarks/BudgetEvaluationStatus$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BudgetKind : java/lang/Enum {
+	public static final field ABSOLUTE Lpink/alex/ashlar/benchmarks/BudgetKind;
+	public static final field Companion Lpink/alex/ashlar/benchmarks/BudgetKind$Companion;
+	public static final field RELATIVE Lpink/alex/ashlar/benchmarks/BudgetKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BudgetKind;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/BudgetKind;
+}
+
+public final class pink/alex/ashlar/benchmarks/BudgetKind$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/BuildBenchmarkRunner {
+	public fun <init> (Ljava/nio/file/Path;Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;I)V
+	public synthetic fun <init> (Ljava/nio/file/Path;Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun run (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+}
+
+public final class pink/alex/ashlar/benchmarks/ByteLimit {
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Lpink/alex/ashlar/benchmarks/ByteLimit;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/ByteLimit;JILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/ByteLimit;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBytes ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/benchmarks/JmhBenchmarkRunner {
+	public fun <init> (Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;Lpink/alex/ashlar/benchmarks/BenchmarkRunConfiguration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun run (Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+	public static synthetic fun run$default (Lpink/alex/ashlar/benchmarks/JmhBenchmarkRunner;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/BenchmarkRunResult;
+}
+
+public final class pink/alex/ashlar/benchmarks/MeasurementEnvironment {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/MeasurementEnvironment$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun compatibilityKey ()Ljava/lang/String;
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Ljava/lang/String;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component14 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()I
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArchitecture ()Ljava/lang/String;
+	public final fun getAshlarVersion ()Ljava/lang/String;
+	public final fun getAttributes ()Ljava/util/Map;
+	public final fun getAvailableProcessors ()I
+	public final fun getCpuModel ()Ljava/lang/String;
+	public final fun getEnvironmentId ()Ljava/lang/String;
+	public final fun getGarbageCollectors ()Ljava/util/List;
+	public final fun getJvmArguments ()Ljava/util/List;
+	public final fun getJvmVendor ()Ljava/lang/String;
+	public final fun getJvmVersion ()Ljava/lang/String;
+	public final fun getKotlinVersion ()Ljava/lang/String;
+	public final fun getOperatingSystem ()Ljava/lang/String;
+	public final fun getPlatform ()Ljava/lang/String;
+	public final fun getPlatformVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/MeasurementEnvironment$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/MeasurementEnvironment$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/MeasurementEnvironment$Companion {
+	public final fun local (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public static synthetic fun local$default (Lpink/alex/ashlar/benchmarks/MeasurementEnvironment$Companion;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/MeasurementEnvironment;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/MetricBudgetSelector {
+	public final fun atLeast (D)V
+	public final fun atMost (D)V
+	public final fun atMost (Lpink/alex/ashlar/benchmarks/ByteLimit;)V
+	public final fun atMost-LRDsOJo (J)V
+	public final fun getMetric ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun getRegression ()Lpink/alex/ashlar/benchmarks/RelativeBudgetSelector;
+}
+
+public final class pink/alex/ashlar/benchmarks/MetricDirection : java/lang/Enum {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/MetricDirection$Companion;
+	public static final field HIGHER_IS_BETTER Lpink/alex/ashlar/benchmarks/MetricDirection;
+	public static final field LOWER_IS_BETTER Lpink/alex/ashlar/benchmarks/MetricDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/MetricDirection;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/MetricDirection;
+}
+
+public final class pink/alex/ashlar/benchmarks/MetricDirection$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceCapability {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/PerformanceCapability$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lpink/alex/ashlar/benchmarks/BenchmarkId;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lpink/alex/ashlar/benchmarks/BenchmarkId;)Lpink/alex/ashlar/benchmarks/PerformanceCapability;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/PerformanceCapability;Ljava/lang/String;Ljava/lang/String;Lpink/alex/ashlar/benchmarks/BenchmarkId;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/PerformanceCapability;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContract ()Lpink/alex/ashlar/benchmarks/BenchmarkId;
+	public final fun getGroup ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/PerformanceCapability$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/PerformanceCapability$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/PerformanceCapability;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/PerformanceCapability;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceCapability$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceCatalogue {
+	public fun <init> (Ljava/lang/Iterable;)V
+	public final fun getCapabilities ()Ljava/util/List;
+	public final fun validate (Ljava/lang/Iterable;Ljava/util/Set;Z)Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;
+	public static synthetic fun validate$default (Lpink/alex/ashlar/benchmarks/PerformanceCatalogue;Ljava/lang/Iterable;Ljava/util/Set;ZILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceCatalogueReport {
+	public static final field Companion Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport$Companion;
+	public fun <init> (IILjava/util/Set;Ljava/util/List;)V
+	public final fun checkComplete ()V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (IILjava/util/Set;Ljava/util/List;)Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;IILjava/util/Set;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCapabilityCount ()I
+	public final fun getComplete ()Z
+	public final fun getContractCount ()I
+	public final fun getExternalContracts ()Ljava/util/Set;
+	public final fun getProblems ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/PerformanceCatalogueReport$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/PerformanceCatalogueReport;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceCatalogueReport$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceContractStatus : java/lang/Enum {
+	public static final field CONTRACTUAL Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public static final field Companion Lpink/alex/ashlar/benchmarks/PerformanceContractStatus$Companion;
+	public static final field EXPLORATORY Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public static final field GUARDED Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+	public static fun values ()[Lpink/alex/ashlar/benchmarks/PerformanceContractStatus;
+}
+
+public final class pink/alex/ashlar/benchmarks/PerformanceContractStatus$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class pink/alex/ashlar/benchmarks/RegressionLimit {
+	public fun <init> (D)V
+	public final fun component1 ()D
+	public final fun copy (D)Lpink/alex/ashlar/benchmarks/RegressionLimit;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/RegressionLimit;DILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/RegressionLimit;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFraction ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/benchmarks/RelativeBudgetSelector {
+	public final fun atMost (Lpink/alex/ashlar/benchmarks/RegressionLimit;)V
+}
+
+public final class pink/alex/ashlar/benchmarks/RelativeMetricBudget {
+	public fun <init> (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;Lpink/alex/ashlar/benchmarks/RegressionLimit;)V
+	public final fun component1 ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public final fun component2 ()Lpink/alex/ashlar/benchmarks/RegressionLimit;
+	public final fun copy (Lpink/alex/ashlar/benchmarks/BenchmarkMetric;Lpink/alex/ashlar/benchmarks/RegressionLimit;)Lpink/alex/ashlar/benchmarks/RelativeMetricBudget;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/RelativeMetricBudget;Lpink/alex/ashlar/benchmarks/BenchmarkMetric;Lpink/alex/ashlar/benchmarks/RegressionLimit;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/RelativeMetricBudget;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLimit ()Lpink/alex/ashlar/benchmarks/RegressionLimit;
+	public final fun getMetric ()Lpink/alex/ashlar/benchmarks/BenchmarkMetric;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;Ljava/util/Map;)Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAbsolute ()Ljava/util/Map;
+	public final fun getRelative ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class pink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lpink/alex/ashlar/benchmarks/SerializableBenchmarkBudgets;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public class pink/alex/ashlar/benchmarks/internal/JmhScenarioBenchmark {
+	public fun <init> ()V
+	public fun measure (Lpink/alex/ashlar/benchmarks/internal/JmhScenarioBenchmark$ScenarioState;)Ljava/lang/Object;
+}
+
+public class pink/alex/ashlar/benchmarks/internal/JmhScenarioBenchmark$ScenarioState {
+	public fun <init> ()V
+	public fun close ()V
+	public fun create ()V
+	public fun setupInvocation ()V
+	public fun verifyInvocation ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType : pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B3 {
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B1 : pink/alex/ashlar/benchmarks/internal/JmhScenarioBenchmark$ScenarioState {
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B2 : pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B1 {
+	public field readyInvocation Z
+	public field readyIteration Z
+	public field readyTrial Z
+	public field setupInvocationMutex I
+	public static final field setupInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupIterationMutex I
+	public static final field setupIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupTrialMutex I
+	public static final field setupTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearInvocationMutex I
+	public static final field tearInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearIterationMutex I
+	public static final field tearIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearTrialMutex I
+	public static final field tearTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B3 : pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType_B2 {
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType : pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B3 {
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B1 : pink/alex/ashlar/benchmarks/internal/JmhScenarioBenchmark {
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B2 : pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B1 {
+	public field setupInvocationMutex I
+	public static final field setupInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupIterationMutex I
+	public static final field setupIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field setupTrialMutex I
+	public static final field setupTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearInvocationMutex I
+	public static final field tearInvocationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearIterationMutex I
+	public static final field tearIterationMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public field tearTrialMutex I
+	public static final field tearTrialMutexUpdater Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;
+	public fun <init> ()V
+}
+
+public class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B3 : pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType_B2 {
+	public fun <init> ()V
+}
+
+public final class pink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_measure_jmhTest {
+	public fun <init> ()V
+	public fun measure_AverageTime (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public fun measure_SampleTime (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public fun measure_SingleShotTime (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public fun measure_Throughput (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/infra/ThreadParams;)Lorg/openjdk/jmh/results/BenchmarkTaskResult;
+	public static fun measure_avgt_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;ILpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Lpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+	public static fun measure_sample_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;ILorg/openjdk/jmh/util/SampleBuffer;IJILpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Lpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+	public static fun measure_ss_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;IILpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Lpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+	public static fun measure_thrpt_jmhStub (Lorg/openjdk/jmh/runner/InfraControl;Lorg/openjdk/jmh/results/RawResults;Lorg/openjdk/jmh/infra/BenchmarkParams;Lorg/openjdk/jmh/infra/IterationParams;Lorg/openjdk/jmh/infra/ThreadParams;Lorg/openjdk/jmh/infra/Blackhole;Lorg/openjdk/jmh/infra/Control;ILpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_ScenarioState_jmhType;Lpink/alex/ashlar/benchmarks/internal/jmh_generated/JmhScenarioBenchmark_jmhType;)V
+}
+

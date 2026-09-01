@@ -6,7 +6,7 @@ The main boundary is between declaration and runtime behavior. Kotlin classes an
 
 This keeps modules deep. A command handler sees resolved Kotlin domain values and returns a domain or presentation result. It does not know Brigadier nodes, token scanners, coroutine bookkeeping, or server registration. A component owns children, tasks, and resources without coordinating a shutdown state machine.
 
-Paper and Folia share the same public execution model. Framework coroutines do not imply permission to touch server state. Small ownership blocks make the transition explicit and keep Paper objects from leaking across suspension points.
+Paper and Folia share the same public execution model. Ashlar coroutines do not imply permission to touch server state. Small ownership blocks make the transition explicit and keep Paper objects from leaking across suspension points.
 
 Dependency injection is plug-in-local and generated at constructor boundaries. It exists to connect modules and application code, not to become a general reflection container. Contributions provide controlled extension sets; automatic root components let modules install lifecycle state without making the plug-in entrypoint a manual registry.
 

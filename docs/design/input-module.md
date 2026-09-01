@@ -28,7 +28,7 @@ The input module turns server events into typed player prompts. It owns chat int
 Plug-ins opt in through the managed build:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     input()
 }
 ```
@@ -188,7 +188,7 @@ Player disconnect and plug-in shutdown are silent. Parser `cancel()` carries no 
 
 `PlayerInput` and its active-prompt registry are plug-in-scoped. Each prompt is owned by its caller's coroutine and by the input runtime for cleanup. Player disconnect, explicit cancellation, replacement, caller cancellation, or plug-in shutdown atomically removes the prompt and closes its event registrations.
 
-Matching chat callbacks retain Paper and Folia's native concurrency. Per-player state uses an atomic transition so exactly one decision wins. Retry feedback runs outside the event callback. The parser receives only framework-owned text and Component values; raw Paper events never enter suspended code.
+Matching chat callbacks retain Paper and Folia's native concurrency. Per-player state uses an atomic transition so exactly one decision wins. Retry feedback runs outside the event callback. The parser receives only ashlar-owned text and Component values; raw Paper events never enter suspended code.
 
 ## Testing interface
 
@@ -226,7 +226,7 @@ The module ships task-oriented how-to pages, complete reference, an agent-author
 Implementation remains deliberately small:
 
 1. Fix the sample's hard-coded help header and add its regression test.
-2. Add `framework-input`, managed `input()`, core types, conflict registry, cancellation, messages, and focused server-free tests.
+2. Add `ashlar-input`, managed `input()`, core types, conflict registry, cancellation, messages, and focused server-free tests.
 3. Add the Paper/Folia chat adapter and real-server integration fixtures.
 4. Add the dedicated public test kit.
 5. Add the playable sample, complete docs, ABI baselines, and real-client acceptance run.

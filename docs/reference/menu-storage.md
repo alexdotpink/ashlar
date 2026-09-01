@@ -1,6 +1,6 @@
 # Menu storage and transactions reference
 
-Menu storage is an immutable transaction model. The native adapter cancels framework-owned movement, computes a complete proposal, commits it pessimistically, then installs accepted storage, player-inventory, cursor, and drop changes together.
+Menu storage is an immutable transaction model. The native adapter cancels ashlar-owned movement, computes a complete proposal, commits it pessimistically, then installs accepted storage, player-inventory, cursor, and drop changes together.
 
 ## Storage models
 

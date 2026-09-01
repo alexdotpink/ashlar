@@ -1,0 +1,162 @@
+public abstract interface annotation class pink/alex/ashlar/AshlarComponent : java/lang/annotation/Annotation {
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun phase ()Lpink/alex/ashlar/ComponentPhase;
+}
+
+public abstract class pink/alex/ashlar/AshlarPlugin : org/bukkit/plugin/java/JavaPlugin {
+	public fun <init> ()V
+	protected final fun component (Lkotlin/jvm/functions/Function0;)Lkotlin/properties/PropertyDelegateProvider;
+	protected fun configure (Lpink/alex/ashlar/di/DependencyGraph;)V
+	protected final fun criticalTask (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun criticalTask$default (Lpink/alex/ashlar/AshlarPlugin;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	protected fun disable (Lpink/alex/ashlar/ComponentContext;)V
+	protected fun enable (Lpink/alex/ashlar/ComponentContext;)V
+	protected fun getTaskDrainTimeout-UwyO8pc ()J
+	protected final fun inject (Lkotlin/reflect/KClass;)Lkotlin/properties/ReadOnlyProperty;
+	protected fun load (Lpink/alex/ashlar/PluginLoadContext;)V
+	public final fun onDisable ()V
+	public final fun onEnable ()V
+	public final fun onLoad ()V
+	protected final fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
+	protected final fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Lpink/alex/ashlar/AshlarPlugin;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	protected fun taskFailureReporter (Lnet/kyori/adventure/text/logger/slf4j/ComponentLogger;)Lpink/alex/ashlar/TaskFailureReporter;
+}
+
+public abstract interface class pink/alex/ashlar/ComponentContext : pink/alex/ashlar/PluginLoadContext {
+	public abstract fun criticalTask (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun criticalTask$default (Lpink/alex/ashlar/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public abstract fun getComponentName ()Ljava/lang/String;
+	public abstract fun getDependencies ()Lpink/alex/ashlar/di/DependencyResolver;
+	public abstract fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
+	public abstract fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public abstract fun task (Ljava/lang/String;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Lpink/alex/ashlar/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public final class pink/alex/ashlar/ComponentContext$DefaultImpls {
+	public static synthetic fun criticalTask$default (Lpink/alex/ashlar/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Lpink/alex/ashlar/ComponentContext;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public final class pink/alex/ashlar/ComponentPhase : java/lang/Enum {
+	public static final field APPLICATION Lpink/alex/ashlar/ComponentPhase;
+	public static final field FRAMEWORK Lpink/alex/ashlar/ComponentPhase;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/ComponentPhase;
+	public static fun values ()[Lpink/alex/ashlar/ComponentPhase;
+}
+
+public abstract interface annotation class pink/alex/ashlar/ExcludeContributions : java/lang/annotation/Annotation {
+	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public abstract class pink/alex/ashlar/PluginComponent {
+	public fun <init> ()V
+	protected final fun component (Lkotlin/jvm/functions/Function0;)Lkotlin/properties/PropertyDelegateProvider;
+	protected final fun criticalTask (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun criticalTask$default (Lpink/alex/ashlar/PluginComponent;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	protected final fun inject (Lkotlin/reflect/KClass;)Lkotlin/properties/ReadOnlyProperty;
+	protected final fun own (Ljava/lang/AutoCloseable;)Ljava/lang/AutoCloseable;
+	protected fun start (Lpink/alex/ashlar/ComponentContext;)V
+	protected fun stop (Lpink/alex/ashlar/ComponentContext;)V
+	protected final fun task (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun task$default (Lpink/alex/ashlar/PluginComponent;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public abstract interface class pink/alex/ashlar/PluginLoadContext {
+	public abstract fun getLogger ()Lnet/kyori/adventure/text/logger/slf4j/ComponentLogger;
+	public abstract fun getPlugin ()Lorg/bukkit/plugin/Plugin;
+	public abstract fun getServer ()Lorg/bukkit/Server;
+}
+
+public final class pink/alex/ashlar/TaskFailure {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun component4 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Throwable;)Lpink/alex/ashlar/TaskFailure;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/TaskFailure;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Throwable;ILjava/lang/Object;)Lpink/alex/ashlar/TaskFailure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public final fun getComponentName ()Ljava/lang/String;
+	public final fun getCritical ()Z
+	public final fun getTaskName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/TaskFailureReporter {
+	public abstract fun report (Lpink/alex/ashlar/TaskFailure;)V
+}
+
+public final class pink/alex/ashlar/execution/EntityContext {
+	public final fun checkOwnership ()V
+	public final fun getEntity ()Lorg/bukkit/entity/Entity;
+}
+
+public abstract interface class pink/alex/ashlar/execution/EntityOutcome {
+	public fun onRetired (Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/execution/EntityOutcome;
+}
+
+public final class pink/alex/ashlar/execution/EntityOutcome$Completed : pink/alex/ashlar/execution/EntityOutcome {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lpink/alex/ashlar/execution/EntityOutcome$Completed;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/execution/EntityOutcome$Completed;Ljava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/execution/EntityOutcome$Completed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun onRetired (Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/execution/EntityOutcome;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/execution/EntityOutcome$DefaultImpls {
+	public static fun onRetired (Lpink/alex/ashlar/execution/EntityOutcome;Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/execution/EntityOutcome;
+}
+
+public final class pink/alex/ashlar/execution/EntityOutcome$Retired : pink/alex/ashlar/execution/EntityOutcome {
+	public static final field INSTANCE Lpink/alex/ashlar/execution/EntityOutcome$Retired;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun onRetired (Lkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/execution/EntityOutcome;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/execution/ExecutionKt {
+	public static final fun withEntity (Lorg/bukkit/plugin/Plugin;Lorg/bukkit/entity/Entity;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withGlobal (Lorg/bukkit/plugin/Plugin;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withRegion (Lorg/bukkit/plugin/Plugin;Lorg/bukkit/Location;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withRegion (Lorg/bukkit/plugin/Plugin;Lorg/bukkit/World;IILkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/execution/GlobalContext {
+	public final fun checkOwnership ()V
+}
+
+public final class pink/alex/ashlar/execution/OwnershipViolationException : java/lang/IllegalStateException {
+}
+
+public final class pink/alex/ashlar/execution/PlayerRef {
+	public static final fun access-impl (Ljava/util/UUID;Lorg/bukkit/plugin/Plugin;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun box-impl (Ljava/util/UUID;)Lpink/alex/ashlar/execution/PlayerRef;
+	public static fun constructor-impl (Ljava/util/UUID;)Ljava/util/UUID;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/UUID;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/UUID;Ljava/util/UUID;)Z
+	public final fun getUniqueId ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/UUID;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/UUID;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/UUID;
+}
+
+public final class pink/alex/ashlar/execution/RegionContext {
+	public final fun checkOwnership ()V
+	public final fun getChunkX ()I
+	public final fun getChunkZ ()I
+	public final fun getWorld ()Lorg/bukkit/World;
+}
+

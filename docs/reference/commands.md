@@ -3,7 +3,7 @@
 Enable commands in the managed Gradle extension:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     commands(strictDocumentation = true)
 }
 ```
@@ -52,7 +52,7 @@ See [Command arguments and options](command-arguments.md) for the complete contr
 
 ## Native Minecraft values
 
-The semantic catalogue under `commands.minecraft` maps Paper native argument types to Kotlin values. Server-owned targets become stable player, entity, block, world, or selection references before asynchronous execution. Positions, rotations, ranges, profiles, criteria, registry keys, item stacks, and predicates are copied or wrapped behind framework-owned types. Paper resolver and provider objects never enter handler signatures.
+The semantic catalogue under `commands.minecraft` maps Paper native argument types to Kotlin values. Server-owned targets become stable player, entity, block, world, or selection references before asynchronous execution. Positions, rotations, ranges, profiles, criteria, registry keys, item stacks, and predicates are copied or wrapped behind ashlar-owned types. Paper resolver and provider objects never enter handler signatures.
 
 See [Native Minecraft arguments](native-arguments.md) for the full type table and ownership behavior.
 
@@ -60,7 +60,7 @@ See [Native Minecraft arguments](native-arguments.md) for the full type table an
 
 Handlers may return `Unit`, `String`, Adventure `Component`, `CommandResult`, or a type with a contributed `CommandResponseCodec`. Use `reject` and `orReject` for expected stackless failures. Contributed typed exception handlers are selected by the most-specific exception type. Cancellation does not produce an error response.
 
-Framework messages come from `CommandMessages`; help comes from `CommandHelpRenderer`. Contributed replacements override the English defaults. See [Command results, failures, and observability](command-results.md).
+Ashlar messages come from `CommandMessages`; help comes from `CommandHelpRenderer`. Contributed replacements override the English defaults. See [Command results, failures, and observability](command-results.md).
 
 ## Policies
 

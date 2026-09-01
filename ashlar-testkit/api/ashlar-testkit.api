@@ -1,0 +1,30 @@
+public final class pink/alex/ashlar/testkit/ComponentTestHarness : java/lang/AutoCloseable {
+	public fun close ()V
+	public final fun getComponent ()Lpink/alex/ashlar/PluginComponent;
+	public final fun start ()Lpink/alex/ashlar/PluginComponent;
+	public final fun stop ()Lpink/alex/ashlar/testkit/ComponentTestResult;
+}
+
+public final class pink/alex/ashlar/testkit/ComponentTestHarnessKt {
+	public static final fun componentTest-8Mi8wO0 (Ljava/lang/String;JLkotlin/jvm/functions/Function0;)Lpink/alex/ashlar/testkit/ComponentTestHarness;
+	public static synthetic fun componentTest-8Mi8wO0$default (Ljava/lang/String;JLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lpink/alex/ashlar/testkit/ComponentTestHarness;
+}
+
+public final class pink/alex/ashlar/testkit/ComponentTestResult {
+	public fun <init> (ZLjava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun checkSuccessful ()V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (ZLjava/util/List;Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/testkit/ComponentTestResult;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/testkit/ComponentTestResult;ZLjava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/testkit/ComponentTestResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCriticalFailures ()Ljava/util/List;
+	public final fun getLifecycleFailures ()Ljava/util/List;
+	public final fun getTaskFailures ()Ljava/util/List;
+	public final fun getTasksDrained ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

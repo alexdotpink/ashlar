@@ -1,0 +1,148 @@
+public final class pink/alex/ashlar/generated/AshlarDependencyContributions_2fe90836c7e3 : pink/alex/ashlar/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}
+
+public abstract interface class pink/alex/ashlar/input/ChatAnswer {
+	public abstract fun getComponent ()Lnet/kyori/adventure/text/Component;
+	public abstract fun getText ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/input/EnglishInputMessages : pink/alex/ashlar/input/InputMessages {
+	public static final field INSTANCE Lpink/alex/ashlar/input/EnglishInputMessages;
+	public fun conflict (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun expired (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/input/InputCancellationException : java/util/concurrent/CancellationException {
+	public fun <init> (Lpink/alex/ashlar/input/InputCancellationReason;)V
+	public final fun getReason ()Lpink/alex/ashlar/input/InputCancellationReason;
+}
+
+public final class pink/alex/ashlar/input/InputCancellationReason : java/lang/Enum {
+	public static final field EXTERNALLY_CANCELLED Lpink/alex/ashlar/input/InputCancellationReason;
+	public static final field IDLE_TIMEOUT Lpink/alex/ashlar/input/InputCancellationReason;
+	public static final field PLAYER_DISCONNECTED Lpink/alex/ashlar/input/InputCancellationReason;
+	public static final field PLUGIN_STOPPED Lpink/alex/ashlar/input/InputCancellationReason;
+	public static final field REPLACED Lpink/alex/ashlar/input/InputCancellationReason;
+	public static final field USER_CANCELLED Lpink/alex/ashlar/input/InputCancellationReason;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/input/InputCancellationReason;
+	public static fun values ()[Lpink/alex/ashlar/input/InputCancellationReason;
+}
+
+public final class pink/alex/ashlar/input/InputConflict : java/lang/Enum {
+	public static final field REJECT Lpink/alex/ashlar/input/InputConflict;
+	public static final field REPLACE Lpink/alex/ashlar/input/InputConflict;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/input/InputConflict;
+	public static fun values ()[Lpink/alex/ashlar/input/InputConflict;
+}
+
+public final class pink/alex/ashlar/input/InputConflictException : java/util/concurrent/CancellationException {
+	public synthetic fun <init> (Ljava/util/UUID;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getPlayer-F7iSHy8 ()Ljava/util/UUID;
+}
+
+public abstract interface class pink/alex/ashlar/input/InputDecision {
+}
+
+public final class pink/alex/ashlar/input/InputDecision$Accepted : pink/alex/ashlar/input/InputDecision {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lpink/alex/ashlar/input/InputDecision$Accepted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/input/InputDecision$Accepted;Ljava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/input/InputDecision$Accepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/input/InputDecision$Cancel : pink/alex/ashlar/input/InputDecision {
+	public static final field INSTANCE Lpink/alex/ashlar/input/InputDecision$Cancel;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/input/InputDecision$Pass : pink/alex/ashlar/input/InputDecision {
+	public static final field INSTANCE Lpink/alex/ashlar/input/InputDecision$Pass;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/input/InputDecision$Retry : pink/alex/ashlar/input/InputDecision {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun copy (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/input/InputDecision$Retry;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/input/InputDecision$Retry;Lnet/kyori/adventure/text/Component;ILjava/lang/Object;)Lpink/alex/ashlar/input/InputDecision$Retry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFeedback ()Lnet/kyori/adventure/text/Component;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/input/InputMessages {
+	public abstract fun conflict (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public abstract fun expired (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/input/InputTypesKt {
+	public static final fun accept (Ljava/lang/Object;)Lpink/alex/ashlar/input/InputDecision;
+	public static final fun acceptInputValue (Ljava/lang/Object;)Lpink/alex/ashlar/input/InputDecision;
+	public static final fun cancel ()Lpink/alex/ashlar/input/InputDecision;
+	public static final fun pass ()Lpink/alex/ashlar/input/InputDecision;
+	public static final fun retry (Ljava/lang/String;)Lpink/alex/ashlar/input/InputDecision;
+	public static final fun retry (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/input/InputDecision;
+}
+
+public final class pink/alex/ashlar/input/PlayerInput {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/di/DependencyGraph;)V
+	public final fun cancel-Qxubp9c (Ljava/util/UUID;)Z
+	public final fun chat-FFAa4MA (Ljava/util/UUID;Ljava/lang/String;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun chat-FFAa4MA (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun chat-FFAa4MA$default (Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Ljava/lang/String;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun chat-FFAa4MA$default (Lpink/alex/ashlar/input/PlayerInput;Ljava/util/UUID;Lnet/kyori/adventure/text/Component;Lkotlin/time/Duration;Lpink/alex/ashlar/input/InputConflict;Lnet/kyori/adventure/text/Component;Lnet/kyori/adventure/text/Component;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/input/internal/InputRuntimeComponent : pink/alex/ashlar/PluginComponent {
+	public fun <init> (Lpink/alex/ashlar/events/ServerEvents;Lpink/alex/ashlar/input/PlayerInput;)V
+}
+
+public final class pink/alex/ashlar/input/testing/InputTestAttempt {
+	public fun <init> (Lnet/kyori/adventure/text/Component;Z)V
+	public final fun component1 ()Lnet/kyori/adventure/text/Component;
+	public final fun component2 ()Z
+	public final fun copy (Lnet/kyori/adventure/text/Component;Z)Lpink/alex/ashlar/input/testing/InputTestAttempt;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/input/testing/InputTestAttempt;Lnet/kyori/adventure/text/Component;ZILjava/lang/Object;)Lpink/alex/ashlar/input/testing/InputTestAttempt;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getComponent ()Lnet/kyori/adventure/text/Component;
+	public final fun getConsumed ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/input/testing/InputTestHarness : java/lang/AutoCloseable {
+	public fun <init> ()V
+	public fun <init> (Lpink/alex/ashlar/input/InputMessages;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/input/InputMessages;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun answer-xJTp0AU (Ljava/util/UUID;Ljava/lang/String;)Lpink/alex/ashlar/input/testing/InputTestAttempt;
+	public final fun answer-xJTp0AU (Ljava/util/UUID;Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/input/testing/InputTestAttempt;
+	public final fun clear-Qxubp9c (Ljava/util/UUID;)V
+	public fun close ()V
+	public final fun disconnect-Qxubp9c (Ljava/util/UUID;)V
+	public final fun getPlayerInput ()Lpink/alex/ashlar/input/PlayerInput;
+	public final fun messages-Qxubp9c (Ljava/util/UUID;)Ljava/util/List;
+	public final fun passed-Qxubp9c (Ljava/util/UUID;)Ljava/util/List;
+	public final fun plainMessages-Qxubp9c (Ljava/util/UUID;)Ljava/util/List;
+	public final fun player-TwlD-QU (Ljava/lang/String;Ljava/util/Locale;)Ljava/util/UUID;
+	public static synthetic fun player-TwlD-QU$default (Lpink/alex/ashlar/input/testing/InputTestHarness;Ljava/lang/String;Ljava/util/Locale;ILjava/lang/Object;)Ljava/util/UUID;
+	public final fun reconnect-xJTp0AU (Ljava/util/UUID;Ljava/util/Locale;)V
+	public static synthetic fun reconnect-xJTp0AU$default (Lpink/alex/ashlar/input/testing/InputTestHarness;Ljava/util/UUID;Ljava/util/Locale;ILjava/lang/Object;)V
+}
+

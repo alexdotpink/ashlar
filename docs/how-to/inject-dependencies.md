@@ -19,7 +19,7 @@ class HomeRepository(
 ```kotlin
 interface HomeStore
 
-@FrameworkComponent(name = "home-store")
+@AshlarComponent(name = "home-store")
 @Inject
 @Binds(HomeStore::class)
 class SqlHomeStore(
@@ -27,7 +27,7 @@ class SqlHomeStore(
 ) : PluginComponent(), HomeStore
 ```
 
-`@Binds` currently applies to automatically installed root components. It exposes that installed component through the listed interfaces. For an ordinary injected class, request its concrete type or add an explicit external binding in `FrameworkPlugin.configure`.
+`@Binds` currently applies to automatically installed root components. It exposes that installed component through the listed interfaces. For an ordinary injected class, request its concrete type or add an explicit external binding in `AshlarPlugin.configure`.
 
 ## Contribute an extension
 

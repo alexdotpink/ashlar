@@ -1,0 +1,3 @@
+# Own performance contracts beside framework modules
+
+One first-class, test-only `ashlar-benchmarks` artifact will provide the scenario DSL, result schema, and runners, while each framework module owns its contracts in a dedicated benchmark source set beside the protected code. The existing Gradle plug-in will activate that source set and standard tasks when a plug-in adds the benchmark dependency, without leaking benchmark engines into its shipped JAR. The benchmark API joins the ordinary compatibility policy when the framework stabilizes. A checked performance catalogue maps public capabilities to required contracts and profiles, so completeness is executable rather than inferred from names or documentation.

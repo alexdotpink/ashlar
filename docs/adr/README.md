@@ -9,9 +9,9 @@ ADRs record accepted design constraints and their rationale. Read the tutorial, 
 - [0003: Embed and own one kernel per plug-in](0003-embed-and-own-one-kernel-per-plugin.md)
 - [0004: Release aligned latest-platform artifacts](0004-release-aligned-latest-platform-artifacts.md)
 - [0086: Gate feature performance contracts with layered evidence](0086-gate-feature-performance-contracts-with-layered-evidence.md)
-- [0087: Author benchmarks as framework scenarios](0087-author-benchmarks-as-framework-scenarios.md)
+- [0087: Author benchmarks as framework scenarios](0087-author-benchmarks-as-ashlar-scenarios.md)
 - [0088: Enforce relative and absolute performance budgets](0088-enforce-relative-and-absolute-performance-budgets.md)
-- [0089: Own performance contracts beside framework modules](0089-own-performance-contracts-beside-framework-modules.md)
+- [0089: Own performance contracts beside framework modules](0089-own-performance-contracts-beside-ashlar-modules.md)
 - [0090: Optimize server safety before peak throughput](0090-optimize-server-safety-before-peak-throughput.md)
 
 ## Commands and dependency injection

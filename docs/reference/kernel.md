@@ -2,9 +2,9 @@
 
 This page describes the stable kernel concepts and their runtime contracts.
 
-## `FrameworkPlugin`
+## `AshlarPlugin`
 
-`FrameworkPlugin` extends Paper's `JavaPlugin`. Its `onLoad`, `onEnable`, and `onDisable` methods are final.
+`AshlarPlugin` extends Paper's `JavaPlugin`. Its `onLoad`, `onEnable`, and `onDisable` methods are final.
 
 Available hooks:
 
@@ -37,7 +37,7 @@ Components may declare child components. Startup walks children in declaration o
 Root components can also be discovered through DI:
 
 ```kotlin
-@FrameworkComponent(
+@AshlarComponent(
     name = "homes",
     phase = ComponentPhase.APPLICATION,
 )
@@ -61,7 +61,7 @@ Application roots start before framework roots. Within a phase, generated constr
 - `task` and `criticalTask`
 - `own` for synchronous `AutoCloseable` resources
 
-`FrameworkPlugin.configure` receives the `DependencyGraph` after generated contributions load and before automatic roots are constructed. Use it for external instances or deliberate overrides. The graph already contains the plug-in as its concrete class, `FrameworkPlugin`, and Paper `Plugin`, plus the `Server` and graph itself.
+`AshlarPlugin.configure` receives the `DependencyGraph` after generated contributions load and before automatic roots are constructed. Use it for external instances or deliberate overrides. The graph already contains the plug-in as its concrete class, `AshlarPlugin`, and Paper `Plugin`, plus the `Server` and graph itself.
 
 Each component owns a supervised coroutine scope below its parent. An unnamed task uses the component path as its coroutine name. A named task appends its name to that path.
 
@@ -95,11 +95,11 @@ Each block is non-suspending and represents one atomic scheduler callback. If th
 
 `withEntity` returns `EntityOutcome.Completed(value)` or `EntityOutcome.Retired`. Retirement means Paper could not run the callback because the entity became unavailable. The outcome may be ignored when retirement requires no action, or handled with `onRetired`.
 
-Framework and module operations may use context parameters to require ownership:
+Ashlar and module operations may use context parameters to require ownership:
 
 ```kotlin
 context(entityContext: EntityContext)
-fun Player.sendFrameworkMessage(message: Component) {
+fun Player.sendAshlarMessage(message: Component) {
     entityContext.checkOwnership()
     sendMessage(message)
 }

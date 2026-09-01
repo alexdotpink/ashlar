@@ -9,10 +9,10 @@ Create `src/benchmark/kotlin/dev/example/homes/HomeBenchmarks.kt`:
 ```kotlin
 package dev.example.homes
 
-import dev.placeholder.framework.benchmarks.BenchmarkTemperature
-import dev.placeholder.framework.benchmarks.PerformanceContractStatus
-import dev.placeholder.framework.benchmarks.benchmarkSuite
-import dev.placeholder.framework.benchmarks.percent
+import pink.alex.ashlar.benchmarks.BenchmarkTemperature
+import pink.alex.ashlar.benchmarks.PerformanceContractStatus
+import pink.alex.ashlar.benchmarks.benchmarkSuite
+import pink.alex.ashlar.benchmarks.percent
 
 public val homeBenchmarks = benchmarkSuite("homes") {
     benchmarkScenario("lookup") {

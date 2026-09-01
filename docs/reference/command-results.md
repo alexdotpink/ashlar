@@ -45,7 +45,7 @@ Coroutine cancellation is not an error response. If a player can no longer recei
 
 `CommandResponseCodec<T>` converts a handler's domain result to `CommandResult`. Its `encode` function may suspend. At most one matching codec may exist for a return type.
 
-Contribute one `CommandMessages` to replace the default English framework-originated messages. Contribute one `CommandHelpRenderer` to replace help rendering. Multiple replacements fail startup rather than depending on discovery order.
+Contribute one `CommandMessages` to replace the default English ashlar-originated messages. Contribute one `CommandHelpRenderer` to replace help rendering. Multiple replacements fail startup rather than depending on discovery order.
 
 ## Observers
 

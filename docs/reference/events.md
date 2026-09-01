@@ -3,12 +3,12 @@
 Enable events in the managed Gradle extension:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     events()
 }
 ```
 
-This adds `framework-events` and its focused KSP processor. The processor emits one small direct-call binding per concrete event set. Registration, dispatch, coroutines, Flow, failure handling, and shutdown remain handwritten runtime code.
+This adds `ashlar-events` and its focused KSP processor. The processor emits one small direct-call binding per concrete event set. Registration, dispatch, coroutines, Flow, failure handling, and shutdown remain handwritten runtime code.
 
 ## Event families
 
@@ -26,7 +26,7 @@ The module keeps three dispatch models separate:
 
 Functions without an event annotation are ordinary implementation details. Handler functions may be non-public because generated bindings make direct calls.
 
-`@ExcludeEventContributions(A::class, B::class)` on the `FrameworkPlugin` subclass excludes selected generated event sets from server registration, lifecycle configuration, and application publication.
+`@ExcludeEventContributions(A::class, B::class)` on the `AshlarPlugin` subclass excludes selected generated event sets from server registration, lifecycle configuration, and application publication.
 
 ## Synchronous server handlers
 

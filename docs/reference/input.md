@@ -3,12 +3,12 @@
 Enable typed player input through the managed build:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     input()
 }
 ```
 
-This adds `framework-input` and enables events transitively. Input has no annotation processor. Plug-in code injects the plug-in-scoped `PlayerInput` capability.
+This adds `ashlar-input` and enables events transitively. Input has no annotation processor. Plug-in code injects the plug-in-scoped `PlayerInput` capability.
 
 ## Chat prompts
 

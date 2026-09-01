@@ -16,7 +16,7 @@ An incompatible fingerprint needs a dual rebaseline. An inconclusive result need
 ## Reduce the run to the failing case
 
 ```bash
-./gradlew :framework-menus:benchmarkJmh \
+./gradlew :ashlar-menus:benchmarkJmh \
   -PbenchmarkScenarios=menus.storage \
   -PbenchmarkProfiles=typical \
   -PbenchmarkWarmups=5 \
@@ -29,7 +29,7 @@ Use `benchmark` for a quick edit loop. Use `benchmarkJmh` when isolated JVM meas
 ## Record diagnostics separately
 
 ```bash
-./gradlew :framework-menus:benchmarkDiagnose \
+./gradlew :ashlar-menus:benchmarkDiagnose \
   -PbenchmarkScenarios=menus.storage \
   -PbenchmarkProfiles=typical
 ```

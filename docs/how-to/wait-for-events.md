@@ -11,7 +11,7 @@ val joined = serverEvents.await<PlayerJoinEvent, PlayerRef>(within = 30.seconds)
 }
 ```
 
-The selector runs in the event callback. Return an ID, snapshot, reference, string, or another framework-owned value; do not return the raw event.
+The selector runs in the event callback. Return an ID, snapshot, reference, string, or another ashlar-owned value; do not return the raw event.
 
 ## Capture player input
 

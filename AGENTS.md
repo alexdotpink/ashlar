@@ -1,4 +1,4 @@
-# Framework agent guide
+# Ashlar agent guide
 
 Build against the checked-in APIs and examples. The repository targets Kotlin 2.4, Java 25, Paper 26.2, and Folia.
 

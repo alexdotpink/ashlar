@@ -22,7 +22,7 @@ Use this page when a plug-in task adds or changes a menu. The implemented refere
 
 ## Storage branch
 
-Take this branch when any item can enter, leave, move within, or shift-transfer through framework-owned storage.
+Take this branch when any item can enter, leave, move within, or shift-transfer through ashlar-owned storage.
 
 1. Use `rememberStorage` for session-owned storage. Keep application-owned `MenuStorage` stable outside render. Give either form a stable ID, immutable revisions, and a rule for every slot.
 2. Bind it to an equal-size region. Declare every player inventory participant and every ordered shift route.

@@ -28,7 +28,7 @@ A plug-in-scoped dependency cannot depend on an invocation-scoped dependency. Cy
 ## Automatic root components
 
 ```kotlin
-@FrameworkComponent(name = "homes")
+@AshlarComponent(name = "homes")
 @Binds(HomeService::class)
 @Inject
 class HomesComponent(
@@ -36,9 +36,9 @@ class HomesComponent(
 ) : PluginComponent(), HomeService
 ```
 
-`@FrameworkComponent` adds a `PluginComponent` to the generated root index. Application roots start before framework roots. Dependencies determine a stable topological order within a phase. `@Binds` is currently consumed only on these root components and exposes the installed instance through the listed interface types.
+`@AshlarComponent` adds a `PluginComponent` to the generated root index. Application roots start before framework roots. Dependencies determine a stable topological order within a phase. `@Binds` is currently consumed only on these root components and exposes the installed instance through the listed interface types.
 
-For an ordinary injected class, request its concrete type. To expose an externally constructed object through an interface, bind it explicitly in `FrameworkPlugin.configure`:
+For an ordinary injected class, request its concrete type. To expose an externally constructed object through an interface, bind it explicitly in `AshlarPlugin.configure`:
 
 ```kotlin
 override fun DependencyGraph.configure() {
@@ -59,7 +59,7 @@ class HomeCodec(
 ) : CommandArgumentCodec<Home>
 ```
 
-Use `DependencyResolver.contributions(Contract::class)` to obtain every assignable contribution. Framework modules use this for command sets, codecs, policies, observers, response codecs, help, and messages.
+Use `DependencyResolver.contributions(Contract::class)` to obtain every assignable contribution. Ashlar modules use this for command sets, codecs, policies, observers, response codecs, help, and messages.
 
 `@ExcludeContributions(types = [Type::class])` on the plug-in entrypoint removes selected generated root or DI contributions. `@ExcludeCommandContributions` is the command-specific equivalent.
 

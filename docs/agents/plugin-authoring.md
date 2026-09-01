@@ -14,13 +14,13 @@ Use the managed Gradle plug-in when consuming published artifacts:
 
 ```kotlin
 plugins {
-    id("dev.placeholder.framework") version "0.1.0-SNAPSHOT"
+    id("pink.alex.ashlar") version "0.1.0-SNAPSHOT"
 }
 
 group = "dev.example"
 version = "1.0.0"
 
-frameworkPlugin {
+ashlar {
     pluginName.set("ExamplePlugin")
     mainClass.set("dev.example.ExamplePlugin")
     authors.add("Example")
@@ -32,13 +32,13 @@ frameworkPlugin {
 
 The repository sample uses project dependencies because it tests unpublished source. Copy its structure, not its dependency declarations, into an external plug-in.
 
-The step is complete when `generateFrameworkPluginYaml` produces one descriptor and no hand-written `src/main/resources/plugin.yml` exists.
+The step is complete when `generateAshlarPluginYaml` produces one descriptor and no hand-written `src/main/resources/plugin.yml` exists.
 
 ## 3. Choose lifecycle ownership
 
-Use `FrameworkPlugin` for the entrypoint. Use a `PluginComponent` for state with start, stop, tasks, children, or closeable resources. Use an injected plain class for stateless behavior.
+Use `AshlarPlugin` for the entrypoint. Use a `PluginComponent` for state with start, stop, tasks, children, or closeable resources. Use an injected plain class for stateless behavior.
 
-Use `@FrameworkComponent` with `@Inject` when the graph should install a root component automatically. Use a delegated `component { ... }` when a parent component owns a specific child explicitly.
+Use `@AshlarComponent` with `@Inject` when the graph should install a root component automatically. Use a delegated `component { ... }` when a parent component owns a specific child explicitly.
 
 The step is complete when every long-lived task and resource has one lifecycle owner.
 

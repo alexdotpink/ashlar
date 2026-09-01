@@ -1,7 +1,7 @@
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    id("framework.kotlin-library")
+    id("ashlar.kotlin-library")
     alias(libs.plugins.ksp)
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
@@ -10,18 +10,18 @@ plugins {
 description = "Executable Paper and Folia integration fixture"
 
 dependencies {
-    implementation(project(":kernel"))
-    implementation(project(":framework-commands"))
-    implementation(project(":framework-events"))
-    implementation(project(":framework-input"))
-    implementation(project(":framework-menus"))
-    implementation(project(":framework-items"))
-    implementation(project(":framework-benchmarks"))
+    implementation(project(":ashlar-kernel"))
+    implementation(project(":ashlar-commands"))
+    implementation(project(":ashlar-events"))
+    implementation(project(":ashlar-input"))
+    implementation(project(":ashlar-menus"))
+    implementation(project(":ashlar-items"))
+    implementation(project(":ashlar-benchmarks"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
-    ksp(project(":framework-commands-ksp"))
-    ksp(project(":framework-events-ksp"))
-    ksp(project(":framework-di-ksp"))
+    ksp(project(":ashlar-commands-ksp"))
+    ksp(project(":ashlar-events-ksp"))
+    ksp(project(":ashlar-di-ksp"))
 }
 
 tasks.shadowJar {
@@ -51,8 +51,8 @@ tasks.runServer {
     build(libs.versions.paperBuildNumber.get().toInt())
     args("--port", "25566")
     systemProperty("com.mojang.eula.agree", "true")
-    systemProperty("framework.benchmark.soakSeconds", providers.gradleProperty("benchmarkSoakSeconds").getOrElse("1"))
-    systemProperty("framework.benchmark.revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"))
+    systemProperty("ashlar.benchmark.soakSeconds", providers.gradleProperty("benchmarkSoakSeconds").getOrElse("1"))
+    systemProperty("ashlar.benchmark.revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"))
     runDirectory.set(layout.buildDirectory.dir("run/paper"))
     pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
     verifyFixtureReceipt()
@@ -63,8 +63,8 @@ runPaper.folia.registerTask {
     build(libs.versions.foliaBuildNumber.get().toInt())
     args("--port", "25567")
     systemProperty("com.mojang.eula.agree", "true")
-    systemProperty("framework.benchmark.soakSeconds", providers.gradleProperty("benchmarkSoakSeconds").getOrElse("1"))
-    systemProperty("framework.benchmark.revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"))
+    systemProperty("ashlar.benchmark.soakSeconds", providers.gradleProperty("benchmarkSoakSeconds").getOrElse("1"))
+    systemProperty("ashlar.benchmark.revision", providers.gradleProperty("benchmarkRevision").getOrElse("working-tree"))
     runDirectory.set(layout.buildDirectory.dir("run/folia"))
     pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
     verifyFixtureReceipt()

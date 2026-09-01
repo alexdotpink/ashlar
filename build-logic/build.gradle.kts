@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "dev.placeholder.framework.buildlogic"
+group = "pink.alex.ashlar.buildlogic"
 
 dependencies {
     implementation(libs.kotlin.gradle)

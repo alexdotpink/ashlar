@@ -25,27 +25,27 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "framework"
+rootProject.name = "ashlar"
 
 includeBuild("build-logic")
 
 include(
-    "kernel",
-    "framework-di",
-    "framework-di-ksp",
-    "framework-commands",
-    "framework-commands-ksp",
-    "framework-events",
-    "framework-events-ksp",
-    "framework-input",
-    "framework-items",
-    "framework-menus",
-    "framework-menus-test",
-    "framework-benchmarks",
-    "framework-gradle-plugin",
-    "framework-bom",
-    "framework-testkit",
-    "framework-incubator",
+    "ashlar-kernel",
+    "ashlar-di",
+    "ashlar-di-ksp",
+    "ashlar-commands",
+    "ashlar-commands-ksp",
+    "ashlar-events",
+    "ashlar-events-ksp",
+    "ashlar-input",
+    "ashlar-items",
+    "ashlar-menus",
+    "ashlar-menus-test",
+    "ashlar-benchmarks",
+    "ashlar-gradle-plugin",
+    "ashlar-bom",
+    "ashlar-testkit",
+    "ashlar-incubator",
     "integration-test-fixture",
     "sample-plugin",
 )

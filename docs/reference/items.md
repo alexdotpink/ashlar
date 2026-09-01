@@ -3,7 +3,7 @@
 Enable the item module through the managed build:
 
 ```kotlin
-frameworkPlugin {
+ashlar {
     items()
 }
 ```

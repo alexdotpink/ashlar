@@ -1,6 +1,6 @@
 # Native Minecraft argument reference
 
-These handler types use Paper's native Brigadier argument types. The adapter resolves Paper providers before asynchronous handler execution and returns stable identities, immutable snapshots, or framework-owned operations.
+These handler types use Paper's native Brigadier argument types. The adapter resolves Paper providers before asynchronous handler execution and returns stable identities, immutable snapshots, or ashlar-owned operations.
 
 | Handler type | Native syntax / meaning | Result contract |
 | --- | --- | --- |

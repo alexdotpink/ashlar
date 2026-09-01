@@ -26,7 +26,7 @@ A framework contract names one capability and declares:
 - an explicit `EXPLORATORY`, `GUARDED`, or `CONTRACTUAL` status;
 - relative pull-request budgets and, for contractual scenarios, absolute release ceilings.
 
-Framework extension points use fixed fast, delayed, and failing fixtures. The catalogue does not claim to measure databases or networks that the repository does not ship.
+Ashlar extension points use fixed fast, delayed, and failing fixtures. The catalogue does not claim to measure databases or networks that the repository does not ship.
 
 ## Authoring model
 
@@ -61,7 +61,7 @@ benchmarkScenario("chat search opens menu") {
 
 The outer language stays the same when a scenario crosses commands, events, input, items, and menus. Typed fixtures expose feature-specific actions and assertions. The public API does not grow a separate top-level DSL for every framework module.
 
-Framework contributors can declare isolated and platform measurements inside a contract:
+Ashlar contributors can declare isolated and platform measurements inside a contract:
 
 ```kotlin
 performanceContract("commands.dispatch") {
@@ -132,14 +132,14 @@ Native callback occupancy and p99 latency take priority when metrics conflict. A
 The planned layout keeps infrastructure shared and contracts beside the code they protect:
 
 ```text
-framework-benchmarks/                 public test-only DSL, result model, runners
+ashlar-benchmarks/                 public test-only DSL, result model, runners
 kernel/src/benchmark/                 kernel contracts
-framework-di/src/benchmark/           dependency-injection contracts
-framework-commands/src/benchmark/     command contracts
-framework-events/src/benchmark/       event contracts
-framework-input/src/benchmark/        input contracts
-framework-items/src/benchmark/        item contracts
-framework-menus/src/benchmark/        menu and storage contracts
+ashlar-di/src/benchmark/           dependency-injection contracts
+ashlar-commands/src/benchmark/     command contracts
+ashlar-events/src/benchmark/       event contracts
+ashlar-input/src/benchmark/        input contracts
+ashlar-items/src/benchmark/        item contracts
+ashlar-menus/src/benchmark/        menu and storage contracts
 integration-test-fixture/             Paper and Folia workloads
 samples/sample-plugin/src/benchmark/  plug-in author examples
 ```
@@ -219,7 +219,7 @@ Benchmarking is complete only when every required catalogue entry is `CONTRACTUA
 ## Related decisions
 
 - [ADR 0086](../adr/0086-gate-feature-performance-contracts-with-layered-evidence.md)
-- [ADR 0087](../adr/0087-author-benchmarks-as-framework-scenarios.md)
+- [ADR 0087](../adr/0087-author-benchmarks-as-ashlar-scenarios.md)
 - [ADR 0088](../adr/0088-enforce-relative-and-absolute-performance-budgets.md)
-- [ADR 0089](../adr/0089-own-performance-contracts-beside-framework-modules.md)
+- [ADR 0089](../adr/0089-own-performance-contracts-beside-ashlar-modules.md)
 - [ADR 0090](../adr/0090-optimize-server-safety-before-peak-throughput.md)

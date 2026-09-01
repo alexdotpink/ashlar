@@ -38,14 +38,14 @@ Add `build.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("dev.placeholder.framework") version "0.1.0-SNAPSHOT"
+    id("pink.alex.ashlar") version "0.1.0-SNAPSHOT"
 }
 
 group = "dev.example"
 version = "1.0.0"
 description = "A first framework plug-in"
 
-frameworkPlugin {
+ashlar {
     pluginName.set("GreetingPlugin")
     mainClass.set("dev.example.greeting.GreetingPlugin")
     authors.add("Example")
@@ -63,11 +63,11 @@ Create `src/main/kotlin/dev/example/greeting/GreetingPlugin.kt`:
 ```kotlin
 package dev.example.greeting
 
-import dev.placeholder.framework.ComponentContext
-import dev.placeholder.framework.FrameworkPlugin
-import dev.placeholder.framework.PluginComponent
+import pink.alex.ashlar.ComponentContext
+import pink.alex.ashlar.AshlarPlugin
+import pink.alex.ashlar.PluginComponent
 
-class GreetingPlugin : FrameworkPlugin() {
+class GreetingPlugin : AshlarPlugin() {
     private val greeter by component { GreetingComponent() }
 
     override fun ComponentContext.enable() {
@@ -96,8 +96,8 @@ Create `src/main/kotlin/dev/example/greeting/GreetingCommands.kt`:
 ```kotlin
 package dev.example.greeting
 
-import dev.placeholder.framework.commands.Commands
-import dev.placeholder.framework.commands.GreedyText
+import pink.alex.ashlar.commands.Commands
+import pink.alex.ashlar.commands.GreedyText
 import kotlinx.coroutines.delay
 import net.kyori.adventure.text.Component
 import kotlin.time.Duration.Companion.milliseconds

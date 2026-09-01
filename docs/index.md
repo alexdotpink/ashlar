@@ -1,6 +1,6 @@
-# Framework documentation
+# Ashlar documentation
 
-Framework is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in embeds its own selected framework modules.
+Ashlar is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in embeds its own selected framework modules.
 
 ## Learn the framework
 

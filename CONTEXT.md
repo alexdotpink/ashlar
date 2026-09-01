@@ -1,4 +1,4 @@
-# Framework
+# Ashlar
 
 This glossary distinguishes the framework itself from the Minecraft plug-ins built with it.
 
@@ -6,13 +6,13 @@ This glossary distinguishes the framework itself from the Minecraft plug-ins bui
 
 **Plug-in author**:
 A Kotlin developer who uses the framework to build a Minecraft server plug-in.
-_Avoid_: Framework user, consumer
+_Avoid_: Ashlar user, consumer
 
-**Framework contributor**:
+**Ashlar contributor**:
 A developer who changes the framework itself.
 _Avoid_: Plug-in author
 
-**Framework plug-in**:
+**Ashlar plug-in**:
 A Minecraft server plug-in built by a plug-in author using one or more framework modules.
 _Avoid_: Module, framework
 
@@ -20,11 +20,11 @@ _Avoid_: Module, framework
 The small framework module required by every framework plug-in. Optional capabilities belong outside it.
 _Avoid_: Foundation, platform, base
 
-**Framework module**:
+**Ashlar module**:
 An independently consumable artifact that provides one framework capability. A framework module does not necessarily have runtime state.
 _Avoid_: Plug-in, plugin component
 
-**Framework contribution**:
+**Ashlar contribution**:
 An annotated class listed in generated module metadata for automatic discovery inside one framework plug-in classloader.
 _Avoid_: Registration, extension
 
@@ -107,7 +107,7 @@ One structured, suspending delivery of an application event to every matching ha
 _Avoid_: Event emission, broadcast
 
 **Event query**:
-A suspending wait that synchronously selects a framework-owned value from matching event callbacks and completes when the query accepts one value.
+A suspending wait that synchronously selects an Ashlar-owned value from matching event callbacks and completes when the query accepts one value.
 _Avoid_: One-off listener, event awaiter
 
 **Event capture**:
@@ -115,7 +115,7 @@ An event query for cancellable server events that synchronously cancels each sel
 _Avoid_: Chat capture, consuming listener
 
 **Event stream**:
-A Flow of framework-owned values selected synchronously from event callbacks, with an explicit bounded capacity and overflow policy.
+A Flow of ashlar-owned values selected synchronously from event callbacks, with an explicit bounded capacity and overflow policy.
 _Avoid_: Raw event Flow, event queue
 
 ## Input
@@ -191,7 +191,7 @@ A reusable part of a menu render with stable identity and optional menu-session-
 _Avoid_: Widget, menu class
 
 **Standard menu component**:
-A framework-supplied menu component implemented entirely through the same public composition API available to plug-ins.
+An Ashlar-supplied menu component implemented entirely through the same public composition API available to plug-ins.
 _Avoid_: Built-in widget, native component
 
 **Menu state**:
@@ -219,7 +219,7 @@ An explicit composable transformation of one slot declaration's presentation or 
 _Avoid_: Slot override, layer
 
 **Storage slot**:
-A menu or player-inventory slot that participates in framework-controlled item movement and storage rules.
+A menu or player-inventory slot that participates in ashlar-controlled item movement and storage rules.
 _Avoid_: Editable slot, vanilla slot
 
 **Menu storage**:
@@ -328,7 +328,7 @@ _Avoid_: Slowdown, noisy result
 The hardware, operating system, JVM, framework toolchain, Paper or Folia build, and fixture fingerprint attached to a benchmark run.
 _Avoid_: Benchmark machine, CI runner
 
-**Framework overhead**:
+**Ashlar overhead**:
 The measured cost added by a framework path relative to its matched native or direct control under the same workload.
 _Avoid_: Zero overhead, framework speed
 
@@ -427,7 +427,7 @@ A typed command extension that converts one handler return type into a command r
 _Avoid_: Renderer, result mapper
 
 **Command policy**:
-A typed, injected interceptor that applies reusable invocation rules in one framework-defined execution phase.
+A typed, injected interceptor that applies reusable invocation rules in one ashlar-defined execution phase.
 _Avoid_: Middleware, command annotation
 
 **Command observer**:

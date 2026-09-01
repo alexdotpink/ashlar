@@ -27,7 +27,7 @@ The child starts before its parent. Shutdown calls the parent's `stop()`, then s
 ## Install an injected root automatically
 
 ```kotlin
-@FrameworkComponent(name = "homes")
+@AshlarComponent(name = "homes")
 @Inject
 class HomesComponent(
     private val repository: HomeRepository,

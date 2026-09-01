@@ -1,8 +1,8 @@
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    id("framework.kotlin-library")
-    id("framework.benchmark-contracts")
+    id("ashlar.kotlin-library")
+    id("ashlar.benchmark-contracts")
     alias(libs.plugins.ksp)
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
@@ -11,18 +11,18 @@ plugins {
 description = "Runnable example plug-in built with the framework kernel"
 
 dependencies {
-    implementation(project(":kernel"))
-    implementation(project(":framework-commands"))
-    implementation(project(":framework-events"))
-    implementation(project(":framework-input"))
-    implementation(project(":framework-items"))
-    implementation(project(":framework-menus"))
+    implementation(project(":ashlar-kernel"))
+    implementation(project(":ashlar-commands"))
+    implementation(project(":ashlar-events"))
+    implementation(project(":ashlar-input"))
+    implementation(project(":ashlar-items"))
+    implementation(project(":ashlar-menus"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     testImplementation(libs.paper.api)
-    ksp(project(":framework-commands-ksp"))
-    ksp(project(":framework-events-ksp"))
-    ksp(project(":framework-di-ksp"))
+    ksp(project(":ashlar-commands-ksp"))
+    ksp(project(":ashlar-events-ksp"))
+    ksp(project(":ashlar-di-ksp"))
 }
 
 tasks.shadowJar {
@@ -64,13 +64,13 @@ runPaper.folia.registerTask {
 }
 
 tasks.register("runSamplePaper") {
-    group = "framework"
+    group = "ashlar"
     description = "Builds the sample and starts pinned Paper with it installed."
     dependsOn(tasks.named<RunServer>("runServer"))
 }
 
 tasks.register("runSampleFolia") {
-    group = "framework"
+    group = "ashlar"
     description = "Builds the sample and starts pinned Folia with it installed."
     dependsOn(tasks.named<RunServer>("runFolia"))
 }

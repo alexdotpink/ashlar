@@ -4,8 +4,8 @@ set -euo pipefail
 script_directory="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$script_directory/.."
 
-if [[ "${FRAMEWORK_BENCHMARK_WORKER_ID:-}" != "framework-benchmark-v1" ]]; then
-  echo "FRAMEWORK_BENCHMARK_WORKER_ID must identify the canonical framework-benchmark-v1 worker." >&2
+if [[ "${ASHLAR_BENCHMARK_WORKER_ID:-}" != "ashlar-benchmark-v1" ]]; then
+  echo "ASHLAR_BENCHMARK_WORKER_ID must identify the canonical ashlar-benchmark-v1 worker." >&2
   exit 1
 fi
 
@@ -28,4 +28,4 @@ if [[ -n "$(git status --porcelain)" ]]; then
   exit 1
 fi
 
-echo "Canonical benchmark worker checks passed for $FRAMEWORK_BENCHMARK_WORKER_ID on Java $java_version."
+echo "Canonical benchmark worker checks passed for $ASHLAR_BENCHMARK_WORKER_ID on Java $java_version."

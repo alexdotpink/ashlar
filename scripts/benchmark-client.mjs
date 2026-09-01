@@ -29,18 +29,18 @@ try {
   const snapshot = requireSuccess(await bridge.call('snapshot'));
   if (!snapshot.player?.name) throw new Error('The client is not connected to a server');
 
-  await closeFrameworkMenu(bridge, snapshot.player.name);
+  await closeAshlarMenu(bridge, snapshot.player.name);
   const cold = await openAndObserve(bridge, snapshot.player.name, serverPort);
   const warm = [];
   for (let index = 0; index < iterations; index++) {
-    await closeFrameworkMenu(bridge, snapshot.player.name);
+    await closeAshlarMenu(bridge, snapshot.player.name);
     warm.push(await openAndObserve(bridge, snapshot.player.name, serverPort));
   }
-  await closeFrameworkMenu(bridge, snapshot.player.name);
+  await closeAshlarMenu(bridge, snapshot.player.name);
 
   const result = benchmarkResult({
     revision: options.revision ?? 'working-tree',
-    frameworkVersion: options['framework-version'] ?? 'development',
+    ashlarVersion: options['ashlar-version'] ?? 'development',
     profileName,
     port,
     status,
@@ -54,7 +54,7 @@ try {
   bridge.close();
 }
 
-async function closeFrameworkMenu(bridge, playerName) {
+async function closeAshlarMenu(bridge, playerName) {
   requireSuccess(await bridge.call('runCommand', { command: `menus close ${playerName}` }));
   await poll(async () => !requireSuccess(await bridge.call('screenInspect')).open, 5_000, 'menu close');
 }
@@ -82,9 +82,9 @@ async function openAndObserve(bridge, playerName, minecraftServerPort) {
   };
 }
 
-function benchmarkResult({ revision, frameworkVersion, profileName, port, status, cold, warm }) {
+function benchmarkResult({ revision, ashlarVersion, profileName, port, status, cold, warm }) {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     runId: crypto.randomUUID(),
     revision,
     startedAtEpochMillis: Date.now(),
@@ -99,7 +99,7 @@ function benchmarkResult({ revision, frameworkVersion, profileName, port, status
       jvmArguments: [],
       garbageCollectors: [],
       kotlinVersion: '2.4.10',
-      frameworkVersion,
+      ashlarVersion,
       platform: 'CLIENT',
       platformVersion: `Minecraft ${status.version}`,
       attributes: {

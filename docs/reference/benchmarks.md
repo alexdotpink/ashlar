@@ -1,6 +1,6 @@
 # Benchmark reference
 
-`framework-benchmarks` is a test-only artifact. It contains the scenario DSL, local runner, forked JMH runner, comparison engine, JSON model, catalogue, build runner, and JFR diagnostics. It does not enter a plug-in's shaded JAR.
+`ashlar-benchmarks` is a test-only artifact. It contains the scenario DSL, local runner, forked JMH runner, comparison engine, JSON model, catalogue, build runner, and JFR diagnostics. It does not enter a plug-in's shaded JAR.
 
 ## Source set and discovery
 
@@ -10,7 +10,7 @@ The managed Gradle plug-in creates `src/benchmark/kotlin` and these configuratio
 - `benchmarkCompileOnly`
 - `benchmarkRuntimeOnly`
 
-It adds `framework-benchmarks` to `benchmarkImplementation`. A discovered declaration must be a public top-level or Java-static zero-argument getter whose return type is exactly `BenchmarkSuite`. Scenario IDs are lowercase dot-separated values. Suite namespaces and profile names use lowercase letters, digits, and hyphens.
+It adds `ashlar-benchmarks` to `benchmarkImplementation`. A discovered declaration must be a public top-level or Java-static zero-argument getter whose return type is exactly `BenchmarkSuite`. Scenario IDs are lowercase dot-separated values. Suite namespaces and profile names use lowercase letters, digits, and hyphens.
 
 ## Scenario DSL
 
@@ -115,7 +115,7 @@ Common properties:
 
 ## Result JSON
 
-`BenchmarkRunResult.schemaVersion` is `1`. A run contains revision, start time, environment, configuration, and unique cases. A case identity is scenario, profile, layer, and temperature. Cases retain aggregate metrics, raw duration/allocation samples, supplemental samples, maturity, and serialized budgets.
+`BenchmarkRunResult.schemaVersion` is `2`. A run contains revision, start time, environment, configuration, and unique cases. A case identity is scenario, profile, layer, and temperature. Cases retain aggregate metrics, raw duration/allocation samples, supplemental samples, maturity, and serialized budgets.
 
 The environment fingerprint includes worker ID, OS, architecture, processor count and model, JVM, relevant JVM arguments, collectors, Kotlin and framework versions, platform versions, and sorted attributes. Comparison rejects mismatched fingerprints. Runner selection properties and benchmark class directories are excluded because they identify the case, not the machine.
 
@@ -123,7 +123,6 @@ The environment fingerprint includes worker ID, OS, architecture, processor coun
 
 ## Catalogue
 
-`FrameworkPerformanceCatalogue` maps public capabilities to 19 representative contracts. Validation requires every discovered contract to declare all three profiles and both temperatures. Platform, client, build, load, and soak contracts are marked as externally executed. Passing the ordinary catalogue means coverage declarations are complete. `-PbenchmarkReleaseReady=true` additionally requires every discovered scenario to be `CONTRACTUAL`.
+`AshlarPerformanceCatalogue` maps public capabilities to 19 representative contracts. Validation requires every discovered contract to declare all three profiles and both temperatures. Platform, client, build, load, and soak contracts are marked as externally executed. Passing the ordinary catalogue means coverage declarations are complete. `-PbenchmarkReleaseReady=true` additionally requires every discovered scenario to be `CONTRACTUAL`.
 
 The current contracts remain `EXPLORATORY` until the dedicated worker is provisioned, paired baselines establish noise floors, and reviewed absolute ceilings are committed.
-

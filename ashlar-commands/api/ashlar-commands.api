@@ -1,0 +1,1240 @@
+public abstract interface annotation class pink/alex/ashlar/commands/Command : java/lang/annotation/Annotation {
+	public abstract fun aliases ()[Ljava/lang/String;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun permission ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Command$Container : java/lang/annotation/Annotation {
+	public abstract fun value ()[Lpink/alex/ashlar/commands/Command;
+}
+
+public abstract interface class pink/alex/ashlar/commands/CommandExceptionHandler {
+	public abstract fun getType ()Lkotlin/reflect/KClass;
+	public abstract fun handle (Ljava/lang/Throwable;Lpink/alex/ashlar/commands/CommandInvocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/CommandExecutor {
+	public fun <init> (Ljava/lang/String;Ljava/util/UUID;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/UUID;
+	public final fun copy (Ljava/lang/String;Ljava/util/UUID;)Lpink/alex/ashlar/commands/CommandExecutor;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/CommandExecutor;Ljava/lang/String;Ljava/util/UUID;ILjava/lang/Object;)Lpink/alex/ashlar/commands/CommandExecutor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getUniqueId ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/CommandFragment : java/lang/annotation/Annotation {
+	public abstract fun root ()Ljava/lang/Class;
+}
+
+public final class pink/alex/ashlar/commands/CommandInvocation {
+	public fun <init> (Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;Ljava/lang/String;)V
+	public final fun component1 ()Lpink/alex/ashlar/commands/CommandSender;
+	public final fun component2 ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;Ljava/lang/String;)Lpink/alex/ashlar/commands/CommandInvocation;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/CommandInvocation;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/commands/CommandInvocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExecutor ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun getRoute ()Ljava/lang/String;
+	public final fun getSender ()Lpink/alex/ashlar/commands/CommandSender;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/CommandMessages {
+	public abstract fun invalidArgument (Ljava/util/Locale;Ljava/lang/String;Ljava/lang/String;)Lnet/kyori/adventure/text/Component;
+	public abstract fun missingArgument (Ljava/util/Locale;Ljava/lang/String;)Lnet/kyori/adventure/text/Component;
+	public abstract fun noPermission (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public abstract fun unexpectedFailure (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/commands/CommandRejectedException : java/lang/RuntimeException {
+	public final fun getResponse ()Lnet/kyori/adventure/text/Component;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/CommandRenamed : java/lang/annotation/Annotation {
+	public abstract fun from ()Ljava/lang/String;
+	public abstract fun untilVersion ()I
+}
+
+public abstract interface class pink/alex/ashlar/commands/CommandResponseCodec {
+	public abstract fun encode (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getType ()Lkotlin/reflect/KClass;
+}
+
+public final class pink/alex/ashlar/commands/CommandResponseCodec$DefaultImpls {
+	public static fun getType (Lpink/alex/ashlar/commands/CommandResponseCodec;)Lkotlin/reflect/KClass;
+}
+
+public final class pink/alex/ashlar/commands/CommandResult {
+	public static final field Companion Lpink/alex/ashlar/commands/CommandResult$Companion;
+	public final fun getResponses ()Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/commands/CommandResult$Builder {
+	public fun <init> ()V
+	public final fun reply (Ljava/lang/String;)V
+	public final fun reply (Lnet/kyori/adventure/text/Component;)V
+}
+
+public final class pink/alex/ashlar/commands/CommandResult$Companion {
+	public final fun getEmpty ()Lpink/alex/ashlar/commands/CommandResult;
+	public final fun of (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/commands/CommandResult;
+}
+
+public final class pink/alex/ashlar/commands/CommandResultKt {
+	public static final fun orReject (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun orRejectComponent (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun reject (Ljava/lang/String;)Ljava/lang/Void;
+	public static final fun reject (Lnet/kyori/adventure/text/Component;)Ljava/lang/Void;
+	public static final fun responses (Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/commands/CommandResult;
+}
+
+public final class pink/alex/ashlar/commands/CommandSender {
+	public fun <init> (Ljava/lang/String;Ljava/util/UUID;Ljava/util/Locale;Lnet/kyori/adventure/audience/Audience;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/UUID;Ljava/util/Locale;Lnet/kyori/adventure/audience/Audience;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun canDeliver ()Z
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/UUID;
+	public final fun component3 ()Ljava/util/Locale;
+	public final fun component4 ()Lnet/kyori/adventure/audience/Audience;
+	public final fun copy (Ljava/lang/String;Ljava/util/UUID;Ljava/util/Locale;Lnet/kyori/adventure/audience/Audience;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/commands/CommandSender;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/CommandSender;Ljava/lang/String;Ljava/util/UUID;Ljava/util/Locale;Lnet/kyori/adventure/audience/Audience;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lpink/alex/ashlar/commands/CommandSender;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAudience ()Lnet/kyori/adventure/audience/Audience;
+	public final fun getLocale ()Ljava/util/Locale;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getUniqueId ()Ljava/util/UUID;
+	public final fun hasPermission (Ljava/lang/String;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/CommandSourceKt {
+	public static final fun requirePermission (Lpink/alex/ashlar/commands/CommandInvocation;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun requirePermission$default (Lpink/alex/ashlar/commands/CommandInvocation;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Commands : java/lang/annotation/Annotation {
+	public abstract fun aliases ()[Ljava/lang/String;
+	public abstract fun helpName ()Ljava/lang/String;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun optionalAliases ()[Ljava/lang/String;
+	public abstract fun permission ()Ljava/lang/String;
+	public abstract fun schemaVersion ()I
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/ConfigureCommandGraph : java/lang/annotation/Annotation {
+}
+
+public final class pink/alex/ashlar/commands/EnglishCommandMessages : pink/alex/ashlar/commands/CommandMessages {
+	public static final field INSTANCE Lpink/alex/ashlar/commands/EnglishCommandMessages;
+	public fun invalidArgument (Ljava/util/Locale;Ljava/lang/String;Ljava/lang/String;)Lnet/kyori/adventure/text/Component;
+	public fun missingArgument (Ljava/util/Locale;Ljava/lang/String;)Lnet/kyori/adventure/text/Component;
+	public fun noPermission (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+	public fun unexpectedFailure (Ljava/util/Locale;)Lnet/kyori/adventure/text/Component;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/ExcludeCommandContributions : java/lang/annotation/Annotation {
+	public abstract fun types ()[Ljava/lang/Class;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Greedy : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Group : java/lang/annotation/Annotation {
+	public abstract fun aliases ()[Ljava/lang/String;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun permission ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Observed : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Option : java/lang/annotation/Annotation {
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun short ()C
+}
+
+public abstract interface class pink/alex/ashlar/commands/OptionValue {
+}
+
+public final class pink/alex/ashlar/commands/OptionValue$Absent : pink/alex/ashlar/commands/OptionValue {
+	public static final field INSTANCE Lpink/alex/ashlar/commands/OptionValue$Absent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/OptionValue$Present : pink/alex/ashlar/commands/OptionValue {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lpink/alex/ashlar/commands/OptionValue$Present;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/OptionValue$Present;Ljava/lang/Object;ILjava/lang/Object;)Lpink/alex/ashlar/commands/OptionValue$Present;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Options : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Repeated : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Restricted : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Root : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Scope : java/lang/annotation/Annotation {
+	public abstract fun permission ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/Sensitive : java/lang/annotation/Annotation {
+}
+
+public abstract interface class pink/alex/ashlar/commands/codec/CommandArgumentCodec {
+	public abstract fun encode (Ljava/lang/Object;)Ljava/lang/String;
+	public fun getQualifier ()Lkotlin/reflect/KClass;
+	public fun getSyntax ()Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public abstract fun getType ()Lkotlin/reflect/KClass;
+	public abstract fun resolve (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandInvocation;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun suggest (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandInvocation;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/codec/CommandArgumentCodec$DefaultImpls {
+	public static fun getQualifier (Lpink/alex/ashlar/commands/codec/CommandArgumentCodec;)Lkotlin/reflect/KClass;
+	public static fun getSyntax (Lpink/alex/ashlar/commands/codec/CommandArgumentCodec;)Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static fun suggest (Lpink/alex/ashlar/commands/codec/CommandArgumentCodec;Ljava/lang/String;Lpink/alex/ashlar/commands/CommandInvocation;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/codec/CommandArgumentCodecKt {
+	public static final fun invalidArgument (Ljava/lang/String;)Ljava/lang/Void;
+}
+
+public final class pink/alex/ashlar/commands/codec/CommandArgumentException : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getReason ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/codec/CommandArgumentQualifier : java/lang/annotation/Annotation {
+}
+
+public abstract interface class pink/alex/ashlar/commands/codec/CommandSuggestionProvider {
+	public fun getQualifier ()Lkotlin/reflect/KClass;
+	public abstract fun getType ()Lkotlin/reflect/KClass;
+	public abstract fun suggest (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandInvocation;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/codec/CommandSuggestionProvider$DefaultImpls {
+	public static fun getQualifier (Lpink/alex/ashlar/commands/codec/CommandSuggestionProvider;)Lkotlin/reflect/KClass;
+}
+
+public final class pink/alex/ashlar/commands/codec/CommandSyntax : java/lang/Enum {
+	public static final field BOOLEAN Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field DOUBLE Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field FLOAT Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field GREEDY_STRING Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field INTEGER Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field LONG Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field STRING Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static final field WORD Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/commands/codec/CommandSyntax;
+	public static fun values ()[Lpink/alex/ashlar/commands/codec/CommandSyntax;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandBindingKt {
+	public static final fun commandResponse (Ljava/lang/String;)Lpink/alex/ashlar/commands/codegen/CommandResponse;
+	public static final fun commandResponse (Lnet/kyori/adventure/text/Component;)Lpink/alex/ashlar/commands/codegen/CommandResponse;
+	public static final fun commandResult (Ljava/lang/Object;)Lpink/alex/ashlar/commands/CommandResult;
+	public static final fun invalidCommandArgumentCount (II)Ljava/lang/Void;
+	public static final fun invalidCommandOptions (II)Ljava/lang/Void;
+	public static final fun invalidCommandRoute (I)Ljava/lang/Void;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandDocumentation {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;Ljava/util/List;)Lpink/alex/ashlar/commands/codegen/CommandDocumentation;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandDocumentation;Ljava/lang/String;Ljava/util/Map;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandDocumentation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExamples ()Ljava/util/List;
+	public final fun getParameters ()Ljava/util/Map;
+	public final fun getSummary ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandOptionDefinition {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Character;Lkotlin/reflect/KClass;ZZZLkotlin/reflect/KClass;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Character;Lkotlin/reflect/KClass;ZZZLkotlin/reflect/KClass;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Character;
+	public final fun component3 ()Lkotlin/reflect/KClass;
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Z
+	public final fun component7 ()Lkotlin/reflect/KClass;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Character;Lkotlin/reflect/KClass;ZZZLkotlin/reflect/KClass;)Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;Ljava/lang/String;Ljava/lang/Character;Lkotlin/reflect/KClass;ZZZLkotlin/reflect/KClass;ILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNullable ()Z
+	public final fun getPresenceAware ()Z
+	public final fun getQualifier ()Lkotlin/reflect/KClass;
+	public final fun getRepeated ()Z
+	public final fun getShortName ()Ljava/lang/Character;
+	public final fun getType ()Lkotlin/reflect/KClass;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandOptionMemberDefinition {
+	public fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;
+	public final fun copy (Ljava/lang/String;Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;)Lpink/alex/ashlar/commands/codegen/CommandOptionMemberDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandOptionMemberDefinition;Ljava/lang/String;Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;ILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandOptionMemberDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOption ()Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;
+	public final fun getPropertyName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandOptionsDefinition {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lpink/alex/ashlar/commands/codegen/CommandOptionsDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandOptionsDefinition;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandOptionsDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMembers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandParameterDefinition {
+	public fun <init> (Ljava/lang/String;ZLkotlin/reflect/KClass;ZZZLpink/alex/ashlar/commands/codegen/CommandOptionDefinition;Lpink/alex/ashlar/commands/codegen/CommandOptionsDefinition;ZILjava/lang/String;ZZLkotlin/reflect/KClass;)V
+	public synthetic fun <init> (Ljava/lang/String;ZLkotlin/reflect/KClass;ZZZLpink/alex/ashlar/commands/codegen/CommandOptionDefinition;Lpink/alex/ashlar/commands/codegen/CommandOptionsDefinition;ZILjava/lang/String;ZZLkotlin/reflect/KClass;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCenterIntegers ()Z
+	public final fun getGreedy ()Z
+	public final fun getMinimumTicks ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNullable ()Z
+	public final fun getObserved ()Z
+	public final fun getOption ()Lpink/alex/ashlar/commands/codegen/CommandOptionDefinition;
+	public final fun getOptional ()Z
+	public final fun getOptions ()Lpink/alex/ashlar/commands/codegen/CommandOptionsDefinition;
+	public final fun getQualifier ()Lkotlin/reflect/KClass;
+	public final fun getRegistry ()Ljava/lang/String;
+	public final fun getRepeated ()Z
+	public final fun getSensitive ()Z
+	public final fun getType ()Lkotlin/reflect/KClass;
+}
+
+public abstract interface class pink/alex/ashlar/commands/codegen/CommandResponse {
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandResponse$Message : pink/alex/ashlar/commands/codegen/CommandResponse {
+	public fun <init> (Lnet/kyori/adventure/text/Component;)V
+	public final fun getValue ()Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandRouteDefinition {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/commands/codegen/CommandDocumentation;Ljava/util/List;ZLjava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lpink/alex/ashlar/commands/codegen/CommandDocumentation;Ljava/util/List;ZLjava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAliases ()Ljava/util/List;
+	public final fun getCancelOnExecutorRetire ()Z
+	public final fun getDocumentation ()Lpink/alex/ashlar/commands/codegen/CommandDocumentation;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParameters ()Ljava/util/List;
+	public final fun getPermission ()Ljava/lang/String;
+	public final fun getPermissions ()Ljava/util/List;
+	public final fun getPolicies ()Ljava/util/List;
+	public final fun getSegments ()Ljava/util/List;
+}
+
+public abstract interface class pink/alex/ashlar/commands/codegen/CommandSegmentDefinition {
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Argument : pink/alex/ashlar/commands/codegen/CommandSegmentDefinition {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Argument;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Argument;IILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Argument;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getParameterIndex ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Literal : pink/alex/ashlar/commands/codegen/CommandSegmentDefinition {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Literal;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Literal;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$Literal;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNames ()Ljava/util/List;
+	public final fun getPermissions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSegmentDefinition$ScannedArguments : pink/alex/ashlar/commands/codegen/CommandSegmentDefinition {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$ScannedArguments;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$ScannedArguments;IILjava/lang/Object;)Lpink/alex/ashlar/commands/codegen/CommandSegmentDefinition$ScannedArguments;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirstParameterIndex ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/codegen/CommandSetBinding : pink/alex/ashlar/commands/codegen/CommandSetContribution {
+	public abstract fun getDefinition ()Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;
+	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
+	public fun invoke (Ljava/lang/Object;ILjava/util/List;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun invokeTyped (Ljava/lang/Object;ILjava/util/List;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSetBinding$DefaultImpls {
+	public static fun configureGraph (Lpink/alex/ashlar/commands/codegen/CommandSetBinding;Ljava/lang/Object;Lpink/alex/ashlar/di/DependencyResolver;Lpink/alex/ashlar/commands/graph/CommandGraph;)V
+	public static fun constructOptions (Lpink/alex/ashlar/commands/codegen/CommandSetBinding;IILjava/util/List;)Ljava/lang/Object;
+	public static fun invoke (Lpink/alex/ashlar/commands/codegen/CommandSetBinding;Ljava/lang/Object;ILjava/util/List;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun optionDefaults (Lpink/alex/ashlar/commands/codegen/CommandSetBinding;II)Ljava/util/List;
+}
+
+public abstract interface class pink/alex/ashlar/commands/codegen/CommandSetContribution {
+	public fun configureGraph (Ljava/lang/Object;Lpink/alex/ashlar/di/DependencyResolver;Lpink/alex/ashlar/commands/graph/CommandGraph;)V
+	public fun constructOptions (IILjava/util/List;)Ljava/lang/Object;
+	public abstract fun getDefinition ()Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;
+	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
+	public abstract fun invoke (Ljava/lang/Object;ILjava/util/List;Lpink/alex/ashlar/di/DependencyResolver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun optionDefaults (II)Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSetContribution$DefaultImpls {
+	public static fun configureGraph (Lpink/alex/ashlar/commands/codegen/CommandSetContribution;Ljava/lang/Object;Lpink/alex/ashlar/di/DependencyResolver;Lpink/alex/ashlar/commands/graph/CommandGraph;)V
+	public static fun constructOptions (Lpink/alex/ashlar/commands/codegen/CommandSetContribution;IILjava/util/List;)Ljava/lang/Object;
+	public static fun optionDefaults (Lpink/alex/ashlar/commands/codegen/CommandSetContribution;II)Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSetDefinition {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ZLjava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ZLjava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAliases ()Ljava/util/List;
+	public final fun getFragment ()Z
+	public final fun getHelpName ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOptionalAliases ()Ljava/util/List;
+	public final fun getPermission ()Ljava/lang/String;
+	public final fun getRoutes ()Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/commands/codegen/CommandSetFactoryKt {
+	public static final fun commandSet (Ljava/lang/Object;Lpink/alex/ashlar/commands/codegen/CommandSetBinding;)Lpink/alex/ashlar/PluginComponent;
+}
+
+public final class pink/alex/ashlar/commands/codegen/MissingCommandArgument {
+	public static final field INSTANCE Lpink/alex/ashlar/commands/codegen/MissingCommandArgument;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/graph/CommandGraph {
+	public fun <init> ()V
+	public final fun external (Lpink/alex/ashlar/commands/route/CommandRoute;Ljava/lang/String;Z)V
+	public static synthetic fun external$default (Lpink/alex/ashlar/commands/graph/CommandGraph;Lpink/alex/ashlar/commands/route/CommandRoute;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun fork (Lpink/alex/ashlar/commands/route/CommandRoute;Lkotlin/jvm/functions/Function1;)V
+	public final fun redirect (Lpink/alex/ashlar/commands/route/CommandRoute;Lpink/alex/ashlar/commands/route/CommandRoute;)V
+}
+
+public final class pink/alex/ashlar/commands/graph/CommandRefresh {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;)V
+	public final fun refresh (Ljava/lang/Iterable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun refresh-xJTp0AU (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/commands/graph/CommandRequirement {
+	public abstract fun getId ()Ljava/lang/String;
+	public abstract fun isAllowed ()Z
+	public abstract fun subscribe (Lkotlin/jvm/functions/Function0;)Ljava/lang/AutoCloseable;
+}
+
+public abstract interface class pink/alex/ashlar/commands/help/CommandHelpRenderer {
+	public abstract fun render (Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;Lpink/alex/ashlar/commands/CommandSender;)Lnet/kyori/adventure/text/Component;
+	public fun render (Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;Lpink/alex/ashlar/commands/CommandSender;I)Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/commands/help/CommandHelpRenderer$DefaultImpls {
+	public static fun render (Lpink/alex/ashlar/commands/help/CommandHelpRenderer;Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;Lpink/alex/ashlar/commands/CommandSender;I)Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/commands/help/DefaultCommandHelpRenderer : pink/alex/ashlar/commands/help/CommandHelpRenderer {
+	public static final field INSTANCE Lpink/alex/ashlar/commands/help/DefaultCommandHelpRenderer;
+	public fun render (Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;Lpink/alex/ashlar/commands/CommandSender;)Lnet/kyori/adventure/text/Component;
+	public fun render (Lpink/alex/ashlar/commands/codegen/CommandSetDefinition;Lpink/alex/ashlar/commands/CommandSender;I)Lnet/kyori/adventure/text/Component;
+}
+
+public final class pink/alex/ashlar/commands/internal/CommandRuntimeComponent : pink/alex/ashlar/PluginComponent {
+	public fun <init> (Lpink/alex/ashlar/di/DependencyGraph;)V
+}
+
+public final class pink/alex/ashlar/commands/minecraft/AxisSelection {
+	public fun <init> (Ljava/lang/Iterable;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAxes ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/BlockColumnRef {
+	public synthetic fun <init> (Lnet/kyori/adventure/key/Key;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun at (I)Lpink/alex/ashlar/commands/reference/BlockRef;
+	public final fun component1-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun copy--ww0ZQs (Lnet/kyori/adventure/key/Key;II)Lpink/alex/ashlar/commands/minecraft/BlockColumnRef;
+	public static synthetic fun copy--ww0ZQs$default (Lpink/alex/ashlar/commands/minecraft/BlockColumnRef;Lnet/kyori/adventure/key/Key;IIILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/BlockColumnRef;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getWorld-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun getX ()I
+	public final fun getZ ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/minecraft/BlockPredicate {
+	public abstract fun test (Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/commands/reference/BlockRef;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/BlockPredicateResult : java/lang/Enum {
+	public static final field MATCH Lpink/alex/ashlar/commands/minecraft/BlockPredicateResult;
+	public static final field NO_MATCH Lpink/alex/ashlar/commands/minecraft/BlockPredicateResult;
+	public static final field UNLOADED_CHUNK Lpink/alex/ashlar/commands/minecraft/BlockPredicateResult;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/commands/minecraft/BlockPredicateResult;
+	public static fun values ()[Lpink/alex/ashlar/commands/minecraft/BlockPredicateResult;
+}
+
+public abstract interface class pink/alex/ashlar/commands/minecraft/BlockStateInput {
+	public abstract fun blockData ()Lorg/bukkit/block/data/BlockData;
+	public abstract fun place (Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/commands/reference/BlockRef;ZZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun place$default (Lpink/alex/ashlar/commands/minecraft/BlockStateInput;Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/commands/reference/BlockRef;ZZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/BlockStateInput$DefaultImpls {
+	public static synthetic fun place$default (Lpink/alex/ashlar/commands/minecraft/BlockStateInput;Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/commands/reference/BlockRef;ZZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/minecraft/CenterIntegers : java/lang/annotation/Annotation {
+}
+
+public final class pink/alex/ashlar/commands/minecraft/FineColumnSnapshot {
+	public synthetic fun <init> (Lnet/kyori/adventure/key/Key;DDLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun copy--ww0ZQs (Lnet/kyori/adventure/key/Key;DD)Lpink/alex/ashlar/commands/minecraft/FineColumnSnapshot;
+	public static synthetic fun copy--ww0ZQs$default (Lpink/alex/ashlar/commands/minecraft/FineColumnSnapshot;Lnet/kyori/adventure/key/Key;DDILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/FineColumnSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getWorld-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun getX ()D
+	public final fun getZ ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/FinePositionSnapshot {
+	public synthetic fun <init> (Lnet/kyori/adventure/key/Key;DDDLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun copy-YoaIyfY (Lnet/kyori/adventure/key/Key;DDD)Lpink/alex/ashlar/commands/minecraft/FinePositionSnapshot;
+	public static synthetic fun copy-YoaIyfY$default (Lpink/alex/ashlar/commands/minecraft/FinePositionSnapshot;Lnet/kyori/adventure/key/Key;DDDILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/FinePositionSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getWorld-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun getX ()D
+	public final fun getY ()D
+	public final fun getZ ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/minecraft/FromRegistry : java/lang/annotation/Annotation {
+	public abstract fun value ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/minecraft/ItemPredicate {
+	public abstract fun matches (Lorg/bukkit/inventory/ItemStack;)Z
+}
+
+public final class pink/alex/ashlar/commands/minecraft/ItemStackSnapshot {
+	public fun <init> (Lorg/bukkit/inventory/ItemStack;)V
+	public final fun copy ()Lorg/bukkit/inventory/ItemStack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/MinecraftAngle {
+	public static final synthetic fun box-impl (F)Lpink/alex/ashlar/commands/minecraft/MinecraftAngle;
+	public static fun constructor-impl (F)F
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (FLjava/lang/Object;)Z
+	public static final fun equals-impl0 (FF)Z
+	public final fun getDegrees ()F
+	public fun hashCode ()I
+	public static fun hashCode-impl (F)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (F)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()F
+}
+
+public final class pink/alex/ashlar/commands/minecraft/MinecraftArgumentInputsKt {
+	public static final fun test (Lpink/alex/ashlar/commands/minecraft/BlockPredicate;Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/commands/reference/BlockRef;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/MinecraftDoubleRange {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Double;Ljava/lang/Double;)V
+	public synthetic fun <init> (Ljava/lang/Double;Ljava/lang/Double;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Double;
+	public final fun component2 ()Ljava/lang/Double;
+	public final fun contains (D)Z
+	public final fun copy (Ljava/lang/Double;Ljava/lang/Double;)Lpink/alex/ashlar/commands/minecraft/MinecraftDoubleRange;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/MinecraftDoubleRange;Ljava/lang/Double;Ljava/lang/Double;ILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/MinecraftDoubleRange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaximum ()Ljava/lang/Double;
+	public final fun getMinimum ()Ljava/lang/Double;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/MinecraftIntegerRange {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun contains (I)Z
+	public final fun copy (Ljava/lang/Integer;Ljava/lang/Integer;)Lpink/alex/ashlar/commands/minecraft/MinecraftIntegerRange;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/MinecraftIntegerRange;Ljava/lang/Integer;Ljava/lang/Integer;ILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/MinecraftIntegerRange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaximum ()Ljava/lang/Integer;
+	public final fun getMinimum ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/MinecraftRotation {
+	public fun <init> (FF)V
+	public final fun component1 ()F
+	public final fun component2 ()F
+	public final fun copy (FF)Lpink/alex/ashlar/commands/minecraft/MinecraftRotation;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/MinecraftRotation;FFILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/MinecraftRotation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPitch ()F
+	public final fun getYaw ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/MinecraftTime {
+	public static final synthetic fun box-impl (I)Lpink/alex/ashlar/commands/minecraft/MinecraftTime;
+	public static fun constructor-impl (I)I
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (ILjava/lang/Object;)Z
+	public static final fun equals-impl0 (II)Z
+	public final fun getTicks ()I
+	public fun hashCode ()I
+	public static fun hashCode-impl (I)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (I)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()I
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/minecraft/MinimumTicks : java/lang/annotation/Annotation {
+	public abstract fun value ()I
+}
+
+public final class pink/alex/ashlar/commands/minecraft/PlayerProfileSelection {
+	public fun <init> (Ljava/lang/Iterable;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProfiles ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/PlayerProfileSnapshot {
+	public fun <init> (Ljava/util/UUID;Ljava/lang/String;Ljava/lang/Iterable;)V
+	public synthetic fun <init> (Ljava/util/UUID;Ljava/lang/String;Ljava/lang/Iterable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getProperties ()Ljava/util/List;
+	public final fun getUniqueId ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/ProfilePropertySnapshot {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lpink/alex/ashlar/commands/minecraft/ProfilePropertySnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/ProfilePropertySnapshot;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/ProfilePropertySnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSignature ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/RegistryValueKey {
+	public fun <init> (Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;)V
+	public final fun component1 ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()Lnet/kyori/adventure/key/Key;
+	public final fun copy (Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;)Lpink/alex/ashlar/commands/minecraft/RegistryValueKey;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/RegistryValueKey;Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;ILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/RegistryValueKey;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRegistry ()Lnet/kyori/adventure/key/Key;
+	public final fun getValue ()Lnet/kyori/adventure/key/Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/RegistryValueRef {
+	public fun <init> (Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;)V
+	public final fun component1 ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()Lnet/kyori/adventure/key/Key;
+	public final fun copy (Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;)Lpink/alex/ashlar/commands/minecraft/RegistryValueRef;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/RegistryValueRef;Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;ILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/RegistryValueRef;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRegistry ()Lnet/kyori/adventure/key/Key;
+	public final fun getValue ()Lnet/kyori/adventure/key/Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/ScoreboardCriterion {
+	public fun <init> (Ljava/lang/String;ZLorg/bukkit/scoreboard/RenderType;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Z
+	public final fun component3 ()Lorg/bukkit/scoreboard/RenderType;
+	public final fun copy (Ljava/lang/String;ZLorg/bukkit/scoreboard/RenderType;)Lpink/alex/ashlar/commands/minecraft/ScoreboardCriterion;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/minecraft/ScoreboardCriterion;Ljava/lang/String;ZLorg/bukkit/scoreboard/RenderType;ILjava/lang/Object;)Lpink/alex/ashlar/commands/minecraft/ScoreboardCriterion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDefaultRenderType ()Lorg/bukkit/scoreboard/RenderType;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getReadOnly ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/minecraft/SignedMessageInput {
+	public final fun getContent ()Ljava/lang/String;
+	public final fun resolve (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class pink/alex/ashlar/commands/observability/CommandEvent {
+	public abstract fun getExecutor ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public abstract fun getRoute ()Ljava/lang/String;
+	public abstract fun getSender ()Lpink/alex/ashlar/commands/CommandSender;
+}
+
+public final class pink/alex/ashlar/commands/observability/CommandEvent$Accepted : pink/alex/ashlar/commands/observability/CommandEvent {
+	public fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lpink/alex/ashlar/commands/CommandSender;
+	public final fun component3 ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun copy (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;)Lpink/alex/ashlar/commands/observability/CommandEvent$Accepted;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/observability/CommandEvent$Accepted;Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;ILjava/lang/Object;)Lpink/alex/ashlar/commands/observability/CommandEvent$Accepted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getExecutor ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public fun getRoute ()Ljava/lang/String;
+	public fun getSender ()Lpink/alex/ashlar/commands/CommandSender;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/observability/CommandEvent$Completed : pink/alex/ashlar/commands/observability/CommandEvent {
+	public synthetic fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lpink/alex/ashlar/commands/CommandSender;
+	public final fun component3 ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun component4-UwyO8pc ()J
+	public final fun component5 ()Ljava/util/Map;
+	public final fun copy-zkXUZaI (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;)Lpink/alex/ashlar/commands/observability/CommandEvent$Completed;
+	public static synthetic fun copy-zkXUZaI$default (Lpink/alex/ashlar/commands/observability/CommandEvent$Completed;Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/commands/observability/CommandEvent$Completed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDuration-UwyO8pc ()J
+	public fun getExecutor ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun getObservedArguments ()Ljava/util/Map;
+	public fun getRoute ()Ljava/lang/String;
+	public fun getSender ()Lpink/alex/ashlar/commands/CommandSender;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/observability/CommandEvent$Failed : pink/alex/ashlar/commands/observability/CommandEvent {
+	public synthetic fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/lang/String;Ljava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lpink/alex/ashlar/commands/CommandSender;
+	public final fun component3 ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun component4-UwyO8pc ()J
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/Map;
+	public final fun copy-gwCluXo (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/lang/String;Ljava/util/Map;)Lpink/alex/ashlar/commands/observability/CommandEvent$Failed;
+	public static synthetic fun copy-gwCluXo$default (Lpink/alex/ashlar/commands/observability/CommandEvent$Failed;Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/commands/observability/CommandEvent$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDuration-UwyO8pc ()J
+	public final fun getErrorType ()Ljava/lang/String;
+	public fun getExecutor ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun getObservedArguments ()Ljava/util/Map;
+	public fun getRoute ()Ljava/lang/String;
+	public fun getSender ()Lpink/alex/ashlar/commands/CommandSender;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/observability/CommandEvent$Rejected : pink/alex/ashlar/commands/observability/CommandEvent {
+	public synthetic fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lpink/alex/ashlar/commands/CommandSender;
+	public final fun component3 ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun component4-UwyO8pc ()J
+	public final fun component5 ()Ljava/util/Map;
+	public final fun copy-zkXUZaI (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;)Lpink/alex/ashlar/commands/observability/CommandEvent$Rejected;
+	public static synthetic fun copy-zkXUZaI$default (Lpink/alex/ashlar/commands/observability/CommandEvent$Rejected;Ljava/lang/String;Lpink/alex/ashlar/commands/CommandSender;Lpink/alex/ashlar/commands/CommandExecutor;JLjava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/commands/observability/CommandEvent$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDuration-UwyO8pc ()J
+	public fun getExecutor ()Lpink/alex/ashlar/commands/CommandExecutor;
+	public final fun getObservedArguments ()Ljava/util/Map;
+	public fun getRoute ()Ljava/lang/String;
+	public fun getSender ()Lpink/alex/ashlar/commands/CommandSender;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/observability/CommandObserver {
+	public abstract fun observe (Lpink/alex/ashlar/commands/observability/CommandEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/parsing/CommandLineSyntaxException : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getPosition ()Ljava/lang/Integer;
+	public final fun getReason ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/parsing/CommandLineTokenizer {
+	public static final field INSTANCE Lpink/alex/ashlar/commands/parsing/CommandLineTokenizer;
+	public final fun tokenize (Ljava/lang/String;)Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/commands/parsing/CommandToken {
+	public fun <init> (Ljava/lang/String;IIZ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/String;IIZ)Lpink/alex/ashlar/commands/parsing/CommandToken;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/parsing/CommandToken;Ljava/lang/String;IIZILjava/lang/Object;)Lpink/alex/ashlar/commands/parsing/CommandToken;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEndIndex ()I
+	public final fun getStartIndex ()I
+	public final fun getValue ()Ljava/lang/String;
+	public final fun getWasQuotedOrEscaped ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/parsing/NamedOptionDefinition {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Character;Lpink/alex/ashlar/commands/parsing/NamedOptionKind;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Character;Lpink/alex/ashlar/commands/parsing/NamedOptionKind;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Character;
+	public final fun component3 ()Lpink/alex/ashlar/commands/parsing/NamedOptionKind;
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/Character;Lpink/alex/ashlar/commands/parsing/NamedOptionKind;Z)Lpink/alex/ashlar/commands/parsing/NamedOptionDefinition;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/parsing/NamedOptionDefinition;Ljava/lang/String;Ljava/lang/Character;Lpink/alex/ashlar/commands/parsing/NamedOptionKind;ZILjava/lang/Object;)Lpink/alex/ashlar/commands/parsing/NamedOptionDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKind ()Lpink/alex/ashlar/commands/parsing/NamedOptionKind;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRepeated ()Z
+	public final fun getShortName ()Ljava/lang/Character;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/parsing/NamedOptionKind : java/lang/Enum {
+	public static final field BOOLEAN Lpink/alex/ashlar/commands/parsing/NamedOptionKind;
+	public static final field VALUE Lpink/alex/ashlar/commands/parsing/NamedOptionKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/commands/parsing/NamedOptionKind;
+	public static fun values ()[Lpink/alex/ashlar/commands/parsing/NamedOptionKind;
+}
+
+public final class pink/alex/ashlar/commands/parsing/NamedOptionScanner {
+	public fun <init> (Ljava/lang/Iterable;)V
+	public final fun scan (Ljava/lang/String;)Lpink/alex/ashlar/commands/parsing/ParsedCommandLine;
+	public final fun scan (Ljava/util/List;)Lpink/alex/ashlar/commands/parsing/ParsedCommandLine;
+}
+
+public final class pink/alex/ashlar/commands/parsing/ParsedCommandLine {
+	public final fun boolean (Ljava/lang/String;)Ljava/lang/Boolean;
+	public final fun getOptions ()Ljava/util/Map;
+	public final fun getPositionals ()Ljava/util/List;
+	public final fun remainder (I)Ljava/lang/String;
+	public static synthetic fun remainder$default (Lpink/alex/ashlar/commands/parsing/ParsedCommandLine;IILjava/lang/Object;)Ljava/lang/String;
+	public final fun value (Ljava/lang/String;)Ljava/lang/String;
+	public final fun values (Ljava/lang/String;)Ljava/util/List;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/policy/CancelOnExecutorRetire : java/lang/annotation/Annotation {
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPoliciesKt {
+	public static final fun policyRecord (Ljava/lang/String;Ljava/time/Duration;Ljava/time/Clock;)Lpink/alex/ashlar/commands/policy/CommandPolicyRecord;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/policy/CommandPolicy : java/lang/annotation/Annotation {
+	public abstract fun interceptor ()Ljava/lang/Class;
+	public abstract fun order ()I
+	public abstract fun phase ()Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyContext {
+	public fun <init> (Lpink/alex/ashlar/commands/CommandInvocation;Ljava/util/List;)V
+	public final fun component1 ()Lpink/alex/ashlar/commands/CommandInvocation;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Lpink/alex/ashlar/commands/CommandInvocation;Ljava/util/List;)Lpink/alex/ashlar/commands/policy/CommandPolicyContext;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/policy/CommandPolicyContext;Lpink/alex/ashlar/commands/CommandInvocation;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/commands/policy/CommandPolicyContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCanonicalArguments ()Ljava/util/List;
+	public final fun getInvocation ()Lpink/alex/ashlar/commands/CommandInvocation;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/policy/CommandPolicyDefinition {
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyDefinition$Confirm : pink/alex/ashlar/commands/policy/CommandPolicyDefinition {
+	public fun <init> (J)V
+	public final fun component1 ()J
+	public final fun copy (J)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Confirm;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Confirm;JILjava/lang/Object;)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Confirm;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSeconds ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyDefinition$Cooldown : pink/alex/ashlar/commands/policy/CommandPolicyDefinition {
+	public fun <init> (JLpink/alex/ashlar/commands/policy/CooldownMode;)V
+	public final fun component1 ()J
+	public final fun component2 ()Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public final fun copy (JLpink/alex/ashlar/commands/policy/CooldownMode;)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Cooldown;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Cooldown;JLpink/alex/ashlar/commands/policy/CooldownMode;ILjava/lang/Object;)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Cooldown;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMode ()Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public final fun getSeconds ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyDefinition$Custom : pink/alex/ashlar/commands/policy/CommandPolicyDefinition {
+	public fun <init> (Ljava/lang/annotation/Annotation;Lkotlin/reflect/KClass;Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;I)V
+	public final fun component1 ()Ljava/lang/annotation/Annotation;
+	public final fun component2 ()Lkotlin/reflect/KClass;
+	public final fun component3 ()Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public final fun component4 ()I
+	public final fun copy (Ljava/lang/annotation/Annotation;Lkotlin/reflect/KClass;Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;I)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Custom;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Custom;Ljava/lang/annotation/Annotation;Lkotlin/reflect/KClass;Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;IILjava/lang/Object;)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$Custom;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotation ()Ljava/lang/annotation/Annotation;
+	public final fun getInterceptor ()Lkotlin/reflect/KClass;
+	public final fun getOrder ()I
+	public final fun getPhase ()Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyDefinition$RateLimit : pink/alex/ashlar/commands/policy/CommandPolicyDefinition {
+	public fun <init> (IJLpink/alex/ashlar/commands/policy/RateLimitMode;)V
+	public final fun component1 ()I
+	public final fun component2 ()J
+	public final fun component3 ()Lpink/alex/ashlar/commands/policy/RateLimitMode;
+	public final fun copy (IJLpink/alex/ashlar/commands/policy/RateLimitMode;)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$RateLimit;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$RateLimit;IJLpink/alex/ashlar/commands/policy/RateLimitMode;ILjava/lang/Object;)Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$RateLimit;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMode ()Lpink/alex/ashlar/commands/policy/RateLimitMode;
+	public final fun getPermits ()I
+	public final fun getSeconds ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyDefinition$SingleFlight : pink/alex/ashlar/commands/policy/CommandPolicyDefinition {
+	public static final field INSTANCE Lpink/alex/ashlar/commands/policy/CommandPolicyDefinition$SingleFlight;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/policy/CommandPolicyInterceptor {
+	public abstract fun intercept (Ljava/lang/annotation/Annotation;Lpink/alex/ashlar/commands/policy/CommandPolicyContext;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyPhase : java/lang/Enum {
+	public static final field AFTER_HANDLER Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public static final field AFTER_RESOLUTION Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public static final field BEFORE_HANDLER Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public static final field BEFORE_RESOLUTION Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+	public static fun values ()[Lpink/alex/ashlar/commands/policy/CommandPolicyPhase;
+}
+
+public final class pink/alex/ashlar/commands/policy/CommandPolicyRecord {
+	public fun <init> (Ljava/lang/String;Ljava/time/Instant;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/time/Instant;
+	public final fun copy (Ljava/lang/String;Ljava/time/Instant;)Lpink/alex/ashlar/commands/policy/CommandPolicyRecord;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/policy/CommandPolicyRecord;Ljava/lang/String;Ljava/time/Instant;ILjava/lang/Object;)Lpink/alex/ashlar/commands/policy/CommandPolicyRecord;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExpiresAt ()Ljava/time/Instant;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class pink/alex/ashlar/commands/policy/CommandPolicyState {
+	public abstract fun update (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/commands/policy/CommandPolicyRecord;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/policy/Confirm : java/lang/annotation/Annotation {
+	public abstract fun expiresAfterSeconds ()J
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/policy/Cooldown : java/lang/annotation/Annotation {
+	public abstract fun mode ()Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public abstract fun value ()J
+}
+
+public final class pink/alex/ashlar/commands/policy/CooldownMode : java/lang/Enum {
+	public static final field ACCEPTED Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public static final field ATTEMPT Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public static final field SUCCESS Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/commands/policy/CooldownMode;
+	public static fun values ()[Lpink/alex/ashlar/commands/policy/CooldownMode;
+}
+
+public final class pink/alex/ashlar/commands/policy/InMemoryCommandPolicyState : pink/alex/ashlar/commands/policy/CommandPolicyState {
+	public fun <init> ()V
+	public fun <init> (Ljava/time/Clock;)V
+	public synthetic fun <init> (Ljava/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun update (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/commands/policy/CommandPolicyRecord;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/policy/RateLimit : java/lang/annotation/Annotation {
+	public abstract fun mode ()Lpink/alex/ashlar/commands/policy/RateLimitMode;
+	public abstract fun per ()J
+	public abstract fun permits ()I
+}
+
+public final class pink/alex/ashlar/commands/policy/RateLimitMode : java/lang/Enum {
+	public static final field SLIDING_WINDOW Lpink/alex/ashlar/commands/policy/RateLimitMode;
+	public static final field TOKEN_BUCKET Lpink/alex/ashlar/commands/policy/RateLimitMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lpink/alex/ashlar/commands/policy/RateLimitMode;
+	public static fun values ()[Lpink/alex/ashlar/commands/policy/RateLimitMode;
+}
+
+public abstract interface annotation class pink/alex/ashlar/commands/policy/SingleFlight : java/lang/annotation/Annotation {
+}
+
+public final class pink/alex/ashlar/commands/reference/BlockRef {
+	public synthetic fun <init> (Lnet/kyori/adventure/key/Key;IIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun access (Lorg/bukkit/plugin/Plugin;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun component1-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun copy-YoaIyfY (Lnet/kyori/adventure/key/Key;III)Lpink/alex/ashlar/commands/reference/BlockRef;
+	public static synthetic fun copy-YoaIyfY$default (Lpink/alex/ashlar/commands/reference/BlockRef;Lnet/kyori/adventure/key/Key;IIIILjava/lang/Object;)Lpink/alex/ashlar/commands/reference/BlockRef;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getWorld-GdatkgU ()Lnet/kyori/adventure/key/Key;
+	public final fun getX ()I
+	public final fun getY ()I
+	public final fun getZ ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/reference/EntityRef {
+	public static final fun access-impl (Ljava/util/UUID;Lorg/bukkit/plugin/Plugin;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final synthetic fun box-impl (Ljava/util/UUID;)Lpink/alex/ashlar/commands/reference/EntityRef;
+	public static fun constructor-impl (Ljava/util/UUID;)Ljava/util/UUID;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/UUID;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/UUID;Ljava/util/UUID;)Z
+	public final fun getUniqueId ()Ljava/util/UUID;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/UUID;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/UUID;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/UUID;
+}
+
+public final class pink/alex/ashlar/commands/reference/EntitySelection {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lpink/alex/ashlar/commands/reference/EntitySelection;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/reference/EntitySelection;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/commands/reference/EntitySelection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntities ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/reference/LocationSnapshot {
+	public fun <init> (Lnet/kyori/adventure/key/Key;DDDFF)V
+	public synthetic fun <init> (Lnet/kyori/adventure/key/Key;DDDFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lnet/kyori/adventure/key/Key;
+	public final fun component2 ()D
+	public final fun component3 ()D
+	public final fun component4 ()D
+	public final fun component5 ()F
+	public final fun component6 ()F
+	public final fun copy (Lnet/kyori/adventure/key/Key;DDDFF)Lpink/alex/ashlar/commands/reference/LocationSnapshot;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/reference/LocationSnapshot;Lnet/kyori/adventure/key/Key;DDDFFILjava/lang/Object;)Lpink/alex/ashlar/commands/reference/LocationSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPitch ()F
+	public final fun getWorld ()Lnet/kyori/adventure/key/Key;
+	public final fun getX ()D
+	public final fun getY ()D
+	public final fun getYaw ()F
+	public final fun getZ ()D
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/reference/PlayerSelection {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lpink/alex/ashlar/commands/reference/PlayerSelection;
+	public static synthetic fun copy$default (Lpink/alex/ashlar/commands/reference/PlayerSelection;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/commands/reference/PlayerSelection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPlayers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/reference/ServerReferencesKt {
+	public static final fun snapshot (Lorg/bukkit/Location;)Lpink/alex/ashlar/commands/reference/LocationSnapshot;
+}
+
+public final class pink/alex/ashlar/commands/reference/WorldRef {
+	public static final synthetic fun box-impl (Lnet/kyori/adventure/key/Key;)Lpink/alex/ashlar/commands/reference/WorldRef;
+	public static fun constructor-impl (Lnet/kyori/adventure/key/Key;)Lnet/kyori/adventure/key/Key;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Lnet/kyori/adventure/key/Key;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Lnet/kyori/adventure/key/Key;Lnet/kyori/adventure/key/Key;)Z
+	public final fun getKey ()Lnet/kyori/adventure/key/Key;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Lnet/kyori/adventure/key/Key;)I
+	public static final fun resolve-impl (Lnet/kyori/adventure/key/Key;Lorg/bukkit/plugin/Plugin;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Lnet/kyori/adventure/key/Key;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Lnet/kyori/adventure/key/Key;
+}
+
+public final class pink/alex/ashlar/commands/route/CommandDispatcher {
+	public fun <init> (Lorg/bukkit/plugin/Plugin;Lpink/alex/ashlar/commands/graph/CommandGraph;)V
+	public final fun dispatch (Lpink/alex/ashlar/commands/route/CommandRoute;Lpink/alex/ashlar/commands/CommandSender;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun invoke (Lpink/alex/ashlar/commands/route/CommandRoute;Lpink/alex/ashlar/commands/CommandSender;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/commands/route/CommandRoute {
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCommand ()Ljava/lang/String;
+	public final fun getIdentity ()Lpink/alex/ashlar/commands/route/CommandRouteIdentity;
+	public fun hashCode ()I
+	public final fun runLink ()Lnet/kyori/adventure/text/event/ClickEvent;
+	public final fun suggestLink ()Lnet/kyori/adventure/text/event/ClickEvent;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/route/CommandRouteEncoder {
+	public fun <init> (Lpink/alex/ashlar/di/DependencyGraph;)V
+	public final fun argument (Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/reflect/KClass;)Ljava/util/List;
+	public static synthetic fun argument$default (Lpink/alex/ashlar/commands/route/CommandRouteEncoder;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/reflect/KClass;ILjava/lang/Object;)Ljava/util/List;
+	public final fun option (Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/reflect/KClass;)Ljava/util/List;
+	public static synthetic fun option$default (Lpink/alex/ashlar/commands/route/CommandRouteEncoder;Ljava/lang/String;Lkotlin/reflect/KClass;Ljava/lang/Object;Lkotlin/reflect/KClass;ILjava/lang/Object;)Ljava/util/List;
+	public final fun sensitiveArgument (Lkotlin/reflect/KClass;Lpink/alex/ashlar/commands/route/SensitiveRouteValue;Lkotlin/reflect/KClass;)Lpink/alex/ashlar/commands/route/CommandRouteSegment;
+	public static synthetic fun sensitiveArgument$default (Lpink/alex/ashlar/commands/route/CommandRouteEncoder;Lkotlin/reflect/KClass;Lpink/alex/ashlar/commands/route/SensitiveRouteValue;Lkotlin/reflect/KClass;ILjava/lang/Object;)Lpink/alex/ashlar/commands/route/CommandRouteSegment;
+}
+
+public final class pink/alex/ashlar/commands/route/CommandRouteIdentity {
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoute ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/route/CommandRouteKt {
+	public static final fun commandRoute (Ljava/lang/String;Ljava/util/List;)Lpink/alex/ashlar/commands/route/CommandRoute;
+	public static final fun routeArgument (Ljava/lang/String;)Lpink/alex/ashlar/commands/route/CommandRouteSegment;
+	public static final fun routeLiteral (Ljava/lang/String;)Lpink/alex/ashlar/commands/route/CommandRouteSegment;
+}
+
+public abstract class pink/alex/ashlar/commands/route/CommandRouteSegment {
+}
+
+public final class pink/alex/ashlar/commands/route/SensitiveRouteValue {
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/commands/route/SensitiveRouteValueKt {
+	public static final fun routeArgument (Lpink/alex/ashlar/commands/codec/CommandArgumentCodec;Ljava/lang/Object;)Lpink/alex/ashlar/commands/route/CommandRouteSegment;
+	public static final fun sensitive (Ljava/lang/Object;)Lpink/alex/ashlar/commands/route/SensitiveRouteValue;
+	public static final fun sensitiveRouteArgument (Lpink/alex/ashlar/commands/codec/CommandArgumentCodec;Lpink/alex/ashlar/commands/route/SensitiveRouteValue;)Lpink/alex/ashlar/commands/route/CommandRouteSegment;
+}
+
+public final class pink/alex/ashlar/commands/testing/CommandTestHarness {
+	public fun <init> (Lpink/alex/ashlar/commands/codegen/CommandSetContribution;Ljava/lang/Object;Lpink/alex/ashlar/di/DependencyGraph;)V
+	public final fun execute (Ljava/lang/String;Lpink/alex/ashlar/commands/CommandInvocation;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/generated/AshlarDependencyContributions_f12153eb940b : pink/alex/ashlar/di/DependencyContributionModule {
+	public fun <init> ()V
+	public fun getContributions ()Ljava/util/List;
+	public fun getRootComponents ()Ljava/util/List;
+}
+
