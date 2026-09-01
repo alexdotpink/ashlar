@@ -109,4 +109,42 @@ class TomlConfigFormatTest {
         val reparsed = assertIs<ConfigParse.Accepted>(TomlConfigFormat.parse(ConfigSource("settings.toml", written)))
         assertEquals(patched.value, reparsed.document.value)
     }
+
+    @Test
+    fun `TOML removes obsolete table headers without leaving semantic ghosts`() {
+        val source = "# root\nname = \"before\"\n\n# table note\n[nested]\nenabled = true\n"
+        val parsed = assertIs<ConfigParse.Accepted>(
+            TomlConfigFormat.parse(ConfigSource("settings.toml", source)),
+        )
+        val replacement = ConfigValue.ObjectValue(mapOf("name" to ConfigValue.StringValue("after")))
+
+        val patched = parsed.document.patch(replacement)
+        val written = TomlConfigFormat.write(patched)
+
+        assertContains(written, "# table note")
+        kotlin.test.assertFalse(written.contains("[nested]"))
+        assertEquals(replacement, patched.value)
+        assertEquals(
+            replacement,
+            assertIs<ConfigParse.Accepted>(
+                TomlConfigFormat.parse(ConfigSource("settings.toml", written)),
+            ).document.value,
+        )
+    }
+
+    @Test
+    fun `TOML rejects changed arrays of tables instead of writing a different tree`() {
+        val parsed = assertIs<ConfigParse.Accepted>(
+            TomlConfigFormat.parse(
+                ConfigSource("settings.toml", "[[servers]]\nname = \"one\"\n# keep\n[[servers]]\nname = \"two\"\n"),
+            ),
+        )
+        val replacement = ConfigValue.ObjectValue(
+            mapOf("servers" to ConfigValue.ArrayValue(listOf(
+                ConfigValue.ObjectValue(mapOf("name" to ConfigValue.StringValue("changed"))),
+            ))),
+        )
+
+        kotlin.test.assertFailsWith<IllegalArgumentException> { parsed.document.patch(replacement) }
+    }
 }

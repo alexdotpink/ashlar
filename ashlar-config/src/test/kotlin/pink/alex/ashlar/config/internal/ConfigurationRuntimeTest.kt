@@ -238,6 +238,41 @@ class ConfigurationRuntimeTest {
         }
     }
 
+    @Test
+    fun `encoded updates cannot exceed the declaration byte limit`() = runTest {
+        val graph = DependencyGraph(javaClass.classLoader)
+        val definition = settingsDefinition("settings.json").let { ordinary ->
+            ConfigDefinition(
+                rootType = ordinary.rootType,
+                handleKey = ordinary.handleKey,
+                path = ordinary.path,
+                schemaVersion = ordinary.schemaVersion,
+                unversionedSchema = ordinary.unversionedSchema,
+                reloadMode = ordinary.reloadMode,
+                backups = ordinary.backups,
+                limits = ConfigLimits(maximumBytes = 256),
+                serializer = ordinary.serializer,
+                keyNames = ordinary.keyNames,
+                comments = ordinary.comments,
+                validators = ordinary.validators,
+                migrations = ordinary.migrations,
+            )
+        }
+        ConfigurationBootstrap.install(graph, directory, listOf(definition)).use {
+            val handle = graph.get(settingsKey())
+            val before = Files.readString(directory.resolve("settings.json"))
+
+            val result = assertIs<ConfigWrite.Rejected<Settings>>(
+                handle.update { it.copy(message = "x".repeat(512)) },
+            )
+
+            assertEquals(ConfigProblemCategory.RESOURCE_LIMIT, result.problems.single().category)
+            assertEquals(Settings(), handle.current)
+            assertEquals(before, Files.readString(directory.resolve("settings.json")))
+            assertTrue(handle.backups().isEmpty())
+        }
+    }
+
     private fun settingsDefinition(
         path: String,
         validators: List<pink.alex.ashlar.config.codegen.ConfigValidator<Settings>> = emptyList(),

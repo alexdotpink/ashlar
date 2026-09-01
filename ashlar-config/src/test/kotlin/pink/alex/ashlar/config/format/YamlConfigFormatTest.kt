@@ -119,4 +119,34 @@ class YamlConfigFormatTest {
         )
         assertEquals(ConfigValue.BooleanValue(true), currentDirective.document.value.entries["enabled"])
     }
+
+    @Test
+    fun `YAML keeps descendant and removed-key comments orphaned at their parent`() {
+        val parsed = assertIs<ConfigParse.Accepted>(
+            YamlConfigFormat.parse(
+                ConfigSource(
+                    "settings.yml",
+                    "nested:\n  # descendant\n  enabled: true\n# removed key\nobsolete: 4\n",
+                ),
+            ),
+        )
+        val replacement = ConfigValue.ObjectValue(
+            linkedMapOf(
+                "nested" to ConfigValue.StringValue("flat"),
+                "added" to ConfigValue.IntegerValue(7),
+            ),
+        )
+
+        val written = YamlConfigFormat.write(parsed.document.patch(replacement))
+
+        assertContains(written, "# descendant")
+        assertContains(written, "# removed key")
+        kotlin.test.assertTrue(written.indexOf("# removed key") > written.indexOf("added:"))
+        assertEquals(
+            replacement,
+            assertIs<ConfigParse.Accepted>(
+                YamlConfigFormat.parse(ConfigSource("settings.yml", written)),
+            ).document.value,
+        )
+    }
 }

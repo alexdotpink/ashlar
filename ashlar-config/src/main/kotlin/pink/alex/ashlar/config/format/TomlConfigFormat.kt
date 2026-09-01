@@ -109,6 +109,9 @@ private data class LosslessTomlDocument(
             ),
         )
         check(parsed is ConfigParse.Accepted) { "format produced invalid TOML output" }
+        require(parsed.document.value == value) {
+            "TOML patch could not represent the requested semantic value without rewriting operator-owned structure"
+        }
         return parsed.document
     }
 }
@@ -169,6 +172,11 @@ private class TomlSourcePatcher(
     private val newComments: Map<ConfigKeyPath, String>,
 ) {
     fun patch(value: ConfigValue.ObjectValue): String {
+        index.arrayTables.forEach { path ->
+            require(valueAt(originalValue, path) == valueAt(value, path)) {
+                "Changing a TOML array of tables is unsupported because its comments cannot be retained safely"
+            }
+        }
         val leaves = flattenToml(value)
         val edits = mutableListOf<TomlEdit>()
         index.assignments.forEach { (path, assignment) ->
@@ -188,6 +196,12 @@ private class TomlSourcePatcher(
                     val suffix = comments.joinToString(separator = "\n", prefix = if (comments.isEmpty()) "" else "\n")
                     edits += TomlEdit(assignment.valueStart, assignment.valueEnd, rendered + suffix)
                 }
+            }
+        }
+
+        index.tableHeaders.forEach { (path, header) ->
+            if (path !in index.arrayTables && valueAt(value, path) !is ConfigValue.ObjectValue) {
+                edits += TomlEdit(header.first, header.last + 1, "")
             }
         }
 
@@ -216,12 +230,16 @@ private class TomlSourcePatcher(
 private data class TomlSourceIndex(
     val assignments: Map<ConfigKeyPath, TomlAssignment>,
     val tableEnds: Map<ConfigKeyPath, Int>,
+    val tableHeaders: Map<ConfigKeyPath, IntRange>,
+    val arrayTables: Set<ConfigKeyPath>,
 ) {
     companion object {
         fun scan(source: String): TomlSourceIndex {
             val assignments = linkedMapOf<ConfigKeyPath, TomlAssignment>()
             val tableStarts = linkedMapOf<ConfigKeyPath, Int>()
             val tableEnds = linkedMapOf<ConfigKeyPath, Int>()
+            val tableHeaders = linkedMapOf<ConfigKeyPath, IntRange>()
+            val arrayTables = linkedSetOf<ConfigKeyPath>()
             var currentTable = ConfigKeyPath(emptyList())
             tableStarts[currentTable] = 0
             var offset = 0
@@ -243,6 +261,8 @@ private data class TomlSourceIndex(
                         tableEnds[currentTable] = lineStart
                         currentTable = ConfigKeyPath(segments)
                         tableStarts[currentTable] = if (lineEnd < source.length) lineEnd + 1 else lineEnd
+                        tableHeaders[currentTable] = lineStart until if (lineEnd < source.length) lineEnd + 1 else lineEnd
+                        if (arrayTable) arrayTables += currentTable
                     }
                     offset = if (lineEnd < source.length) lineEnd + 1 else source.length
                     continue
@@ -265,7 +285,7 @@ private data class TomlSourceIndex(
             }
             tableEnds[currentTable] = source.length
             tableStarts.keys.forEach { table -> tableEnds.putIfAbsent(table, source.length) }
-            return TomlSourceIndex(assignments, tableEnds)
+            return TomlSourceIndex(assignments, tableEnds, tableHeaders, arrayTables)
         }
     }
 }

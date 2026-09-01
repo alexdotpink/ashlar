@@ -136,6 +136,11 @@ internal class FileConfigHandle<T : Any> private constructor(
                 return@withLock ConfigWrite.Rejected(before.value, problems)
             }
             val (document, text) = encoded
+            textLimitProblem(definition, text)?.let { problem ->
+                val problems = listOf(problem)
+                publishRejected(ConfigEventOrigin.UPDATE, before.revision, problems)
+                return@withLock ConfigWrite.Rejected(before.value, problems)
+            }
             val backupProblem = createBackup(before)
             if (backupProblem != null) {
                 publishUnavailable(ConfigEventOrigin.UPDATE, backupProblem)
@@ -183,6 +188,9 @@ internal class FileConfigHandle<T : Any> private constructor(
                     val backupProblem = createBackup(accepted)
                     if (backupProblem != null) return@withLock ConfigRestore.Unavailable(current, backupProblem)
                     val text = format.write(loaded.config.document)
+                    textLimitProblem(definition, text)?.let { problem ->
+                        return@withLock ConfigRestore.Rejected(current, listOf(problem))
+                    }
                     files.writeAtomically(path, definition.path, text)?.let { problem ->
                         return@withLock ConfigRestore.Unavailable(current, problem)
                     }
@@ -368,8 +376,10 @@ internal class FileConfigHandle<T : Any> private constructor(
             if (schema != definition.schemaVersion) {
                 document = document.patch(semantic.withSchema(definition.schemaVersion), definition.comments)
                 if (persistMigration) {
+                    val text = format.write(document)
+                    textLimitProblem(definition, text)?.let { return LoadResult.Rejected(listOf(it)) }
                     createBackup(accepted)?.let { return LoadResult.Unavailable(it) }
-                    files.writeAtomically(path, definition.path, format.write(document))
+                    files.writeAtomically(path, definition.path, text)
                         ?.let { return LoadResult.Unavailable(it) }
                     revision = checkNotNull(readRevision())
                 }
@@ -552,7 +562,9 @@ internal class FileConfigHandle<T : Any> private constructor(
                         )),
                     )
                 }
-                files.writeAtomically(path, definition.path, format.write(document))
+                val text = format.write(document)
+                textLimitProblem(definition, text)?.let { return@withContext OpenResult.Rejected(listOf(it)) }
+                files.writeAtomically(path, definition.path, text)
                     ?.let { return@withContext OpenResult.Unavailable(it) }
             }
             val source = when (val read = files.read(path, definition.path, definition.limits.maximumBytes)) {
@@ -687,5 +699,21 @@ private fun collectChangedPaths(
             }
         }
         else -> changed += ConfigKeyPath(path)
+    }
+}
+
+private fun textLimitProblem(
+    definition: ConfigDefinition<*>,
+    text: String,
+): ConfigProblem? {
+    val bytes = text.toByteArray(Charsets.UTF_8).size.toLong()
+    return if (bytes > definition.limits.maximumBytes) {
+        ConfigProblem(
+            path = definition.path,
+            category = ConfigProblemCategory.RESOURCE_LIMIT,
+            message = "Encoded configuration exceeds the ${definition.limits.maximumBytes}-byte limit ($bytes bytes)",
+        )
+    } else {
+        null
     }
 }

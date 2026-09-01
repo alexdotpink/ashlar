@@ -338,7 +338,11 @@ private class YamlNodePatcher(private val newComments: Map<ConfigKeyPath, String
         return when {
             node is MappingNode && replacement is ConfigValue.ObjectValue -> patchMapping(node, replacement, path)
             node is SequenceNode && replacement is ConfigValue.ArrayValue -> patchSequence(node, replacement, path)
-            else -> nodeFor(replacement, path).also { copyComments(node, it) }
+            else -> nodeFor(replacement, path).also { patched ->
+                copyComments(node, patched)
+                val orphaned = descendantComments(node).map(::asStandalone)
+                if (orphaned.isNotEmpty()) patched.endComments = patched.endComments.orEmpty() + orphaned
+            }
         }
     }
 
@@ -357,10 +361,6 @@ private class YamlNodePatcher(private val newComments: Map<ConfigKeyPath, String
                 val keyNode = ScalarNode(Tag.STR, key, ScalarStyle.PLAIN)
                 val comment = newComments[ConfigKeyPath(path.segments + key)]
                 if (comment != null) keyNode.blockComments = commentLines(comment)
-                if (removedComments.isNotEmpty()) {
-                    keyNode.blockComments = removedComments + keyNode.blockComments.orEmpty()
-                    removedComments.clear()
-                }
                 NodeTuple(keyNode, nodeFor(value, ConfigKeyPath(path.segments + key)))
             }
         }
@@ -420,6 +420,16 @@ private class YamlNodePatcher(private val newComments: Map<ConfigKeyPath, String
         when (node) {
             is MappingNode -> node.value.forEach { addAll(collectComments(it.keyNode)); addAll(collectComments(it.valueNode)) }
             is SequenceNode -> node.value.forEach { addAll(collectComments(it)) }
+        }
+    }
+
+    private fun descendantComments(node: Node): List<CommentLine> = buildList {
+        when (node) {
+            is MappingNode -> node.value.forEach { tuple ->
+                addAll(collectComments(tuple.keyNode))
+                addAll(collectComments(tuple.valueNode))
+            }
+            is SequenceNode -> node.value.forEach { child -> addAll(collectComments(child)) }
         }
     }
 
