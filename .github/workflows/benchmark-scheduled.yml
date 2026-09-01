@@ -45,7 +45,7 @@ jobs:
           ./gradlew benchmarkPlatforms -PbenchmarkSoakSeconds="$seconds" -PbenchmarkRevision=${{ github.sha }} --stacktrace
       - name: Connected-client native hosts
         run: ./gradlew benchmarkClient -PbenchmarkClientProfile=stress -PbenchmarkRevision=${{ github.sha }} --stacktrace
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: scheduled-performance-evidence
