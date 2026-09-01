@@ -29,6 +29,8 @@ internal class ConfigModelValidator {
         if (!root.dataClass) problems += "Configuration root '$name' must be a data class"
         if (!root.final) problems += "Configuration root '$name' must be final"
         if (!root.serializable) problems += "Configuration root '$name' must be annotated with @Serializable"
+        if (!root.visible) problems += "Configuration root '$name' must be public or internal"
+        if (root.generic) problems += "Configuration root '$name' cannot declare type parameters"
         root.constructorParameters.filterNot(ConstructorParameterModel::hasDefault).forEach { parameter ->
             problems += "Configuration root '$name' constructor parameter '${parameter.name}' must have a default value"
         }
@@ -113,6 +115,10 @@ internal class ConfigModelValidator {
         if (migration.sourceType != null && !migration.sourceSerializable) {
             problems += "$label source ${migration.sourceType.qualifiedName} must be annotated with @Serializable"
         }
+        if (!migration.sourceVisible) problems += "$label source schema type must be public or internal"
+        if (!migration.targetVisible) problems += "$label target schema type must be public or internal"
+        if (migration.sourceGeneric) problems += "$label source schema type cannot declare type parameters"
+        if (migration.targetGeneric) problems += "$label target schema type cannot declare type parameters"
         if (migration.targetType != null && !migration.targetSerializable) {
             problems += "$label target ${migration.targetType.qualifiedName} must be annotated with @Serializable"
         }

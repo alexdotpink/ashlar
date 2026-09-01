@@ -21,6 +21,8 @@ internal class ConfigModelReader {
                 modifier == Modifier.OPEN || modifier == Modifier.ABSTRACT || modifier == Modifier.SEALED
             },
             serializable = declaration.annotationOrNull(SERIALIZABLE) != null,
+            visible = declaration.isVisibleToGeneratedCode(),
+            generic = declaration.typeParameters.isNotEmpty(),
             constructorParameters = declaration.primaryConstructor?.parameters.orEmpty().map { parameter ->
                 ConstructorParameterModel(
                     name = parameter.name?.asString().orEmpty(),
@@ -32,6 +34,7 @@ internal class ConfigModelReader {
                 .map(::configDeclaration)
                 .toList(),
             keyNames = metadata.keyNames,
+            validationKeyNames = metadata.validationKeyNames,
             comments = buildList {
                 declaration.documentation()?.let { documentation ->
                     add(ConfigCommentModel(emptyList(), documentation))
@@ -74,6 +77,10 @@ internal class ConfigModelReader {
             targetType = target?.typeModel(),
             sourceSerializable = source?.annotationOrNull(SERIALIZABLE) != null,
             targetSerializable = target?.annotationOrNull(SERIALIZABLE) != null,
+            sourceVisible = source?.isVisibleToGeneratedCode() ?: false,
+            targetVisible = target?.isVisibleToGeneratedCode() ?: false,
+            sourceGeneric = source?.typeParameters?.isNotEmpty() ?: false,
+            targetGeneric = target?.typeParameters?.isNotEmpty() ?: false,
             sourceKeyNames = source?.let(::propertyMetadata)?.keyNames.orEmpty(),
             targetKeyNames = target?.let(::propertyMetadata)?.keyNames.orEmpty(),
             topLevel = function.parentDeclaration == null,
@@ -134,6 +141,7 @@ internal class ConfigModelReader {
             val descriptorPath = descriptorPrefix + descriptorSegment
             val externalPath = externalPrefix + externalSegment
             metadata.keyNames += ConfigKeyNameModel(descriptorPath, externalSegment)
+            if (descriptorPrefix.isEmpty()) metadata.validationKeyNames[name] = externalSegment
             property.documentation()?.let { documentation ->
                 metadata.comments += ConfigCommentModel(externalPath, documentation)
             }
@@ -180,6 +188,9 @@ internal class ConfigModelReader {
     }.asReversed()
 
     private fun KSFunctionDeclaration.isVisibleToGeneratedCode(): Boolean =
+        Modifier.PRIVATE !in modifiers && Modifier.PROTECTED !in modifiers
+
+    private fun KSClassDeclaration.isVisibleToGeneratedCode(): Boolean =
         Modifier.PRIVATE !in modifiers && Modifier.PROTECTED !in modifiers
 
     private fun KSAnnotated.annotation(name: String): KSAnnotation =
@@ -235,6 +246,7 @@ internal class ConfigModelReader {
 
     private class PropertyMetadata(
         val keyNames: MutableList<ConfigKeyNameModel> = mutableListOf(),
+        val validationKeyNames: MutableMap<String, String> = linkedMapOf(),
         val comments: MutableList<ConfigCommentModel> = mutableListOf(),
     )
 }

@@ -64,6 +64,7 @@ internal class ConfigCodeWriter {
             .add("limits = %T(maximumBytes = %LL),\n", CONFIG_LIMITS, declaration.maximumBytes)
             .add("serializer = %T.serializer(),\n", rootClass)
             .add("keyNames = %L,\n", keyNames(root.keyNames))
+            .add("validationKeyNames = %L,\n", stringMap(root.validationKeyNames))
             .add("comments = %L,\n", comments(root.comments))
             .add("validators = %L,\n", validators(root.validators))
             .add("migrations = %L,\n", migrations(root.migrations))
@@ -79,6 +80,10 @@ internal class ConfigCodeWriter {
             name.descriptorPath.joinToCode { segment -> CodeBlock.of("%S", segment) },
             name.externalName,
         )
+    }
+
+    private fun stringMap(values: Map<String, String>): CodeBlock = map(values.entries.toList()) { entry ->
+        CodeBlock.of("%S to %S", entry.key, entry.value)
     }
 
     private fun handleKey(

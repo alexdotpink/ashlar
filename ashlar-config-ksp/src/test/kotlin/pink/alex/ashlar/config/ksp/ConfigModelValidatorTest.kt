@@ -36,6 +36,34 @@ class ConfigModelValidatorTest {
     }
 
     @Test
+    fun `rejects roots and historical types that generated linkage cannot reference`() {
+        val invalid = root().copy(
+            visible = false,
+            generic = true,
+            migrations = listOf(
+                migration(from = 1).copy(
+                    sourceVisible = false,
+                    targetVisible = false,
+                    sourceGeneric = true,
+                    targetGeneric = true,
+                ),
+            ),
+        )
+
+        assertEquals(
+            listOf(
+                "Configuration root 'example.Settings' must be public or internal",
+                "Configuration root 'example.Settings' cannot declare type parameters",
+                "Configuration migration 'example.toSettingsV2' source schema type must be public or internal",
+                "Configuration migration 'example.toSettingsV2' target schema type must be public or internal",
+                "Configuration migration 'example.toSettingsV2' source schema type cannot declare type parameters",
+                "Configuration migration 'example.toSettingsV2' target schema type cannot declare type parameters",
+            ),
+            validator.validate(ConfigModuleModel(listOf(invalid))),
+        )
+    }
+
+    @Test
     fun `rejects unsafe paths invalid bounds and duplicate exact handle keys`() {
         val duplicate = root().copy(
             declarations = listOf(
