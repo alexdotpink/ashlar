@@ -36,9 +36,26 @@ public data class ConfigLimits(
 ) {
     init {
         require(maximumBytes > 0) { "maximumBytes must be positive" }
+        require(maximumBytes <= MAXIMUM_DOCUMENT_BYTES) {
+            "maximumBytes cannot exceed $MAXIMUM_DOCUMENT_BYTES"
+        }
         require(maximumDepth > 0) { "maximumDepth must be positive" }
+        require(maximumDepth <= MAXIMUM_NESTING_DEPTH) {
+            "maximumDepth cannot exceed $MAXIMUM_NESTING_DEPTH"
+        }
         require(maximumScalarCharacters > 0) { "maximumScalarCharacters must be positive" }
+        require(maximumScalarCharacters <= MAXIMUM_SCALAR_CHARACTERS) {
+            "maximumScalarCharacters cannot exceed $MAXIMUM_SCALAR_CHARACTERS"
+        }
         require(maximumAliases >= 0) { "maximumAliases cannot be negative" }
+        require(maximumAliases <= MAXIMUM_ALIAS_COUNT) { "maximumAliases cannot exceed $MAXIMUM_ALIAS_COUNT" }
+    }
+
+    public companion object {
+        public const val MAXIMUM_DOCUMENT_BYTES: Long = 67_108_864
+        public const val MAXIMUM_NESTING_DEPTH: Int = 256
+        public const val MAXIMUM_SCALAR_CHARACTERS: Int = 16_777_216
+        public const val MAXIMUM_ALIAS_COUNT: Int = 1_000
     }
 }
 

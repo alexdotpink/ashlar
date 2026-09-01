@@ -44,6 +44,12 @@ internal class ConfigurationRuntime private constructor(
             clock: Clock = Clock.systemUTC(),
             reporter: ConfigRuntimeReporter = ConfigRuntimeReporter.NONE,
         ): ConfigurationRuntime {
+            val duplicatePath = definitions.groupBy { definition ->
+                definition.path.replace('\\', '/').lowercase()
+            }.entries.firstOrNull { (_, declarations) -> declarations.size > 1 }
+            require(duplicatePath == null) {
+                "Configuration path '${duplicatePath!!.key}' is declared more than once"
+            }
             val extensionOwners = linkedMapOf<String, ConfigFormat>()
             formats.forEach { format ->
                 require(format.id.isNotBlank()) { "Config format id cannot be blank" }

@@ -22,5 +22,17 @@ class ConfigModelInvariantTest {
         assertFailsWith<IllegalArgumentException> { ConfigLimits(maximumDepth = 0) }
         assertFailsWith<IllegalArgumentException> { ConfigLimits(maximumScalarCharacters = 0) }
         assertFailsWith<IllegalArgumentException> { ConfigLimits(maximumAliases = -1) }
+        assertFailsWith<IllegalArgumentException> {
+            ConfigLimits(maximumBytes = ConfigLimits.MAXIMUM_DOCUMENT_BYTES + 1)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            ConfigLimits(maximumDepth = ConfigLimits.MAXIMUM_NESTING_DEPTH + 1)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            ConfigLimits(maximumScalarCharacters = ConfigLimits.MAXIMUM_SCALAR_CHARACTERS + 1)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            ConfigLimits(maximumAliases = ConfigLimits.MAXIMUM_ALIAS_COUNT + 1)
+        }
     }
 }
