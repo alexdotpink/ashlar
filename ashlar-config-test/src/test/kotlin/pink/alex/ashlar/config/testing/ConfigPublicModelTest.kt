@@ -112,6 +112,14 @@ private object ExampleFormat : ConfigFormat {
     override fun parse(source: ConfigSource, limits: ConfigLimits): ConfigParse =
         ConfigParse.Accepted(ExampleDocument(5, " # operator note"))
 
+    override fun create(
+        value: ConfigValue.ObjectValue,
+        comments: Map<ConfigKeyPath, String>,
+    ): ConfigDocument = ExampleDocument(
+        limit = (value.entries.getValue("limit") as ConfigValue.IntegerValue).value,
+        trailingComment = "",
+    )
+
     override fun write(document: ConfigDocument): String {
         val example = document as ExampleDocument
         return "limit=${example.limit}${example.trailingComment}"

@@ -14,6 +14,12 @@ public interface ConfigFormat {
     /** Parses one bounded source into a lossless document or typed diagnostics. */
     public fun parse(source: ConfigSource, limits: ConfigLimits = ConfigLimits()): ConfigParse
 
+    /** Creates a complete new document in this format with generated KDoc comments. */
+    public fun create(
+        value: ConfigValue.ObjectValue,
+        comments: Map<ConfigKeyPath, String> = emptyMap(),
+    ): ConfigDocument
+
     /** Encodes a document previously created by this format. */
     public fun write(document: ConfigDocument): String
 }
@@ -50,6 +56,9 @@ public sealed interface ConfigParse {
 public interface ConfigDocument {
     public val formatId: String
     public val value: ConfigValue.ObjectValue
+
+    /** Returns the start of one key when the format retained source spans. */
+    public fun location(key: ConfigKeyPath): ConfigSourceLocation? = null
 
     /** Returns a document with semantic changes applied while retaining source trivia. */
     public fun patch(
