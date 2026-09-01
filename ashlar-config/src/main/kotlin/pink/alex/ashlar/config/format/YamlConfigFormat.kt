@@ -372,7 +372,12 @@ private class YamlNodePatcher(private val newComments: Map<ConfigKeyPath, String
     }
 
     private companion object {
-        val UNBOUNDED_LIMITS = ConfigLimits(Long.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+        val UNBOUNDED_LIMITS = ConfigLimits(
+            maximumBytes = ConfigLimits.MAXIMUM_DOCUMENT_BYTES,
+            maximumDepth = ConfigLimits.MAXIMUM_NESTING_DEPTH,
+            maximumScalarCharacters = ConfigLimits.MAXIMUM_SCALAR_CHARACTERS,
+            maximumAliases = ConfigLimits.MAXIMUM_ALIAS_COUNT,
+        )
     }
 }
 
