@@ -3,8 +3,10 @@ package pink.alex.ashlar.config.internal
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.runBlocking
 import pink.alex.ashlar.config.ConfigDocumentReload
 import pink.alex.ashlar.config.ConfigFormat
 import pink.alex.ashlar.config.ConfigInspection
@@ -31,7 +33,9 @@ internal class ConfigurationRuntime private constructor(
 
     override fun close() {
         handles.asReversed().forEach(InternalConfigHandle::close)
+        val job = scope.coroutineContext[Job]
         scope.cancel()
+        runBlocking { job?.join() }
     }
 
     companion object {
