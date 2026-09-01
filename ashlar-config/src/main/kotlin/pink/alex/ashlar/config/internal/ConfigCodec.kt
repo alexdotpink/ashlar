@@ -222,16 +222,10 @@ internal object ConfigCodec {
         is ConfigValue.ObjectValue -> JsonObject(entries.mapValues { (_, value) -> value.toJsonElement() })
     }
 
-    private fun String.toKebabCase(): String = buildString(length + 4) {
-        this@toKebabCase.forEachIndexed { index, character ->
-            if (character.isUpperCase()) {
-                if (index > 0 && lastOrNull() != '-') append('-')
-                append(character.lowercaseChar())
-            } else {
-                append(character)
-            }
-        }
-    }
+    private fun String.toKebabCase(): String =
+        replace(Regex("([A-Z]+)([A-Z][a-z])"), "$1-$2")
+            .replace(Regex("([a-z0-9])([A-Z])"), "$1-$2")
+            .lowercase()
 
     private fun editDistance(left: String, right: String): Int {
         var previous = IntArray(right.length + 1) { it }

@@ -177,6 +177,34 @@ class ConfigurationRuntimeTest {
         assertEquals(source, Files.readString(directory.resolve("settings.json")))
     }
 
+    @Test
+    fun `acronyms become one kebab segment`() {
+        val graph = DependencyGraph(javaClass.classLoader)
+        val key = DependencyKey<ConfigHandle<AcronymSettings>>(
+            DependencyType(
+                rawType = ConfigHandle::class,
+                arguments = listOf(DependencyType<AcronymSettings>(AcronymSettings::class)),
+            ),
+        )
+        val definition = ConfigDefinition(
+            rootType = AcronymSettings::class,
+            handleKey = key,
+            path = "acronym.json",
+            schemaVersion = 1,
+            unversionedSchema = 0,
+            reloadMode = ConfigReloadMode.EXPLICIT,
+            backups = 0,
+            limits = ConfigLimits(),
+            serializer = serializer<AcronymSettings>(),
+        )
+
+        ConfigurationBootstrap.install(graph, directory, listOf(definition)).use {
+            val source = Files.readString(directory.resolve("acronym.json"))
+            assertTrue("\"database-url\"" in source)
+            assertTrue("database-u-r-l" !in source)
+        }
+    }
+
     private fun settingsDefinition(
         path: String,
         validators: List<pink.alex.ashlar.config.codegen.ConfigValidator<Settings>> = emptyList(),
@@ -226,3 +254,6 @@ private data class MigratedSettings(
     val limit: Int = 5,
     val enabled: Boolean = false,
 )
+
+@Serializable
+private data class AcronymSettings(val databaseURL: String = "jdbc:test")
