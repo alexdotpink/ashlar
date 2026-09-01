@@ -1,0 +1,53 @@
+name: Publish benchmark dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - benchmark-dashboard/**
+      - .github/workflows/benchmark-dashboard.yml
+  workflow_run:
+    workflows:
+      - Paired performance gate
+      - Scheduled performance evidence
+      - Benchmark smoke
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: benchmark-dashboard
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/configure-pages@v6
+      - name: Collect public benchmark evidence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/benchmark-dashboard
+          cp benchmark-dashboard/index.html benchmark-dashboard/styles.css benchmark-dashboard/app.js build/benchmark-dashboard/
+          python3 benchmark-dashboard/collect.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --output build/benchmark-dashboard/data.json \
+            --limit 16
+          touch build/benchmark-dashboard/.nojekyll
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: build/benchmark-dashboard
+      - name: Deploy public dashboard
+        id: deployment
+        uses: actions/deploy-pages@v5

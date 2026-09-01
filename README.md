@@ -5,6 +5,7 @@ Ashlar is a Kotlin-only foundation for Paper and Folia plug-ins. The kernel owns
 ## Start here
 
 - [Documentation home](docs/index.md)
+- [Public performance dashboard](https://alexdotpink.github.io/ashlar/)
 - [Build a minimal plug-in](docs/tutorials/first-plugin.md)
 - [Agent entrypoint](AGENTS.md)
 - [Run the sample plug-in](samples/sample-plugin/README.md)
