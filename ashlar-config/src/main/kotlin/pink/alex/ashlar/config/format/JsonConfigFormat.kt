@@ -82,7 +82,7 @@ private data class LosslessJsonDocument(
                     }
                     it.valueNode
                 } ?: return null
-                is JsonArrayNode -> node.elements.getOrNull(segment.toIntOrNull() ?: return null) ?: return null
+                is JsonArrayNode -> node.elements.getOrNull(segment.toIntOrNull() ?: return null)?.node ?: return null
                 is JsonScalarNode -> return null
             }
         }
@@ -129,9 +129,13 @@ private data class JsonObjectNode(
 private data class JsonArrayNode(
     override val start: Int,
     override val end: Int,
-    val elements: List<JsonNode>,
+    val openEnd: Int,
+    val closeStart: Int,
+    val elements: List<JsonElement>,
     override val value: ConfigValue.ArrayValue,
 ) : JsonNode
+
+private data class JsonElement(val node: JsonNode, val commaAfter: Int?)
 
 private data class JsonScalarNode(
     override val start: Int,
@@ -160,8 +164,7 @@ private class JsonPatcher(
         if (node.value == replacement) return source.substring(node.start, node.end)
         return when {
             node is JsonObjectNode && replacement is ConfigValue.ObjectValue -> patchObject(node, replacement, path)
-            node is JsonArrayNode && replacement is ConfigValue.ArrayValue &&
-                node.elements.size == replacement.values.size -> patchArray(node, replacement, path)
+            node is JsonArrayNode && replacement is ConfigValue.ArrayValue -> patchArray(node, replacement, path)
             else -> retainedValueComments(node) + renderJson(replacement)
         }
     }
@@ -202,10 +205,38 @@ private class JsonPatcher(
         replacement: ConfigValue.ArrayValue,
         path: ConfigKeyPath,
     ): String {
-        val edits = node.elements.mapIndexedNotNull { index, child ->
+        val edits = mutableListOf<TextEdit>()
+        val commonSize = minOf(node.elements.size, replacement.values.size)
+        repeat(commonSize) { index ->
+            val child = node.elements[index].node
             val rendered = patchNode(child, replacement.values[index], ConfigKeyPath(path.segments + index.toString()))
-            rendered.takeIf { it != source.substring(child.start, child.end) }
-                ?.let { TextEdit(child.start, child.end, it) }
+            if (rendered != source.substring(child.start, child.end)) {
+                edits += TextEdit(child.start, child.end, rendered)
+            }
+        }
+        if (node.elements.size > commonSize) {
+            node.elements.drop(commonSize).forEach { element ->
+                edits += TextEdit(
+                    element.node.start,
+                    element.node.end,
+                    retainedComments(element.node.start, element.node.end),
+                )
+                element.commaAfter?.let { edits += TextEdit(it, it + 1, "") }
+            }
+            if (commonSize > 0) node.elements[commonSize - 1].commaAfter?.let { edits += TextEdit(it, it + 1, "") }
+        }
+        if (replacement.values.size > commonSize) {
+            val multiline = source.substring(node.openEnd, node.closeStart).contains('\n')
+            val baseIndent = lineIndent(node.start)
+            val childIndent = node.elements.firstOrNull()?.let { lineIndent(it.node.start) } ?: "$baseIndent  "
+            val insertionAt = node.elements.getOrNull(commonSize - 1)?.node?.end ?: node.openEnd
+            val prefix = if (commonSize > 0) "," else ""
+            val separator = if (multiline || node.elements.isEmpty()) "\n" else " "
+            val additions = replacement.values.drop(commonSize).mapIndexed { offset, child ->
+                val childPath = ConfigKeyPath(path.segments + (commonSize + offset).toString())
+                "$childIndent${renderFreshJson(child, newComments, commentsAllowed, childPath, childIndent.length / 2)}"
+            }.joinToString(if (multiline || node.elements.isEmpty()) ",\n" else ", ")
+            edits += TextEdit(insertionAt, insertionAt, prefix + separator + additions)
         }
         return applyEdits(node.start, node.end, edits)
     }
@@ -423,23 +454,33 @@ private object JsonParser {
 
         private fun parseArray(depth: Int, path: ConfigKeyPath): JsonArrayNode {
             val open = expect(TokenKind.LEFT_BRACKET)
-            val values = mutableListOf<JsonValueNode>()
+            val values = mutableListOf<JsonElement>()
             if (token.kind != TokenKind.RIGHT_BRACKET) {
                 var index = 0
                 while (true) {
-                    values += JsonValueNode(parseValue(depth + 1, ConfigKeyPath(path.segments + index.toString())))
+                    val child = parseValue(depth + 1, ConfigKeyPath(path.segments + index.toString()))
                     index++
+                    var comma: Int? = null
                     if (token.kind == TokenKind.COMMA) {
+                        comma = token.start
                         advance()
                         if (token.kind == TokenKind.RIGHT_BRACKET) fail("trailing commas are not supported")
                     } else if (token.kind != TokenKind.RIGHT_BRACKET) {
                         fail("expected ',' or ']' after array element")
-                    } else break
+                    }
+                    values += JsonElement(child, comma)
+                    if (comma == null) break
                 }
             }
             val close = expect(TokenKind.RIGHT_BRACKET)
-            val nodes = values.map(JsonValueNode::node)
-            return JsonArrayNode(open.start, close.end, nodes, ConfigValue.ArrayValue(nodes.map(JsonNode::value)))
+            return JsonArrayNode(
+                open.start,
+                close.end,
+                open.end,
+                close.start,
+                values,
+                ConfigValue.ArrayValue(values.map { it.node.value }),
+            )
         }
 
         private fun expect(kind: TokenKind, message: String = "expected $kind"): JsonToken {
@@ -467,8 +508,6 @@ private object JsonParser {
             category: ConfigProblemCategory,
             path: ConfigKeyPath = ConfigKeyPath(emptyList()),
         ): Nothing = throw JsonFailure(message, token.line, token.column, category, path)
-
-        private data class JsonValueNode(val node: JsonNode)
     }
 }
 
