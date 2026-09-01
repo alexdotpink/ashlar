@@ -115,13 +115,24 @@ internal class FileConfigHandle<T : Any> private constructor(
                     return@withLock ConfigWrite.Unavailable(before.value, disk.problem)
                 }
             }
-            val semantic = ConfigCodec.encode(
-                definition.serializer,
-                transformed,
-                definition.keyNames,
-            ).withSchema(definition.schemaVersion)
-            val document = before.document.patch(semantic, definition.comments)
-            val text = format.write(document)
+            val encoded = try {
+                val semantic = ConfigCodec.encode(
+                    definition.serializer,
+                    transformed,
+                    definition.keyNames,
+                ).withSchema(definition.schemaVersion)
+                val document = before.document.patch(semantic, definition.comments)
+                document to format.write(document)
+            } catch (failure: IllegalArgumentException) {
+                val problems = listOf(ConfigProblem(
+                    path = definition.path,
+                    category = ConfigProblemCategory.UNSUPPORTED_FEATURE,
+                    message = failure.message ?: "The selected format cannot represent this value",
+                ))
+                publishRejected(ConfigEventOrigin.UPDATE, before.revision, problems)
+                return@withLock ConfigWrite.Rejected(before.value, problems)
+            }
+            val (document, text) = encoded
             val backupProblem = createBackup(before)
             if (backupProblem != null) {
                 publishUnavailable(ConfigEventOrigin.UPDATE, backupProblem)

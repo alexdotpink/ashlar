@@ -205,6 +205,39 @@ class ConfigurationRuntimeTest {
         }
     }
 
+    @Test
+    fun `TOML rejects a nullable update without changing the accepted source`() = runTest {
+        val graph = DependencyGraph(javaClass.classLoader)
+        val key = DependencyKey<ConfigHandle<NullableSettings>>(
+            DependencyType(
+                rawType = ConfigHandle::class,
+                arguments = listOf(DependencyType<NullableSettings>(NullableSettings::class)),
+            ),
+        )
+        val definition = ConfigDefinition(
+            rootType = NullableSettings::class,
+            handleKey = key,
+            path = "nullable.toml",
+            schemaVersion = 1,
+            unversionedSchema = 0,
+            reloadMode = ConfigReloadMode.EXPLICIT,
+            backups = 0,
+            limits = ConfigLimits(),
+            serializer = serializer<NullableSettings>(),
+        )
+        ConfigurationBootstrap.install(graph, directory, listOf(definition)).use {
+            val before = Files.readString(directory.resolve("nullable.toml"))
+
+            val result = assertIs<ConfigWrite.Rejected<NullableSettings>>(
+                graph.get(key).update { it.copy(message = null) },
+            )
+
+            assertEquals(ConfigProblemCategory.UNSUPPORTED_FEATURE, result.problems.single().category)
+            assertEquals(NullableSettings(), graph.get(key).current)
+            assertEquals(before, Files.readString(directory.resolve("nullable.toml")))
+        }
+    }
+
     private fun settingsDefinition(
         path: String,
         validators: List<pink.alex.ashlar.config.codegen.ConfigValidator<Settings>> = emptyList(),
@@ -257,3 +290,6 @@ private data class MigratedSettings(
 
 @Serializable
 private data class AcronymSettings(val databaseURL: String = "jdbc:test")
+
+@Serializable
+private data class NullableSettings(val message: String? = "hello")
