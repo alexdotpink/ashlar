@@ -17,12 +17,13 @@ ashlar {
     commands(strictDocumentation = true)
     events()
     input()
+    config()
 }
 ```
 
 ## Managed behavior
 
-The plug-in applies Kotlin/JVM and Shadow, selects the Java 25 toolchain and JVM target, enables Kotlin progressive mode and Java parameter metadata, adds Paper's repository, and adds the framework BOM, kernel, DI runtime, Paper API, and required KSP processor. `commands()` adds the command runtime and processor. `events()` adds the event runtime and processor. `input()` adds typed input and enables events transitively; input itself generates no code. `items()` and `menus()` add their runtimes without code generation.
+The plug-in applies Kotlin/JVM and Shadow, selects the Java 25 toolchain and JVM target, enables Kotlin progressive mode and Java parameter metadata, adds Paper's repository, and adds the framework BOM, kernel, DI runtime, Paper API, and required KSP processor. `commands()` adds the command runtime and processor. `events()` adds the event runtime and processor. `input()` adds typed input and enables events transitively; input itself generates no code. `items()` and `menus()` add their runtimes without code generation. `config()` adds typed configuration, its metadata processor, and Kotlin Serialization.
 
 The ordinary `jar` receives the `plain` classifier. The unclassified `shadowJar` is the distributable plug-in JAR and merges service files so generated contribution indexes remain discoverable. Paper is compile-only.
 
@@ -41,6 +42,7 @@ The ordinary `jar` receives the `plain` classifier. The unclassified `shadowJar`
 | `input()` | Enables typed player input and its event dependency |
 | `items()` | Enables immutable item specifications, snapshots, and custom items |
 | `menus()` | Enables declarative menus and items transitively |
+| `config()` | Enables typed configuration, Kotlin Serialization, and generated pre-lifecycle linkage |
 | `allowVersionOverrides(reason)` | Enables deliberate version overrides and records why |
 | `ashlarVersion(version)` | Overrides the aligned framework version after overrides are enabled |
 | `paperApiVersion(version)` | Overrides the Paper API version after overrides are enabled |

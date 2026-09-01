@@ -63,6 +63,17 @@ This index routes public declarations to their authoritative reference. Generate
 - Custom items: `CustomItemDefinition`, `CustomItemBuilder`, `CustomItemRead`, `customItem`, `CustomItemCodec`, `KotlinJsonItemCodec`, `DefaultItemJson` — [items](items.md)
 - Integrity: `HmacKey`, `HmacKeyring` — [items](items.md)
 
+## Configuration
+
+- Declarations: `Config`, `ConfigReloadMode`, `ConfigValidation`, `ConfigMigration`, `ConfigValidationScope`. See [configuration](configuration.md).
+- Handles and aggregate operations: `ConfigHandle`, `Configurations`, `ConfigReloadReport`, `ConfigDocumentReload`. See [configuration](configuration.md).
+- Outcomes: `ConfigReload`, `ConfigWrite`, `ConfigRestore`, `ConfigOperationStatus`. See [configuration](configuration.md).
+- Events and revisions: `ConfigEvent`, `ConfigEventOrigin`, `ConfigSourceRevision`. See [configuration](configuration.md).
+- Diagnostics: `ConfigProblem`, `ConfigProblemCategory`, `ConfigProblemSeverity`, `ConfigOperationProblem`, `ConfigOperationProblemCategory`, `ConfigKeyPath`, `ConfigSourceLocation`, `ConfigStartupException`. See [configuration](configuration.md).
+- Formats: `ConfigFormat`, `ConfigSource`, `ConfigLimits`, `ConfigParse`, `ConfigDocument`, `ConfigValue`, `BuiltInConfigFormats`. See [configuration](configuration.md).
+- Backups and inspection: `ConfigBackup`, `ConfigBackupId`, `ConfigInspection`, `ConfigWatcherStatus`. See [configuration](configuration.md).
+- Stable serializers: `ConfigDurationSerializer`, `ConfigUuidSerializer`, `ConfigKeySerializer`, `ConfigNamespacedKeySerializer`, `ConfigTypedKeySerializer`, `StringConfigSerializer`. See [configuration](configuration.md).
+
 ## Menus
 
 - Sessions: `PlayerMenus`, `MenuOpen`, `MenuChoice`, `MenuClose`, `MenuOpenConflict`, `registerTransactionDomain` — [menus](menus.md), [storage and transactions](menu-storage.md)
@@ -82,10 +93,16 @@ This index routes public declarations to their authoritative reference. Generate
 ## Testing and build
 
 - `ComponentTestHarness`, `ComponentTestResult`, `componentTest`, `CommandTestHarness`, `EventTestHarness`, `EventTestResult`, `InputTestHarness`, `InputTestAttempt` — [testing](testing.md)
+- `configTest`, `ConfigTestScope`, `configHandleKey`. See [configuration](configuration.md).
 - `AshlarPluginExtension` and `GeneratePluginYaml` — [managed Gradle plug-in](gradle-plugin.md)
 - Benchmark DSL, model, runners, comparison, JSON, reports, diagnostics, and catalogue under `pink.alex.ashlar.benchmarks` — [benchmarks](benchmarks.md)
 - `ExperimentalAshlarApi` — opt-in marker for declarations from `ashlar-incubator`; no stable compatibility promise
 - `DiProcessorProvider`, `CommandsProcessorProvider`, `EventsProcessorProvider` — KSP service entrypoints selected by the managed build; do not instantiate in plug-in code
+- `ConfigProcessorProvider` is the configuration KSP service entrypoint selected by `config()`. Do not instantiate it in plug-in code.
+
+## Generated configuration linkage
+
+`ConfigDefinition`, `ConfigValidator`, `ConfigMigrationStep`, `configValidator`, `configMigration`, and `ConfigurationBootstrap` connect generated metadata to the handwritten runtime and test harness. Plug-in production code should not construct them. Use `@Config`, `@ConfigValidation`, and `@ConfigMigration`, then inject `ConfigHandle<T>`.
 
 ## Generated command linkage
 

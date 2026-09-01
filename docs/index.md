@@ -5,10 +5,12 @@ Ashlar is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in em
 ## Learn the framework
 
 - [Build your first plug-in](tutorials/first-plugin.md)
+- [Create your first configuration](tutorials/first-configuration.md)
 - [Benchmark a plug-in feature](tutorials/benchmark-a-plugin.md)
 - [Understand the architecture](explanation/architecture.md)
 - [Understand coroutine and Folia ownership](explanation/coroutines-and-ownership.md)
 - [Understand the KSP boundary](explanation/code-generation.md)
+- [Understand configuration values and source documents](explanation/configuration-model.md)
 
 ## Complete a task
 
@@ -22,6 +24,12 @@ Ashlar is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in em
 - [Wait for and collect server events](how-to/wait-for-events.md)
 - [Publish application events](how-to/publish-application-events.md)
 - [Collect typed player input](how-to/collect-player-input.md)
+- [Validate configuration values](how-to/validate-configuration.md)
+- [Migrate a configuration schema](how-to/migrate-configuration.md)
+- [Watch a configuration document](how-to/watch-configuration.md)
+- [Update configuration safely](how-to/update-configuration.md)
+- [Restore a configuration backup](how-to/restore-configuration.md)
+- [Add a configuration format](how-to/add-a-configuration-format.md)
 - [Test a plug-in](how-to/test-a-plugin.md)
 - [Diagnose a performance regression](how-to/diagnose-a-performance-regression.md)
 
@@ -39,6 +47,7 @@ Ashlar is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in em
 - [Typed routes, fragments, and graphs](reference/command-routes.md)
 - [Events](reference/events.md)
 - [Input](reference/input.md)
+- [Configuration](reference/configuration.md)
 - [Testing APIs](reference/testing.md)
 - [Benchmarks](reference/benchmarks.md)
 - [Public API index](reference/api-index.md)
@@ -50,6 +59,8 @@ Ashlar is a Kotlin foundation for Paper 26.2 and Folia plug-ins. Each plug-in em
 - [Command authoring workflow](agents/command-authoring.md)
 - [Event authoring workflow](agents/event-authoring.md)
 - [Input authoring workflow](agents/input-authoring.md)
+- [Configuration authoring workflow](agents/config-authoring.md)
+- [Configuration implementation workflow](agents/config-implementation.md)
 - [Item and menu implementation workflow](agents/menu-implementation.md)
 - [Verification matrix](agents/verification.md)
 - [Benchmark workflow](agents/benchmarking.md)

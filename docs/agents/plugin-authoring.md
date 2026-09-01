@@ -27,6 +27,7 @@ ashlar {
     foliaSupported()
     commands(strictDocumentation = true)
     input()
+    config()
 }
 ```
 
@@ -70,7 +71,15 @@ Use `PlayerInput.chat` for typed player chat. Compose multiple prompts with Kotl
 
 Read [input-authoring.md](input-authoring.md) for prompt decisions, conflicts, cancellation, and testing.
 
-## 8. Verify the actual path
+## 8. Add typed configuration
+
+Use `@Config` on an immutable serializable data class and inject its exact `ConfigHandle<T>`. Do not load files in a component constructor or add a second settings registry.
+
+Read [config-authoring.md](config-authoring.md) for defaults, validation, migrations, watched reload, updates, backups, and configuration tests.
+
+The step is complete when required documents load before application construction and rejected edits retain the accepted value.
+
+## 9. Verify the actual path
 
 Run the smallest focused test during development. Finish with `build` and `checkKotlinAbi` for framework changes. Run a Paper or Folia server when the change touches registration, native arguments, ownership, scheduling, or response delivery.
 

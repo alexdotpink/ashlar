@@ -1,6 +1,6 @@
 # Ashlar
 
-Ashlar is a Kotlin-only foundation for Paper and Folia plug-ins. The kernel owns plug-in lifecycle, structured coroutine scopes, nested stateful components, deterministic cleanup, and explicit server-ownership transitions. Optional command, event, and input modules provide typed player-facing interfaces without expanding the kernel.
+Ashlar is a Kotlin-only foundation for Paper and Folia plug-ins. The kernel owns plug-in lifecycle, structured coroutine scopes, nested stateful components, deterministic cleanup, and explicit server-ownership transitions. Optional modules add commands, events, input, items, menus, typed configuration, and performance checks without expanding the kernel.
 
 ## Start here
 
@@ -10,6 +10,8 @@ Ashlar is a Kotlin-only foundation for Paper and Folia plug-ins. The kernel owns
 - [Run the sample plug-in](samples/sample-plugin/README.md)
 - [Events reference](docs/reference/events.md)
 - [Input reference](docs/reference/input.md)
+- [Configuration tutorial](docs/tutorials/first-configuration.md)
+- [Configuration reference](docs/reference/configuration.md)
 - [Project language](CONTEXT.md)
 - [Architecture decisions](docs/adr/)
 

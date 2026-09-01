@@ -10,6 +10,8 @@ Use this section when an agent is writing a plug-in, reviewing generated framewo
 | Add commands | [Command authoring](command-authoring.md) | Every route has KDoc, typed inputs, and focused tests. |
 | Add event-driven behavior | [Event authoring](event-authoring.md) | Dispatch semantics, ownership, pressure, cleanup, and the relevant server path are verified. |
 | Collect player input | [Input authoring](input-authoring.md) | Parsing, consumption, conflicts, cancellation, and cleanup have focused evidence. |
+| Add or change plug-in settings | [Configuration authoring](config-authoring.md) | Defaults, validation, migration, write conflicts, and the selected reload policy have focused evidence. |
+| Change the configuration runtime or processor | [Configuration implementation](config-implementation.md) | Format, persistence, redaction, generated linkage, and affected server paths are verified. |
 | Implement items or menus | [Item and menu implementation](menu-implementation.md) | One approved vertical slice has model, native evidence where required, docs, samples, and ABI coverage. |
 | Change framework runtime code | [Architecture](../explanation/architecture.md) | Unit tests, ABI checks, and affected real-server fixtures pass. |
 | Touch Paper objects from a coroutine | [Access Paper safely](../how-to/access-paper-safely.md) | Every access occurs inside the correct ownership block. |

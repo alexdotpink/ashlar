@@ -328,6 +328,18 @@ _Avoid_: Configuration failure, partial reload
 One declared transformation from a historical configuration schema to its immediate successor while retaining the document's human-authored comments.
 _Avoid_: Config upgrade, compatibility parser
 
+**Configuration source revision**:
+An opaque fingerprint of exact accepted document content used to detect unseen operator edits before a framework write.
+_Avoid_: Config version, modification time
+
+**Configuration format**:
+A bounded parser, format-neutral value projection, lossless document patcher, and writer that owns one set of file extensions.
+_Avoid_: Config codec, serializer
+
+**Configuration backup**:
+A retained valid predecessor document created before a framework write and restored only through explicit validation.
+_Avoid_: Automatic recovery file, rollback state
+
 ## Performance
 
 **Performance contract**:
