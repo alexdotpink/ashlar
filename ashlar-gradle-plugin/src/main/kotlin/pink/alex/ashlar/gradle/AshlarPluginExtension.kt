@@ -90,6 +90,7 @@ public abstract class AshlarPluginExtension @Inject constructor(private val proj
         if (configEnabled) return
         configEnabled = true
         project.pluginManager.apply("com.google.devtools.ksp")
+        project.pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
     }
 
     /**

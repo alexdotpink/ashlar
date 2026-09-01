@@ -37,6 +37,7 @@ kotlin {
 
 dependencies {
     implementation(libs.kotlin.gradle)
+    implementation(libs.kotlin.serialization.gradle)
     implementation(libs.shadow.gradle)
     implementation(libs.ksp.gradle)
 

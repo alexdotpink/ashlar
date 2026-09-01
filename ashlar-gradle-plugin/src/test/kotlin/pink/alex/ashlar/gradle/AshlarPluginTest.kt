@@ -209,6 +209,7 @@ class AshlarPluginTest {
             setOf("ashlar-di-ksp", "ashlar-config-ksp"),
             project.configurations.getByName("ksp").dependencies.mapTo(mutableSetOf()) { it.name },
         )
+        assertTrue(project.pluginManager.hasPlugin("org.jetbrains.kotlin.plugin.serialization"))
     }
 
     @Test
