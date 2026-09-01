@@ -190,6 +190,28 @@ class AshlarPluginTest {
     }
 
     @Test
+    fun `config enables its runtime and focused metadata processor`() {
+        val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
+        project.version = "1.2.3"
+        project.pluginManager.apply(AshlarPlugin::class.java)
+        val extension = project.extensions.getByType(AshlarPluginExtension::class.java)
+
+        extension.mainClass.set("example.ExamplePlugin")
+        extension.config()
+        project.extensions.getByType(JavaPluginExtension::class.java)
+            .toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+        (project as ProjectInternal).evaluate()
+
+        assertTrue(project.configurations.getByName("implementation").dependencies.any {
+            it.name == "ashlar-config"
+        })
+        assertEquals(
+            setOf("ashlar-di-ksp", "ashlar-config-ksp"),
+            project.configurations.getByName("ksp").dependencies.mapTo(mutableSetOf()) { it.name },
+        )
+    }
+
+    @Test
     fun `managed version overrides require an explicit reason`() {
         val project = ProjectBuilder.builder().withProjectDir(projectDirectory.toFile()).build()
         val extension = project.objects.newInstance(AshlarPluginExtension::class.java, project)

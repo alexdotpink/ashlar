@@ -46,6 +46,8 @@ public abstract class AshlarPluginExtension @Inject constructor(private val proj
         private set
     internal var menusEnabled: Boolean = false
         private set
+    internal var configEnabled: Boolean = false
+        private set
 
     /** Enables the typed command runtime and its two small KSP processors. */
     public fun commands(strictDocumentation: Boolean = false) {
@@ -81,6 +83,13 @@ public abstract class AshlarPluginExtension @Inject constructor(private val proj
         if (menusEnabled) return
         menusEnabled = true
         items()
+    }
+
+    /** Enables typed configuration and its metadata-only KSP processor. */
+    public fun config() {
+        if (configEnabled) return
+        configEnabled = true
+        project.pluginManager.apply("com.google.devtools.ksp")
     }
 
     /**

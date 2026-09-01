@@ -25,6 +25,9 @@ dependencies {
         api(project(":ashlar-items"))
         api(project(":ashlar-menus"))
         api(project(":ashlar-menus-test"))
+        api(project(":ashlar-config"))
+        api(project(":ashlar-config-ksp"))
+        api(project(":ashlar-config-test"))
         api(project(":ashlar-benchmarks"))
         api(project(":ashlar-testkit"))
         api(project(":ashlar-incubator"))
@@ -33,6 +36,7 @@ dependencies {
         api(libs.kotlin.reflect)
         api(libs.coroutines.core)
         api(libs.coroutines.test)
+        api(libs.kotlinx.serialization.core)
         api(libs.paper.api)
     }
 }

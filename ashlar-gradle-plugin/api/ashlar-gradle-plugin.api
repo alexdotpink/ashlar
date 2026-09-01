@@ -10,6 +10,7 @@ public abstract class pink/alex/ashlar/gradle/AshlarPluginExtension {
 	public final fun ashlarVersion (Ljava/lang/String;)V
 	public final fun commands (Z)V
 	public static synthetic fun commands$default (Lpink/alex/ashlar/gradle/AshlarPluginExtension;ZILjava/lang/Object;)V
+	public final fun config ()V
 	public final fun events ()V
 	public final fun foliaSupported ()V
 	public final fun getAuthors ()Lorg/gradle/api/provider/ListProperty;

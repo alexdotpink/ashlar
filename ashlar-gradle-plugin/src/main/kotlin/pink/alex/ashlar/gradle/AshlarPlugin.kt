@@ -202,7 +202,7 @@ public class AshlarPlugin : Plugin<Project> {
         dependencies.add("implementation", "pink.alex.ashlar:ashlar-kernel")
         dependencies.add("benchmarkImplementation", "pink.alex.ashlar:ashlar-benchmarks")
         dependencies.add("compileOnly", "io.papermc.paper:paper-api:$paperVersion")
-        if (extension.commandsEnabled || extension.eventsEnabled) {
+        if (extension.commandsEnabled || extension.eventsEnabled || extension.configEnabled) {
             dependencies.add("ksp", "pink.alex.ashlar:ashlar-di-ksp")
         }
         if (extension.commandsEnabled) {
@@ -221,6 +221,10 @@ public class AshlarPlugin : Plugin<Project> {
         }
         if (extension.menusEnabled) {
             dependencies.add("implementation", "pink.alex.ashlar:ashlar-menus")
+        }
+        if (extension.configEnabled) {
+            dependencies.add("implementation", "pink.alex.ashlar:ashlar-config")
+            dependencies.add("ksp", "pink.alex.ashlar:ashlar-config-ksp")
         }
     }
 }
