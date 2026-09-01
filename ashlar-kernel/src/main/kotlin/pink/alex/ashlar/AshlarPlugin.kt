@@ -102,16 +102,18 @@ public abstract class AshlarPlugin : JavaPlugin() {
         check(lifecycle == null) { "Hot reload is unsupported; create a fresh server process" }
         val graph = DependencyGraph(javaClass.classLoader)
         dependencyGraph = graph
-        graph.bind(graph)
-        graph.bind(this, listOf(AshlarPlugin::class, Plugin::class))
-        graph.bind(server)
-        with(graph) { configure() }
-        val initializers = DependencyInitializerController(
-            graph.contributions(pink.alex.ashlar.di.DependencyGraphInitializer::class),
-        )
-        dependencyInitializers = initializers
+        var initializers: DependencyInitializerController? = null
         try {
-            initializers.initialize(graph)
+            graph.bind(graph)
+            graph.bind(this, listOf(AshlarPlugin::class, Plugin::class))
+            graph.bind(server)
+            with(graph) { configure() }
+            val initializerController = DependencyInitializerController(
+                graph.contributions(pink.alex.ashlar.di.DependencyGraphInitializer::class),
+            )
+            initializers = initializerController
+            dependencyInitializers = initializerController
+            initializerController.initialize(graph)
             val automaticDeclarations = automaticComponentDeclarations(graph)
             val reporter = taskFailureReporter(componentLogger)
             val controller =
@@ -135,7 +137,7 @@ public abstract class AshlarPlugin : JavaPlugin() {
                 throw failure
             }
         } catch (failure: Throwable) {
-            reportLifecycleFailures("closing dependency initializers", initializers.close())
+            reportLifecycleFailures("closing dependency initializers", initializers?.close().orEmpty())
             dependencyInitializers = null
             graph.close()
             dependencyGraph = null
