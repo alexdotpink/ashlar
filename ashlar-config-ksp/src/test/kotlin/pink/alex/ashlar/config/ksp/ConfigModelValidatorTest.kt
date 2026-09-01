@@ -46,15 +46,83 @@ class ConfigModelValidatorTest {
 
         assertEquals(
             listOf(
+                "Configuration root 'example.Settings' repeats @Config with different schemaVersion values",
+                "Configuration root 'example.Settings' repeats @Config with different unversionedSchema values",
                 "Configuration path '../settings.yml' for 'example.Settings' must be a safe relative path beneath the plug-in data directory",
                 "Configuration path '../settings.yml' for 'example.Settings' must declare schemaVersion at least 1",
-                "Configuration path '../settings.yml' for 'example.Settings' has unversionedSchema 2 outside 1..schemaVersion",
+                "Configuration path '../settings.yml' for 'example.Settings' has unversionedSchema 2 outside 0..schemaVersion",
                 "Configuration path '../settings.yml' for 'example.Settings' cannot retain a negative number of backups",
                 "Configuration path '../settings.yml' for 'example.Settings' must declare maximumBytes greater than zero",
                 "Configuration path '/absolute.yml' for 'example.Settings' must be a safe relative path beneath the plug-in data directory",
                 "Configuration handle 'example.Settings' is declared more than once without a qualifier",
             ),
             validator.validate(ConfigModuleModel(listOf(duplicate))),
+        )
+    }
+
+    @Test
+    fun `rejects excessive operational bounds`() {
+        val invalid = root().copy(
+            declarations = listOf(
+                declaration(backups = 101, maximumBytes = 67_108_865),
+            ),
+        )
+
+        assertEquals(
+            listOf(
+                "Configuration path 'settings.yml' for 'example.Settings' cannot retain more than 100 backups",
+                "Configuration path 'settings.yml' for 'example.Settings' cannot accept more than 67108864 bytes",
+            ),
+            validator.validate(ConfigModuleModel(listOf(invalid))),
+        )
+    }
+
+    @Test
+    fun `rejects inconsistent schema policies across repeated declarations`() {
+        val invalid = root().copy(
+            declarations = listOf(
+                declaration(path = "first.yml", schemaVersion = 2, unversionedSchema = 1),
+                declaration(path = "second.yml", schemaVersion = 3, unversionedSchema = 2).copy(
+                    qualifier = type("example", "Secondary"),
+                ),
+            ),
+            migrations = listOf(
+                migration(from = 1).copy(targetType = type("example", "SettingsV2")),
+                migration(from = 2, source = type("example", "SettingsV2")),
+            ),
+        )
+
+        assertEquals(
+            listOf(
+                "Configuration root 'example.Settings' repeats @Config with different schemaVersion values",
+                "Configuration root 'example.Settings' repeats @Config with different unversionedSchema values",
+            ),
+            validator.validate(ConfigModuleModel(listOf(invalid))),
+        )
+    }
+
+    @Test
+    fun `rejects one normalized path owned by multiple handles`() {
+        val first = root().copy(
+            declarations = listOf(declaration(path = "worlds/nether.yml")),
+        )
+        val second = root().copy(
+            type = type("example", "OtherSettings"),
+            declarations = listOf(declaration(path = "worlds\\nether.yml")),
+            migrations = listOf(
+                migration(from = 1).copy(
+                    rootType = type("example", "OtherSettings"),
+                    targetType = type("example", "OtherSettings"),
+                ),
+            ),
+            validators = emptyList(),
+        )
+
+        assertEquals(
+            listOf(
+                "Configuration path 'worlds/nether.yml' is declared by both example.Settings and example.OtherSettings",
+            ),
+            validator.validate(ConfigModuleModel(listOf(first, second))),
         )
     }
 

@@ -17,6 +17,7 @@ internal class ConfigModelValidator {
                     "${migration.rootType.qualifiedName}, which is not an @Config root",
             )
         }
+        duplicatePaths(module).forEach { duplicate -> add(duplicate) }
         duplicateKeys(module).forEach { duplicate -> add(duplicate) }
     }
 
@@ -41,6 +42,12 @@ internal class ConfigModelValidator {
             .forEach { keys ->
                 problems += "Configuration root '$name' maps multiple properties to external key '${keys.first().externalName}'"
             }
+        if (root.declarations.map(ConfigDeclarationModel::schemaVersion).distinct().size > 1) {
+            problems += "Configuration root '$name' repeats @Config with different schemaVersion values"
+        }
+        if (root.declarations.map(ConfigDeclarationModel::unversionedSchema).distinct().size > 1) {
+            problems += "Configuration root '$name' repeats @Config with different unversionedSchema values"
+        }
         root.declarations.forEach { declaration -> validate(root, declaration, problems) }
         root.validators.forEach { validator -> validate(validator, problems) }
         root.migrations.forEach { migration -> validate(migration, problems) }
@@ -58,10 +65,16 @@ internal class ConfigModelValidator {
         }
         if (declaration.schemaVersion < 1) problems += "$label must declare schemaVersion at least 1"
         if (declaration.unversionedSchema !in 0..declaration.schemaVersion) {
-            problems += "$label has unversionedSchema ${declaration.unversionedSchema} outside 1..schemaVersion"
+            problems += "$label has unversionedSchema ${declaration.unversionedSchema} outside 0..schemaVersion"
         }
         if (declaration.backups < 0) problems += "$label cannot retain a negative number of backups"
+        if (declaration.backups > MAXIMUM_BACKUPS) {
+            problems += "$label cannot retain more than $MAXIMUM_BACKUPS backups"
+        }
         if (declaration.maximumBytes <= 0) problems += "$label must declare maximumBytes greater than zero"
+        if (declaration.maximumBytes > MAXIMUM_BYTES) {
+            problems += "$label cannot accept more than $MAXIMUM_BYTES bytes"
+        }
         if (declaration.qualifier != null && !declaration.qualifierIsDependencyQualifier) {
             problems += "$label qualifier ${declaration.qualifier.qualifiedName} must be annotated with @DependencyQualifier"
         }
@@ -156,6 +169,19 @@ internal class ConfigModelValidator {
                 } ?: "Configuration handle '${root.type.qualifiedName}' is declared more than once without a qualifier"
             }
 
+    private fun duplicatePaths(module: ConfigModuleModel): List<String> =
+        module.roots.flatMap { root -> root.declarations.map { declaration -> root to declaration } }
+            .groupBy { (_, declaration) -> normalizePath(declaration.path) }
+            .filterValues { declarations -> declarations.size > 1 }
+            .map { (path, declarations) ->
+                val owners = declarations.map { (root) -> root.type.qualifiedName }.distinct()
+                if (owners.size == 1) {
+                    "Configuration path '$path' is declared more than once by ${owners.single()}"
+                } else {
+                    "Configuration path '$path' is declared by both ${owners.joinToString(" and ")}"
+                }
+            }
+
     private fun isSafeRelativePath(path: String): Boolean {
         if (path.isBlank() || '\u0000' in path) return false
         val normalized = path.replace('\\', '/')
@@ -164,9 +190,13 @@ internal class ConfigModelValidator {
         return segments.none { it.isBlank() || it == "." || it == ".." }
     }
 
+    private fun normalizePath(path: String): String = path.replace('\\', '/')
+
     private companion object {
         const val UNIT = "kotlin.Unit"
         const val SCHEMA_KEY = "_ashlar-schema"
+        const val MAXIMUM_BACKUPS = 100
+        const val MAXIMUM_BYTES = 67_108_864L
         val WINDOWS_DRIVE = Regex("^[A-Za-z]:.*")
     }
 }
