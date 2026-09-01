@@ -1,0 +1,3 @@
+# Distinguish structural generic dependencies
+
+Ashlar dependency keys will retain recursive generic type arguments, allowing bindings such as `ConfigHandle<WaypointSettings>` and `ConfigHandle<EconomySettings>` to coexist without qualifiers or wrapper classes. KSP will generate immutable structural keys and direct lookups without adding runtime reflection; the configuration processor will generate only pre-lifecycle definition metadata so required handles can load, validate, and bind before application components are constructed. This system-wide DI change is preferable to a configuration-only registry workaround because generic dependency identity also applies to repositories and other future framework capabilities.

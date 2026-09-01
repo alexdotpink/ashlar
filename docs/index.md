@@ -59,6 +59,7 @@ Architecture decisions are catalogued in the [ADR index](adr/README.md). They re
 ## Module designs
 
 - [Benchmarking system](design/benchmarking.md) - implemented; contracts remain exploratory pending canonical baselines
+- [Configuration module](design/config-module.md) - planned
 - [Events module](design/events-module.md)
 - [Input module](design/input-module.md)
 - [Items module](design/items-module.md)

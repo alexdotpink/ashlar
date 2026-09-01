@@ -106,3 +106,17 @@ ADRs record accepted design constraints and their rationale. Read the tutorial, 
 - [0083: Default custom-item data to Kotlin Serialization](0083-default-custom-item-data-to-kotlin-serialization.md)
 - [0084: Suspend menu presentation around focused input](0084-suspend-menu-presentation-around-focused-input.md)
 - [0085: Default native close to ending the menu session](0085-default-native-close-to-ending-menu-session.md)
+
+## Performance
+
+- [0086: Gate feature performance contracts with layered evidence](0086-gate-feature-performance-contracts-with-layered-evidence.md)
+- [0087: Author benchmarks as framework scenarios](0087-author-benchmarks-as-ashlar-scenarios.md)
+- [0088: Enforce relative and absolute performance budgets](0088-enforce-relative-and-absolute-performance-budgets.md)
+- [0089: Own performance contracts beside framework modules](0089-own-performance-contracts-beside-ashlar-modules.md)
+- [0090: Optimize server safety before peak throughput](0090-optimize-server-safety-before-peak-throughput.md)
+
+## Configuration
+
+- [0091: Distinguish structural generic dependencies](0091-distinguish-structural-generic-dependencies.md)
+- [0092: Inject startup-ready configuration handles](0092-inject-startup-ready-configuration-handles.md)
+- [0093: Preserve configuration comments losslessly](0093-preserve-configuration-comments-losslessly.md)

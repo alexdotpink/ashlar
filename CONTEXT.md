@@ -294,6 +294,36 @@ _Avoid_: Mock inventory, menu unit test
 A redacted semantic snapshot and bounded typed trace of a live menu session's components, state, renders, gestures, actions, and transactions.
 _Avoid_: Debug log, inventory dump
 
+## Configuration
+
+**Configuration module**:
+The framework module that owns human-edited operational settings for an Ashlar plug-in. Player preferences, caches, and domain records belong to persistence rather than configuration.
+_Avoid_: File persistence module, document store
+
+**Configuration document**:
+The human-editable source file for one configuration value, including its comments and other lossless source content where the format permits them.
+_Avoid_: Configuration file contents, serialized settings
+
+**Configuration value**:
+One immutable, validated set of settings that replaces the previous value atomically after a successful load or reload.
+_Avoid_: Mutable configuration, configuration state
+
+**Configuration handle**:
+A typed plug-in capability for reading the current configuration value and observing later accepted values.
+_Avoid_: Configuration object, settings singleton
+
+**Configuration reload**:
+One explicit or watched attempt to replace a configuration value after parsing, migration, and validation. A rejected reload leaves the current value unchanged.
+_Avoid_: Configuration refresh, hot restart
+
+**Configuration rejection**:
+The expected result of a reload whose source cannot produce a valid configuration value.
+_Avoid_: Configuration failure, partial reload
+
+**Configuration migration**:
+One declared transformation from a historical configuration schema to its immediate successor while retaining the document's human-authored comments.
+_Avoid_: Config upgrade, compatibility parser
+
 ## Performance
 
 **Performance contract**:

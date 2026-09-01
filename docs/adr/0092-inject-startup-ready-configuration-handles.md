@@ -1,0 +1,3 @@
+# Inject startup-ready configuration handles
+
+Ashlar configuration roots will be immutable serializable data classes declared with `@Config` and injected directly as `ConfigHandle<T>`. Minimal KSP metadata will identify the path, serializer, qualifiers, validation, migrations, comments, and bounded policies; the handwritten runtime will create missing defaults and load, migrate, validate, and bind every required handle before application components are constructed. Handles expose a synchronous current value, accepted values as `StateFlow`, typed reload events, explicit stale-safe updates, backups, and restore; configuration remains limited to human-edited operational settings, while domain persistence and raw secret resolution stay in separate modules.
