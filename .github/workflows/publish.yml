@@ -16,7 +16,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
       - run: ./gradlew publish -Pashlar.version="${GITHUB_REF_NAME#v}" --stacktrace
         env:
           MAVEN_CENTRAL_URL: https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
