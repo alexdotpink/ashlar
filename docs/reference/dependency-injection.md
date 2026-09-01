@@ -23,7 +23,36 @@ KSP creates a direct `DependencyFactory`. Requesting the class through `Dependen
 | `@Factory` | A new instance at each resolution |
 | none | Plug-in-scoped |
 
-A plug-in-scoped dependency cannot depend on an invocation-scoped dependency. Cycles, duplicate bindings, missing factories, and lifetime violations fail with a descriptive exception.
+A plug-in-scoped dependency cannot depend on an invocation-scoped dependency. Cycles, duplicate bindings, missing factories, unsupported generic injection types, and lifetime violations fail with a descriptive exception.
+
+## Generic dependencies
+
+Ashlar keys a dependency by its complete closed type. For example, `Repository<Player>` and `Repository<Waypoint>` are different dependencies even though both use the `Repository` class. Generated factories retain nested arguments and use the same `DependencyKey` for ordering and lookup:
+
+```kotlin
+@Inject
+class HomeService(
+    private val homes: Repository<Home>,
+    private val owners: Repository<PlayerProfile>,
+)
+```
+
+Generic arguments must be closed, invariant, and non-null. KSP rejects stars such as `Repository<*>`, unresolved type parameters such as `Repository<T>`, use-site variance, and nullable nested arguments. Generic classes with an injectable constructor are also rejected because Ashlar cannot choose a closed argument for their generated factory. Bind a closed instance instead.
+
+Framework integrations that bind a generic dependency construct its structural type explicitly:
+
+```kotlin
+val key = DependencyKey<Repository<Home>>(
+    DependencyType(
+        rawType = Repository::class,
+        arguments = listOf(DependencyType<Home>(Home::class)),
+    ),
+)
+
+graph.bind(key, repository)
+```
+
+Plug-in constructors normally do not build keys. KSP emits them. The `KClass` overloads of `get`, `bind`, and `bindDefault` remain the shorter API for non-parameterized types.
 
 ## Automatic root components
 
@@ -77,7 +106,7 @@ class ReportService(
 )
 ```
 
-The graph key is `(KClass, qualifier KClass?)`. A matching qualified binding must exist. Command argument qualifiers use `@CommandArgumentQualifier` and are a separate system.
+The graph key is `(DependencyType, qualifier KClass?)`. A matching qualified binding must exist. Qualifiers distinguish equal structural types; they do not erase generic arguments. Command argument qualifiers use `@CommandArgumentQualifier` and are a separate system.
 
 ## Graph API
 

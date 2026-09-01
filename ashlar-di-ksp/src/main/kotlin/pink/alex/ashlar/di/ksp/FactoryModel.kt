@@ -6,13 +6,19 @@ internal data class FactoryModel(
     val qualifiedName: String,
     val lifetime: LifetimeModel,
     val parameters: List<FactoryParameterModel>,
+    val typeParameters: List<String> = emptyList(),
 )
 
 internal data class FactoryParameterModel(
     val name: String,
+    val type: DependencyTypeModel,
+    val qualifier: BindingModel? = null,
+)
+
+internal data class DependencyTypeModel(
     val packageName: String,
     val typeNames: List<String>,
-    val qualifier: BindingModel? = null,
+    val arguments: List<DependencyTypeModel> = emptyList(),
 )
 
 internal enum class LifetimeModel {

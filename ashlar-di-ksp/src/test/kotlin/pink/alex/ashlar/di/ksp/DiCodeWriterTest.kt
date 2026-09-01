@@ -14,13 +14,30 @@ class DiCodeWriterTest {
                 qualifiedName = "example.Repository",
                 lifetime = LifetimeModel.PLUGIN,
                 parameters = listOf(
-                    FactoryParameterModel("database", "example", listOf("Database")),
+                    FactoryParameterModel(
+                        name = "database",
+                        type = DependencyTypeModel(
+                            packageName = "example",
+                            typeNames = listOf("Database"),
+                            arguments = listOf(
+                                DependencyTypeModel("kotlin", listOf("String")),
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ).toString()
 
         assertContains(generated, "internal class Repository__AshlarFactory")
-        assertContains(generated, "Repository(\n    database = resolver.get(Database::class),")
+        assertContains(
+            generated,
+            "private val databaseKey: DependencyKey<Database<String>> = DependencyKey(",
+        )
+        assertContains(generated, "rawType = Database::class")
+        assertContains(generated, "DependencyType<String>(String::class)")
+        assertContains(generated, "override val dependencies: List<DependencyKey<*>> = listOf(")
+        assertContains(generated, "databaseKey,")
+        assertContains(generated, "Repository(\n    database = resolver.get(databaseKey),")
         assertFalse(generated.contains("ServiceLoader"))
         assertFalse(generated.contains("synchronized"))
     }

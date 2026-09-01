@@ -12,18 +12,16 @@ public class DependencyGraph(
     private val resolving: ArrayDeque<DependencyKey<*>> = ArrayDeque()
     private var closed: Boolean = false
 
-    override fun <T : Any> get(type: KClass<T>): T = synchronized(this) {
+    override fun <T : Any> get(type: KClass<T>): T =
         get(DependencyKey(type))
-    }
 
     override fun <T : Any> get(
         type: KClass<T>,
         qualifier: KClass<out Annotation>,
-    ): T = synchronized(this) {
+    ): T =
         get(DependencyKey(type, qualifier))
-    }
 
-    private fun <T : Any> get(key: DependencyKey<T>): T {
+    override fun <T : Any> get(key: DependencyKey<T>): T = synchronized(this) {
         check(!closed) { "The dependency graph is closed" }
         val type = key.type
         bindings[key]?.let { value -> return type.java.cast(value) }
@@ -33,14 +31,14 @@ public class DependencyGraph(
             "Dependency cycle detected: $cycle"
         }
 
-        val factory = factory(type)
+        val factory = factory(key)
         check(factory.lifetime != DependencyLifetime.INVOCATION) {
-            "Invocation-scoped dependency ${type.qualifiedName} was requested outside an invocation"
+            "Invocation-scoped dependency $key was requested outside an invocation"
         }
         resolving.addLast(key)
         try {
             val value = factory.create(this)
-            if (factory.lifetime != DependencyLifetime.FACTORY) bind(key, value)
+            if (factory.lifetime != DependencyLifetime.FACTORY) bindValue(key, value)
             return type.java.cast(value)
         } finally {
             check(resolving.removeLast() == key)
@@ -62,14 +60,23 @@ public class DependencyGraph(
         additionalTypes: List<KClass<*>>,
     ): Unit = synchronized(this) {
         check(!closed) { "The dependency graph is closed" }
-        bind(DependencyKey(instance::class), instance)
+        bindValue(DependencyKey(instance::class), instance)
         additionalTypes.forEach { type ->
             require(type.java.isInstance(instance)) {
                 "${instance::class.qualifiedName} does not implement ${type.qualifiedName}"
             }
             @Suppress("UNCHECKED_CAST")
-            bind(DependencyKey(type as KClass<Any>), instance)
+            bindValue(DependencyKey(type as KClass<Any>), instance)
         }
+    }
+
+    /** Binds an externally constructed instance to one exact structural key. */
+    public fun <T : Any> bind(
+        key: DependencyKey<T>,
+        instance: T,
+    ): Unit = synchronized(this) {
+        check(!closed) { "The dependency graph is closed" }
+        bindValue(key, instance)
     }
 
     /** Binds one qualified view of an externally constructed instance. */
@@ -79,7 +86,16 @@ public class DependencyGraph(
         instance: T,
     ): Unit = synchronized(this) {
         check(!closed) { "The dependency graph is closed" }
-        bind(DependencyKey(type, qualifier), instance)
+        bindValue(DependencyKey(type, qualifier), instance)
+    }
+
+    /** Installs a framework default only when the plug-in has not already bound [key]. */
+    public fun <T : Any> bindDefault(
+        key: DependencyKey<T>,
+        instance: T,
+    ): Boolean = synchronized(this) {
+        check(!closed) { "The dependency graph is closed" }
+        bindings.putIfAbsent(key, instance) == null
     }
 
     /** Installs a framework default only when the plug-in has not already bound [type]. */
@@ -109,8 +125,15 @@ public class DependencyGraph(
             }
 
     /** Returns the generated factory used for dependency ordering and construction. */
-    public fun factory(type: KClass<*>): DependencyFactory<*> = synchronized(this) {
-        factories.getOrPut(type) { loadFactory(type) }
+    public fun factory(type: KClass<*>): DependencyFactory<*> = factory(DependencyKey(type))
+
+    internal fun factory(key: DependencyKey<*>): DependencyFactory<*> = synchronized(this) {
+        factories.getOrPut(key.type) { loadFactory(key.type, key) }
+    }
+
+    internal fun <T : Any> bound(key: DependencyKey<T>): T? = synchronized(this) {
+        check(!closed) { "The dependency graph is closed" }
+        bindings[key]?.let(key.type.java::cast)
     }
 
     override fun close(): Unit = synchronized(this) {
@@ -120,7 +143,7 @@ public class DependencyGraph(
         bindings.clear()
     }
 
-    private fun bind(
+    private fun bindValue(
         key: DependencyKey<*>,
         value: Any,
     ) {
@@ -130,12 +153,15 @@ public class DependencyGraph(
         }
     }
 
-    private fun loadFactory(type: KClass<*>): DependencyFactory<*> {
+    private fun loadFactory(
+        type: KClass<*>,
+        requestedKey: DependencyKey<*> = DependencyKey(type),
+    ): DependencyFactory<*> {
         val factoryName = generatedFactoryName(type)
         val factoryClass = runCatching { Class.forName(factoryName, true, classLoader) }
             .getOrElse { cause ->
                 throw IllegalStateException(
-                    "No generated dependency factory for ${type.qualifiedName}; " +
+                    "No generated dependency factory for $requestedKey; " +
                         "annotate its constructor with @Inject and enable framework DI processing",
                     cause,
                 )
@@ -167,25 +193,24 @@ public class InvocationDependencies internal constructor(
         instances.forEach(::bind)
     }
 
-    override fun <T : Any> get(type: KClass<T>): T = synchronized(this) {
+    override fun <T : Any> get(type: KClass<T>): T =
         get(DependencyKey(type))
-    }
 
     override fun <T : Any> get(
         type: KClass<T>,
         qualifier: KClass<out Annotation>,
-    ): T = synchronized(this) {
+    ): T =
         get(DependencyKey(type, qualifier))
-    }
 
-    private fun <T : Any> get(key: DependencyKey<T>): T {
+    override fun <T : Any> get(key: DependencyKey<T>): T = synchronized(this) {
         check(!closed) { "The invocation dependency scope is closed" }
         val type = key.type
         bindings[key]?.let { value -> return type.java.cast(value) }
+        parent.bound(key)?.let { value -> return value }
 
-        val factory = parent.factory(type)
+        val factory = parent.factory(key)
         if (factory.lifetime == DependencyLifetime.PLUGIN) {
-            return key.qualifier?.let { qualifier -> parent.get(type, qualifier) } ?: parent.get(type)
+            return parent.get(key)
         }
         check(key !in resolving) {
             val cycle = (resolving + key).joinToString(" -> ")
@@ -194,7 +219,7 @@ public class InvocationDependencies internal constructor(
         resolving.addLast(key)
         try {
             val value = factory.create(this)
-            if (factory.lifetime == DependencyLifetime.INVOCATION) bind(key, value)
+            if (factory.lifetime == DependencyLifetime.INVOCATION) bindValue(key, value)
             return type.java.cast(value)
         } finally {
             check(resolving.removeLast() == key)
@@ -206,7 +231,7 @@ public class InvocationDependencies internal constructor(
     /** Adds an invocation-owned value under its concrete type. */
     public fun bind(instance: Any): Unit = synchronized(this) {
         check(!closed) { "The invocation dependency scope is closed" }
-        bind(DependencyKey(instance::class), instance)
+        bindValue(DependencyKey(instance::class), instance)
     }
 
     /** Adds an invocation-owned value under an explicit API type. */
@@ -215,7 +240,16 @@ public class InvocationDependencies internal constructor(
         instance: T,
     ): Unit = synchronized(this) {
         check(!closed) { "The invocation dependency scope is closed" }
-        bind(DependencyKey(type), instance)
+        bindValue(DependencyKey(type), instance)
+    }
+
+    /** Adds an invocation-owned value under one exact structural key. */
+    public fun <T : Any> bind(
+        key: DependencyKey<T>,
+        instance: T,
+    ): Unit = synchronized(this) {
+        check(!closed) { "The invocation dependency scope is closed" }
+        bindValue(key, instance)
     }
 
     override fun close(): Unit = synchronized(this) {
@@ -224,7 +258,7 @@ public class InvocationDependencies internal constructor(
         bindings.clear()
     }
 
-    private fun bind(
+    private fun bindValue(
         key: DependencyKey<*>,
         value: Any,
     ) {

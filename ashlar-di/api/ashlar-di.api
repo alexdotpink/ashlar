@@ -26,12 +26,15 @@ public final class pink/alex/ashlar/di/DependencyGraph : java/lang/AutoCloseable
 	public final fun bind (Ljava/lang/Object;)V
 	public final fun bind (Ljava/lang/Object;Ljava/util/List;)V
 	public final fun bind (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Ljava/lang/Object;)V
+	public final fun bind (Lpink/alex/ashlar/di/DependencyKey;Ljava/lang/Object;)V
 	public final fun bindDefault (Lkotlin/reflect/KClass;Ljava/lang/Object;)Z
+	public final fun bindDefault (Lpink/alex/ashlar/di/DependencyKey;Ljava/lang/Object;)Z
 	public fun close ()V
 	public fun contributions (Lkotlin/reflect/KClass;)Ljava/util/List;
 	public final fun factory (Lkotlin/reflect/KClass;)Lpink/alex/ashlar/di/DependencyFactory;
 	public fun get (Lkotlin/reflect/KClass;)Ljava/lang/Object;
 	public fun get (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Ljava/lang/Object;
+	public fun get (Lpink/alex/ashlar/di/DependencyKey;)Ljava/lang/Object;
 	public final fun invocation ([Ljava/lang/Object;)Lpink/alex/ashlar/di/InvocationDependencies;
 	public final fun rootComponents ()Ljava/util/List;
 }
@@ -43,7 +46,10 @@ public final class pink/alex/ashlar/di/DependencyGraphKt {
 public final class pink/alex/ashlar/di/DependencyKey {
 	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)V
 	public synthetic fun <init> (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lpink/alex/ashlar/di/DependencyType;Lkotlin/reflect/KClass;)V
+	public synthetic fun <init> (Lpink/alex/ashlar/di/DependencyType;Lkotlin/reflect/KClass;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDependencyType ()Lpink/alex/ashlar/di/DependencyType;
 	public final fun getQualifier ()Lkotlin/reflect/KClass;
 	public final fun getType ()Lkotlin/reflect/KClass;
 	public fun hashCode ()I
@@ -66,6 +72,17 @@ public abstract interface class pink/alex/ashlar/di/DependencyResolver {
 	public abstract fun contributions (Lkotlin/reflect/KClass;)Ljava/util/List;
 	public abstract fun get (Lkotlin/reflect/KClass;)Ljava/lang/Object;
 	public abstract fun get (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Ljava/lang/Object;
+	public abstract fun get (Lpink/alex/ashlar/di/DependencyKey;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/di/DependencyType {
+	public fun <init> (Lkotlin/reflect/KClass;Ljava/util/List;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArguments ()Ljava/util/List;
+	public final fun getRawType ()Lkotlin/reflect/KClass;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface annotation class pink/alex/ashlar/di/Factory : java/lang/annotation/Annotation {
@@ -77,10 +94,12 @@ public abstract interface annotation class pink/alex/ashlar/di/Inject : java/lan
 public final class pink/alex/ashlar/di/InvocationDependencies : java/lang/AutoCloseable, pink/alex/ashlar/di/DependencyResolver {
 	public final fun bind (Ljava/lang/Object;)V
 	public final fun bind (Lkotlin/reflect/KClass;Ljava/lang/Object;)V
+	public final fun bind (Lpink/alex/ashlar/di/DependencyKey;Ljava/lang/Object;)V
 	public fun close ()V
 	public fun contributions (Lkotlin/reflect/KClass;)Ljava/util/List;
 	public fun get (Lkotlin/reflect/KClass;)Ljava/lang/Object;
 	public fun get (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Ljava/lang/Object;
+	public fun get (Lpink/alex/ashlar/di/DependencyKey;)Ljava/lang/Object;
 }
 
 public abstract interface annotation class pink/alex/ashlar/di/InvocationScoped : java/lang/annotation/Annotation {

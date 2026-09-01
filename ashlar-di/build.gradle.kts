@@ -17,5 +17,6 @@ kotlin {
 }
 
 dependencies {
+    add("kspTest", project(":ashlar-di-ksp"))
     add("kspBenchmark", project(":ashlar-di-ksp"))
 }

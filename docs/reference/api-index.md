@@ -12,7 +12,7 @@ This index routes public declarations to their authoritative reference. Generate
 ## Dependency injection
 
 - Annotations: `Inject`, `PluginScoped`, `InvocationScoped`, `Factory`, `Contributes`, `Binds`, `DependencyQualifier` — [dependency injection](dependency-injection.md)
-- Runtime: `DependencyGraph`, `DependencyResolver`, `InvocationDependencies`, `DependencyKey`, `DependencyLifetime`, `DependencyFactory` — [dependency injection](dependency-injection.md)
+- Runtime: `DependencyGraph`, `DependencyResolver`, `InvocationDependencies`, `DependencyType`, `DependencyKey`, `DependencyLifetime`, `DependencyFactory` — [dependency injection](dependency-injection.md)
 - Generated discovery contracts: `DependencyContributionModule`, `RootComponentContribution`, `generatedFactoryName` — processor/runtime linkage; do not implement in plug-in code
 
 ## Command declaration

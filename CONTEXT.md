@@ -44,6 +44,10 @@ _Avoid_: Plugin component, service
 The typed, plug-in-owned set of dependency bindings available to generated constructors and lifecycle-aware injection.
 _Avoid_: Container, service locator
 
+**Dependency type**:
+The immutable recursive identity of one closed injected Kotlin type, including every generic argument. `Repository<Player>` and `Repository<Waypoint>` are different dependency types.
+_Avoid_: Raw type, generic token
+
 **Plugin-scoped dependency**:
 A dependency instance shared for the lifetime of one framework plug-in.
 _Avoid_: Singleton, global

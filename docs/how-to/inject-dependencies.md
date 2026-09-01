@@ -56,3 +56,15 @@ class Reports(
 The graph requires a matching qualified binding. Dependency qualifiers and command argument qualifiers are separate mechanisms.
 
 The graph rejects cycles, duplicate bindings, invocation dependencies requested from plug-in scope, and classes without a generated factory.
+
+Closed generic constructor parameters work without wrapper classes:
+
+```kotlin
+@Inject
+class Reports(
+    private val accounts: Repository<Account>,
+    private val reports: Repository<Report>,
+)
+```
+
+Ashlar treats those repository types as separate keys. Use concrete invariant arguments. Star projections, unresolved type parameters, use-site variance, and nullable nested arguments fail during KSP processing.

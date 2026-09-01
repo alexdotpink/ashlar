@@ -7,6 +7,9 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.symbol.KSTypeParameter
+import com.google.devtools.ksp.symbol.Nullability
+import com.google.devtools.ksp.symbol.Variance
 
 internal class DiModelReader {
     fun factory(declaration: KSClassDeclaration): FactoryModel {
@@ -16,8 +19,14 @@ internal class DiModelReader {
             typeNames = declaration.typeNames(),
             qualifiedName = requireNotNull(declaration.qualifiedName?.asString()),
             lifetime = declaration.lifetime(),
+            typeParameters = declaration.typeParameters.map { parameter -> parameter.name.asString() },
             parameters = constructor.parameters.map { parameter ->
-                val parameterDeclaration = parameter.type.resolve().declaration as KSClassDeclaration
+                val parameterName = requireNotNull(parameter.name?.asString())
+                val dependencyType = dependencyType(
+                    type = parameter.type.resolve(),
+                    subject = "Dependency parameter '${declaration.qualifiedName?.asString()}.$parameterName'",
+                    nested = false,
+                )
                 val qualifier = parameter.annotations.mapNotNull { annotation ->
                     val declaration = annotation.annotationType.resolve().declaration as? KSClassDeclaration
                         ?: return@mapNotNull null
@@ -29,9 +38,8 @@ internal class DiModelReader {
                     }
                 }.singleOrNull()
                 FactoryParameterModel(
-                    name = requireNotNull(parameter.name?.asString()),
-                    packageName = parameterDeclaration.packageName.asString(),
-                    typeNames = parameterDeclaration.typeNames(),
+                    name = parameterName,
+                    type = dependencyType,
                     qualifier = qualifier,
                 )
             },
@@ -104,6 +112,51 @@ internal class DiModelReader {
         }
         require(declared.size <= 1) { "A dependency may declare only one lifetime" }
         return declared.singleOrNull() ?: LifetimeModel.PLUGIN
+    }
+
+    internal fun dependencyType(
+        type: KSType,
+        subject: String,
+    ): DependencyTypeModel = dependencyType(type, subject, nested = false)
+
+    private fun dependencyType(
+        type: KSType,
+        subject: String,
+        nested: Boolean,
+    ): DependencyTypeModel {
+        require(type.nullability != Nullability.NULLABLE) {
+            if (nested) {
+                "$subject has a nullable nested type argument '$type'; nullable dependency arguments are not supported"
+            } else {
+                "$subject has nullable type '$type'; dependencies must be non-null"
+            }
+        }
+        val declaration = type.declaration
+        require(declaration !is KSTypeParameter) {
+            "$subject contains unresolved type parameter '${declaration.simpleName.asString()}'; " +
+                "dependencies must use closed types"
+        }
+        require(declaration is KSClassDeclaration) {
+            "$subject has no concrete class type"
+        }
+        val arguments = type.arguments.map { argument ->
+            require(argument.variance != Variance.STAR) {
+                "$subject contains a star projection; dependencies must use closed types"
+            }
+            require(argument.variance == Variance.INVARIANT) {
+                "$subject contains use-site variance '${argument.variance.label}'; " +
+                    "dependency arguments must be invariant"
+            }
+            val argumentType = requireNotNull(argument.type) {
+                "$subject contains an unresolved type argument"
+            }.resolve()
+            dependencyType(argumentType, subject, nested = true)
+        }
+        return DependencyTypeModel(
+            packageName = declaration.packageName.asString(),
+            typeNames = declaration.typeNames(),
+            arguments = arguments,
+        )
     }
 
     private fun KSDeclaration.typeNames(): List<String> = buildList {

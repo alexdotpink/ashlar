@@ -11,22 +11,56 @@ public enum class DependencyLifetime {
 
 /** One dependency requested by a generated constructor factory. */
 public class DependencyKey<T : Any>(
-    public val type: KClass<T>,
+    public val dependencyType: DependencyType<T>,
     public val qualifier: KClass<out Annotation>? = null,
 ) {
-    override fun equals(other: Any?): Boolean =
-        other is DependencyKey<*> && type == other.type && qualifier == other.qualifier
+    /** Creates a key for a non-parameterized dependency type. */
+    public constructor(
+        type: KClass<T>,
+        qualifier: KClass<out Annotation>? = null,
+    ) : this(DependencyType(type), qualifier)
 
-    override fun hashCode(): Int = 31 * type.hashCode() + qualifier.hashCode()
+    /** Raw class convenience for factory discovery and existing non-parameterized integrations. */
+    @Suppress("UNCHECKED_CAST")
+    public val type: KClass<T>
+        get() = dependencyType.rawType as KClass<T>
+
+    override fun equals(other: Any?): Boolean =
+        other is DependencyKey<*> && dependencyType == other.dependencyType && qualifier == other.qualifier
+
+    override fun hashCode(): Int = 31 * dependencyType.hashCode() + qualifier.hashCode()
 
     override fun toString(): String = buildString {
         qualifier?.qualifiedName?.let { append('@').append(it).append(' ') }
-        append(type.qualifiedName ?: type.toString())
+        append(dependencyType)
+    }
+}
+
+/** Immutable recursive identity of one closed invariant Kotlin dependency type. */
+public class DependencyType<T : Any>(
+    public val rawType: KClass<*>,
+    arguments: List<DependencyType<*>> = emptyList(),
+) {
+    public val arguments: List<DependencyType<*>> = arguments.toList()
+
+    override fun equals(other: Any?): Boolean =
+        other is DependencyType<*> && rawType == other.rawType && arguments == other.arguments
+
+    override fun hashCode(): Int = 31 * rawType.hashCode() + arguments.hashCode()
+
+    override fun toString(): String = buildString {
+        append(rawType.qualifiedName ?: rawType.toString())
+        if (arguments.isNotEmpty()) {
+            arguments.joinTo(this, prefix = "<", postfix = ">")
+        }
     }
 }
 
 /** Runtime lookup available only to generated factories and graph configuration. */
 public interface DependencyResolver {
+    /** Resolves one exact dependency key, including recursive type arguments and its qualifier. */
+    public fun <T : Any> get(key: DependencyKey<T>): T
+
     public fun <T : Any> get(type: KClass<T>): T
 
     public fun <T : Any> get(

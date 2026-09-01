@@ -9,15 +9,20 @@ import com.squareup.kotlinpoet.LIST
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.TypeName
 import java.security.MessageDigest
 
 internal class DiCodeWriter {
     fun factory(model: FactoryModel): FileSpec {
         val target = model.className()
         val factoryName = "${model.typeNames.joinToString("_")}__AshlarFactory"
-        val type = TypeSpec.classBuilder(factoryName)
+        val typeBuilder = TypeSpec.classBuilder(factoryName)
             .addModifiers(KModifier.INTERNAL)
             .addSuperinterface(DEPENDENCY_FACTORY.parameterizedBy(target))
+        model.parameters.forEach { parameter ->
+            typeBuilder.addProperty(parameter.keyProperty())
+        }
+        val type = typeBuilder
             .addProperty(
                 PropertySpec.builder("type", KCLASS.parameterizedBy(target))
                     .addModifiers(KModifier.OVERRIDE)
@@ -83,11 +88,8 @@ internal class DiCodeWriter {
         return className to FileSpec.builder(GENERATED_PACKAGE, className).addType(type).build()
     }
 
-    private fun dependencies(parameters: List<FactoryParameterModel>): CodeBlock = list(parameters) { parameter ->
-        parameter.qualifier?.let { qualifier ->
-            CodeBlock.of("%T(%T::class, %T::class)", DEPENDENCY_KEY, parameter.className(), qualifier.className())
-        } ?: CodeBlock.of("%T(%T::class)", DEPENDENCY_KEY, parameter.className())
-    }
+    private fun dependencies(parameters: List<FactoryParameterModel>): CodeBlock =
+        list(parameters) { parameter -> CodeBlock.of("%N", parameter.keyName()) }
 
     private fun create(
         model: FactoryModel,
@@ -95,14 +97,7 @@ internal class DiCodeWriter {
     ): FunSpec {
         val body = CodeBlock.builder().add("return %T(\n", target).indent()
         model.parameters.forEach { parameter ->
-            parameter.qualifier?.let { qualifier ->
-                body.add(
-                    "%N = resolver.get(%T::class, %T::class),\n",
-                    parameter.name,
-                    parameter.className(),
-                    qualifier.className(),
-                )
-            } ?: body.add("%N = resolver.get(%T::class),\n", parameter.name, parameter.className())
+            body.add("%N = resolver.get(%N),\n", parameter.name, parameter.keyName())
         }
         body.unindent().add(")\n")
         return FunSpec.builder("create")
@@ -131,14 +126,47 @@ internal class DiCodeWriter {
 
     private fun <T> list(values: List<T>, render: (T) -> CodeBlock): CodeBlock {
         if (values.isEmpty()) return CodeBlock.of("emptyList()")
-        val result = CodeBlock.builder().add("listOf(\n")
+        val result = CodeBlock.builder().add("listOf(\n").indent()
         values.forEach { value -> result.add("%L,\n", render(value)) }
-        return result.add(")").build()
+        return result.unindent().add(")").build()
     }
 
     private fun FactoryModel.className(): ClassName = ClassName(packageName, typeNames)
 
-    private fun FactoryParameterModel.className(): ClassName = ClassName(packageName, typeNames)
+    private fun FactoryParameterModel.keyProperty(): PropertySpec =
+        PropertySpec.builder(
+            keyName(),
+            DEPENDENCY_KEY.parameterizedBy(type.typeName()),
+        )
+            .addModifiers(KModifier.PRIVATE)
+            .initializer(CodeBlock.builder().apply {
+                add("%T(\n", DEPENDENCY_KEY).indent()
+                add("dependencyType = %L,\n", type.dependencyType())
+                qualifier?.let { qualifier -> add("qualifier = %T::class,\n", qualifier.className()) }
+                unindent().add(")")
+            }.build())
+            .build()
+
+    private fun FactoryParameterModel.keyName(): String = "${name}Key"
+
+    private fun DependencyTypeModel.dependencyType(): CodeBlock =
+        if (arguments.isEmpty()) {
+            CodeBlock.of("%T<%T>(%T::class)", DEPENDENCY_TYPE, typeName(), className())
+        } else {
+            CodeBlock.builder()
+                .add("%T<%T>(\n", DEPENDENCY_TYPE, typeName())
+                .indent()
+                .add("rawType = %T::class,\n", className())
+                .add("arguments = %L,\n", list(arguments) { argument -> argument.dependencyType() })
+                .unindent()
+                .add(")")
+                .build()
+        }
+
+    private fun DependencyTypeModel.typeName(): TypeName =
+        if (arguments.isEmpty()) className() else className().parameterizedBy(arguments.map { it.typeName() })
+
+    private fun DependencyTypeModel.className(): ClassName = ClassName(packageName, typeNames)
 
     private fun RootComponentModel.className(): ClassName = ClassName(packageName, typeNames)
 
@@ -151,6 +179,7 @@ internal class DiCodeWriter {
         private val DEPENDENCY_RESOLVER = ClassName("pink.alex.ashlar.di", "DependencyResolver")
         private val DEPENDENCY_LIFETIME = ClassName("pink.alex.ashlar.di", "DependencyLifetime")
         private val DEPENDENCY_KEY = ClassName("pink.alex.ashlar.di", "DependencyKey")
+        private val DEPENDENCY_TYPE = ClassName("pink.alex.ashlar.di", "DependencyType")
         private val DEPENDENCY_CONTRIBUTION_MODULE =
             ClassName("pink.alex.ashlar.di", "DependencyContributionModule")
         private val ROOT_COMPONENT_CONTRIBUTION =
