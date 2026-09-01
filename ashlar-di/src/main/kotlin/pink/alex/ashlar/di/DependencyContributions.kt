@@ -19,3 +19,14 @@ public interface DependencyContributionModule {
     public val contributions: List<KClass<*>>
         get() = emptyList()
 }
+
+/**
+ * Performs generated framework setup after plug-in graph overrides and before any
+ * automatic component is constructed.
+ *
+ * The returned resource is closed in reverse initializer order during rollback or
+ * plug-in shutdown.
+ */
+public fun interface DependencyGraphInitializer {
+    public fun initialize(graph: DependencyGraph): AutoCloseable?
+}

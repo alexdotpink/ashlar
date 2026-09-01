@@ -2,6 +2,7 @@ package pink.alex.ashlar
 
 import pink.alex.ashlar.internal.ComponentDeclaration
 import pink.alex.ashlar.internal.ComponentSlot
+import pink.alex.ashlar.internal.DependencyInitializerController
 import pink.alex.ashlar.internal.LifecycleBinding
 import pink.alex.ashlar.internal.LifecycleController
 import pink.alex.ashlar.internal.ShutdownResult
@@ -27,6 +28,7 @@ public abstract class AshlarPlugin : JavaPlugin() {
     private val children: MutableList<ComponentDeclaration<out PluginComponent>> = mutableListOf()
     private val criticalDisableRequested: AtomicBoolean = AtomicBoolean()
     private var lifecycle: LifecycleController? = null
+    private var dependencyInitializers: DependencyInitializerController? = null
     private var dependencyGraph: DependencyGraph? = null
     private var loaded: Boolean = false
 
@@ -104,27 +106,40 @@ public abstract class AshlarPlugin : JavaPlugin() {
         graph.bind(this, listOf(AshlarPlugin::class, Plugin::class))
         graph.bind(server)
         with(graph) { configure() }
-        val automaticDeclarations = automaticComponentDeclarations(graph)
-        val reporter = taskFailureReporter(componentLogger)
-        val controller =
-            LifecycleController(
-                rootName = name,
-                declarations = children.toList() + automaticDeclarations,
-                contextFactory = { path, binding ->
-                    PluginComponentContext(this, componentLogger, path, binding, graph)
-                },
-                failureReporter = reporter,
-                onCriticalFailure = { requestDisableAfterCriticalFailure() },
-                drainTimeout = taskDrainTimeout,
-                onComponentStarted = { component -> graph.bind(component) },
-            )
-        lifecycle = controller
+        val initializers = DependencyInitializerController(
+            graph.contributions(pink.alex.ashlar.di.DependencyGraphInitializer::class),
+        )
+        dependencyInitializers = initializers
         try {
-            controller.startComponents()
-            with(controller.rootBinding.context) { enable() }
+            initializers.initialize(graph)
+            val automaticDeclarations = automaticComponentDeclarations(graph)
+            val reporter = taskFailureReporter(componentLogger)
+            val controller =
+                LifecycleController(
+                    rootName = name,
+                    declarations = children.toList() + automaticDeclarations,
+                    contextFactory = { path, binding ->
+                        PluginComponentContext(this, componentLogger, path, binding, graph)
+                    },
+                    failureReporter = reporter,
+                    onCriticalFailure = { requestDisableAfterCriticalFailure() },
+                    drainTimeout = taskDrainTimeout,
+                    onComponentStarted = { component -> graph.bind(component) },
+                )
+            lifecycle = controller
+            try {
+                controller.startComponents()
+                with(controller.rootBinding.context) { enable() }
+            } catch (failure: Throwable) {
+                reportLifecycleFailures("rolling back startup", controller.rollback())
+                throw failure
+            }
         } catch (failure: Throwable) {
-            reportLifecycleFailures("rolling back startup", controller.rollback())
+            reportLifecycleFailures("closing dependency initializers", initializers.close())
+            dependencyInitializers = null
             graph.close()
+            dependencyGraph = null
+            lifecycle = null
             throw failure
         }
     }
@@ -138,6 +153,8 @@ public abstract class AshlarPlugin : JavaPlugin() {
             logger.warning("Component tasks did not finish within $taskDrainTimeout; shutdown continued")
         }
         reportLifecycleFailures("disabling", result.failures)
+        reportLifecycleFailures("closing dependency initializers", dependencyInitializers?.close().orEmpty())
+        dependencyInitializers = null
         dependencyGraph?.close()
         dependencyGraph = null
     }
