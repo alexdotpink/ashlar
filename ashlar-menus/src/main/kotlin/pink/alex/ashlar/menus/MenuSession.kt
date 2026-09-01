@@ -681,6 +681,8 @@ internal class MenuSessionCore(
             val root = builder.root()
             context(root) { content() }
             builder.build()
+        } catch (cancelled: CancellationException) {
+            throw cancelled
         } catch (cause: Throwable) {
             fail(cause)
             return@withLock
@@ -698,6 +700,8 @@ internal class MenuSessionCore(
                 } else {
                     nativeHost.reconcile(next, change)
                 }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
             } catch (cause: Throwable) {
                 val boundary = tree.host.host.boundary
                 if (boundary != null && boundary !in boundaryFailures) {
