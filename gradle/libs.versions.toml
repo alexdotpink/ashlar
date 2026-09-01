@@ -9,7 +9,7 @@ shadow = "9.6.1"
 dokka = "2.2.0"
 # Kotlin 2.4 is fully supported through Gradle 9.5; 3.0.2 is the newest run-paper release for that line.
 run-paper = "3.0.2"
-ksp = "2.3.10"
+ksp = "2.3.11"
 kotlinpoet = "2.3.0"
 jmh = "1.37"
 snakeyaml-engine = "3.1.1"
