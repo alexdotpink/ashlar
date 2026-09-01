@@ -3,6 +3,7 @@ import xyz.jpenilla.runpaper.task.RunServer
 plugins {
     id("ashlar.kotlin-library")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
 }
@@ -16,11 +17,13 @@ dependencies {
     implementation(project(":ashlar-input"))
     implementation(project(":ashlar-menus"))
     implementation(project(":ashlar-items"))
+    implementation(project(":ashlar-config"))
     implementation(project(":ashlar-benchmarks"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     ksp(project(":ashlar-commands-ksp"))
     ksp(project(":ashlar-events-ksp"))
+    ksp(project(":ashlar-config-ksp"))
     ksp(project(":ashlar-di-ksp"))
 }
 
@@ -84,14 +87,23 @@ tasks.register("foliaIntegrationTest") {
 
 fun RunServer.verifyFixtureReceipt() {
     val receipt = runDirectory.file("fixture-result.txt")
+    val dataDirectory = runDirectory.dir("plugins/AshlarIntegrationFixture")
+    val latestLog = runDirectory.file("logs/latest.log")
     outputs.upToDateWhen { false }
     doFirst {
         receipt.get().asFile.delete()
+        dataDirectory.get().asFile.deleteRecursively()
     }
     doLast {
         val resultFile = receipt.get().asFile
         check(resultFile.isFile && resultFile.useLines { it.firstOrNull() } == "PASS") {
             "Integration fixture did not write a PASS receipt: ${resultFile.absolutePath}"
+        }
+        val logFile = latestLog.get().asFile
+        check(logFile.isFile) { "Integration server did not write its lifecycle log: ${logFile.absolutePath}" }
+        val log = logFile.readText()
+        check("A lifecycle action failed while closing dependency initializers" !in log) {
+            "A configuration watcher or another dependency-initializer resource failed to close"
         }
     }
 }

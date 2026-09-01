@@ -10,7 +10,7 @@ import pink.alex.ashlar.events.ExcludeEventContributions
 @ExcludeEventContributions(ExcludedSampleEvents::class)
 public class SamplePlugin : AshlarPlugin() {
     override fun ComponentContext.enable() {
-        logger.info("Ashlar showcase enabled; use /showcase, /events, /input, or /menus")
+        logger.info("Ashlar showcase enabled; use /showcase, /events, /input, /menus, or /config")
     }
 
     override fun ComponentContext.disable() {

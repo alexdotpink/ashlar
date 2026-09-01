@@ -18,6 +18,9 @@ import pink.alex.ashlar.commands.policy.CommandPolicyContext
 import pink.alex.ashlar.commands.policy.CommandPolicyInterceptor
 import pink.alex.ashlar.commands.policy.CommandPolicyPhase
 import pink.alex.ashlar.commands.graph.CommandGraph
+import pink.alex.ashlar.config.ConfigHandle
+import pink.alex.ashlar.config.ConfigWatcherStatus
+import pink.alex.ashlar.config.Configurations
 import pink.alex.ashlar.benchmarks.BenchmarkCaseId
 import pink.alex.ashlar.benchmarks.BenchmarkCaseResult
 import pink.alex.ashlar.benchmarks.BenchmarkJson
@@ -108,6 +111,7 @@ public class IntegrationFixturePlugin : AshlarPlugin() {
         task("fixture") {
             try {
                 lifecycleProbe.awaitOrdinaryTask()
+                automaticProbe.exerciseConfiguration(dataFolder.toPath())
                 benchmarkCases += exerciseExecutionContexts()
                 withGlobal { runItemIntegrationChecks() }
                 exerciseEvents()
@@ -462,6 +466,8 @@ public class IntegrationFixturePlugin : AshlarPlugin() {
 /** Interface binding used to prove that generated roots can contribute abstractions. */
 public interface AutomaticProbe {
     public val started: Boolean
+
+    public suspend fun exerciseConfiguration(dataDirectory: Path)
 }
 
 /** Generated DI constructs and installs this root without an explicit component declaration. */
@@ -470,16 +476,29 @@ public interface AutomaticProbe {
 @Inject
 public class AutomaticProbeComponent(
     private val results: ProbeResults,
+    private val config: ConfigHandle<FixtureConfig>,
+    private val configurations: Configurations,
 ) : PluginComponent(), AutomaticProbe {
     override var started: Boolean = false
         private set
 
     override fun ComponentContext.start(): Unit {
+        check(config.current == FixtureConfig()) { "Configuration was not ready before automatic component startup" }
         started = true
         results.record("automatic:start")
+        results.record("config:injected-before-component")
+    }
+
+    override suspend fun exerciseConfiguration(dataDirectory: Path) {
+        pink.alex.ashlar.fixture.exerciseConfiguration(config, configurations, dataDirectory, results)
     }
 
     override fun ComponentContext.stop(): Unit {
+        check(
+            configurations.inspect().single { inspection -> inspection.path == "fixture-config.jsonc" }
+                .watcherStatus == ConfigWatcherStatus.WATCHING,
+        ) { "Configuration watcher stopped before plug-in dependency-initializer shutdown" }
+        results.record("config:watcher-owned-through-components")
         results.record("automatic:stop")
         started = false
     }
@@ -757,11 +776,17 @@ public class ProbeResults {
                 "child:start",
                 "parent:start",
                 "automatic:start",
+                "config:injected-before-component",
                 "automatic:injected",
                 "input:available",
                 "menus:available",
                 "plugin:enable",
                 "child:task",
+                "config:created-defaults",
+                "config:updated",
+                "config:invalid-retained",
+                "config:comment-only",
+                "config:watching",
                 "execution:global",
                 "execution:region",
                 "execution:entity",
@@ -783,6 +808,7 @@ public class ProbeResults {
                 "policy:say:frameworkfixture say",
                 "plugin:disable",
                 "automatic:stop",
+                "config:watcher-owned-through-components",
                 "parent:stop",
                 "child:stop",
                 "child:close",
@@ -793,6 +819,7 @@ public class ProbeResults {
         assertBefore("child:start", "parent:start")
         assertBefore("parent:start", "plugin:enable")
         assertBefore("automatic:start", "automatic:injected")
+        assertBefore("config:injected-before-component", "automatic:injected")
         assertBefore("automatic:injected", "plugin:enable")
         assertBefore("plugin:enable", "execution:global")
         assertBefore("execution:global", "execution:region")
@@ -801,6 +828,8 @@ public class ProbeResults {
         assertBefore("policy:say:frameworkfixture say", "command:say:market square")
         assertBefore("plugin:disable", "parent:stop")
         assertBefore("plugin:disable", "automatic:stop")
+        assertBefore("config:watching", "plugin:disable")
+        assertBefore("plugin:disable", "config:watcher-owned-through-components")
         assertBefore("parent:stop", "child:stop")
         assertBefore("child:stop", "child:close")
         assertBefore("child:close", "parent:close")

@@ -1,6 +1,23 @@
 # Ashlar showcase plug-in
 
-This Paper/Folia plug-in is a playable reference for commands, events, typed input, items, and menus. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`, typed input uses `/input` or `/in`, and menus use `/menus` or `/menu`.
+This Paper/Folia plug-in is a playable reference for commands, events, typed input, items, menus, and live typed configuration. The command catalogue root is `/showcase`, with `/sc` as the short alias and `/demo` as a best-effort alias. Events use `/events` or `/ev`, typed input uses `/input` or `/in`, menus use `/menus` or `/menu`, and configuration uses `/config` or `/cfg`.
+
+## Configuration checklist
+
+Ashlar creates `plugins/AshlarSample/config.jsonc` from defaults on first enable. The generated file includes `_ashlar-schema` and comments copied from the configuration type's KDoc. It is watched while the server runs.
+
+```text
+/config status
+/config value
+/config reload
+/config interval 2
+/config backups
+/config restore <id>
+```
+
+`status` contains only redacted operational metadata. `value` shows the intentionally public sample message. `interval` validates and atomically writes a new duration, creating a backup whose opaque identifier can be passed to `restore`.
+
+To try watched reloads, edit `message` in `plugins/AshlarSample/config.jsonc`, save the complete file, and run `/config value` again. Set `refresh-interval` below `1s` to see the source rejected without replacing the accepted value.
 
 ## Benchmark example
 

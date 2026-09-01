@@ -4,6 +4,7 @@ plugins {
     id("ashlar.kotlin-library")
     id("ashlar.benchmark-contracts")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
 }
@@ -17,12 +18,14 @@ dependencies {
     implementation(project(":ashlar-input"))
     implementation(project(":ashlar-items"))
     implementation(project(":ashlar-menus"))
+    implementation(project(":ashlar-config"))
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     testImplementation(libs.paper.api)
     testImplementation(project(":ashlar-menus-test"))
     ksp(project(":ashlar-commands-ksp"))
     ksp(project(":ashlar-events-ksp"))
+    ksp(project(":ashlar-config-ksp"))
     ksp(project(":ashlar-di-ksp"))
 }
 
