@@ -101,4 +101,22 @@ class YamlConfigFormatTest {
         assertEquals(ConfigValue.BooleanValue(true), parsed.document.value.entries["modern"])
         assertEquals(ConfigValue.StringValue("yes"), parsed.document.value.entries["legacy"])
     }
+
+    @Test
+    fun `safe YAML accepts only one 1_2 document`() {
+        val oldDirective = assertIs<ConfigParse.Rejected>(
+            YamlConfigFormat.parse(ConfigSource("settings.yml", "%YAML 1.1\n---\nenabled: true\n")),
+        )
+        assertEquals(ConfigProblemCategory.SYNTAX, oldDirective.problems.single().category)
+
+        val multiple = assertIs<ConfigParse.Rejected>(
+            YamlConfigFormat.parse(ConfigSource("settings.yml", "enabled: true\n---\nenabled: false\n")),
+        )
+        assertEquals(ConfigProblemCategory.SYNTAX, multiple.problems.single().category)
+
+        val currentDirective = assertIs<ConfigParse.Accepted>(
+            YamlConfigFormat.parse(ConfigSource("settings.yml", "%YAML 1.2\n---\nenabled: true\n")),
+        )
+        assertEquals(ConfigValue.BooleanValue(true), currentDirective.document.value.entries["enabled"])
+    }
 }

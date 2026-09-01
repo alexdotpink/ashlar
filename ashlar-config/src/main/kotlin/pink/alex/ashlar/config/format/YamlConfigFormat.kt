@@ -3,6 +3,7 @@ package pink.alex.ashlar.config.format
 import org.snakeyaml.engine.v2.api.DumpSettings
 import org.snakeyaml.engine.v2.api.LoadSettings
 import org.snakeyaml.engine.v2.api.lowlevel.Compose
+import org.snakeyaml.engine.v2.api.lowlevel.Parse
 import org.snakeyaml.engine.v2.api.lowlevel.Present
 import org.snakeyaml.engine.v2.api.lowlevel.Serialize
 import org.snakeyaml.engine.v2.comments.CommentLine
@@ -11,6 +12,8 @@ import org.snakeyaml.engine.v2.common.FlowStyle
 import org.snakeyaml.engine.v2.common.ScalarStyle
 import org.snakeyaml.engine.v2.exceptions.MarkedYamlEngineException
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException
+import org.snakeyaml.engine.v2.events.Event
+import org.snakeyaml.engine.v2.events.ScalarEvent
 import org.snakeyaml.engine.v2.nodes.MappingNode
 import org.snakeyaml.engine.v2.nodes.Node
 import org.snakeyaml.engine.v2.nodes.NodeTuple
@@ -52,8 +55,15 @@ internal object YamlConfigFormat : ConfigFormat {
             .setCodePointLimit(limits.maximumBytes.coerceAtMost(Int.MAX_VALUE.toLong()).toInt())
             .setParseComments(true)
             .setUseMarks(true)
+            .setVersionFunction { version ->
+                if (version.major != 1 || version.minor != 2) {
+                    throw YamlEngineException("only the YAML 1.2 directive is supported")
+                }
+                version
+            }
             .build()
         return try {
+            preflight(source.text, settings, limits)
             val root = Compose(settings).composeString(source.text).orElse(null)
                 ?: return rejected(source.path, ConfigProblemCategory.SYNTAX, "configuration root must be a mapping")
             if (root !is MappingNode) {
@@ -61,6 +71,16 @@ internal object YamlConfigFormat : ConfigFormat {
             }
             val value = YamlNodeCodec(limits).decodeRoot(root)
             ConfigParse.Accepted(LosslessYamlDocument(value, source.text, root, lineBreak(source.text)))
+        } catch (failure: YamlPreflightFailure) {
+            ConfigParse.Rejected(
+                listOf(ConfigProblem(
+                    path = source.path,
+                    key = failure.path,
+                    category = failure.category,
+                    message = failure.message,
+                    location = failure.location,
+                )),
+            )
         } catch (failure: YamlFormatFailure) {
             ConfigParse.Rejected(
                 listOf(
@@ -127,6 +147,66 @@ internal object YamlConfigFormat : ConfigFormat {
 
     private fun rejected(path: String, category: ConfigProblemCategory, message: String): ConfigParse.Rejected =
         ConfigParse.Rejected(listOf(ConfigProblem(path, category = category, message = message)))
+
+    private fun preflight(
+        source: String,
+        settings: LoadSettings,
+        limits: ConfigLimits,
+    ) {
+        var depth = 0
+        var documents = 0
+        var aliases = 0
+        Parse(settings).parseString(source).forEach { event ->
+            when (event.eventId) {
+                Event.ID.DocumentStart -> {
+                    documents++
+                    if (documents > 1) event.reject(
+                        ConfigProblemCategory.SYNTAX,
+                        "configuration source must contain exactly one YAML document",
+                    )
+                }
+                Event.ID.MappingStart, Event.ID.SequenceStart -> {
+                    depth++
+                    if (depth > limits.maximumDepth) event.reject(
+                        ConfigProblemCategory.RESOURCE_LIMIT,
+                        "nesting exceeds ${limits.maximumDepth}",
+                    )
+                }
+                Event.ID.MappingEnd, Event.ID.SequenceEnd -> depth--
+                Event.ID.Alias -> {
+                    aliases++
+                    if (aliases > limits.maximumAliases) event.reject(
+                        ConfigProblemCategory.RESOURCE_LIMIT,
+                        "aliases exceed ${limits.maximumAliases}",
+                    )
+                }
+                Event.ID.Scalar -> {
+                    val scalar = event as ScalarEvent
+                    if (scalar.value.codePointCount(0, scalar.value.length) > limits.maximumScalarCharacters) {
+                        event.reject(
+                            ConfigProblemCategory.RESOURCE_LIMIT,
+                            "scalar exceeds ${limits.maximumScalarCharacters} characters",
+                        )
+                    }
+                }
+                else -> Unit
+            }
+        }
+        if (documents != 1) throw YamlPreflightFailure(
+            path = ConfigKeyPath(),
+            category = ConfigProblemCategory.SYNTAX,
+            message = "configuration source must contain exactly one YAML document",
+            location = null,
+        )
+    }
+
+    private fun Event.reject(category: ConfigProblemCategory, message: String): Nothing =
+        throw YamlPreflightFailure(
+            path = ConfigKeyPath(),
+            category = category,
+            message = message,
+            location = startMark.map { mark -> ConfigSourceLocation(mark.line + 1, mark.column + 1) }.orElse(null),
+        )
 }
 
 private data class LosslessYamlDocument(
@@ -386,6 +466,13 @@ private class YamlFormatFailure(
     val path: ConfigKeyPath,
     val category: ConfigProblemCategory,
     override val message: String,
+) : RuntimeException(message)
+
+private class YamlPreflightFailure(
+    val path: ConfigKeyPath,
+    val category: ConfigProblemCategory,
+    override val message: String,
+    val location: ConfigSourceLocation?,
 ) : RuntimeException(message)
 
 private fun parseYamlInteger(raw: String): Long? {
