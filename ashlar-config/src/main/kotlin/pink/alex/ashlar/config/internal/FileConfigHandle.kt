@@ -61,6 +61,7 @@ internal class FileConfigHandle<T : Any> private constructor(
     private val state = MutableStateFlow(initial.value)
     private val attempts = MutableSharedFlow<ConfigEvent<T>>(replay = 1, extraBufferCapacity = 63)
     private var accepted: AcceptedConfig<T> = initial
+    @Volatile
     private var inspection = ConfigInspection(
         path = definition.path,
         format = format.id,
@@ -72,6 +73,8 @@ internal class FileConfigHandle<T : Any> private constructor(
         warningCount = initial.warnings.size,
         problems = initial.warnings,
     )
+    @Volatile
+    private var backupMetadata: List<ConfigBackup> = files.listBackups(definition.path).map(StoredBackup::publicMetadata)
     private var watchService: WatchService? = null
     private var watcher: Job? = null
     private var rejectedWatchRevision: ConfigSourceRevision? = null
@@ -156,7 +159,9 @@ internal class FileConfigHandle<T : Any> private constructor(
     }
 
     override suspend fun backups(): List<ConfigBackup> = withContext(ioDispatcher) {
-        files.listBackups(definition.path).map(StoredBackup::publicMetadata)
+        files.listBackups(definition.path).map(StoredBackup::publicMetadata).also { backups ->
+            backupMetadata = backups
+        }
     }
 
     override suspend fun restore(id: ConfigBackupId): ConfigRestore<T> = withContext(ioDispatcher) {
@@ -209,9 +214,7 @@ internal class FileConfigHandle<T : Any> private constructor(
         )
     }
 
-    override fun inspect(): ConfigInspection = inspection.copy(
-        backups = files.listBackups(definition.path).map(StoredBackup::publicMetadata),
-    )
+    override fun inspect(): ConfigInspection = inspection.copy(backups = backupMetadata)
 
     override fun startWatching(scope: CoroutineScope) {
         if (definition.reloadMode != ConfigReloadMode.WATCH || watcher != null) return
@@ -413,13 +416,19 @@ internal class FileConfigHandle<T : Any> private constructor(
         schemaVersion = definition.schemaVersion,
         revision = config.revision,
         maximumRetained = definition.backups,
-    ).exceptionOrNull()?.let {
-        ConfigOperationProblem(
-            definition.path,
-            ConfigOperationProblemCategory.BACKUP_FAILED,
-            "Could not retain the previous valid configuration source",
-        )
-    }
+    ).fold(
+        onSuccess = {
+            backupMetadata = files.listBackups(definition.path).map(StoredBackup::publicMetadata)
+            null
+        },
+        onFailure = {
+            ConfigOperationProblem(
+                definition.path,
+                ConfigOperationProblemCategory.BACKUP_FAILED,
+                "Could not retain the previous valid configuration source",
+            )
+        },
+    )
 
     private fun publishAccepted(next: AcceptedConfig<T>, changedPaths: List<ConfigKeyPath>) {
         val changed = next.value != accepted.value
