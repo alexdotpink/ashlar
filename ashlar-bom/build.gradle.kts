@@ -44,7 +44,7 @@ publishing {
             pom {
                 name.set("Ashlar BOM")
                 description.set(project.description)
-                url.set("https://github.com/alex-kubbly/ashlar")
+                url.set("https://github.com/alexdotpink/ashlar")
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
@@ -59,9 +59,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:https://github.com/alex-kubbly/ashlar.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/alex-kubbly/ashlar.git")
-                    url.set("https://github.com/alex-kubbly/ashlar")
+                    connection.set("scm:git:https://github.com/alexdotpink/ashlar.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/alexdotpink/ashlar.git")
+                    url.set("https://github.com/alexdotpink/ashlar")
                 }
             }
         }
@@ -105,8 +105,8 @@ tasks.withType<PublishToMavenRepository>().configureEach {
         if (repository.name == "mavenCentralRelease") {
             val identity = listOf(
                 project.group.toString(),
-                "https://github.com/alex-kubbly/ashlar",
-                "scm:git:https://github.com/alex-kubbly/ashlar.git",
+                "https://github.com/alexdotpink/ashlar",
+                "scm:git:https://github.com/alexdotpink/ashlar.git",
             )
             check(identity.none { it.contains("placeholder", ignoreCase = true) }) {
                 "Refusing Maven Central publication with placeholder coordinates or POM identity."
