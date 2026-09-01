@@ -18,11 +18,18 @@ public object ConfigurationBootstrap {
     ): AutoCloseable {
         val plugin = graph.get(Plugin::class)
         val customFormats = graph.contributions(ConfigFormat::class)
-        return install(
+        return installRuntime(
             graph = graph,
             dataDirectory = plugin.dataFolder.toPath(),
             definitions = definitions,
             formats = customFormats + BuiltInConfigFormats.all,
+            reporter = pink.alex.ashlar.config.internal.ConfigRuntimeReporter { path, recovered, count ->
+                if (recovered) {
+                    plugin.logger.info("Configuration '$path' recovered and is valid again")
+                } else {
+                    plugin.logger.warning("Configuration '$path' was rejected with $count problem(s); current value retained")
+                }
+            },
         )
     }
 
@@ -32,7 +39,21 @@ public object ConfigurationBootstrap {
         dataDirectory: Path,
         definitions: List<ConfigDefinition<*>>,
         formats: List<ConfigFormat> = BuiltInConfigFormats.all,
+    ): AutoCloseable = installRuntime(
+        graph,
+        dataDirectory,
+        definitions,
+        formats,
+        pink.alex.ashlar.config.internal.ConfigRuntimeReporter.NONE,
+    )
+
+    private fun installRuntime(
+        graph: DependencyGraph,
+        dataDirectory: Path,
+        definitions: List<ConfigDefinition<*>>,
+        formats: List<ConfigFormat>,
+        reporter: pink.alex.ashlar.config.internal.ConfigRuntimeReporter,
     ): AutoCloseable = runBlocking(Dispatchers.IO) {
-        ConfigurationRuntime.install(graph, dataDirectory, definitions, formats)
+        ConfigurationRuntime.install(graph, dataDirectory, definitions, formats, reporter = reporter)
     }
 }

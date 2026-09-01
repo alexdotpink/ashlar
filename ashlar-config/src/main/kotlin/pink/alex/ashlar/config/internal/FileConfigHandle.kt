@@ -55,6 +55,7 @@ internal class FileConfigHandle<T : Any> private constructor(
     private val files: ConfigFiles,
     initial: AcceptedConfig<T>,
     private val ioDispatcher: CoroutineDispatcher,
+    private val reporter: ConfigRuntimeReporter,
 ) : ConfigHandle<T>, InternalConfigHandle {
     private val mutex = Mutex()
     private val state = MutableStateFlow(initial.value)
@@ -252,6 +253,9 @@ internal class FileConfigHandle<T : Any> private constructor(
                 is LoadResult.Rejected -> {
                     if (origin != ConfigEventOrigin.WATCHED_RELOAD || rejectedWatchRevision != source.revision) {
                         publishRejected(origin, source.revision, loaded.problems)
+                        if (origin == ConfigEventOrigin.WATCHED_RELOAD) {
+                            reporter.report(definition.path, recovered = false, loaded.problems.size)
+                        }
                     }
                     if (origin == ConfigEventOrigin.WATCHED_RELOAD) rejectedWatchRevision = source.revision
                     ConfigReload.Rejected(current, loaded.problems)
@@ -261,10 +265,14 @@ internal class FileConfigHandle<T : Any> private constructor(
                     ConfigReload.Unavailable(current, loaded.problem)
                 }
                 is LoadResult.Accepted -> {
+                    val recovered = rejectedWatchRevision != null
                     rejectedWatchRevision = null
                     val before = accepted.value
                     val paths = changedPaths(before, loaded.config.value)
                     publishAccepted(loaded.config, paths)
+                    if (origin == ConfigEventOrigin.WATCHED_RELOAD && recovered) {
+                        reporter.report(definition.path, recovered = true, problemCount = 0)
+                    }
                     ConfigReload.Accepted(loaded.config.value, loaded.config.value != before, loaded.config.warnings)
                 }
             }
@@ -474,6 +482,7 @@ internal class FileConfigHandle<T : Any> private constructor(
             format: ConfigFormat,
             files: ConfigFiles,
             ioDispatcher: CoroutineDispatcher,
+            reporter: ConfigRuntimeReporter,
         ): OpenResult<T> = withContext(ioDispatcher) {
             require(definition.schemaVersion >= 1) { "schemaVersion must be at least 1" }
             require(definition.unversionedSchema in 0..definition.schemaVersion) {
@@ -551,10 +560,18 @@ internal class FileConfigHandle<T : Any> private constructor(
                 warnings = emptyList(),
                 origin = ConfigEventOrigin.INITIAL_LOAD,
             )
-            val handle = FileConfigHandle(definition, format, path, files, provisional, ioDispatcher)
+            val handle = FileConfigHandle(definition, format, path, files, provisional, ioDispatcher, reporter)
             when (val loaded = handle.decodeSource(source, ConfigEventOrigin.INITIAL_LOAD, persistMigration = true)) {
                 is LoadResult.Accepted -> {
-                    val ready = FileConfigHandle(definition, format, path, files, loaded.config, ioDispatcher)
+                    val ready = FileConfigHandle(
+                        definition,
+                        format,
+                        path,
+                        files,
+                        loaded.config,
+                        ioDispatcher,
+                        reporter,
+                    )
                     OpenResult.Accepted(ready)
                 }
                 is LoadResult.Rejected -> OpenResult.Rejected(loaded.problems)

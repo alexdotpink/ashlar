@@ -42,6 +42,7 @@ internal class ConfigurationRuntime private constructor(
             formats: List<ConfigFormat>,
             ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
             clock: Clock = Clock.systemUTC(),
+            reporter: ConfigRuntimeReporter = ConfigRuntimeReporter.NONE,
         ): ConfigurationRuntime {
             val extensionOwners = linkedMapOf<String, ConfigFormat>()
             formats.forEach { format ->
@@ -71,7 +72,7 @@ internal class ConfigurationRuntime private constructor(
                             message = "No configuration format owns extension '$extension'",
                         )),
                     )
-                    installErased(graph, definition, format, files, ioDispatcher, opened)
+                    installErased(graph, definition, format, files, ioDispatcher, reporter, opened)
                 }
             } catch (failure: Throwable) {
                 opened.asReversed().forEach { handle -> runCatching(handle::close) }
@@ -90,9 +91,10 @@ internal class ConfigurationRuntime private constructor(
             format: ConfigFormat,
             files: ConfigFiles,
             ioDispatcher: CoroutineDispatcher,
+            reporter: ConfigRuntimeReporter,
             opened: MutableList<InternalConfigHandle>,
         ) {
-            when (val result = FileConfigHandle.open(definition, format, files, ioDispatcher)) {
+            when (val result = FileConfigHandle.open(definition, format, files, ioDispatcher, reporter)) {
                 is OpenResult.Accepted -> {
                     graph.bind(definition.handleKey, result.handle)
                     opened += result.handle
@@ -112,6 +114,7 @@ internal class ConfigurationRuntime private constructor(
             format: ConfigFormat,
             files: ConfigFiles,
             ioDispatcher: CoroutineDispatcher,
+            reporter: ConfigRuntimeReporter,
             opened: MutableList<InternalConfigHandle>,
         ) = installTyped(
             graph,
@@ -119,7 +122,17 @@ internal class ConfigurationRuntime private constructor(
             format,
             files,
             ioDispatcher,
+            reporter,
             opened,
         )
+    }
+}
+
+/** Redacted watched-reload status sink. */
+internal fun interface ConfigRuntimeReporter {
+    fun report(path: String, recovered: Boolean, problemCount: Int)
+
+    companion object {
+        val NONE: ConfigRuntimeReporter = ConfigRuntimeReporter { _, _, _ -> }
     }
 }
