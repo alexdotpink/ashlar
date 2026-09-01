@@ -1,6 +1,8 @@
 # Configuration module design
 
-Status: planned
+Status: implemented
+
+Implemented by the structural DI, configuration runtime, KSP linkage, test harness, sample, and pinned Paper and Folia fixture commits completed in September 2026. Performance benchmarking remains deferred by project direction.
 
 The configuration module turns human-edited settings documents into immutable, validated Kotlin values. It loads required values before application construction, preserves operator comments, publishes accepted reloads atomically, and gives every expected source problem a typed outcome.
 
@@ -34,7 +36,7 @@ The feature ships as three artifacts:
 
 - `ashlar-config`: handwritten runtime, public API, built-in formats, file durability, and inspection;
 - `ashlar-config-ksp`: declaration metadata, KDoc extraction, direct serializer and function references, and pre-lifecycle binding contributions;
-- `ashlar-config-test`: deterministic documents, edits, watches, failures, time, and filesystem behavior.
+- `ashlar-config-test`: server-free production handles, real temporary documents, editor-style writes, watches, backups, and restart behavior.
 
 The managed build enables them with:
 
@@ -244,7 +246,7 @@ Safe YAML supports core scalar values and bounded aliases. Duplicate keys, custo
 
 `ConfigFormat` is a public contribution seam. A format owns its extensions, bounded lossless parser, value-tree projection, comment-aware patching, and writer. A comment-capable custom format must retain all comment tokens through framework writes. Ad hoc per-declaration codec callbacks are not supported.
 
-Kotlin property names become kebab-case keys by default. `@SerialName` overrides one key. Newly created and explicitly saved documents contain every property, including default values and explicit nulls, in serializer declaration order.
+Kotlin property names become kebab-case keys by default. `@SerialName` overrides one key. Newly created and explicitly saved documents contain every property, including default values and explicit nulls, in serializer declaration order. TOML rejects a null because TOML 1.0 has no null value.
 
 Valid existing documents are never rewritten merely because a newer defaulted property is absent. Kotlin supplies that default in memory. A later explicit update or migration may insert the property with its initial KDoc comment.
 
@@ -252,7 +254,7 @@ Valid existing documents are never rewritten merely because a newer defaulted pr
 
 KSP copies configuration class and property KDoc into generated comment metadata. A newly created key receives that documentation as a source comment. Once the document exists, every existing comment is operator-owned and later KDoc changes never rewrite it.
 
-Lossless writes preserve comments attached to values, mappings, sequences, tables, and standalone positions. When a migration removes a commented key, the migration may move its comments to the replacement key. Otherwise the comments remain standalone at the same parent location. No framework operation silently deletes them.
+Lossless writes preserve comments attached to values, mappings, sequences, tables, and standalone positions. When a migration removes a commented key, its comments remain standalone at the same parent location. Typed migrations do not edit operator comments. No framework operation silently deletes them.
 
 Strict JSON cannot contain comments. JSONC exists when a JSON-shaped document needs the comment guarantee.
 
@@ -368,7 +370,7 @@ Inspection exposes neither values nor mutation capabilities. Observers and logs 
 
 ## Testing contract
 
-`ashlar-config-test` drives production parsing, migrations, validation, handles, source revisions, writes, watching, backups, and restore against deterministic virtual documents and time. It covers:
+`ashlar-config-test` drives production parsing, migrations, validation, handles, source revisions, writes, watching, backups, and restore against isolated temporary directories. Bounded polling is reserved for real `WatchService` behavior. It covers:
 
 - missing-file creation and complete defaults;
 - every built-in format and custom-format contribution;
@@ -379,13 +381,13 @@ Inspection exposes neither values nor mutation capabilities. Observers and logs 
 - comment-only reloads without value emission;
 - editor bursts, atomic rename, watched rejection, and recovery;
 - stale external edits and concurrent explicit operations;
-- atomic-write failure at every boundary;
 - backup rotation, corrupt backup, restore, and restore rollback;
-- cancellation and plug-in shutdown cleanup;
+- process restart and concurrent explicit operations;
+- plug-in shutdown cleanup in the Paper and Folia fixtures;
 - diagnostic and inspection redaction;
-- randomized lossless document patch round trips.
+- semantic equality after lossless document patches.
 
-Real filesystem tests cover `WatchService`, permissions, atomic-move fallback, symlink confinement, and process restart. Paper and Folia fixtures verify startup ordering, automatic component injection, lifecycle cleanup, and that file work does not violate server ownership. Configuration values themselves require no connected-client acceptance.
+Real filesystem tests cover `WatchService`, symlink confinement, atomic replacement, editor rename saves, and process restart. Paper and Folia fixtures verify startup ordering, automatic component injection, lifecycle cleanup, and that file work does not violate server ownership. Configuration values themselves require no connected-client acceptance.
 
 ## Documentation completion
 
@@ -408,7 +410,7 @@ Implementation proceeds in finished slices rather than one broad scaffold:
 2. Add the three configuration artifacts, managed build wiring, pre-lifecycle definitions, direct handle injection, lossless YAML, missing-file defaults, manual reload, validation, and the deterministic test kit.
 3. Add explicit lossless updates, source fingerprints, stale-write rejection, atomic replacement, backup rotation, and validated restore.
 4. Add opt-in watching, event and value flows, rejection deduplication, recovery logging, bulk reload, and redacted inspection.
-5. Add reserved schema metadata, unversioned adoption, typed sequential migrations, comment movement, and persist-before-publish behavior.
+5. Add reserved schema metadata, unversioned adoption, typed sequential migrations, removed-key comment retention, and persist-before-publish behavior.
 6. Add TOML, strict JSON, JSONC, the public format seam, stable value serializers, and common resource limits.
 7. Add the playable sample, tutorial, how-to guides, reference, agent docs, ABI baselines, benchmarks, and full Paper/Folia verification.
 

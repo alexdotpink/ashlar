@@ -85,6 +85,7 @@ Join message: Welcome to the server!
 Ashlar creates `plugins/WelcomePlugin/welcome.yml` with the complete defaults and KDoc comments:
 
 ```yaml
+# Messages sent when a player joins.
 _ashlar-schema: 1
 # Whether join messages are enabled.
 enabled: true

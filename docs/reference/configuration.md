@@ -24,7 +24,7 @@ dependencies {
 
 ### `@Config`
 
-`@Config` is a repeatable class annotation. Its target must be a final `@Serializable` data class. Every primary constructor parameter must have a default.
+`@Config` is a repeatable class annotation. Its target must be a public or internal, non-generic, final `@Serializable` data class. Every primary constructor parameter must have a default.
 
 | Property | Type | Default | Contract |
 | --- | --- | --- | --- |
@@ -33,7 +33,7 @@ dependencies {
 | `unversionedSchema` | `Int` | `0` | Historical schema assigned to a source without `_ashlar-schema`; `0` means unspecified |
 | `reload` | `ConfigReloadMode` | `EXPLICIT` | Explicit reload only or explicit plus file watch |
 | `backups` | `Int` | `5` | Maximum valid predecessors retained after writes; from 0 through 100 |
-| `maximumBytes` | `Long` | `1_048_576` | Maximum UTF-8 document size before parsing; must be positive |
+| `maximumBytes` | `Long` | `1_048_576` | Maximum UTF-8 document size before parsing or writing; from 1 through 67,108,864 |
 | `qualifier` | `KClass<out Annotation>` | `Annotation::class` | Optional annotation marked with `@DependencyQualifier` |
 
 The default qualifier means no qualifier. A root may repeat `@Config` for several documents only when every declaration has a distinct qualifier. KSP rejects duplicate `(root type, qualifier)` pairs.
@@ -56,6 +56,8 @@ The function cannot suspend, declare value parameters or type parameters, or tar
 
 `ConfigValidationScope<T>` has `current`, `requireValue(condition, property, message)`, and `warnIf(condition, property, message)`. `requireValue` adds an error when false. `warnIf` adds a warning when true.
 
+Property references use the exact external key, including `@SerialName`, and attach a source location when the active format retained one.
+
 ### `@ConfigMigration`
 
 `@ConfigMigration(root, from)` marks one public or internal top-level extension that converts schema `from` to `from + 1`:
@@ -69,6 +71,8 @@ The source and target types need `@Serializable`. The function cannot suspend or
 ## `ConfigHandle<T>`
 
 A generated pre-lifecycle initializer binds the exact closed generic handle. Constructor injection distinguishes `ConfigHandle<One>` from `ConfigHandle<Two>`. A DI qualifier distinguishes multiple handles of the same root type.
+
+Configuration declarations from separate dependency modules attach to one aggregate `Configurations` capability. Duplicate document paths or exact handle keys still reject startup.
 
 | Member | Meaning |
 | --- | --- |
@@ -98,7 +102,7 @@ The update transform is non-suspending and runs once. Equal values produce `Conf
 | --- | --- | --- |
 | `Accepted` | `value`, `warnings` | Backup, atomic persistence, then publication succeeded |
 | `Unchanged` | `value` | No write or backup |
-| `Rejected` | `current`, `problems` | Validation rejected the transformed value |
+| `Rejected` | `current`, `problems` | Validation, a resource limit, or a format restriction rejected the transformed value |
 | `SourceChanged` | `current`, `acceptedRevision` | Disk no longer matches the accepted revision; no merge or overwrite occurs |
 | `Unavailable` | `current`, `problem` | A recoverable file operation failed |
 
@@ -109,6 +113,7 @@ The update transform is non-suspending and runs once. Equal values produce `Conf
 | `Accepted` | `value`, `warnings` | Backup validated and replaced the active source |
 | `Rejected` | `current`, `problems` | Backup could not produce a valid current value |
 | `NotFound` | `current`, `id` | Backup identifier no longer exists |
+| `SourceChanged` | `current`, `acceptedRevision` | Active disk source changed after its last accepted revision; no overwrite occurs |
 | `Unavailable` | `current`, `problem` | A recoverable file operation failed |
 
 Expected document and I/O problems use these outcomes. Unexpected framework faults and exceptions thrown by an update transform propagate normally.
@@ -138,6 +143,7 @@ Expected document and I/O problems use these outcomes. Unexpected framework faul
 - reload mode and watcher status;
 - last operation status;
 - warning count and value-free problems;
+- an optional redacted operation problem when the last attempt was unavailable;
 - backup metadata.
 
 `ConfigWatcherStatus` values are `DISABLED`, `STARTING`, `WATCHING`, `RECOVERING`, and `STOPPED`. `ConfigOperationStatus` values are `ACCEPTED`, `REJECTED`, and `UNAVAILABLE`.
@@ -163,7 +169,7 @@ Inspection exposes no configuration values or mutation methods.
 
 `ConfigOperationProblem` describes a recoverable file or watcher problem. Its categories are `NOT_FOUND`, `PERMISSION_DENIED`, `READ_FAILED`, `WRITE_FAILED`, `BACKUP_FAILED`, `ATOMIC_REPLACE_FAILED`, and `WATCH_FAILED`.
 
-Diagnostics, logs, events, backup metadata, and inspection do not copy raw source or typed values into messages. `ConfigStartupException` carries a document path and either content problems or one operation problem when initial required configuration cannot load.
+Problem messages, framework logs, backup metadata, and inspection do not copy raw source or typed values. Events intentionally include the accepted or retained typed value, but never raw source. `ConfigStartupException` carries a document path and either content problems or one operation problem when initial required configuration cannot load.
 
 ## Formats
 
@@ -178,7 +184,7 @@ Built-in selection uses the final extension without case sensitivity.
 
 All roots must be mappings or objects. Duplicate keys reject. YAML rejects custom tags, recursive or non-scalar keys, unsupported values, excessive aliases, and non-finite numbers. JSON rejects comments and trailing commas. JSONC accepts comments but otherwise uses the JSON value model.
 
-TOML 1.0 has no null value. A TOML declaration cannot create or write a nullable property whose value is null. Use YAML, JSON, or JSONC when explicit nulls belong in the schema.
+TOML 1.0 has no null value. A TOML declaration cannot create or write a nullable property whose value is null. Use YAML, JSON, or JSONC when explicit nulls belong in the schema. Ashlar retains an operator-authored array of tables while its value is unchanged. An update that changes that array rejects because converting it to another TOML structure would move or discard its comments.
 
 New documents and explicit writes include the complete serialized value, including defaults and explicit nulls where the format supports null. A valid existing document may omit a defaulted property. Kotlin supplies that default in memory, and Ashlar does not rewrite the source until an explicit update or migration.
 
@@ -237,6 +243,15 @@ Before an update, Ashlar compares disk content with the last accepted source rev
 | `maximumDepth` | 64 |
 | `maximumScalarCharacters` | 262,144 Unicode code points |
 | `maximumAliases` | 50 |
+
+Construction also enforces these upper bounds:
+
+| Limit | Maximum |
+| --- | ---: |
+| `maximumBytes` | 67,108,864 |
+| `maximumDepth` | 256 |
+| `maximumScalarCharacters` | 16,777,216 |
+| `maximumAliases` | 1,000 |
 
 Each value is validated at construction. Bytes, depth, and scalar limits must be positive. Alias count may be zero. `@Config.maximumBytes` sets the per-document byte limit in generated definitions. The other limits use runtime defaults in generated declarations.
 

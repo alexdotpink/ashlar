@@ -15,6 +15,7 @@ when (val result = settings.restore(backup.id)) {
     is ConfigRestore.Accepted -> logger.info("Restored settings")
     is ConfigRestore.Rejected -> report(result.problems)
     is ConfigRestore.NotFound -> logger.warning("That backup no longer exists")
+    is ConfigRestore.SourceChanged -> logger.warning("Reload the externally changed active source before restoring")
     is ConfigRestore.Unavailable -> logger.warning(result.problem.message)
 }
 ```
