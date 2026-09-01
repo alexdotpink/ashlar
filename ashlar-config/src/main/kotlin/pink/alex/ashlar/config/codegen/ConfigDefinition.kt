@@ -27,6 +27,8 @@ public class ConfigDefinition<T : Any>(
     public val serializer: KSerializer<T>,
     /** Descriptor path to exact external key segment, emitted to preserve @SerialName overrides. */
     public val keyNames: Map<ConfigKeyPath, String> = emptyMap(),
+    /** Root Kotlin property name to exact external key, used by property-reference validation. */
+    public val validationKeyNames: Map<String, String> = emptyMap(),
     public val comments: Map<ConfigKeyPath, String> = emptyMap(),
     public val validators: List<ConfigValidator<T>> = emptyList(),
     public val migrations: List<ConfigMigrationStep> = emptyList(),

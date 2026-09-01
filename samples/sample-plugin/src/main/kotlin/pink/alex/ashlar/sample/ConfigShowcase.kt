@@ -108,6 +108,7 @@ internal class ConfigShowcaseCommands(
         is ConfigRestore.Accepted -> "Restored $id (${result.warnings.size} warning(s))."
         is ConfigRestore.Rejected -> "Backup $id is invalid (${result.problems.size} problem(s))."
         is ConfigRestore.NotFound -> "Backup $id does not exist."
+        is ConfigRestore.SourceChanged -> "The active file changed on disk; reload it before restoring."
         is ConfigRestore.Unavailable -> "Could not restore $id (${result.problem.category.name.lowercase()})."
     }
 }

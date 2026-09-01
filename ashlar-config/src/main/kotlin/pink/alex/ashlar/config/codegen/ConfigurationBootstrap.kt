@@ -6,7 +6,9 @@ import org.bukkit.plugin.Plugin
 import pink.alex.ashlar.config.ConfigFormat
 import pink.alex.ashlar.config.format.BuiltInConfigFormats
 import pink.alex.ashlar.config.internal.ConfigurationRuntime
+import pink.alex.ashlar.config.internal.CompositeConfigurations
 import pink.alex.ashlar.di.DependencyGraph
+import pink.alex.ashlar.di.DependencyKey
 import java.nio.file.Path
 
 /** Handwritten runtime entry point called once by generated configuration linkage. */
@@ -54,6 +56,26 @@ public object ConfigurationBootstrap {
         formats: List<ConfigFormat>,
         reporter: pink.alex.ashlar.config.internal.ConfigRuntimeReporter,
     ): AutoCloseable = runBlocking(Dispatchers.IO) {
-        ConfigurationRuntime.install(graph, dataDirectory, definitions, formats, reporter = reporter)
+        val aggregateKey = DependencyKey(pink.alex.ashlar.config.Configurations::class)
+        val candidate = CompositeConfigurations()
+        val aggregate = if (graph.bindDefault(aggregateKey, candidate)) {
+            candidate
+        } else {
+            graph.get(aggregateKey) as? CompositeConfigurations
+                ?: error("Configurations is already bound by a non-Ashlar implementation")
+        }
+        val runtime = ConfigurationRuntime.install(
+            graph,
+            dataDirectory,
+            definitions,
+            formats,
+            reporter = reporter,
+        )
+        try {
+            aggregate.attach(runtime)
+        } catch (failure: Throwable) {
+            runtime.close()
+            throw failure
+        }
     }
 }

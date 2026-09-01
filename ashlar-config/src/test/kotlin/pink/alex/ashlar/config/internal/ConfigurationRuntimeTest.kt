@@ -2,6 +2,7 @@ package pink.alex.ashlar.config.internal
 
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.serializer
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -14,6 +15,7 @@ import pink.alex.ashlar.config.ConfigReloadMode
 import pink.alex.ashlar.config.ConfigRestore
 import pink.alex.ashlar.config.ConfigStartupException
 import pink.alex.ashlar.config.ConfigWrite
+import pink.alex.ashlar.config.Configurations
 import pink.alex.ashlar.config.codegen.ConfigDefinition
 import pink.alex.ashlar.config.codegen.ConfigurationBootstrap
 import pink.alex.ashlar.config.codegen.configValidator
@@ -24,6 +26,7 @@ import pink.alex.ashlar.di.DependencyKey
 import pink.alex.ashlar.di.DependencyType
 import java.nio.file.Files
 import java.nio.file.Path
+import java.security.MessageDigest
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
@@ -135,8 +138,28 @@ class ConfigurationRuntimeTest {
     }
 
     @Test
+    fun `restore refuses to overwrite an unseen external edit`() = runTest {
+        val graph = DependencyGraph(javaClass.classLoader)
+        ConfigurationBootstrap.install(graph, directory, listOf(settingsDefinition("settings.json"))).use {
+            val handle = graph.get(settingsKey())
+            assertIs<ConfigWrite.Accepted<Settings>>(handle.update { it.copy(maximumWaypoints = 25) })
+            val backup = handle.backups().single()
+            val external = """{"_ashlar-schema":1,"maximum-waypoints":31,"message":"external"}"""
+            Files.writeString(directory.resolve("settings.json"), external)
+
+            val restored = handle.restore(backup.id)
+
+            assertIs<ConfigRestore.SourceChanged<Settings>>(restored)
+            assertEquals(25, handle.current.maximumWaypoints)
+            assertEquals(external, Files.readString(directory.resolve("settings.json")))
+            assertEquals(1, handle.backups().size)
+        }
+    }
+
+    @Test
     fun `unversioned historical document migrates sequentially before publication`() = runTest {
-        Files.writeString(directory.resolve("settings.json"), """{"limit":7}""")
+        val historicalSource = """{"limit":7}"""
+        Files.writeString(directory.resolve("settings.json"), historicalSource)
         val graph = DependencyGraph(javaClass.classLoader)
         val definition = ConfigDefinition(
             rootType = MigratedSettings::class,
@@ -159,7 +182,14 @@ class ConfigurationRuntimeTest {
         ConfigurationBootstrap.install(graph, directory, listOf(definition)).use {
             assertEquals(MigratedSettings(7, true), graph.get(migratedKey()).current)
             assertTrue("\"_ashlar-schema\": 2" in Files.readString(directory.resolve("settings.json")))
-            assertEquals(1, graph.get(migratedKey()).backups().size)
+            val backup = graph.get(migratedKey()).backups().single()
+            assertEquals(1, backup.schemaVersion)
+            assertEquals(
+                MessageDigest.getInstance("SHA-256")
+                    .digest(historicalSource.toByteArray())
+                    .joinToString("") { byte -> "%02x".format(byte) },
+                backup.sourceRevision.value,
+            )
         }
     }
 
@@ -273,6 +303,99 @@ class ConfigurationRuntimeTest {
         }
     }
 
+    @Test
+    fun `separate generated module installations share one aggregate capability`() {
+        val graph = DependencyGraph(javaClass.classLoader)
+        val first = ConfigurationBootstrap.install(graph, directory, listOf(settingsDefinition("first.json")))
+        val acronymKey = DependencyKey<ConfigHandle<AcronymSettings>>(
+            DependencyType(
+                rawType = ConfigHandle::class,
+                arguments = listOf(DependencyType<AcronymSettings>(AcronymSettings::class)),
+            ),
+        )
+        val secondDefinition = ConfigDefinition(
+            rootType = AcronymSettings::class,
+            handleKey = acronymKey,
+            path = "second.json",
+            schemaVersion = 1,
+            unversionedSchema = 0,
+            reloadMode = ConfigReloadMode.EXPLICIT,
+            backups = 0,
+            limits = ConfigLimits(),
+            serializer = serializer<AcronymSettings>(),
+        )
+        val second = ConfigurationBootstrap.install(graph, directory, listOf(secondDefinition))
+        try {
+            assertEquals(Settings(), graph.get(settingsKey()).current)
+            assertEquals(AcronymSettings(), graph.get(acronymKey).current)
+            assertEquals(
+                listOf("first.json", "second.json"),
+                graph.get(Configurations::class).inspect().map { it.path },
+            )
+        } finally {
+            second.close()
+            first.close()
+            graph.close()
+        }
+    }
+
+    @Test
+    fun `decode failures do not copy rejected scalar values into diagnostics`() {
+        val secret = "do-not-leak-this-value"
+        Files.writeString(
+            directory.resolve("settings.json"),
+            """{"_ashlar-schema":1,"maximum-waypoints":"$secret","message":"hello"}""",
+        )
+        val failure = assertFailsWith<ConfigStartupException> {
+            ConfigurationBootstrap.install(
+                DependencyGraph(javaClass.classLoader),
+                directory,
+                listOf(settingsDefinition("settings.json")),
+            )
+        }
+
+        assertTrue(failure.problems.any { it.category == ConfigProblemCategory.DECODING })
+        assertTrue(secret !in failure.message.orEmpty())
+        assertTrue(failure.problems.none { secret in it.message })
+    }
+
+    @Test
+    fun `validation uses exact serial name and source location`() = runTest {
+        val graph = DependencyGraph(javaClass.classLoader)
+        val key = DependencyKey<ConfigHandle<RenamedSettings>>(
+            DependencyType(
+                rawType = ConfigHandle::class,
+                arguments = listOf(DependencyType<RenamedSettings>(RenamedSettings::class)),
+            ),
+        )
+        val definition = ConfigDefinition(
+            rootType = RenamedSettings::class,
+            handleKey = key,
+            path = "renamed.json",
+            schemaVersion = 1,
+            unversionedSchema = 0,
+            reloadMode = ConfigReloadMode.EXPLICIT,
+            backups = 0,
+            limits = ConfigLimits(),
+            serializer = serializer<RenamedSettings>(),
+            keyNames = mapOf(ConfigKeyPath("literalName") to "literalName"),
+            validationKeyNames = mapOf("displayName" to "literalName"),
+            validators = listOf(configValidator {
+                requireValue(current.displayName.isNotBlank(), RenamedSettings::displayName) { "must not be blank" }
+            }),
+        )
+        ConfigurationBootstrap.install(graph, directory, listOf(definition)).use {
+            Files.writeString(
+                directory.resolve("renamed.json"),
+                "{\n  \"_ashlar-schema\": 1,\n  \"literalName\": \"\"\n}\n",
+            )
+            val result = assertIs<ConfigReload.Rejected<RenamedSettings>>(graph.get(key).reload())
+            val problem = result.problems.single()
+            assertEquals(ConfigKeyPath("literalName"), problem.key)
+            assertEquals(3, problem.location?.line)
+        }
+    }
+
     private fun settingsDefinition(
         path: String,
         validators: List<pink.alex.ashlar.config.codegen.ConfigValidator<Settings>> = emptyList(),
@@ -328,3 +451,6 @@ private data class AcronymSettings(val databaseURL: String = "jdbc:test")
 
 @Serializable
 private data class NullableSettings(val message: String? = "hello")
+
+@Serializable
+private data class RenamedSettings(@SerialName("literalName") val displayName: String = "Ashlar")

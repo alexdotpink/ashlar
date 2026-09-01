@@ -34,26 +34,24 @@ internal class ConfigFiles(
         require(candidate.startsWith(root) && candidate != root) {
             "Configuration path escapes the plug-in data directory: $relative"
         }
-        Files.createDirectories(checkNotNull(candidate.parent))
-        val parent = candidate.parent.toRealPath()
-        require(parent.startsWith(root)) {
-            "Configuration path escapes through a symbolic link: $relative"
-        }
-        if (Files.exists(candidate, LinkOption.NOFOLLOW_LINKS) && Files.isSymbolicLink(candidate)) {
-            require(candidate.toRealPath().startsWith(root)) {
-                "Configuration path escapes through a symbolic link: $relative"
-            }
-        }
+        createSafeDirectories(checkNotNull(candidate.parent), relative)
+        verifyConfined(candidate, relative)
         return candidate
     }
 
     fun exists(path: Path): Boolean = Files.exists(path)
 
     fun read(path: Path, relative: String, maximumBytes: Long): FileRead = try {
+        verifyConfined(path, relative)
         val size = Files.size(path)
-        if (size > maximumBytes) return FileRead.TooLarge(size)
+        if (size > maximumBytes) {
+            return FileRead.TooLarge(
+                size,
+                ConfigSourceRevision("unaccepted:$size:${Files.getLastModifiedTime(path).toMillis()}"),
+            )
+        }
         val bytes = Files.readAllBytes(path)
-        if (bytes.size > maximumBytes) return FileRead.TooLarge(bytes.size.toLong())
+        if (bytes.size > maximumBytes) return FileRead.TooLarge(bytes.size.toLong(), revision(bytes))
         val decoder = StandardCharsets.UTF_8.newDecoder()
             .onMalformedInput(CodingErrorAction.REPORT)
             .onUnmappableCharacter(CodingErrorAction.REPORT)
@@ -65,6 +63,10 @@ internal class ConfigFiles(
         FileRead.Unavailable(
             ConfigOperationProblem(relative, ConfigOperationProblemCategory.READ_FAILED, "Source is not valid UTF-8"),
         )
+    } catch (failure: IllegalArgumentException) {
+        FileRead.Unavailable(
+            ConfigOperationProblem(relative, ConfigOperationProblemCategory.READ_FAILED, failure.message ?: "Unsafe path"),
+        )
     } catch (failure: IOException) {
         FileRead.Unavailable(readProblem(relative, failure))
     }
@@ -72,7 +74,9 @@ internal class ConfigFiles(
     fun writeAtomically(path: Path, relative: String, text: String): ConfigOperationProblem? {
         val bytes = text.toByteArray(StandardCharsets.UTF_8)
         val temporary = path.resolveSibling(".${path.fileName}.ashlar-${UUID.randomUUID()}.tmp")
+        var replacing = false
         try {
+            verifyConfined(path, relative)
             FileChannel.open(
                 temporary,
                 StandardOpenOption.CREATE_NEW,
@@ -82,7 +86,9 @@ internal class ConfigFiles(
                 while (offset < bytes.size) offset += channel.write(ByteBuffer.wrap(bytes, offset, bytes.size - offset))
                 channel.force(true)
             }
+            replacing = true
             try {
+                verifyConfined(path, relative)
                 Files.move(
                     temporary,
                     path,
@@ -94,12 +100,16 @@ internal class ConfigFiles(
             }
             forceDirectory(path.parent)
             return null
-        } catch (failure: IOException) {
+        } catch (failure: Exception) {
             runCatching { Files.deleteIfExists(temporary) }
             return ConfigOperationProblem(
                 relative,
-                ConfigOperationProblemCategory.ATOMIC_REPLACE_FAILED,
-                "Could not atomically replace the configuration source",
+                if (replacing) {
+                    ConfigOperationProblemCategory.ATOMIC_REPLACE_FAILED
+                } else {
+                    ConfigOperationProblemCategory.WRITE_FAILED
+                },
+                "Could not write the configuration source",
             )
         }
     }
@@ -112,14 +122,26 @@ internal class ConfigFiles(
         maximumRetained: Int,
     ): Result<StoredBackup?> = runCatching {
         if (maximumRetained == 0 || !Files.exists(path)) return@runCatching null
+        verifyConfined(path, relative)
         val directory = backupDirectory(relative)
-        Files.createDirectories(directory)
+        createSafeDirectories(directory, relative)
         val instant = clock.instant()
         val id = "${instant.toEpochMilli()}-$schemaVersion-${revision.value}-${UUID.randomUUID()}"
         val destination = directory.resolve("$id.bak")
-        Files.copy(path, destination)
-        forceFile(destination)
-        forceDirectory(directory)
+        val temporary = directory.resolve(".$id.tmp")
+        try {
+            Files.copy(path, temporary)
+            forceFile(temporary)
+            try {
+                Files.move(temporary, destination, StandardCopyOption.ATOMIC_MOVE)
+            } catch (_: AtomicMoveNotSupportedException) {
+                Files.move(temporary, destination)
+            }
+            forceDirectory(directory)
+        } catch (failure: Throwable) {
+            runCatching { Files.deleteIfExists(temporary) }
+            throw failure
+        }
         val stored = StoredBackup(id, destination, instant, schemaVersion, revision)
         listBackups(relative).drop(maximumRetained).forEach { old -> Files.deleteIfExists(old.path) }
         stored
@@ -127,6 +149,7 @@ internal class ConfigFiles(
 
     fun listBackups(relative: String): List<StoredBackup> {
         val directory = backupDirectory(relative)
+        verifyInternalDirectory(directory, relative)
         if (!Files.isDirectory(directory)) return emptyList()
         return Files.list(directory).use { paths ->
             paths.filter { path -> path.fileName.toString().endsWith(".bak") }
@@ -161,6 +184,49 @@ internal class ConfigFiles(
         return root.resolve(".ashlar/backups/$digest")
     }
 
+    private fun createSafeDirectories(directory: Path, relative: String) {
+        require(directory.normalize().startsWith(root)) { "Configuration path escapes the data directory: $relative" }
+        var current = root
+        root.relativize(directory.normalize()).forEach { segment ->
+            current = current.resolve(segment)
+            if (Files.exists(current, LinkOption.NOFOLLOW_LINKS)) {
+                require(!Files.isSymbolicLink(current) && Files.isDirectory(current, LinkOption.NOFOLLOW_LINKS)) {
+                    "Configuration path crosses a symbolic link or non-directory: $relative"
+                }
+            } else {
+                Files.createDirectory(current)
+            }
+        }
+    }
+
+    private fun verifyConfined(path: Path, relative: String) {
+        val normalized = path.toAbsolutePath().normalize()
+        require(normalized.startsWith(root) && normalized != root) {
+            "Configuration path escapes the data directory: $relative"
+        }
+        var current = root
+        root.relativize(checkNotNull(normalized.parent)).forEach { segment ->
+            current = current.resolve(segment)
+            require(
+                Files.exists(current, LinkOption.NOFOLLOW_LINKS) &&
+                    !Files.isSymbolicLink(current) &&
+                    Files.isDirectory(current, LinkOption.NOFOLLOW_LINKS),
+            ) { "Configuration path crosses a symbolic link or missing directory: $relative" }
+        }
+        if (Files.exists(normalized, LinkOption.NOFOLLOW_LINKS)) {
+            require(!Files.isSymbolicLink(normalized)) {
+                "Configuration source cannot be a symbolic link: $relative"
+            }
+        }
+    }
+
+    private fun verifyInternalDirectory(directory: Path, relative: String) {
+        if (!Files.exists(directory, LinkOption.NOFOLLOW_LINKS)) return
+        verifyConfined(directory.resolve("metadata"), relative)
+    }
+
+    fun revision(text: String): ConfigSourceRevision = revision(text.toByteArray(StandardCharsets.UTF_8))
+
     private fun revision(bytes: ByteArray): ConfigSourceRevision = ConfigSourceRevision(
         MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { byte -> "%02x".format(byte) },
     )
@@ -194,7 +260,7 @@ internal class ConfigFiles(
 
 internal sealed interface FileRead {
     data class Accepted(val text: String, val revision: ConfigSourceRevision) : FileRead
-    data class TooLarge(val bytes: Long) : FileRead
+    data class TooLarge(val bytes: Long, val revision: ConfigSourceRevision) : FileRead
     data class Unavailable(val problem: ConfigOperationProblem) : FileRead
 }
 

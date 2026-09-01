@@ -38,6 +38,7 @@ import pink.alex.ashlar.config.ConfigReloadMode
 import pink.alex.ashlar.config.ConfigRestore
 import pink.alex.ashlar.config.ConfigSource
 import pink.alex.ashlar.config.ConfigSourceRevision
+import pink.alex.ashlar.config.ConfigStartupException
 import pink.alex.ashlar.config.ConfigValue
 import pink.alex.ashlar.config.ConfigWatcherStatus
 import pink.alex.ashlar.config.ConfigWrite
@@ -102,7 +103,13 @@ internal class FileConfigHandle<T : Any> private constructor(
             val before = accepted
             val transformed = transform(before.value)
             if (transformed == before.value) return@withLock ConfigWrite.Unchanged(before.value)
-            val validation = validateConfig(definition.path, transformed, definition.validators)
+            val validation = validateConfig(
+                definition.path,
+                transformed,
+                definition.validators,
+                definition.validationKeyNames,
+                before.document::location,
+            )
             val errors = validation.errors()
             if (errors.isNotEmpty()) {
                 publishRejected(ConfigEventOrigin.UPDATE, before.revision, errors)
@@ -110,9 +117,13 @@ internal class FileConfigHandle<T : Any> private constructor(
             }
             when (val disk = files.read(path, definition.path, definition.limits.maximumBytes)) {
                 is FileRead.Accepted -> if (disk.revision != before.revision) {
+                    publishRejected(ConfigEventOrigin.UPDATE, disk.revision, listOf(sourceChangedProblem()))
                     return@withLock ConfigWrite.SourceChanged(before.value, before.revision)
                 }
-                is FileRead.TooLarge -> return@withLock ConfigWrite.SourceChanged(before.value, before.revision)
+                is FileRead.TooLarge -> {
+                    publishRejected(ConfigEventOrigin.UPDATE, disk.revision, listOf(sourceChangedProblem()))
+                    return@withLock ConfigWrite.SourceChanged(before.value, before.revision)
+                }
                 is FileRead.Unavailable -> {
                     publishUnavailable(ConfigEventOrigin.UPDATE, disk.problem)
                     return@withLock ConfigWrite.Unavailable(before.value, disk.problem)
@@ -141,7 +152,7 @@ internal class FileConfigHandle<T : Any> private constructor(
                 publishRejected(ConfigEventOrigin.UPDATE, before.revision, problems)
                 return@withLock ConfigWrite.Rejected(before.value, problems)
             }
-            val backupProblem = createBackup(before)
+            val backupProblem = createBackup(definition.schemaVersion, before.revision)
             if (backupProblem != null) {
                 publishUnavailable(ConfigEventOrigin.UPDATE, backupProblem)
                 return@withLock ConfigWrite.Unavailable(before.value, backupProblem)
@@ -150,7 +161,7 @@ internal class FileConfigHandle<T : Any> private constructor(
                 publishUnavailable(ConfigEventOrigin.UPDATE, problem)
                 return@withLock ConfigWrite.Unavailable(before.value, problem)
             }
-            val revision = checkNotNull(readRevision())
+            val revision = files.revision(text)
             val next = AcceptedConfig(
                 value = transformed,
                 document = document,
@@ -172,29 +183,61 @@ internal class FileConfigHandle<T : Any> private constructor(
     override suspend fun restore(id: ConfigBackupId): ConfigRestore<T> = withContext(ioDispatcher) {
         mutex.withLock {
             val stored = files.listBackups(definition.path).firstOrNull { backup -> backup.id == id.value }
-                ?: return@withLock ConfigRestore.NotFound(current, id)
+                ?: run {
+                    publishRejected(ConfigEventOrigin.RESTORE, null, listOf(backupNotFoundProblem()))
+                    return@withLock ConfigRestore.NotFound(current, id)
+                }
             val source = when (val read = files.read(stored.path, definition.path, definition.limits.maximumBytes)) {
                 is FileRead.Accepted -> read
-                is FileRead.TooLarge -> return@withLock ConfigRestore.Rejected(
-                    current,
-                    listOf(resourceProblem(read.bytes)),
-                )
-                is FileRead.Unavailable -> return@withLock ConfigRestore.Unavailable(current, read.problem)
+                is FileRead.TooLarge -> {
+                    val problems = listOf(resourceProblem(read.bytes))
+                    publishRejected(ConfigEventOrigin.RESTORE, read.revision, problems)
+                    return@withLock ConfigRestore.Rejected(current, problems)
+                }
+                is FileRead.Unavailable -> {
+                    publishUnavailable(ConfigEventOrigin.RESTORE, read.problem)
+                    return@withLock ConfigRestore.Unavailable(current, read.problem)
+                }
             }
             when (val loaded = decodeSource(source, ConfigEventOrigin.RESTORE, persistMigration = false)) {
-                is LoadResult.Rejected -> ConfigRestore.Rejected(current, loaded.problems)
-                is LoadResult.Unavailable -> ConfigRestore.Unavailable(current, loaded.problem)
+                is LoadResult.Rejected -> {
+                    publishRejected(ConfigEventOrigin.RESTORE, source.revision, loaded.problems)
+                    ConfigRestore.Rejected(current, loaded.problems)
+                }
+                is LoadResult.Unavailable -> {
+                    publishUnavailable(ConfigEventOrigin.RESTORE, loaded.problem)
+                    ConfigRestore.Unavailable(current, loaded.problem)
+                }
                 is LoadResult.Accepted -> {
-                    val backupProblem = createBackup(accepted)
-                    if (backupProblem != null) return@withLock ConfigRestore.Unavailable(current, backupProblem)
+                    when (val active = files.read(path, definition.path, definition.limits.maximumBytes)) {
+                        is FileRead.Accepted -> if (active.revision != accepted.revision) {
+                            publishRejected(ConfigEventOrigin.RESTORE, active.revision, listOf(sourceChangedProblem()))
+                            return@withLock ConfigRestore.SourceChanged(current, accepted.revision)
+                        }
+                        is FileRead.TooLarge -> {
+                            publishRejected(ConfigEventOrigin.RESTORE, active.revision, listOf(sourceChangedProblem()))
+                            return@withLock ConfigRestore.SourceChanged(current, accepted.revision)
+                        }
+                        is FileRead.Unavailable -> {
+                            publishUnavailable(ConfigEventOrigin.RESTORE, active.problem)
+                            return@withLock ConfigRestore.Unavailable(current, active.problem)
+                        }
+                    }
+                    val backupProblem = createBackup(definition.schemaVersion, accepted.revision)
+                    if (backupProblem != null) {
+                        publishUnavailable(ConfigEventOrigin.RESTORE, backupProblem)
+                        return@withLock ConfigRestore.Unavailable(current, backupProblem)
+                    }
                     val text = format.write(loaded.config.document)
                     textLimitProblem(definition, text)?.let { problem ->
+                        publishRejected(ConfigEventOrigin.RESTORE, source.revision, listOf(problem))
                         return@withLock ConfigRestore.Rejected(current, listOf(problem))
                     }
                     files.writeAtomically(path, definition.path, text)?.let { problem ->
+                        publishUnavailable(ConfigEventOrigin.RESTORE, problem)
                         return@withLock ConfigRestore.Unavailable(current, problem)
                     }
-                    val revision = checkNotNull(readRevision())
+                    val revision = files.revision(text)
                     val restored = loaded.config.copy(revision = revision)
                     publishAccepted(restored, changedPaths(accepted.value, restored.value))
                     ConfigRestore.Accepted(restored.value, restored.warnings)
@@ -227,18 +270,46 @@ internal class FileConfigHandle<T : Any> private constructor(
     override fun startWatching(scope: CoroutineScope) {
         if (definition.reloadMode != ConfigReloadMode.WATCH || watcher != null) return
         inspection = inspection.copy(watcherStatus = ConfigWatcherStatus.STARTING)
-        val service = FileSystems.getDefault().newWatchService()
+        val service = try {
+            FileSystems.getDefault().newWatchService()
+        } catch (_: Exception) {
+            val problem = watchProblem()
+            inspection = inspection.copy(
+                watcherStatus = ConfigWatcherStatus.STOPPED,
+                status = ConfigOperationStatus.UNAVAILABLE,
+                operationProblem = problem,
+            )
+            throw ConfigStartupException(definition.path, operationProblem = problem)
+        }
+        try {
+            path.parent.register(
+                service,
+                StandardWatchEventKinds.ENTRY_CREATE,
+                StandardWatchEventKinds.ENTRY_MODIFY,
+                StandardWatchEventKinds.ENTRY_DELETE,
+            )
+        } catch (_: Exception) {
+            runCatching(service::close)
+            val problem = watchProblem()
+            inspection = inspection.copy(
+                watcherStatus = ConfigWatcherStatus.STOPPED,
+                status = ConfigOperationStatus.UNAVAILABLE,
+                operationProblem = problem,
+            )
+            throw ConfigStartupException(definition.path, operationProblem = problem)
+        }
         watchService = service
-        path.parent.register(
-            service,
-            StandardWatchEventKinds.ENTRY_CREATE,
-            StandardWatchEventKinds.ENTRY_MODIFY,
-            StandardWatchEventKinds.ENTRY_DELETE,
-        )
         inspection = inspection.copy(watcherStatus = ConfigWatcherStatus.WATCHING)
         watcher = scope.launch(ioDispatcher) {
             while (isActive) {
-                val key = runCatching { service.take() }.getOrElse { break }
+                val key = runCatching { service.take() }.getOrElse {
+                    if (isActive) {
+                        val problem = watchProblem()
+                        publishUnavailable(ConfigEventOrigin.WATCHED_RELOAD, problem)
+                        reporter.report(definition.path, recovered = false, problemCount = 1)
+                    }
+                    break
+                }
                 val relevant = key.pollEvents().any { event -> event.context() == path.fileName }
                 key.reset()
                 if (!relevant) continue
@@ -268,7 +339,13 @@ internal class FileConfigHandle<T : Any> private constructor(
                 is FileRead.Accepted -> read
                 is FileRead.TooLarge -> {
                     val problems = listOf(resourceProblem(read.bytes))
-                    publishRejected(origin, null, problems)
+                    if (origin != ConfigEventOrigin.WATCHED_RELOAD || rejectedWatchRevision != read.revision) {
+                        publishRejected(origin, read.revision, problems)
+                        if (origin == ConfigEventOrigin.WATCHED_RELOAD) {
+                            reporter.report(definition.path, recovered = false, problemCount = problems.size)
+                        }
+                    }
+                    if (origin == ConfigEventOrigin.WATCHED_RELOAD) rejectedWatchRevision = read.revision
                     return@withLock ConfigReload.Rejected(current, problems)
                 }
                 is FileRead.Unavailable -> {
@@ -368,7 +445,13 @@ internal class FileConfigHandle<T : Any> private constructor(
                 if (unknown.isNotEmpty()) return LoadResult.Rejected(unknown)
                 ConfigCodec.decode(definition.serializer, semantic, definition.keyNames)
             }
-            val validation = validateConfig(definition.path, finalValue, definition.validators)
+            val validation = validateConfig(
+                definition.path,
+                finalValue,
+                definition.validators,
+                definition.validationKeyNames,
+                document::location,
+            )
             val errors = validation.errors()
             if (errors.isNotEmpty()) return LoadResult.Rejected(errors)
             val warnings = parsed.warnings + validation.warnings()
@@ -378,16 +461,26 @@ internal class FileConfigHandle<T : Any> private constructor(
                 if (persistMigration) {
                     val text = format.write(document)
                     textLimitProblem(definition, text)?.let { return LoadResult.Rejected(listOf(it)) }
-                    createBackup(accepted)?.let { return LoadResult.Unavailable(it) }
+                    createBackup(schema, source.revision)?.let { return LoadResult.Unavailable(it) }
                     files.writeAtomically(path, definition.path, text)
                         ?.let { return LoadResult.Unavailable(it) }
-                    revision = checkNotNull(readRevision())
+                    revision = files.revision(text)
                 }
             }
             return LoadResult.Accepted(
-                AcceptedConfig(finalValue, document, revision, warnings, origin),
+                AcceptedConfig(
+                    finalValue,
+                    document,
+                    revision,
+                    warnings,
+                    if (schema != definition.schemaVersion && persistMigration) {
+                        ConfigEventOrigin.MIGRATION
+                    } else {
+                        origin
+                    },
+                ),
             )
-        } catch (failure: Exception) {
+        } catch (_: Exception) {
             return LoadResult.Rejected(
                 listOf(
                     ConfigProblem(
@@ -397,7 +490,11 @@ internal class FileConfigHandle<T : Any> private constructor(
                         } else {
                             ConfigProblemCategory.DECODING
                         },
-                        message = failure.message?.lineSequence()?.firstOrNull() ?: "Configuration could not be decoded",
+                        message = if (currentSchema < definition.schemaVersion) {
+                            "Configuration migration from schema $currentSchema failed"
+                        } else {
+                            "Configuration value could not be decoded"
+                        },
                     ),
                 ),
             )
@@ -428,11 +525,14 @@ internal class FileConfigHandle<T : Any> private constructor(
         else -> definition.migrations.singleOrNull { it.fromSchema == schema }?.sourceKeyNames.orEmpty()
     }
 
-    private fun createBackup(config: AcceptedConfig<T>): ConfigOperationProblem? = files.backup(
+    private fun createBackup(
+        schemaVersion: Int,
+        revision: ConfigSourceRevision,
+    ): ConfigOperationProblem? = files.backup(
         path = path,
         relative = definition.path,
-        schemaVersion = definition.schemaVersion,
-        revision = config.revision,
+        schemaVersion = schemaVersion,
+        revision = revision,
         maximumRetained = definition.backups,
     ).fold(
         onSuccess = {
@@ -455,8 +555,14 @@ internal class FileConfigHandle<T : Any> private constructor(
         inspection = inspection.copy(
             sourceRevision = next.revision,
             status = ConfigOperationStatus.ACCEPTED,
+            watcherStatus = if (inspection.watcherStatus == ConfigWatcherStatus.RECOVERING) {
+                ConfigWatcherStatus.WATCHING
+            } else {
+                inspection.watcherStatus
+            },
             warningCount = next.warnings.size,
             problems = next.warnings,
+            operationProblem = null,
         )
         attempts.tryEmit(
             ConfigEvent.Accepted(
@@ -477,23 +583,40 @@ internal class FileConfigHandle<T : Any> private constructor(
     ) {
         inspection = inspection.copy(
             status = ConfigOperationStatus.REJECTED,
+            watcherStatus = if (origin == ConfigEventOrigin.WATCHED_RELOAD) {
+                ConfigWatcherStatus.RECOVERING
+            } else {
+                inspection.watcherStatus
+            },
             warningCount = problems.count { it.severity == ConfigProblemSeverity.WARNING },
             problems = problems,
+            operationProblem = null,
         )
         attempts.tryEmit(ConfigEvent.Rejected(origin, current, revision, problems))
     }
 
     private fun publishUnavailable(origin: ConfigEventOrigin, problem: ConfigOperationProblem) {
-        inspection = inspection.copy(status = ConfigOperationStatus.UNAVAILABLE)
+        inspection = inspection.copy(status = ConfigOperationStatus.UNAVAILABLE, operationProblem = problem)
         attempts.tryEmit(ConfigEvent.Unavailable(origin, current, problem))
     }
 
-    private fun readRevision(): ConfigSourceRevision? = when (
-        val read = files.read(path, definition.path, definition.limits.maximumBytes)
-    ) {
-        is FileRead.Accepted -> read.revision
-        else -> null
-    }
+    private fun watchProblem(): ConfigOperationProblem = ConfigOperationProblem(
+        path = definition.path,
+        category = ConfigOperationProblemCategory.WATCH_FAILED,
+        message = "Configuration watcher stopped unexpectedly",
+    )
+
+    private fun sourceChangedProblem(): ConfigProblem = ConfigProblem(
+        path = definition.path,
+        category = ConfigProblemCategory.UNSUPPORTED_FEATURE,
+        message = "Active configuration source changed outside Ashlar",
+    )
+
+    private fun backupNotFoundProblem(): ConfigProblem = ConfigProblem(
+        path = definition.path,
+        category = ConfigProblemCategory.UNSUPPORTED_FEATURE,
+        message = "Requested configuration backup does not exist",
+    )
 
     private fun schemaProblem(message: String): ConfigProblem = ConfigProblem(
         path = definition.path,
@@ -544,7 +667,12 @@ internal class FileConfigHandle<T : Any> private constructor(
                         )),
                     )
                 }
-                val validation = validateConfig(definition.path, value, definition.validators)
+                val validation = validateConfig(
+                    definition.path,
+                    value,
+                    definition.validators,
+                    definition.validationKeyNames,
+                )
                 if (validation.errors().isNotEmpty()) return@withContext OpenResult.Rejected(validation.errors())
                 val semantic = ConfigCodec.encode(
                     definition.serializer,

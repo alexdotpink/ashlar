@@ -2,6 +2,8 @@ package pink.alex.ashlar.config.testing
 
 import kotlinx.serialization.Serializable
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.junit.jupiter.api.Test
 import pink.alex.ashlar.config.ConfigLimits
 import pink.alex.ashlar.config.ConfigReload
@@ -119,6 +121,7 @@ class ConfigurationTestHarnessTest {
         }
         assertIs<ConfigEvent.Rejected<TestSettings>>(rejected)
         assertEquals(TestSettings(), handle.current)
+        awaitInspection("settings.jsonc") { it.watcherStatus == pink.alex.ashlar.config.ConfigWatcherStatus.RECOVERING }
 
         replaceSource(
             "settings.jsonc",
@@ -137,6 +140,7 @@ class ConfigurationTestHarnessTest {
         })
         assertEquals(false, recovered.changed)
         assertEquals(TestSettings(), recovered.value)
+        awaitInspection("settings.jsonc") { it.watcherStatus == pink.alex.ashlar.config.ConfigWatcherStatus.WATCHING }
     }
 
     @Test
@@ -199,9 +203,9 @@ class ConfigurationTestHarnessTest {
 
             Files.createSymbolicLink(root.resolve("linked"), outside)
             assertFailsWith<IllegalArgumentException> {
-                ConfigTestScope.startAt(root, listOf(definition<TestSettings>("linked/escape.json")))
+                ConfigTestScope.startAt(root, listOf(definition<TestSettings>("linked/new/escape.json")))
             }
-            assertFalse(Files.exists(outside.resolve("escape.json")))
+            assertFalse(Files.exists(outside.resolve("new")))
         }
     }
 
@@ -221,6 +225,54 @@ class ConfigurationTestHarnessTest {
 
             assertTrue(Files.isRegularFile(root.resolve("nested/settings.json")))
         }
+    }
+
+    @Test
+    fun `accepted values survive a production runtime restart`() = runTest {
+        withTemporaryDirectories(1) { (root) ->
+            ConfigTestScope.startAt(root, listOf(definition<TestSettings>("settings.json"))).use { first ->
+                assertIs<ConfigWrite.Accepted<TestSettings>>(
+                    first.handle<TestSettings>().update { it.copy(limit = 9, message = "persisted") },
+                )
+            }
+
+            ConfigTestScope.startAt(root, listOf(definition<TestSettings>("settings.json"))).use { second ->
+                assertEquals(TestSettings(9, "persisted"), second.handle<TestSettings>().current)
+            }
+        }
+    }
+
+    @Test
+    fun `corrupt backup rejects restore without changing active source`() = configTest(
+        definition<TestSettings>("settings.json"),
+    ) {
+        val handle = handle<TestSettings>()
+        assertIs<ConfigWrite.Accepted<TestSettings>>(handle.update { it.copy(limit = 8) })
+        val backup = handle.backups().single()
+        val active = readSource("settings.json")
+        val backupFile = Files.walk(dataDirectory.resolve(".ashlar/backups")).use { paths ->
+            paths.filter { it.fileName.toString() == "${backup.id.value}.bak" }.findFirst().orElseThrow()
+        }
+        Files.writeString(backupFile, "not valid json")
+
+        assertIs<ConfigRestore.Rejected<TestSettings>>(handle.restore(backup.id))
+        assertEquals(TestSettings(limit = 8), handle.current)
+        assertEquals(active, readSource("settings.json"))
+    }
+
+    @Test
+    fun `concurrent explicit updates serialize their transforms`() = configTest(
+        definition<TestSettings>("settings.json"),
+    ) {
+        val handle = handle<TestSettings>()
+
+        coroutineScope {
+            val first = async { handle.update { it.copy(limit = it.limit + 1) } }
+            val second = async { handle.update { it.copy(limit = it.limit + 1) } }
+            assertIs<ConfigWrite.Accepted<TestSettings>>(first.await())
+            assertIs<ConfigWrite.Accepted<TestSettings>>(second.await())
+        }
+        assertEquals(7, handle.current.limit)
     }
 }
 

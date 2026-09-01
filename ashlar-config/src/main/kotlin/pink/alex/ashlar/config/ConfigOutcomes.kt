@@ -72,6 +72,12 @@ public sealed interface ConfigRestore<out T : Any> {
         val id: ConfigBackupId,
     ) : ConfigRestore<T>
 
+    /** The active source changed outside Ashlar after the last accepted revision. */
+    public data class SourceChanged<T : Any>(
+        val current: T,
+        val acceptedRevision: ConfigSourceRevision,
+    ) : ConfigRestore<T>
+
     /** A recoverable I/O or permission problem prevented the restore. */
     public data class Unavailable<T : Any>(
         val current: T,

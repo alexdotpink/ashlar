@@ -2,6 +2,8 @@ package pink.alex.ashlar.config.internal
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.SerialKind
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -9,10 +11,13 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.JsonUnquotedLiteral
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.longOrNull
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.ExperimentalSerializationApi
 import pink.alex.ashlar.config.ConfigKeyPath
 import pink.alex.ashlar.config.ConfigProblem
 import pink.alex.ashlar.config.ConfigProblemCategory
@@ -40,14 +45,18 @@ internal object ConfigCodec {
         return encoded.externalKeys(serializer.descriptor, emptyList(), keyNames) as ConfigValue.ObjectValue
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     fun <T : Any> decode(
         serializer: KSerializer<T>,
         value: ConfigValue.ObjectValue,
         keyNames: Map<ConfigKeyPath, String> = emptyMap(),
-    ): T = json.decodeFromJsonElement(
-        serializer,
-        value.descriptorKeys(serializer.descriptor, emptyList(), keyNames).toJsonElement(),
-    )
+    ): T {
+        requireShape(serializer.descriptor, value, emptyList(), keyNames)
+        return json.decodeFromJsonElement(
+            serializer,
+            value.descriptorKeys(serializer.descriptor, emptyList(), keyNames).toJsonElement(),
+        )
+    }
 
     fun unknownKeys(
         serializer: KSerializer<*>,
@@ -198,6 +207,53 @@ internal object ConfigCodec {
         else -> this
     }
 
+    private fun requireShape(
+        descriptor: SerialDescriptor,
+        value: ConfigValue,
+        descriptorPath: List<String>,
+        keyNames: Map<ConfigKeyPath, String>,
+    ) {
+        if (value == ConfigValue.NullValue && descriptor.isNullable) return
+        val valid = when (descriptor.kind) {
+            PrimitiveKind.BOOLEAN -> value is ConfigValue.BooleanValue
+            PrimitiveKind.BYTE, PrimitiveKind.SHORT, PrimitiveKind.INT, PrimitiveKind.LONG ->
+                value is ConfigValue.IntegerValue
+            PrimitiveKind.FLOAT, PrimitiveKind.DOUBLE ->
+                value is ConfigValue.IntegerValue || value is ConfigValue.DecimalValue
+            PrimitiveKind.CHAR -> value is ConfigValue.StringValue && value.value.codePointCount(0, value.value.length) == 1
+            PrimitiveKind.STRING -> value is ConfigValue.StringValue
+            SerialKind.ENUM -> value is ConfigValue.StringValue
+            StructureKind.CLASS -> value is ConfigValue.ObjectValue
+            StructureKind.LIST -> value is ConfigValue.ArrayValue
+            StructureKind.MAP -> value is ConfigValue.ObjectValue
+            else -> true
+        }
+        if (!valid) {
+            val externalPath = descriptorPath.joinToString(".").ifBlank { "<root>" }
+            throw SerializationException("Configuration value at '$externalPath' has the wrong scalar kind")
+        }
+        when {
+            descriptor.kind == StructureKind.CLASS && value is ConfigValue.ObjectValue -> {
+                (0 until descriptor.elementsCount).forEach { index ->
+                    val name = descriptor.getElementName(index)
+                    val nextPath = descriptorPath + name
+                    val external = keyNames[ConfigKeyPath(nextPath)] ?: name.toKebabCase()
+                    value.entries[external]?.let { child ->
+                        requireShape(descriptor.getElementDescriptor(index), child, nextPath, keyNames)
+                    }
+                }
+            }
+            descriptor.kind == StructureKind.LIST && value is ConfigValue.ArrayValue ->
+                value.values.forEach { child ->
+                    requireShape(descriptor.getElementDescriptor(0), child, descriptorPath, keyNames)
+                }
+            descriptor.kind == StructureKind.MAP && value is ConfigValue.ObjectValue ->
+                value.entries.values.forEach { child ->
+                    requireShape(descriptor.getElementDescriptor(1), child, descriptorPath, keyNames)
+                }
+        }
+    }
+
     private fun JsonElement.toConfigValue(): ConfigValue = when (this) {
         JsonNull -> ConfigValue.NullValue
         is JsonObject -> ConfigValue.ObjectValue(
@@ -212,12 +268,13 @@ internal object ConfigCodec {
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     private fun ConfigValue.toJsonElement(): JsonElement = when (this) {
         ConfigValue.NullValue -> JsonNull
         is ConfigValue.BooleanValue -> JsonPrimitive(value)
         is ConfigValue.StringValue -> JsonPrimitive(value)
         is ConfigValue.IntegerValue -> JsonPrimitive(value)
-        is ConfigValue.DecimalValue -> JsonPrimitive(value)
+        is ConfigValue.DecimalValue -> JsonUnquotedLiteral(value)
         is ConfigValue.ArrayValue -> JsonArray(values.map { value -> value.toJsonElement() })
         is ConfigValue.ObjectValue -> JsonObject(entries.mapValues { (_, value) -> value.toJsonElement() })
     }

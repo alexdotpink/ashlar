@@ -15,9 +15,9 @@ import pink.alex.ashlar.config.ConfigStartupException
 import pink.alex.ashlar.config.Configurations
 import pink.alex.ashlar.config.codegen.ConfigDefinition
 import pink.alex.ashlar.di.DependencyGraph
-import pink.alex.ashlar.di.DependencyKey
 import java.nio.file.Path
 import java.time.Clock
+import java.util.concurrent.CopyOnWriteArrayList
 
 internal class ConfigurationRuntime private constructor(
     private val handles: List<InternalConfigHandle>,
@@ -88,10 +88,13 @@ internal class ConfigurationRuntime private constructor(
                 opened.asReversed().forEach { handle -> runCatching(handle::close) }
                 throw failure
             }
-            val scope = CoroutineScope(SupervisorJob() + ioDispatcher)
-            opened.forEach { handle -> handle.startWatching(scope) }
-            return ConfigurationRuntime(opened, scope).also { runtime ->
-                graph.bind(DependencyKey(pink.alex.ashlar.config.Configurations::class), runtime)
+            val runtime = ConfigurationRuntime(opened, CoroutineScope(SupervisorJob() + ioDispatcher))
+            try {
+                opened.forEach { handle -> handle.startWatching(runtime.scope) }
+                return runtime
+            } catch (failure: Throwable) {
+                runtime.close()
+                throw failure
             }
         }
 
@@ -106,8 +109,8 @@ internal class ConfigurationRuntime private constructor(
         ) {
             when (val result = FileConfigHandle.open(definition, format, files, ioDispatcher, reporter)) {
                 is OpenResult.Accepted -> {
-                    graph.bind(definition.handleKey, result.handle)
                     opened += result.handle
+                    graph.bind(definition.handleKey, result.handle)
                 }
                 is OpenResult.Rejected -> throw ConfigStartupException(definition.path, result.problems)
                 is OpenResult.Unavailable -> throw ConfigStartupException(
@@ -136,6 +139,29 @@ internal class ConfigurationRuntime private constructor(
             opened,
         )
     }
+}
+
+internal class CompositeConfigurations : Configurations {
+    private val runtimes = CopyOnWriteArrayList<ConfigurationRuntime>()
+
+    fun attach(runtime: ConfigurationRuntime): AutoCloseable {
+        val existingPaths = runtimes.flatMap { installed -> installed.inspect().map(ConfigInspection::path) }.toSet()
+        val addedPaths = runtime.inspect().map(ConfigInspection::path)
+        require(addedPaths.none(existingPaths::contains)) {
+            "Configuration path '${addedPaths.first(existingPaths::contains)}' is declared by more than one module"
+        }
+        runtimes += runtime
+        return AutoCloseable {
+            if (runtimes.remove(runtime)) runtime.close()
+        }
+    }
+
+    override suspend fun reloadAll(): ConfigReloadReport = ConfigReloadReport(
+        runtimes.flatMap { runtime -> runtime.reloadAll().documents },
+    )
+
+    override fun inspect(): List<ConfigInspection> =
+        runtimes.flatMap(ConfigurationRuntime::inspect).sortedBy(ConfigInspection::path)
 }
 
 /** Redacted watched-reload status sink. */

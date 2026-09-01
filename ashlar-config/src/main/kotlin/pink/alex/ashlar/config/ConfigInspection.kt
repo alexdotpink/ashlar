@@ -11,6 +11,7 @@ public data class ConfigInspection(
     val status: ConfigOperationStatus,
     val warningCount: Int,
     val problems: List<ConfigProblem> = emptyList(),
+    val operationProblem: ConfigOperationProblem? = null,
     val backups: List<ConfigBackup> = emptyList(),
 )
 

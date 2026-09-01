@@ -6,14 +6,17 @@ import pink.alex.ashlar.config.ConfigProblemCategory
 import pink.alex.ashlar.config.ConfigProblemSeverity
 import pink.alex.ashlar.config.ConfigValidationScope
 import pink.alex.ashlar.config.codegen.ConfigValidator
+import pink.alex.ashlar.config.ConfigSourceLocation
 import kotlin.reflect.KProperty1
 
 internal fun <T : Any> validateConfig(
     path: String,
     value: T,
     validators: List<ConfigValidator<T>>,
+    keyNames: Map<String, String> = emptyMap(),
+    locate: (ConfigKeyPath) -> ConfigSourceLocation? = { null },
 ): List<ConfigProblem> {
-    val scope = DefaultValidationScope(path, value)
+    val scope = DefaultValidationScope(path, value, keyNames, locate)
     validators.forEach { validator -> validator.validate(scope) }
     return scope.problems
 }
@@ -21,6 +24,8 @@ internal fun <T : Any> validateConfig(
 private class DefaultValidationScope<T : Any>(
     private val path: String,
     override val current: T,
+    private val keyNames: Map<String, String>,
+    private val locate: (ConfigKeyPath) -> ConfigSourceLocation?,
 ) : ConfigValidationScope<T> {
     val problems: MutableList<ConfigProblem> = mutableListOf()
 
@@ -45,12 +50,14 @@ private class DefaultValidationScope<T : Any>(
         severity: ConfigProblemSeverity,
         message: String,
     ) {
+        val key = ConfigKeyPath(keyNames[property.name] ?: property.name.toKebabCase())
         problems += ConfigProblem(
             path = path,
-            key = ConfigKeyPath(property.name.toKebabCase()),
+            key = key,
             category = ConfigProblemCategory.VALIDATION,
             severity = severity,
             message = message,
+            location = locate(key),
         )
     }
 
