@@ -82,6 +82,7 @@ internal class MenuShowcaseCommands(
     private val menus: PlayerMenus,
     private val model: MenuShowcaseModel,
     private val input: PlayerInput,
+    private val animationClock: MenuAnimationClock,
 ) {
     /** Opens the complete declarative menu showcase and waits for its typed close reason. */
     suspend fun open(player: PlayerRef): String = when (
@@ -113,6 +114,14 @@ internal class MenuShowcaseCommands(
         val result = menus.open(player) { StressMenu() }
     ) {
         is MenuOpen.Closed -> "Stress menu closed: ${result.reason.label()}."
+        MenuOpen.Rejected -> "The player already has a menu open."
+    }
+
+    /** Opens interactive item animations with scene, pause, and speed controls. */
+    suspend fun animate(player: PlayerRef): String = when (
+        val result = menus.open(player) { AnimationMenu(animationClock.ticks(player)) }
+    ) {
+        is MenuOpen.Closed -> "Animation menu closed: ${result.reason.label()}."
         MenuOpen.Rejected -> "The player already has a menu open."
     }
 

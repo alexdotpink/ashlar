@@ -36,6 +36,14 @@ Open the pathological update test with:
 
 The six-row chest authors and replaces all 54 stained-glass panes every server tick. Every slot changes color on every frame, producing 1,080 changed slots per second for each viewer. Press Escape or run `/menus close YourName` to stop it; closing the session cancels its frame clock.
 
+For coherent animations instead of random churn, open:
+
+```text
+/menus animate YourName
+```
+
+The reel includes a perimeter comet, a rolling wave, an expanding pulse, and falling amethyst rain. The bottom row switches scenes, pauses the clock, changes its speed, and closes the menu. These scenes reuse immutable item specs, so ordinary frames reconcile only the canvas slots whose visual role changed.
+
 - Left- and right-click the emerald. Press a number key over it and try another click gesture.
 - Double-click the clock. The second single-flight action is rejected while the first runs.
 - Click the feather twice. Restart-latest cancels the first invocation.
