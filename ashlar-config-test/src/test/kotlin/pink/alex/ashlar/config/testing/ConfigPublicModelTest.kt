@@ -7,6 +7,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import pink.alex.ashlar.config.ConfigBackup
 import pink.alex.ashlar.config.ConfigBackupId
+import pink.alex.ashlar.config.Config
 import pink.alex.ashlar.config.ConfigDocument
 import pink.alex.ashlar.config.ConfigDocumentReload
 import pink.alex.ashlar.config.ConfigEvent
@@ -68,6 +69,19 @@ class ConfigPublicModelTest {
 }
 
 private data class Settings(val limit: Int)
+
+@Config(path = "default.yml")
+private data class DefaultDeclaration(val enabled: Boolean = true)
+
+private annotation class Nether
+
+@Config(
+    path = "worlds/nether.yml",
+    schemaVersion = 3,
+    unversionedSchema = 1,
+    qualifier = Nether::class,
+)
+private data class QualifiedDeclaration(val explosions: Boolean = true)
 
 private class FakeHandle(initial: Settings) : ConfigHandle<Settings> {
     private val state = MutableStateFlow(initial)

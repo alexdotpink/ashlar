@@ -11,8 +11,14 @@ public annotation class Config(
     val path: String,
     /** Current schema produced by this declaration. */
     val schemaVersion: Int = 1,
-    /** Schema assigned to an existing document without an `_ashlar-schema` marker. */
-    val unversionedSchema: Int = 1,
+    /**
+     * Schema assigned to an existing document without an `_ashlar-schema` marker.
+     *
+     * Zero leaves adoption unspecified: schema 1 declarations may accept an absent
+     * marker, while later schemas reject it until a positive historical schema is
+     * selected explicitly.
+     */
+    val unversionedSchema: Int = 0,
     /** Whether Ashlar reloads the document only explicitly or also watches it. */
     val reload: ConfigReloadMode = ConfigReloadMode.EXPLICIT,
     /** Maximum number of valid predecessor documents retained after writes. */
@@ -20,7 +26,7 @@ public annotation class Config(
     /** Maximum encoded document size accepted before parsing. */
     val maximumBytes: Long = 1_048_576,
     /** Optional Ashlar dependency qualifier for this document's handle. */
-    val qualifier: KClass<*> = Unit::class,
+    val qualifier: KClass<out Annotation> = Annotation::class,
 )
 
 /** Selects how a configuration document is reloaded after its initial load. */
