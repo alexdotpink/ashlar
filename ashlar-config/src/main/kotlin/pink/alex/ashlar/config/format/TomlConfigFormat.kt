@@ -201,7 +201,9 @@ private class TomlSourcePatcher(
 
         index.tableHeaders.forEach { (path, header) ->
             if (path !in index.arrayTables && valueAt(value, path) !is ConfigValue.ObjectValue) {
-                edits += TomlEdit(header.first, header.last + 1, "")
+                val comments = tomlComments(source.substring(header.first, header.last + 1))
+                val replacement = comments.joinToString("\n", postfix = if (comments.isEmpty()) "" else "\n")
+                edits += TomlEdit(header.first, header.last + 1, replacement)
             }
         }
 

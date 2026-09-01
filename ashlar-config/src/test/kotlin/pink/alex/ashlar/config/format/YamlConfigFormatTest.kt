@@ -121,6 +121,15 @@ class YamlConfigFormatTest {
     }
 
     @Test
+    fun `safe YAML rejects recursive aliases before composing nodes`() {
+        val recursive = assertIs<ConfigParse.Rejected>(
+            YamlConfigFormat.parse(ConfigSource("settings.yml", "loop: &loop [*loop]\n")),
+        )
+
+        assertEquals(ConfigProblemCategory.UNSUPPORTED_FEATURE, recursive.problems.single().category)
+    }
+
+    @Test
     fun `YAML keeps descendant and removed-key comments orphaned at their parent`() {
         val parsed = assertIs<ConfigParse.Accepted>(
             YamlConfigFormat.parse(

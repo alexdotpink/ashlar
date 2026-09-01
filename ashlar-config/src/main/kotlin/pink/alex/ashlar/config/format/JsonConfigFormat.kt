@@ -537,14 +537,14 @@ private class JsonLexer(
             't' -> keyword("true", TokenKind.TRUE, start, startLine, startColumn)
             'f' -> keyword("false", TokenKind.FALSE, start, startLine, startColumn)
             'n' -> keyword("null", TokenKind.NULL, start, startLine, startColumn)
-            else -> throw LexFailure("unexpected character '$character'", startLine, startColumn)
+            else -> throw LexFailure("unexpected character", startLine, startColumn)
         }
     }
 
     private fun skipTrivia() {
         while (offset < source.length) {
             when {
-                source[offset].isWhitespace() -> consume()
+                source[offset] == ' ' || source[offset] == '\t' || source[offset] == '\r' || source[offset] == '\n' -> consume()
                 source.startsWith("//", offset) -> {
                     if (!comments) throw LexFailure("comments are not allowed in strict JSON", line, column)
                     while (offset < source.length && source[offset] != '\n' && source[offset] != '\r') consume()

@@ -112,7 +112,7 @@ class TomlConfigFormatTest {
 
     @Test
     fun `TOML removes obsolete table headers without leaving semantic ghosts`() {
-        val source = "# root\nname = \"before\"\n\n# table note\n[nested]\nenabled = true\n"
+        val source = "# root\nname = \"before\"\n\n# table note\n[nested] # inline table note\nenabled = true\n"
         val parsed = assertIs<ConfigParse.Accepted>(
             TomlConfigFormat.parse(ConfigSource("settings.toml", source)),
         )
@@ -122,6 +122,7 @@ class TomlConfigFormatTest {
         val written = TomlConfigFormat.write(patched)
 
         assertContains(written, "# table note")
+        assertContains(written, "# inline table note")
         kotlin.test.assertFalse(written.contains("[nested]"))
         assertEquals(replacement, patched.value)
         assertEquals(

@@ -95,4 +95,12 @@ class JsonConfigFormatTest {
         assertEquals(ConfigProblemCategory.SYNTAX, array.problems.single().category)
         assertTrue(array.problems.single().message.contains("object"))
     }
+
+    @Test
+    fun `strict JSON rejects non RFC whitespace`() {
+        val parsed = assertIs<ConfigParse.Rejected>(
+            JsonConfigFormat.parse(ConfigSource("settings.json", "{\u00a0\"value\": 1}")),
+        )
+        assertEquals(ConfigProblemCategory.SYNTAX, parsed.problems.single().category)
+    }
 }

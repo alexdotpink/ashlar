@@ -12,7 +12,9 @@ import org.snakeyaml.engine.v2.common.FlowStyle
 import org.snakeyaml.engine.v2.common.ScalarStyle
 import org.snakeyaml.engine.v2.exceptions.MarkedYamlEngineException
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException
+import org.snakeyaml.engine.v2.events.AliasEvent
 import org.snakeyaml.engine.v2.events.Event
+import org.snakeyaml.engine.v2.events.NodeEvent
 import org.snakeyaml.engine.v2.events.ScalarEvent
 import org.snakeyaml.engine.v2.nodes.MappingNode
 import org.snakeyaml.engine.v2.nodes.Node
@@ -156,6 +158,7 @@ internal object YamlConfigFormat : ConfigFormat {
         var depth = 0
         var documents = 0
         var aliases = 0
+        val openAnchors = ArrayDeque<String?>()
         Parse(settings).parseString(source).forEach { event ->
             when (event.eventId) {
                 Event.ID.DocumentStart -> {
@@ -167,14 +170,23 @@ internal object YamlConfigFormat : ConfigFormat {
                 }
                 Event.ID.MappingStart, Event.ID.SequenceStart -> {
                     depth++
+                    openAnchors.addLast((event as NodeEvent).anchor.map { anchor -> anchor.value }.orElse(null))
                     if (depth > limits.maximumDepth) event.reject(
                         ConfigProblemCategory.RESOURCE_LIMIT,
                         "nesting exceeds ${limits.maximumDepth}",
                     )
                 }
-                Event.ID.MappingEnd, Event.ID.SequenceEnd -> depth--
+                Event.ID.MappingEnd, Event.ID.SequenceEnd -> {
+                    depth--
+                    openAnchors.removeLast()
+                }
                 Event.ID.Alias -> {
                     aliases++
+                    val alias = (event as AliasEvent).alias.value
+                    if (alias in openAnchors) event.reject(
+                        ConfigProblemCategory.UNSUPPORTED_FEATURE,
+                        "recursive YAML aliases are not supported",
+                    )
                     if (aliases > limits.maximumAliases) event.reject(
                         ConfigProblemCategory.RESOURCE_LIMIT,
                         "aliases exceed ${limits.maximumAliases}",
