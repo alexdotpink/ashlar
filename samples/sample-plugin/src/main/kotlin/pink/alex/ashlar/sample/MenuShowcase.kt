@@ -108,6 +108,14 @@ internal class MenuShowcaseCommands(
         MenuOpen.Rejected -> "The player already has a menu open."
     }
 
+    /** Opens a six-row menu that replaces all 54 panes every server tick. */
+    suspend fun stress(player: PlayerRef): String = when (
+        val result = menus.open(player) { StressMenu() }
+    ) {
+        is MenuOpen.Closed -> "Stress menu closed: ${result.reason.label()}."
+        MenuOpen.Rejected -> "The player already has a menu open."
+    }
+
     /** Demonstrates conflict rejection without disturbing the player's current session. */
     suspend fun reject(player: PlayerRef): String = when (
         val result = menus.open(player, conflict = MenuOpenConflict.REJECT) { ChoiceMenu() }
@@ -252,6 +260,62 @@ private fun MenuShowcase(
             }
         }
     }
+}
+
+context(menu: MenuScope)
+internal fun StressMenu() {
+    component("stress") {
+        var frame by state(0L)
+        launchedEffect("frame-clock") {
+            while (true) {
+                delay(50.milliseconds)
+                frame++
+            }
+        }
+        chest("54 slots · 20 updates/second", rows = 6) {
+            repeat(54) { index ->
+                slot(index) {
+                    item = icon(
+                        material = stressMaterial(frame, index),
+                        name = "Frame $frame · slot $index",
+                    )
+                }
+            }
+        }
+    }
+}
+
+private val STRESS_PALETTE: List<Material> = listOf(
+    Material.WHITE_STAINED_GLASS_PANE,
+    Material.ORANGE_STAINED_GLASS_PANE,
+    Material.MAGENTA_STAINED_GLASS_PANE,
+    Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+    Material.YELLOW_STAINED_GLASS_PANE,
+    Material.LIME_STAINED_GLASS_PANE,
+    Material.PINK_STAINED_GLASS_PANE,
+    Material.GRAY_STAINED_GLASS_PANE,
+    Material.LIGHT_GRAY_STAINED_GLASS_PANE,
+    Material.CYAN_STAINED_GLASS_PANE,
+    Material.PURPLE_STAINED_GLASS_PANE,
+    Material.BLUE_STAINED_GLASS_PANE,
+    Material.BROWN_STAINED_GLASS_PANE,
+    Material.GREEN_STAINED_GLASS_PANE,
+    Material.RED_STAINED_GLASS_PANE,
+    Material.BLACK_STAINED_GLASS_PANE,
+)
+
+private fun stressMaterial(frame: Long, slot: Int): Material {
+    val mixed = mixStressSlot(slot.toLong())
+    val seed = mixed and 15
+    val nonZeroStep = ((mixed ushr 8) and 15) or 1
+    return STRESS_PALETTE[((seed + frame * nonZeroStep) and 15).toInt()]
+}
+
+private fun mixStressSlot(slot: Long): Long {
+    var value = slot - 7_046_029_254_386_353_131L
+    value = (value xor (value ushr 30)) * -4_658_895_280_559_300_687L
+    value = (value xor (value ushr 27)) * -7_723_592_293_110_705_685L
+    return value xor (value ushr 31)
 }
 
 context(menu: MenuScope)

@@ -28,6 +28,14 @@ Replace `YourName` with the connected player's Minecraft name:
 
 The home screen demonstrates structural item rendering, delegated state, a collected Flow, keyed effects, typed menu locals, feedback, general and specific gestures, and all three action concurrency modes.
 
+Open the pathological update test with:
+
+```text
+/menus stress YourName
+```
+
+The six-row chest authors and replaces all 54 stained-glass panes every server tick. Every slot changes color on every frame, producing 1,080 changed slots per second for each viewer. Press Escape or run `/menus close YourName` to stop it; closing the session cancels its frame clock.
+
 - Left- and right-click the emerald. Press a number key over it and try another click gesture.
 - Double-click the clock. The second single-flight action is rejected while the first runs.
 - Click the feather twice. Restart-latest cancels the first invocation.

@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.coroutines.core)
     compileOnly(libs.paper.api)
     testImplementation(libs.paper.api)
+    testImplementation(project(":ashlar-menus-test"))
     ksp(project(":ashlar-commands-ksp"))
     ksp(project(":ashlar-events-ksp"))
     ksp(project(":ashlar-di-ksp"))
