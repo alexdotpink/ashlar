@@ -46,11 +46,13 @@ public final class pink/alex/ashlar/config/ConfigBackupId {
 public abstract interface class pink/alex/ashlar/config/ConfigDocument {
 	public abstract fun getFormatId ()Ljava/lang/String;
 	public abstract fun getValue ()Lpink/alex/ashlar/config/ConfigValue$ObjectValue;
+	public fun location (Lpink/alex/ashlar/config/ConfigKeyPath;)Lpink/alex/ashlar/config/ConfigSourceLocation;
 	public abstract fun patch (Lpink/alex/ashlar/config/ConfigValue$ObjectValue;Ljava/util/Map;)Lpink/alex/ashlar/config/ConfigDocument;
 	public static synthetic fun patch$default (Lpink/alex/ashlar/config/ConfigDocument;Lpink/alex/ashlar/config/ConfigValue$ObjectValue;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigDocument;
 }
 
 public final class pink/alex/ashlar/config/ConfigDocument$DefaultImpls {
+	public static fun location (Lpink/alex/ashlar/config/ConfigDocument;Lpink/alex/ashlar/config/ConfigKeyPath;)Lpink/alex/ashlar/config/ConfigSourceLocation;
 	public static synthetic fun patch$default (Lpink/alex/ashlar/config/ConfigDocument;Lpink/alex/ashlar/config/ConfigValue$ObjectValue;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigDocument;
 }
 
@@ -72,6 +74,12 @@ public final class pink/alex/ashlar/config/ConfigDocumentReload {
 	public final fun getStatus ()Lpink/alex/ashlar/config/ConfigOperationStatus;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/config/ConfigDurationSerializer : pink/alex/ashlar/config/StringConfigSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/config/ConfigDurationSerializer;
+	public synthetic fun format (Ljava/lang/Object;)Ljava/lang/String;
+	public synthetic fun parse (Ljava/lang/String;)Ljava/lang/Object;
 }
 
 public abstract interface class pink/alex/ashlar/config/ConfigEvent {
@@ -145,6 +153,8 @@ public final class pink/alex/ashlar/config/ConfigEventOrigin : java/lang/Enum {
 }
 
 public abstract interface class pink/alex/ashlar/config/ConfigFormat {
+	public abstract fun create (Lpink/alex/ashlar/config/ConfigValue$ObjectValue;Ljava/util/Map;)Lpink/alex/ashlar/config/ConfigDocument;
+	public static synthetic fun create$default (Lpink/alex/ashlar/config/ConfigFormat;Lpink/alex/ashlar/config/ConfigValue$ObjectValue;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigDocument;
 	public abstract fun getExtensions ()Ljava/util/Set;
 	public abstract fun getId ()Ljava/lang/String;
 	public abstract fun getPreservesComments ()Z
@@ -154,6 +164,7 @@ public abstract interface class pink/alex/ashlar/config/ConfigFormat {
 }
 
 public final class pink/alex/ashlar/config/ConfigFormat$DefaultImpls {
+	public static synthetic fun create$default (Lpink/alex/ashlar/config/ConfigFormat;Lpink/alex/ashlar/config/ConfigValue$ObjectValue;Ljava/util/Map;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigDocument;
 	public static synthetic fun parse$default (Lpink/alex/ashlar/config/ConfigFormat;Lpink/alex/ashlar/config/ConfigSource;Lpink/alex/ashlar/config/ConfigLimits;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigParse;
 }
 
@@ -168,10 +179,11 @@ public abstract interface class pink/alex/ashlar/config/ConfigHandle {
 }
 
 public final class pink/alex/ashlar/config/ConfigInspection {
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Lpink/alex/ashlar/config/ConfigOperationProblem;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Lpink/alex/ashlar/config/ConfigOperationProblem;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun component10 ()Ljava/util/List;
+	public final fun component10 ()Lpink/alex/ashlar/config/ConfigOperationProblem;
+	public final fun component11 ()Ljava/util/List;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()I
 	public final fun component4-Yk81IzU ()Ljava/lang/String;
@@ -180,11 +192,12 @@ public final class pink/alex/ashlar/config/ConfigInspection {
 	public final fun component7 ()Lpink/alex/ashlar/config/ConfigOperationStatus;
 	public final fun component8 ()I
 	public final fun component9 ()Ljava/util/List;
-	public final fun copy-LJpKn2k (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Ljava/util/List;)Lpink/alex/ashlar/config/ConfigInspection;
-	public static synthetic fun copy-LJpKn2k$default (Lpink/alex/ashlar/config/ConfigInspection;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigInspection;
+	public final fun copy-c0KSG7M (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Lpink/alex/ashlar/config/ConfigOperationProblem;Ljava/util/List;)Lpink/alex/ashlar/config/ConfigInspection;
+	public static synthetic fun copy-c0KSG7M$default (Lpink/alex/ashlar/config/ConfigInspection;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;Lpink/alex/ashlar/config/ConfigReloadMode;Lpink/alex/ashlar/config/ConfigWatcherStatus;Lpink/alex/ashlar/config/ConfigOperationStatus;ILjava/util/List;Lpink/alex/ashlar/config/ConfigOperationProblem;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigInspection;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBackups ()Ljava/util/List;
 	public final fun getFormat ()Ljava/lang/String;
+	public final fun getOperationProblem ()Lpink/alex/ashlar/config/ConfigOperationProblem;
 	public final fun getPath ()Ljava/lang/String;
 	public final fun getProblems ()Ljava/util/List;
 	public final fun getReloadMode ()Lpink/alex/ashlar/config/ConfigReloadMode;
@@ -209,7 +222,18 @@ public final class pink/alex/ashlar/config/ConfigKeyPath {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class pink/alex/ashlar/config/ConfigKeySerializer : pink/alex/ashlar/config/StringConfigSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/config/ConfigKeySerializer;
+	public synthetic fun format (Ljava/lang/Object;)Ljava/lang/String;
+	public synthetic fun parse (Ljava/lang/String;)Ljava/lang/Object;
+}
+
 public final class pink/alex/ashlar/config/ConfigLimits {
+	public static final field Companion Lpink/alex/ashlar/config/ConfigLimits$Companion;
+	public static final field MAXIMUM_ALIAS_COUNT I
+	public static final field MAXIMUM_DOCUMENT_BYTES J
+	public static final field MAXIMUM_NESTING_DEPTH I
+	public static final field MAXIMUM_SCALAR_CHARACTERS I
 	public fun <init> ()V
 	public fun <init> (JIII)V
 	public synthetic fun <init> (JIIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -228,9 +252,18 @@ public final class pink/alex/ashlar/config/ConfigLimits {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class pink/alex/ashlar/config/ConfigLimits$Companion {
+}
+
 public abstract interface annotation class pink/alex/ashlar/config/ConfigMigration : java/lang/annotation/Annotation {
 	public abstract fun from ()I
 	public abstract fun root ()Ljava/lang/Class;
+}
+
+public final class pink/alex/ashlar/config/ConfigNamespacedKeySerializer : pink/alex/ashlar/config/StringConfigSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/config/ConfigNamespacedKeySerializer;
+	public synthetic fun format (Ljava/lang/Object;)Ljava/lang/String;
+	public synthetic fun parse (Ljava/lang/String;)Ljava/lang/Object;
 }
 
 public final class pink/alex/ashlar/config/ConfigOperationProblem {
@@ -456,6 +489,19 @@ public final class pink/alex/ashlar/config/ConfigRestore$Rejected : pink/alex/as
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class pink/alex/ashlar/config/ConfigRestore$SourceChanged : pink/alex/ashlar/config/ConfigRestore {
+	public synthetic fun <init> (Ljava/lang/Object;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2-0pVk9jo ()Ljava/lang/String;
+	public final fun copy-9mTAHkM (Ljava/lang/Object;Ljava/lang/String;)Lpink/alex/ashlar/config/ConfigRestore$SourceChanged;
+	public static synthetic fun copy-9mTAHkM$default (Lpink/alex/ashlar/config/ConfigRestore$SourceChanged;Ljava/lang/Object;Ljava/lang/String;ILjava/lang/Object;)Lpink/alex/ashlar/config/ConfigRestore$SourceChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAcceptedRevision-0pVk9jo ()Ljava/lang/String;
+	public final fun getCurrent ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class pink/alex/ashlar/config/ConfigRestore$Unavailable : pink/alex/ashlar/config/ConfigRestore {
 	public fun <init> (Ljava/lang/Object;Lpink/alex/ashlar/config/ConfigOperationProblem;)V
 	public final fun component1 ()Ljava/lang/Object;
@@ -507,6 +553,26 @@ public final class pink/alex/ashlar/config/ConfigSourceRevision {
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class pink/alex/ashlar/config/ConfigStartupException : java/lang/IllegalStateException {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Lpink/alex/ashlar/config/ConfigOperationProblem;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lpink/alex/ashlar/config/ConfigOperationProblem;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDocumentPath ()Ljava/lang/String;
+	public final fun getOperationProblem ()Lpink/alex/ashlar/config/ConfigOperationProblem;
+	public final fun getProblems ()Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/config/ConfigTypedKeySerializer : pink/alex/ashlar/config/StringConfigSerializer {
+	public fun <init> (Lio/papermc/paper/registry/RegistryKey;)V
+	public synthetic fun format (Ljava/lang/Object;)Ljava/lang/String;
+	public synthetic fun parse (Ljava/lang/String;)Ljava/lang/Object;
+}
+
+public final class pink/alex/ashlar/config/ConfigUuidSerializer : pink/alex/ashlar/config/StringConfigSerializer {
+	public static final field INSTANCE Lpink/alex/ashlar/config/ConfigUuidSerializer;
+	public synthetic fun format (Ljava/lang/Object;)Ljava/lang/String;
+	public synthetic fun parse (Ljava/lang/String;)Ljava/lang/Object;
 }
 
 public abstract interface annotation class pink/alex/ashlar/config/ConfigValidation : java/lang/annotation/Annotation {
@@ -675,5 +741,59 @@ public final class pink/alex/ashlar/config/ConfigWrite$Unchanged : pink/alex/ash
 public abstract interface class pink/alex/ashlar/config/Configurations {
 	public abstract fun inspect ()Ljava/util/List;
 	public abstract fun reloadAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class pink/alex/ashlar/config/StringConfigSerializer : kotlinx/serialization/KSerializer {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	protected abstract fun format (Ljava/lang/Object;)Ljava/lang/String;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	protected abstract fun parse (Ljava/lang/String;)Ljava/lang/Object;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class pink/alex/ashlar/config/codegen/ConfigDefinition {
+	public fun <init> (Lkotlin/reflect/KClass;Lpink/alex/ashlar/di/DependencyKey;Ljava/lang/String;IILpink/alex/ashlar/config/ConfigReloadMode;ILpink/alex/ashlar/config/ConfigLimits;Lkotlinx/serialization/KSerializer;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Lkotlin/reflect/KClass;Lpink/alex/ashlar/di/DependencyKey;Ljava/lang/String;IILpink/alex/ashlar/config/ConfigReloadMode;ILpink/alex/ashlar/config/ConfigLimits;Lkotlinx/serialization/KSerializer;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getBackups ()I
+	public final fun getComments ()Ljava/util/Map;
+	public final fun getHandleKey ()Lpink/alex/ashlar/di/DependencyKey;
+	public final fun getKeyNames ()Ljava/util/Map;
+	public final fun getLimits ()Lpink/alex/ashlar/config/ConfigLimits;
+	public final fun getMigrations ()Ljava/util/List;
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getReloadMode ()Lpink/alex/ashlar/config/ConfigReloadMode;
+	public final fun getRootType ()Lkotlin/reflect/KClass;
+	public final fun getSchemaVersion ()I
+	public final fun getSerializer ()Lkotlinx/serialization/KSerializer;
+	public final fun getUnversionedSchema ()I
+	public final fun getValidationKeyNames ()Ljava/util/Map;
+	public final fun getValidators ()Ljava/util/List;
+}
+
+public final class pink/alex/ashlar/config/codegen/ConfigDefinitionKt {
+	public static final fun configMigration (ILkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Ljava/util/Map;Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/config/codegen/ConfigMigrationStep;
+	public static synthetic fun configMigration$default (ILkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Ljava/util/Map;Ljava/util/Map;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lpink/alex/ashlar/config/codegen/ConfigMigrationStep;
+	public static final fun configValidator (Lkotlin/jvm/functions/Function1;)Lpink/alex/ashlar/config/codegen/ConfigValidator;
+}
+
+public final class pink/alex/ashlar/config/codegen/ConfigMigrationStep {
+	public final fun getFromSchema ()I
+}
+
+public final class pink/alex/ashlar/config/codegen/ConfigValidator {
+}
+
+public final class pink/alex/ashlar/config/codegen/ConfigurationBootstrap {
+	public static final field INSTANCE Lpink/alex/ashlar/config/codegen/ConfigurationBootstrap;
+	public final fun install (Lpink/alex/ashlar/di/DependencyGraph;Ljava/nio/file/Path;Ljava/util/List;Ljava/util/List;)Ljava/lang/AutoCloseable;
+	public final fun install (Lpink/alex/ashlar/di/DependencyGraph;Ljava/util/List;)Ljava/lang/AutoCloseable;
+	public static synthetic fun install$default (Lpink/alex/ashlar/config/codegen/ConfigurationBootstrap;Lpink/alex/ashlar/di/DependencyGraph;Ljava/nio/file/Path;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Ljava/lang/AutoCloseable;
+}
+
+public final class pink/alex/ashlar/config/format/BuiltInConfigFormats {
+	public static final field INSTANCE Lpink/alex/ashlar/config/format/BuiltInConfigFormats;
+	public final fun forPath (Ljava/lang/String;)Lpink/alex/ashlar/config/ConfigFormat;
+	public final fun getAll ()Ljava/util/List;
 }
 

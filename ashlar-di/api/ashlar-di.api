@@ -39,6 +39,10 @@ public final class pink/alex/ashlar/di/DependencyGraph : java/lang/AutoCloseable
 	public final fun rootComponents ()Ljava/util/List;
 }
 
+public abstract interface class pink/alex/ashlar/di/DependencyGraphInitializer {
+	public abstract fun initialize (Lpink/alex/ashlar/di/DependencyGraph;)Ljava/lang/AutoCloseable;
+}
+
 public final class pink/alex/ashlar/di/DependencyGraphKt {
 	public static final fun generatedFactoryName (Lkotlin/reflect/KClass;)Ljava/lang/String;
 }
