@@ -1,0 +1,35 @@
+public final class pink/alex/ashlar/config/testing/ConfigTestHarnessKt {
+	public static final fun configHandleKey (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;)Lpink/alex/ashlar/di/DependencyKey;
+	public static synthetic fun configHandleKey$default (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;ILjava/lang/Object;)Lpink/alex/ashlar/di/DependencyKey;
+	public static final fun configTest ([Lpink/alex/ashlar/config/codegen/ConfigDefinition;Ljava/util/List;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun configTest$default ([Lpink/alex/ashlar/config/codegen/ConfigDefinition;Ljava/util/List;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+}
+
+public final class pink/alex/ashlar/config/testing/ConfigTestScope : java/lang/AutoCloseable {
+	public static final field Companion Lpink/alex/ashlar/config/testing/ConfigTestScope$Companion;
+	public final fun awaitCurrent-exY8QGI (Lpink/alex/ashlar/config/ConfigHandle;Ljava/lang/Object;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitCurrent-exY8QGI$default (Lpink/alex/ashlar/config/testing/ConfigTestScope;Lpink/alex/ashlar/config/ConfigHandle;Ljava/lang/Object;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitEvent-dWUq8MI (Lpink/alex/ashlar/config/ConfigHandle;JLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitEvent-dWUq8MI$default (Lpink/alex/ashlar/config/testing/ConfigTestScope;Lpink/alex/ashlar/config/ConfigHandle;JLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitInspection-dWUq8MI (Ljava/lang/String;JLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitInspection-dWUq8MI$default (Lpink/alex/ashlar/config/testing/ConfigTestScope;Ljava/lang/String;JLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun close ()V
+	public final fun editSource (Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)V
+	public static synthetic fun editSource$default (Lpink/alex/ashlar/config/testing/ConfigTestScope;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun editorBurst (Ljava/lang/String;[Ljava/lang/String;Z)V
+	public static synthetic fun editorBurst$default (Lpink/alex/ashlar/config/testing/ConfigTestScope;Ljava/lang/String;[Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun getConfigurations ()Lpink/alex/ashlar/config/Configurations;
+	public final fun getDataDirectory ()Ljava/nio/file/Path;
+	public final fun handle (Lpink/alex/ashlar/di/DependencyKey;)Lpink/alex/ashlar/config/ConfigHandle;
+	public final fun readSource (Ljava/lang/String;)Ljava/lang/String;
+	public final fun replaceSource (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun writeSource (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class pink/alex/ashlar/config/testing/ConfigTestScope$Companion {
+	public final fun start (Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/config/testing/ConfigTestScope;
+	public static synthetic fun start$default (Lpink/alex/ashlar/config/testing/ConfigTestScope$Companion;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/config/testing/ConfigTestScope;
+	public final fun startAt (Ljava/nio/file/Path;Ljava/util/List;Ljava/util/List;)Lpink/alex/ashlar/config/testing/ConfigTestScope;
+	public static synthetic fun startAt$default (Lpink/alex/ashlar/config/testing/ConfigTestScope$Companion;Ljava/nio/file/Path;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lpink/alex/ashlar/config/testing/ConfigTestScope;
+}
+
