@@ -12,6 +12,9 @@ run-paper = "3.0.2"
 ksp = "2.3.10"
 kotlinpoet = "2.3.0"
 jmh = "1.37"
+snakeyaml-engine = "3.1.1"
+tomlj = "1.1.1"
+checker-qual = "3.21.2"
 
 [libraries]
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -33,6 +36,9 @@ ksp-gradle = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
 jmh-generator = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
+snakeyaml-engine = { module = "org.snakeyaml:snakeyaml-engine", version.ref = "snakeyaml-engine" }
+tomlj = { module = "org.tomlj:tomlj", version.ref = "tomlj" }
+checker-qual = { module = "org.checkerframework:checker-qual", version.ref = "checker-qual" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
