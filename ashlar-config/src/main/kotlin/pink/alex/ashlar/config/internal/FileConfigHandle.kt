@@ -235,6 +235,11 @@ internal class FileConfigHandle<T : Any> private constructor(
                 key.reset()
                 if (!relevant) continue
                 delay(WATCH_DEBOUNCE_MILLIS)
+                while (true) {
+                    val pending = service.poll() ?: break
+                    pending.pollEvents()
+                    pending.reset()
+                }
                 reload(ConfigEventOrigin.WATCHED_RELOAD)
             }
             inspection = inspection.copy(watcherStatus = ConfigWatcherStatus.STOPPED)
@@ -262,6 +267,9 @@ internal class FileConfigHandle<T : Any> private constructor(
                     publishUnavailable(origin, read.problem)
                     return@withLock ConfigReload.Unavailable(current, read.problem)
                 }
+            }
+            if (origin == ConfigEventOrigin.WATCHED_RELOAD && source.revision == accepted.revision) {
+                return@withLock ConfigReload.Accepted(current, changed = false, accepted.warnings)
             }
             when (val loaded = decodeSource(source, origin, persistMigration = true)) {
                 is LoadResult.Rejected -> {
